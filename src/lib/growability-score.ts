@@ -1,5 +1,6 @@
 import type { Place, RiskLevel } from "../types";
 import { computeBioclim, type BioclimIndex } from "./bioclim";
+import { gddForUnit } from "./units";
 
 export interface GrowabilityRationale {
   lines: readonly string[];
@@ -72,7 +73,7 @@ function buildSeasonLine(place: Place): string {
   const seasonParts: string[] = [];
 
   if (frost != null) seasonParts.push(`${formatNumber(frost)} frost-free days`);
-  if (gdd != null) seasonParts.push(`GDD10 ${formatNumber(gdd)}`);
+  if (gdd != null) seasonParts.push(`${formatNumber(gddForUnit(gdd, "F"))} growing degree days (base 50°F)`);
   // "12a equiv." would end the sentence twice; spell the qualifier out.
   if (hardiness) seasonParts.push(`zone ${hardiness.replace(/\s*equiv\.?$/i, " equivalent")}`);
 
@@ -106,11 +107,11 @@ export function buildGrowabilityRationale(place: Place): GrowabilityRationale {
   const petMm = Math.round(bio.thornthwaitePet.value);
   const baseLine = hasBioclimValue(bio.selianinov)
     ? `Bioclim basis: Selianinov HTC ${formatNumber(bio.selianinov.value, 2)} (${bio.selianinov.classLabel}) and Thornthwaite PET ${formatNumber(petMm)} mm/yr frame this ${place.growability.score}/100 score.`
-    : `Bioclim basis: Selianinov HTC is undefined because no month clears the GDD10 growing-season threshold; Thornthwaite PET is ${formatNumber(petMm)} mm/yr.`;
+    : `Bioclim basis: Selianinov HTC is undefined because no month's mean clears the 10°C growing-season threshold; Thornthwaite PET is ${formatNumber(petMm)} mm/yr.`;
 
   const middleLine = hasBioclimValue(bio.selianinov)
     ? buildWaterStressLine(place, bio.selianinov) ?? buildSeasonLine(place)
-    : `With the active growing-season moisture index undefined, the read leans on frost limits, GDD10, hardiness, and what the crop list can realistically support.`;
+    : `With the active growing-season moisture index undefined, the read leans on frost limits, growing degree days, hardiness, and what the crop list can realistically support.`;
 
   return {
     lines: [baseLine, middleLine, buildCropFitLine(place)],

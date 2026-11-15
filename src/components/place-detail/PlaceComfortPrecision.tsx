@@ -72,7 +72,7 @@ export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionPr
     {
       label: "Thermal strain (UTCI*)",
       value: `${utci.score}/100`,
-      note: `${utci.bandLabel}; feels-like JJA ${precisionTemp(utci.warmSeasonApparentHighC, temp)}. *approximation — no wind/radiant inputs.`,
+      note: `${utci.bandLabel}; feels-like ${utci.warmSeasonLabel} ${precisionTemp(utci.warmSeasonApparentHighC, temp)}. *approximation — no wind/radiant inputs.`,
       tone: "ochre",
     },
   ] as const;

@@ -46,18 +46,14 @@ export function computeScaleBarStep(
     const maxKm = kmPerPx * SCALE_BAR_MAX_PX;
     const step = SCALE_KM_STEPS.find(s => s <= maxKm) ?? 1;
     const pxWidth = step / kmPerPx;
-    const stepLabel = step >= 1000
-      ? `${(step / 1000).toLocaleString()} × 1,000 km`
-      : `${step.toLocaleString()} km`;
+    const stepLabel = `${step.toLocaleString("en-US")} km`;
     return { stepLabel, pxWidth };
   }
   const miPerPx = kmPerPx * 0.621371;
   const maxMi = miPerPx * SCALE_BAR_MAX_PX;
   const step = SCALE_MI_STEPS.find(s => s <= maxMi) ?? 1;
   const pxWidth = step / miPerPx;
-  const stepLabel = step >= 1000
-    ? `${(step / 1000).toLocaleString()} × 1,000 mi`
-    : `${step.toLocaleString()} mi`;
+  const stepLabel = `${step.toLocaleString("en-US")} mi`;
   return { stepLabel, pxWidth };
 }
 

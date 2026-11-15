@@ -376,3 +376,66 @@ describe("negative zero", () => {
     expect(fmtDelta(0.3, "C")).toBe("+0.3°C");
   });
 });
+
+describe("localizeProse — differences, ranges and leftovers in US units", () => {
+  const f = (text: string) => localizeProse(text, "F", "imperial");
+  it.each([
+    // A temperature difference scales by 9/5; it is not an absolute reading.
+    ["Chinooks produce sudden 20°C warm-ups mid-winter.", "sudden 36°F warm-ups"],
+    ["Cold fronts often warm 10 to 15°C in a single day.", "warm 18 to 27°F"],
+    ["A drive to the lakeshore buys 6–10°C of moderation.", "buys 11–18°F of moderation"],
+    ["January and July mean highs differ by only about 9°C.", "by only about 16°F"],
+    ["Roughly 70°C between summer maxima and winter minima.", "Roughly 126°F between"],
+    ["Models put winter temperatures up 3–5°C by 2050.", "up 5–9°F"],
+    ["Foehn events can swing temperatures 20°C in hours.", "swing temperatures 36°F"],
+    // An absolute reading stays absolute even when "diurnal swing" shares the clause.
+    ["Dramatic diurnal swings (summer highs near 27–29°C) are normal.", "highs near 81–84°F"],
+    ["Nights to 15°C keep diurnal swing real.", "Nights to 59°F"],
+    // Both ends of a range convert.
+    ["The harbor stays between 2 and 16°C year-round.", "between 36 and 61°F"],
+    ["The gap wind holds at 40–70 km/h for days.", "25–43 mph"],
+    ["Coffee thrives roughly 1,000–1,700 m up.", "3,300–5,600 ft up"],
+    // Forms that used to slip through unconverted.
+    ["Gusts of 120+ km/h are recorded most winters.", "75+ mph"],
+    ["An archipelago 100+ km off the mainland.", "62+ mi"],
+    ["The spill released some 41 million litres of crude.", "11 million gallons"],
+    ["Summers peak in the high 20s without the humidity.", "81–84°F range"],
+    ["Afternoons in the high teens to low 20s.", "63–73°F range"],
+    ["Near 31°C instead of mid-40s Phoenix heat.", "111–115°F Phoenix heat"],
+    // Grammar after conversion.
+    ["Storms can stack 300 mm in a month.", "12 inches in a month"],
+    ["The elevation delivers an 8°C cooler afternoon.", "a 14°F cooler afternoon"],
+    ["Even a 30°C afternoon feels easy.", "an 86°F afternoon"],
+  ])("%j", (text, expected) => {
+    expect(f(text)).toContain(expected);
+  });
+
+  it("leaves ages, decades and humidity alone", () => {
+    expect(f("By afternoon the humidity drops into the teens.")).toContain("into the teens");
+    expect(f("People in their 30s move here for the summer.")).toContain("their 30s");
+    expect(f("An 1890s hotel anchors the summer colony.")).toContain("An 1890s hotel");
+  });
+});
+
+describe("localizeProse — open-ended figures", () => {
+  const f = (text: string) => localizeProse(text, "F", "imperial");
+  it.each([
+    ["3000+ mm of rain and almost no seasonal swing.", "120+ in of rain"],
+    ["3000+ m peaks immediately north.", "9,800+ ft peaks"],
+    ["Drifts of 150+ cm bury the fences.", "59+ in"],
+  ])("%j", (text, expected) => {
+    expect(f(text)).toContain(expected);
+  });
+});
+
+describe("localizeProse — glossary difference phrasings", () => {
+  const f = (text: string) => localizeProse(text, "F", "imperial");
+  it.each([
+    ["Humid maritime climates swing 4–8°C.", "swing 7–14°F"],
+    ["Ground temperatures can plummet 15°C or more below the daytime high.", "plummet 27°F"],
+    ["July afternoons in the teens and low 20s are normal.", "50–73°F range"],
+    ["Temperatures swing to 30°C by noon.", "swing to 86°F"],
+  ])("%j", (text, expected) => {
+    expect(f(text)).toContain(expected);
+  });
+});

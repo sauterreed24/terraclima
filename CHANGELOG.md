@@ -4,6 +4,30 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Conversion accuracy, honest "twin, but…" lists, and an independent fact check
+
+- **Temperature differences now convert as differences.** With the atlas in °F only, a difference written in °C was often shown as if it were a thermometer reading: Boulder's "sudden 20°C warm-ups" read 68°F instead of 36°F, and Tofino's January-to-July spread read 48°F instead of 16°F. About 40 sentences are corrected, and the reverse error is fixed too (Taos's summer highs showed as 49–52°F because "diurnal swing" sat in the same clause).
+- **Ranges convert at both ends.** "Between 2 and 16°C" was showing as "between 2 and 61°F", "40–70 km/h" as "40–43 mph", and "1,000–1,700 m up" as "1,000–5,600 ft up".
+- **Leftover metric removed.** Open-ended figures such as "3000+ mm" and "120+ km/h", litres, and a handful of bare unit words now convert. Every converted sentence in the atlas was re-checked and none still carries a metric unit.
+- **Grammar after conversion:** "16 in in December" reads "16 inches in December"; "an 14°F cooler" reads "a 14°F cooler"; "high teens to low 20s" becomes one band instead of two.
+- **"Twin, but warmer / cooler / drier…" only lists places that move that way.** Before, a close twin that moved the wrong way could lead the list (Santa Barbara, asked for warmer, led with Monterey, which is cooler). When no close twin qualifies, the panel says so.
+- **"Winter sun" against your home base** now uses measured sunshine only, where both places have it. The stand-in it used before tracked day length, so it could call a cloudier winter "much sunnier".
+- **Best months:**
+  - "Dry travel window" no longer recommends months that carry the heat caution (Palm Springs was offered April–July).
+  - "Outdoor comfort" no longer drops mild summers just because summer is the wetter season: Fairbanks now reads May–Sep, and Churchill and Banff get a summer window.
+- **Growing degree days** labelled "base 50°F" were showing the Celsius figure; they now show the Fahrenheit one (Napa 3,955, not 2,197).
+- **At a glance** now shows the growing season and the summer day-to-night swing, which were always cut off by the eight-tile limit; the two satellite-screening tiles moved to fill-ins.
+- **"Feels-like" heat band** uses each place's warmest three months instead of always June–August, so the Mexican highlands are judged on April–June, before the rains.
+- **Fact check (26 corrections):** five independent passes over every place history. Among them:
+  - The prisoner-of-war murders belong to Medicine Hat's camp, not Lethbridge's.
+  - Iqaluit and Nome sit south of the Arctic Circle and have no polar night.
+  - Driggs is on the windward side of the Tetons, not in their rain shadow.
+  - Lend-Lease aircraft were flown to Fairbanks and handed to Soviet crews there, not from it.
+  - Key West was bought in 1822; the railway reached Bismarck in 1873.
+  - Laguna Madre lies south of Corpus Christi, not west.
+- **Consistency:** Sequim's rainfall and distances now agree with each other and with its data (it was quoted as 16, 17 and about 19 inches on one page). Prince Rupert's "2,600 mm" is now "well over 2,000 mm": the airport gauges average 2,300–2,600 mm, and the station check found the atlas's own 2,108 mm figure runs about 10% low there.
+- **Visual:** the Field dossier's chapter links are a proper row of chips; the map scale bar reads "3,000 mi" instead of "3 × 1,000 mi".
+
 ### US units throughout
 
 - **Fahrenheit and US units everywhere:** the atlas now shows only Fahrenheit, inches, feet and miles. The °C/metric switch is gone, so a saved preference or an older shared link with `temp=C` or `dist=metric` can't bring metric back; those parameters are ignored and dropped from the address bar.

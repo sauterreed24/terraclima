@@ -77,6 +77,14 @@ export function toDeltaUnit(deltaC: number, unit: TempUnit): number {
   return unit === "F" ? (deltaC * 9) / 5 : deltaC;
 }
 
+/**
+ * Growing degree days are stored as °C-days above 10°C. In °F the same heat
+ * sum is counted above 50°F and is 1.8 times larger.
+ */
+export function gddForUnit(gdd10C: number, unit: TempUnit): number {
+  return unit === "F" ? gdd10C * 1.8 : gdd10C;
+}
+
 /** Format annual precipitation. */
 export function fmtPrecip(mm: number, dist: DistUnit, opts?: { short?: boolean }): string {
   if (!isFinite(mm)) return "—";
@@ -158,7 +166,7 @@ export function precipTickStep(maxVal: number, dist: DistUnit): number {
  * Tight word boundaries prevent false positives like "windchills"
  * triggering on "chill", or "continentality" on "tall".
  */
-const DELTA_AFTER_PAT = /\b(warmer|cooler|colder|hotter|higher|lower|wider|narrower|stronger|weaker|apart|bigger|smaller|greater|above|below|milder|harsher|relative|differences?|of (?:cooling|warming))\b/;
+const DELTA_AFTER_PAT = /\b(warmer|cooler|colder|hotter|higher|lower|wider|narrower|stronger|weaker|apart|bigger|smaller|greater|above|below|milder|harsher|relative|differences?|of (?:cooling|warming|relief|moderation)|warm-ups?|between (?!\d))\b/;
 /** Comparatives that only ever describe a difference ("10°C hotter"). */
 const TRUE_COMPARATIVE_PAT = /\b(warmer|cooler|colder|hotter|milder|harsher)\b/;
 /**
@@ -181,7 +189,7 @@ const APPROX_TAIL_PAT = /\s*(?:about|roughly|nearly|around|approximately|almost|
 // Bare "by" is kept because corpus prose uses "warmer by 5°C", "punctuated
 // by 25°C warm-ups", "differs by 8°C", and similar. The one absolute
 // "by 27°C water" phrasing has been rewritten in the corpus.
-const DELTA_BEFORE_PAT = /\b(by|spik(?:e|es|ed|ing)(?:\s+temperatures?)?|swing of|range of|spread of|delta|differential|diurnal|amplitude|gradient|shift(?:ed|s)? (?:of|by)|lift(?:ed|s)? (?:of|by)|drop(?:ped|s)? (?:of|by)|rise(?:s)? (?:of|by)|fall(?:s)? (?:of|by)|jump(?:s|ed)? (?:of|by)|climb(?:s|ed)? (?:of|by)|plunge(?:s|d)? (?:of|by)|lift|strip(?:s|ped)?|boost(?:s|ed)? (?:by|of)|warm(?:s|ed|ing)? (?:by|up by)|cool(?:s|ed|ing)? (?:by|down by)|moderat\w+ (?:by)|up to|down to|averag(?:es|ing)? (?:\d+°?\s*[CF] )?(?:warmer|cooler|colder)|drop(?:s|ped)?|plunge(?:s|d)?|rise(?:s)?|jump(?:s|ed)?|climb(?:s|ed)?|add(?:s|ed)?|shav(?:e|es|ed|ing)|knock(?:s|ed)?|trim(?:s|med)?|spans?(?: only)?|spanning(?: only)?|warming|cooling|(?:drop|lift|rais|push|knock|send|bump)\w*\s+(?:the\s+)?(?:temperatures?|mercury|readings?))\s*$/;
+const DELTA_BEFORE_PAT = /\b(by(?: only)?|gains?|gained|buys?|swing(?:s|ing)?|plummet(?:s|ed|ing)?|contrasts? of|(?:temperatures?|highs|lows) (?:up|rising)|swings? (?:the mercury|temperatures?)|(?:often|can|may) warm|spik(?:e|es|ed|ing)(?:\s+temperatures?)?|swing of|range of|spread of|delta|differential|diurnal|amplitude|gradient|shift(?:ed|s)? (?:of|by)|lift(?:ed|s)? (?:of|by)|drop(?:ped|s)? (?:of|by)|rise(?:s)? (?:of|by)|fall(?:s)? (?:of|by)|jump(?:s|ed)? (?:of|by)|climb(?:s|ed)? (?:of|by)|plunge(?:s|d)? (?:of|by)|lift|strip(?:s|ped)?|boost(?:s|ed)? (?:by|of)|warm(?:s|ed|ing)? (?:by|up by)|cool(?:s|ed|ing)? (?:by|down by)|moderat\w+ (?:by)|up to|down to|averag(?:es|ing)? (?:\d+°?\s*[CF] )?(?:warmer|cooler|colder)|drop(?:s|ped)?|plunge(?:s|d)?|rise(?:s)?|jump(?:s|ed)?|climb(?:s|ed)?|add(?:s|ed)?|shav(?:e|es|ed|ing)|knock(?:s|ed)?|trim(?:s|med)?|spans?(?: only)?|spanning(?: only)?|warming|cooling|(?:drop|lift|rais|push|knock|send|bump)\w*\s+(?:the\s+)?(?:temperatures?|mercury|readings?))\s*$/;
 
 /** Characters that terminate a clause for the purposes of delta detection. */
 const CLAUSE_TERMINATORS = /[.;:,\u2014\u2013|\n]/;
@@ -254,6 +262,14 @@ function isDeltaContext(text: string, idx: number, len: number): boolean {
   const after = stop ? afterFull.slice(0, stop.index) : afterFull;
   if (isAbsoluteTemperatureCeilingContext(before)) return false;
   if (DELTA_BEFORE_PAT.test(before) || DELTA_BEFORE_PAT.test(lead)) return true;
+  // An absolute lead ("near", "at", "to" …) wins over a "diurnal swing" that
+  // merely shares the clause: "diurnal swings (summer highs near 27–29°C)".
+  const absoluteLead = /\b(?:near|around|exceeds?|exceeding|reach(?:es|ed|ing)?|tops?|topping|hits?|hitting|past|at|to|hover\w*|into)\s*$/.test(lead);
+  // …unless the range noun is the subject of that same sub-clause
+  // ("annual temperature ranges exceed 55°C").
+  const subClause = before.slice(Math.max(before.lastIndexOf("("), before.lastIndexOf(","), before.lastIndexOf("\u2014")) + 1);
+  const rangeSubject = /\b(?:ranges?|swings?|spreads?|differences?|gaps?|amplitudes?|windows?)\b/.test(subClause);
+  if (absoluteLead && !rangeSubject && !TRUE_COMPARATIVE_PAT.test(after) && !/\b(?:up|down) to\s*$/.test(lead)) return false;
   // Explicit phrasings commonly used for deltas — allow scanning both
   // windows jointly because these phrases are unambiguous.
   if (/\b(thermal windows?|annual (?:temperature )?ranges?|annual swings?|daily ranges?|diurnal swings?|temperature (?:ranges?|differences?|spreads?|gaps?|swings?))\b/.test(before + " " + after)) return true;
@@ -263,7 +279,7 @@ function isDeltaContext(text: string, idx: number, len: number): boolean {
 }
 
 const IMPLICIT_CELSIUS_BAND_CONTEXT_PAT =
-  /\b(highs?|lows?|temperatures?|temps?|readings?|afternoons?|mornings?|nights?|days?|dew\s*points?|wet[-\s]?bulb|summer|winter|january|february|july|august|cool(?:s|ed|ing)?|warm(?:s|ed|ing)?|cold|heat|hot|mild|hover(?:s|ed|ing)?|stay(?:s|ed|ing)?|sit(?:s|ting)?|reach(?:es|ed|ing)?|climb(?:s|ed|ing)?|drop(?:s|ped|ping)?|dip(?:s|ped|ping)?|fall(?:s|en|ing)?|range|year-round|season)\b/i;
+  /\b(highs?|lows?|temperatures?|temps?|readings?|afternoons?|mornings?|nights?|days?|dew\s*points?|wet[-\s]?bulb|summers?|winters?|evenings?|peaks?|january|february|july|august|cool(?:s|ed|ing)?|warm(?:s|ed|ing)?|cold|heat|hot|mild|hover(?:s|ed|ing)?|stay(?:s|ed|ing)?|sit(?:s|ting)?|reach(?:es|ed|ing)?|climb(?:s|ed|ing)?|drop(?:s|ped|ping)?|dip(?:s|ped|ping)?|fall(?:s|en|ing)?|range|year-round|season)\b/i;
 
 function implicitBandContextLooksCelsius(text: string, idx: number, len: number): boolean {
   const before = beforeClauseWindow(text, idx, 72);
@@ -313,9 +329,32 @@ function localizeImplicitCelsiusBands(text: string): string {
     offset: number,
     full: string,
   ): string => {
-    if (!unitToken && !implicitBandContextLooksCelsius(full, offset, match.length)) return match;
-    return formatFahrenheitBand(loC, hiC);
+    if (!unitToken) {
+      // "humidity drops into the teens", "people in their 30s", "by the 20s":
+      // a percentage, an age or a decade, not a temperature.
+      const lead = full.slice(Math.max(0, offset - 48), offset);
+      if (/\b(?:humidity|percent)\b[^.;,]*$|\b(?:their|his|her|my|our|aged?|early|late|by the|since the|during the|of the)\s+$/i.test(lead)) return match;
+      if (!implicitBandContextLooksCelsius(full, offset, match.length)) return match;
+    }
+    // Used as a modifier ("mid-40s Phoenix heat"), the band reads better bare.
+    const after = full.slice(offset + match.length, offset + match.length + 40);
+    const adjectival = /^\s+(?:[A-Z][\w'’]+\s+)?(?:heat|highs|lows|afternoons|days|nights|warmth|weather|readings|temperatures)\b/.test(after);
+    const band = formatFahrenheitBand(loC, hiC);
+    return adjectival ? band.replace(/ range$/, "") : band;
   };
+
+  // "high teens to low 20s" (or "the teens and low 20s") is one band, not two.
+  text = text.replace(
+    /\b(?:(low|mid|upper|high)[-\s]+)?(teens|[1-3]0s)\s+(?:to|and)\s+(?:the\s+)?(?:(low|mid|upper|high)[-\s]+)?([1-4]0)s(\s*(?:\u00b0\s*C|Celsius))?\b/gi,
+    (match, q1: string | undefined, first: string, q2: string | undefined, tens: string, unitToken: string | undefined, offset: number, full: string) => {
+      const base1 = /teens/i.test(first) ? 10 : parseInt(first, 10);
+      const base2 = parseInt(tens, 10);
+      if (base2 <= base1) return match;
+      const [lo] = qualifierRange(q1, undefined, base1, base1 + 9);
+      const [, hi] = qualifierRange(q2, undefined, base2, base2 + 9);
+      return replaceIfCelsiusContext(match, lo, hi, unitToken, offset, full);
+    },
+  );
 
   text = text.replace(
     /\b((?:(low|mid|upper|high)(?:[-\s]+to[-\s]+(low|mid|upper|high))?[-\s]+)?([1-4]0)s)(\s*(?:\u00b0\s*C|Celsius))?\b/gi,
@@ -425,6 +464,11 @@ export function localizeProse(text: string | null | undefined, unit: TempUnit, d
     });
 
     // Pass 2: "N to M °C"
+    // Pass 2a: "between N and M °C" names two readings; convert both.
+    const betweenPat = /(\bbetween\s+(?:about\s+|roughly\s+|around\s+)?)([-+\u2212]?\d+(?:\.\d+)?)\s+and\s+([-+\u2212]?\d+(?:\.\d+)?)\s*°\s*C\b/gi;
+    text = text.replace(betweenPat, (_m, lead: string, n1: string, n2: string) =>
+      `${lead}${formatLocalized(cToF(parseSigned(n1)), false)} and ${formatLocalized(cToF(parseSigned(n2)), false)}°F`);
+
     const toPat = /([-+\u2212]?\d+(?:\.\d+)?)\s+to\s+([-+\u2212]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
     text = text.replace(toPat, (match, n1: string, n2: string, offset: number, full: string) => {
       const v1 = parseSigned(n1);
@@ -452,7 +496,25 @@ export function localizeProse(text: string | null | undefined, unit: TempUnit, d
     text = localizeDistanceProse(text);
   }
 
+  if (unit === "F" || dist === "imperial") text = fixNumberArticles(text);
+
   return text;
+}
+
+/**
+ * "a 8-inch snowpack" → "an 8-inch snowpack", "an 14°F cooler" → "a 14°F
+ * cooler": a converted figure can start with a different sound than the
+ * metric one the sentence was written around.
+ */
+function fixNumberArticles(text: string): string {
+  return text.replace(/\b([Aa])(n?) (?=(\d[\d,]*))/g, (_m, a: string, _n: string, num: string) => {
+    const groups = num.replace(/,$/, "").split(",");
+    const head = groups[0]!;
+    // Spoken form: "eight…", "eleven…", "eighteen…" take "an"; a comma-less
+    // four-digit 11xx/18xx is read as a year ("an 1890s hotel").
+    const vowel = /^8/.test(head) || /^1[18]$/.test(head) || (groups.length === 1 && /^1[18]\d\d$/.test(head));
+    return `${a}${vowel ? "n" : ""} `;
+  });
 }
 
 /** Parse a possibly comma-separated numeric token ("1,427" → 1427). */
@@ -676,6 +738,16 @@ function localizeDistanceProse(text: string): string {
     },
   );
   text = swapKeepCase(text, /\bhundreds\s+of\s+cubic\s+kilomet(?:er|re)s\b/gi, "dozens of cubic miles");
+  // Liquid volumes in site histories: "41 million litres" → "11 million gallons".
+  text = swapKeepCase(text,
+    /\b(\d+(?:,\d{3})*(?:\.\d+)?)(\s+(?:million|billion))?\s+lit(?:er|re)s\b/gi,
+    (_m, n: string, mult: string | undefined) => {
+      const v = parseLooseNum(n) * 0.264172;
+      return `${formatUSNumber(mult ? v : roundAreaForProse(v), mult && v < 10 ? 1 : 0)}${mult ?? ""} gallons`;
+    },
+  );
+  text = swapKeepCase(text, /\b(millions|thousands|hundreds\s+of\s+thousands|billions)\s+of\s+lit(?:er|re)s\b/gi, (_m, q: string) => `${q} of gallons`);
+  text = swapKeepCase(text, /\bthousands\s+of\s+millimet(?:er|re)s\b/gi, "well over a hundred inches");
   text = swapKeepCase(text, /\bthousands\s+of\s+square\s+met(?:er|re)s\b/gi, "tens of thousands of square feet");
   text = swapKeepCase(text, 
     /(\d+(?:\.\d+)?)\s*(person|people)\s*\/\s*km²/gi,
@@ -781,9 +853,17 @@ function localizeDistanceProse(text: string): string {
   );
 
   // km/h or kph → mph (do this FIRST so bare "km" doesn't eat the "km" of "km/h")
-  text = text.replace(/(\d+(?:[,.]\d+)?)\s*(?:km\/h|kph|km\s*\/\s*h)\b/gi, (_m, n: string) => {
+  text = text.replace(
+    /(\d+(?:[,.]\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:[,.]\d+)?)\s*(?:km\/h|kph|km\s*\/\s*h)\b/gi,
+    (_m, n1: string, sep: string, n2: string) => {
+      const joiner = /^(?:to|and)$/i.test(sep) ? ` ${sep.toLowerCase()} ` : sep;
+      const mph = (n: string) => formatUSNumber(parseLooseNum(n) * 0.621371, parseLooseNum(n) < 10 ? 1 : 0);
+      return `${mph(n1)}${joiner}${mph(n2)} mph`;
+    },
+  );
+  text = text.replace(/(\d+(?:[,.]\d+)?)(\+?)\s*(?:km\/h|kph|km\s*\/\s*h)\b/gi, (_m, n: string, plus: string) => {
     const v = parseLooseNum(n);
-    return `${formatUSNumber(v * 0.621371, v < 10 ? 1 : 0)} mph`;
+    return `${formatUSNumber(v * 0.621371, v < 10 ? 1 : 0)}${plus} mph`;
   });
 
   // Metric ranges with one trailing unit: "300 to 700 mm", "5–10 km",
@@ -822,17 +902,17 @@ function localizeDistanceProse(text: string): string {
 
   // Bare "N km" (word-bounded, not immediately followed by "/" as in km/h which
   // is already handled above).
-  text = text.replace(/(\d+(?:[,.]\d+)?)\s*km\b(?!\/)/g, (_m, n: string) => `${convertFigure(n, 0.621371)} mi`);
+  text = text.replace(/(\d+(?:[,.]\d+)?)(\+?)\s*km\b(?!\/)/g, (_m, n: string, plus: string) => `${convertFigure(n, 0.621371)}${plus} mi`);
 
   // "N mm" — millimetres of precip in this corpus. \b already prevents matching
   // mid-word (e.g. "mm-level" still has \b before the "-"), and any compound
   // unit like "mmHg" can't match because "m" directly followed by "H" isn't a
   // \b-terminated token boundary break we'd be looking at. We block only
   // directly adjacent letters.
-  text = text.replace(/(\d+(?:[,.]\d+)?)\s*mm\b(?![a-zA-Z])/g, (_m, n: string) => `${convertFigure(n, 1 / 25.4)} in`);
+  text = text.replace(/(\d+(?:[,.]\d+)?)(\+?)\s*mm\b(?![a-zA-Z])/g, (_m, n: string, plus: string) => `${convertFigure(n, 1 / 25.4)}${plus} in`);
 
   // "N cm" — snow / depth contexts in this corpus.
-  text = text.replace(/(\d+(?:[,.]\d+)?)\s*cm\b(?![a-zA-Z])/g, (_m, n: string) => `${convertFigure(n, 1 / 2.54)} in`);
+  text = text.replace(/(\d+(?:[,.]\d+)?)(\+?)\s*cm\b(?![a-zA-Z])/g, (_m, n: string, plus: string) => `${convertFigure(n, 1 / 2.54)}${plus} in`);
 
   // Metre ranges "N–M m" / "N-M m" / "N to M m" / "N and M m" — used for
   // stratus layers, elevation bands ("homes at 700–900 m", "between 1500
@@ -845,7 +925,8 @@ function localizeDistanceProse(text: string): string {
       const after = full.substring(offset + match.length, offset + match.length + 64).toLowerCase();
       const elevationy =
         /\b(at|to|above|over|between|elevation|altitude|homes?|stratus|layer|depth|rise|rising|drop|peak|peaks|crest|ridge|summit|plateau|capping|band|basins?|relief|dunes?|bluffs?|horizontal)\b/.test(before) ||
-        /\b(stratus|layer|peaks?|crest|ridge|summit|plateau|depth|rise|rising|drop|higher|lower|snow|snowfall|annually|elevation|altitude|band|belt|relief|dunes?|bluffs?|horizontal)\b/.test(after);
+        /\b(stratus|layer|peaks?|crest|ridge|summit|plateau|depth|rise|rising|drop|higher|lower|snow|snowfall|annually|elevation|altitude|band|belt|relief|dunes?|bluffs?|horizontal)\b/.test(after) ||
+        /^\s*(?:above|a\.?s\.?l\.?|up|down|below|deep|high|tall|long|wide|thick)\b/.test(after);
       if (!elevationy) return match;
       const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
       const [a1, a2] = convertPair(n1, n2, 3.28084, true);
@@ -867,8 +948,8 @@ function localizeDistanceProse(text: string): string {
   // (area). `\b` already prevents matches inside "mm", "cm", "km", "kph",
   // "kmh", "minutes", "meters", etc.
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![/²³^])/g,
-    (match, n: string, offset: number, full: string) => {
+    /(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s*m\b(?![/²³^])/g,
+    (match, n: string, plus: string, offset: number, full: string) => {
       // Keep tilde "~" and opening parenthesis in the view so "(3429 m)" and
       // "~1200 m" get the contextual signal they need.
       const beforeRaw = full.substring(Math.max(0, offset - 80), offset);
@@ -907,13 +988,12 @@ function localizeDistanceProse(text: string): string {
 
       if (!beforeHit && !afterHit && !bigNumberHit && !approxHit) return match;
 
-      return `${convertFigure(n, 3.28084, true)} ft`;
+      return `${convertFigure(n, 3.28084, true)}${plus} ft`;
     }
   );
 
-  // "a 8-inch snowpack" → "an 8-inch snowpack" after a conversion lands on an
-  // eight, eleven or eighteen.
-  text = text.replace(/\b([Aa]) (?=(?:8[\d,.]*|1[18](?:,\d{3})*)(?:-|\s))/g, (_m, a: string) => `${a}n `);
+  // "16 in in December" → "16 inches in December".
+  text = text.replace(/(\d) in in\b/g, "$1 inches in");
 
   return text;
 }

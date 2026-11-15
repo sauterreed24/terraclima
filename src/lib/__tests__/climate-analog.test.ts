@@ -237,6 +237,11 @@ describe("findClimateTwins", () => {
     });
     const twins = findClimateTwins(anchor, [warmer, cooler], 2, "warmer");
     expect(twins[0].place.id).toBe("warmer");
+    // A twin that moves the wrong way is never listed under the nudge…
+    expect(twins.map(t => t.place.id)).toEqual(["warmer"]);
+    // …and when no twin moves the right way the list is empty, not padded.
+    expect(findClimateTwins(anchor, [cooler], 2, "warmer")).toEqual([]);
+    expect(findClimateTwins(anchor, [cooler], 2).map(t => t.place.id)).toEqual(["cooler"]);
   });
 
   it("a 'drier' shift promotes the drier twin", () => {

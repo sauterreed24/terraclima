@@ -28,7 +28,7 @@ import {
   meanJanLow,
   meanSummerHigh,
   meanSummerHumidityPct,
-  meanWinterSunshinePct,
+  observedWinterSunshinePct,
 } from "./climate-metrics";
 import { fmtDelta, fmtSnow, toFixedClean, type DistUnit, type TempUnit } from "./units";
 
@@ -392,8 +392,8 @@ export function buildHomeBaseComparison(home: Place, place: Place): HomeBaseComp
     );
   }
 
-  const homeWinterSun = meanWinterSunshinePct(home);
-  const placeWinterSun = meanWinterSunshinePct(place);
+  const homeWinterSun = observedWinterSunshinePct(home);
+  const placeWinterSun = observedWinterSunshinePct(place);
   if (homeWinterSun != null && placeWinterSun != null) {
     const d = placeWinterSun - homeWinterSun;
     signals.push(

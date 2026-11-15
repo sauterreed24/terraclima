@@ -14,7 +14,7 @@ describe("computeScaleBarStep — metric", () => {
     // kmPerPxAt1 = 50 → at k=1 the bar can show up to 50 * 120 = 6000 km.
     // Largest step ≤ 6000 in SCALE_KM_STEPS is 5000.
     const out = computeScaleBarStep(1, 50, "metric");
-    expect(out.stepLabel).toContain("5 × 1,000 km");
+    expect(out.stepLabel).toBe("5,000 km");
     // pxWidth = step / kmPerPx; kmPerPx = 50, step = 5000 → 100 px.
     expect(out.pxWidth).toBe(100);
   });
@@ -39,7 +39,7 @@ describe("computeScaleBarStep — imperial", () => {
     // kmPerPxAt1 = 50 → miPerPxAt1 ≈ 31.07
     // maxMi at k=1 = 31.07 * 120 ≈ 3728 → largest step ≤ 3728 is 3000.
     const out = computeScaleBarStep(1, 50, "imperial");
-    expect(out.stepLabel).toContain("3 × 1,000 mi");
+    expect(out.stepLabel).toBe("3,000 mi");
     expect(SCALE_MI_STEPS).toContain(3000);
   });
 });

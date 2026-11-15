@@ -511,6 +511,8 @@ const SHIFT_ELIGIBLE_BAND = 0.18;
 const SHIFT_ABS_FLOOR = 0.62;
 /** How much a selected shift can reorder the eligible-twin pool. */
 const SHIFT_RERANK_WEIGHT = 0.35;
+/** Smallest shift that counts: about 0.5°C warmer or cooler, 0.7°C milder, 45 mm drier. */
+const SHIFT_MIN_IMPROVEMENT = 0.05;
 
 /** Ranked candidate before the (lazily built) prose synopsis is attached. */
 interface RankedAnalog {
@@ -556,10 +558,12 @@ function withSynopsis(target: Place, r: RankedAnalog): ClimateTwin {
 /**
  * Top-k climate twins of `target`. Without a shift, ranks by raw analog
  * score. With a shift, restricts to the anchor's genuine twins (within
- * `SHIFT_ELIGIBLE_BAND` of the best, and at least `SHIFT_ABS_FLOOR`) and
- * reorders *those* toward the requested direction — the "like here, but
- * warmer / drier / lower-risk" workflow — so an unrelated climate can
- * never jump the queue just because it leans the right way.
+ * `SHIFT_ELIGIBLE_BAND` of the best, and at least `SHIFT_ABS_FLOOR`), keeps
+ * only those that actually move the requested way, and reorders them toward
+ * it — the "like here, but warmer / drier / lower-risk" workflow. An
+ * unrelated climate can never jump the queue just because it leans the right
+ * way, and a twin that leans the wrong way is never listed; the result is
+ * empty when no kin moves that way.
  *
  * Each supplied pool is scored once per `target` (cached by identity); the
  * prose synopsis is built only for the handful of places actually returned.
@@ -576,11 +580,14 @@ export function findClimateTwins(
 
   const topAnalog = ranked[0]?.analog ?? 0;
   const floor = Math.max(SHIFT_ABS_FLOOR, topAnalog - SHIFT_ELIGIBLE_BAND);
-  const eligible = ranked.filter(t => t.analog >= floor);
-  // Never show fewer than k: if the anchor has few genuine kin, fall back to
-  // its best available twins rather than dropping below the requested count.
-  const base = eligible.length >= k ? eligible : ranked.slice(0, k);
-  return [...base]
+  // Only twins that actually move the requested way: a "warmer" list that
+  // leads with a cooler place is wrong, however close the twin. Look among
+  // the closest kin first, then any genuine kin; an empty result means no
+  // kin in the atlas moves that way, which the UI says plainly.
+  const improves = (t: RankedAnalog) => shiftImprovement(target, t.place, shift) >= SHIFT_MIN_IMPROVEMENT;
+  let base = ranked.filter(t => t.analog >= floor && improves(t));
+  if (base.length === 0) base = ranked.filter(t => t.analog >= SHIFT_ABS_FLOOR && improves(t));
+  return base
     .map(t => ({ t, rank: t.analog * (1 - SHIFT_RERANK_WEIGHT) + shiftImprovement(target, t.place, shift) * SHIFT_RERANK_WEIGHT }))
     .sort((a, b) => b.rank - a.rank || b.t.analog - a.t.analog || a.t.place.id.localeCompare(b.t.place.id))
     .slice(0, k)

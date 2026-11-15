@@ -56,6 +56,14 @@ function MatchMeter({ value }: { value: number }) {
   );
 }
 
+const NO_SHIFTED_TWIN_PHRASE: Record<ClimateShiftId, string> = {
+  "milder-winter": "has a milder winter than",
+  warmer: "runs warmer than",
+  cooler: "runs cooler than",
+  drier: "is drier than",
+  "lower-risk": "carries a lighter hazard load than",
+};
+
 export const PlaceClimateTwins = memo(function PlaceClimateTwins({
   place,
   onOpenPlace,
@@ -72,12 +80,12 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
     });
   };
 
-  if (twins.length === 0) {
+  if (twins.length === 0 && !shift) {
     return <div className="text-sm text-stone italic">No close climate analog sits in the atlas yet.</div>;
   }
 
   const [lead, ...rest] = twins;
-  const tradeoffRead = buildClimateTwinTradeoffRead(place, lead, shift);
+  const tradeoffRead = lead ? buildClimateTwinTradeoffRead(place, lead, shift) : null;
 
   return (
     <div className="tc-twins" aria-busy={isPending || undefined} data-pending={isPending || undefined}>
@@ -105,6 +113,8 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
         ))}
       </div>
 
+      {lead && tradeoffRead ? (
+      <>
       <div className="tc-twins__tradeoff" role="group" aria-label="Climate twin tradeoff read">
         <div>
           <span className="tc-twins__tradeoff-kicker">{tradeoffRead.label}</span>
@@ -186,6 +196,13 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
           </button>
         ))}
       </div>
+      </>
+      ) : (
+        <p className="tc-twins__empty" role="status">
+          No close twin in the atlas {shift ? NO_SHIFTED_TWIN_PHRASE[shift] : "matches"} {place.name}.
+          Tap the nudge again to see the nearest twins.
+        </p>
+      )}
 
       <div className="tc-twins__foot">
         Twin score blends thermal level, seasonal shape, swing, moisture, rain timing, water-balance aridity,

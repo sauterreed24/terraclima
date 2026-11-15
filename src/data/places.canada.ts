@@ -696,7 +696,7 @@ export const PLACES_CANADA: Place[] = [
         title: "Lake below, escarpment behind",
         paragraphs: [
           "The Niagara fruit belt sits in the narrow space where Lake Ontario slows seasonal temperature swings and the escarpment organizes slope drainage. That geometry reduces spring frost risk compared with colder inland pockets and extends autumn ripening.",
-          "It is a small corridor by Canadian standards, but the microclimate value per kilometer is extremely high.",
+          "It is a small corridor by Canadian standards, but the microclimate value for its size is extremely high.",
         ],
       },
       {
@@ -992,7 +992,7 @@ export const PLACES_CANADA: Place[] = [
     summaryImmersive: "Twelve-meter Fundy tides cycle enormous volumes of cold water past the island, producing a dramatically moderated maritime climate: cool wet summers, mild winters, relentless fog, and a salt-scrubbed plant community.",
     whyDistinct: "The Fundy tidal engine keeps local SSTs cool in summer and warm(er) than air in winter.",
     experience: {
-      feel: "Grand Manan feels like the Bay of Fundy made island — five-to-six-metre tides cycling enormous volumes of cold water past the shore, cool wet summers, mild winters, relentless fog, and a salt-scrubbed plant community that reads more maritime than mainland New Brunswick.",
+      feel: "Grand Manan feels like the Bay of Fundy made island — tides of 5 to 6 metres cycling enormous volumes of cold water past the shore, cool wet summers, mild winters, relentless fog, and a salt-scrubbed plant community that reads more maritime than mainland New Brunswick.",
       seasons: {
         winter: "Mild and foggy — highs near −1°C, nights near −8°C, and Fundy storms that can stack snow before the tides moderate the air again.",
         spring: "Slow brightening — puffins returning to the cliffs, afternoons climbing through the single digits, and the first whale-watch boats leaving North Head.",
@@ -1205,7 +1205,7 @@ export const PLACES_CANADA: Place[] = [
     archetypes: ["hyper-maritime", "cool-summer-maritime", "fjord-inlet"],
     drivers: ["marine-layer", "orographic-lift"],
     summaryShort: "Tofino's quieter, equally hyper-maritime twin — storm-watching headquarters on Vancouver Island's exposed outer coast.",
-    summaryImmersive: "Ucluelet shares its climate with Tofino — hyper-maritime, cool-summer, intensely wet. Annual precipitation exceeds 3300 mm; winter storms arrive as Pacific gales. Summer highs rarely exceed 19°C; winter lows rarely below 2°C. The temperature range over a year is only about 10°C — practically tropical in variability. Storm-watching as tourism emerged here for a reason.",
+    summaryImmersive: "Ucluelet shares its climate with Tofino — hyper-maritime, cool-summer, intensely wet. Annual precipitation exceeds 3300 mm; winter storms arrive as Pacific gales. Summer highs rarely exceed 19°C; winter lows rarely below 2°C. The year spans only about 10°C — practically tropical in variability. Storm-watching as tourism emerged here for a reason.",
     whyDistinct: "Direct North Pacific exposure with no significant upwind land produces extreme maritime moderation.",
     climate: { tempHighC: [7.6, 8.4, 9.3, 11.1, 13.8, 16.1, 18.1, 18.6, 17.6, 13.9, 9.8, 7.6], tempLowC: [2.8, 2.8, 3.4, 4.7, 7.4, 9.8, 11.4, 11.6, 10.4, 7.9, 5.1, 3.1], precipMm: [466, 386, 366, 244, 158, 114, 70, 84, 148, 404, 540, 552], humidity: [82, 80, 78, 77, 78, 80, 82, 83, 84, 85, 83, 82], annualPrecipMm: 3532, frostFreeDays: 320, hardinessZone: "8b" },
     soil: { texture: "Organic over glacial till", drainage: "moderate", phRange: [4.8, 5.8], waterHolding: "high" },
@@ -1284,11 +1284,11 @@ export const PLACES_CANADA: Place[] = [
     biome: "Coastal temperate rainforest", koppen: "Cfb (hyper-oceanic)",
     archetypes: ["hyper-maritime", "fjord-inlet", "cool-summer-maritime"],
     drivers: ["orographic-lift", "marine-layer"],
-    summaryShort: "Canada's rainiest city — 2600 mm of annual precipitation and a fjord-harbor climate that stays between 2 and 16°C year-round.",
-    summaryImmersive: "Prince Rupert sits at the mouth of the Skeena River, where Pacific storms slam into the Coast Mountains. Annual precipitation averages over 2600 mm; days of sunshine are few. Winter lows rarely drop below freezing; summer highs rarely exceed 18°C. Fog, drizzle, and low cloud define the sensory character. The historic cannery town of the North Coast is hyper-maritime and truly distinct within Canada.",
+    summaryShort: "Canada's rainiest city — well over 2,000 mm of annual precipitation and a fjord-harbor climate that stays between 2 and 16°C year-round.",
+    summaryImmersive: "Prince Rupert sits at the mouth of the Skeena River, where Pacific storms slam into the Coast Mountains. Annual precipitation runs well over 2,000 mm (the airport gauge has averaged 2,300–2,600 mm); days of sunshine are few. Winter lows rarely drop below freezing; summer highs rarely exceed 18°C. Fog, drizzle, and low cloud define the sensory character. The historic cannery town of the North Coast is hyper-maritime and truly distinct within Canada.",
     whyDistinct: "Direct Pacific exposure plus Coast Mountain orographic lift produces extreme precipitation; fjord positions buffer temperature.",
     experience: {
-      feel: "Prince Rupert feels like Canada's rainiest city made habitable — 2600 mm of annual precipitation where Pacific storms slam the Coast Mountains, summer highs rarely exceed 18°C, fog and drizzle define the sensory character, and the Skeena-end harbor keeps temperatures between 2 and 17°C year-round.",
+      feel: "Prince Rupert feels like Canada's rainiest city made habitable — well over 2,000 mm of annual precipitation where Pacific storms slam the Coast Mountains, summer highs rarely exceed 18°C, fog and drizzle define the sensory character, and the Skeena-end harbor keeps temperatures between 2 and 17°C year-round.",
       seasons: {
         winter: "Mild and soaking — highs near 5°C, nights near 0°C, and rain that falls as steady drizzle rather than bursts; snow at sea level is rare.",
         spring: "Still wet, brightening — highs climbing through the single digits, salmon season beginning on the Skeena, and the first clear afternoons that reveal the fjord country.",
@@ -1677,7 +1677,7 @@ export const PLACES_CANADA: Place[] = [
     drivers: ["continentality", "polar-jet-exposure", "katabatic-flow"],
     summaryShort: "The capital of Nunavut sits at 63°N and averages −27°C in January — but summer days stretch to 21 hours and July highs climb above 12°C, producing a short, brilliant Arctic summer.",
     summaryImmersive: "Iqaluit, at the head of Frobisher Bay, experiences one of North America's purest Arctic climates. The sea freezes from November through June, eliminating most maritime moderation during the coldest half of the year. Winter lows below −40°C occur in most years; windchills near −60°C are normal. Summer is short but remarkable — nearly four months of very long days, peak July highs in the mid-teens, persistent daylight that allows berries and tundra flowers to complete their cycle in weeks. The community is entirely supplied by sealift, cargo flights, and annual sealift barges; the climate shapes everything.",
-    whyDistinct: "Arctic latitude + continental position on Baffin Island + cold Labrador current offshore + long polar-night/polar-day solar regime. Iqaluit is the largest city in Nunavut and one of the few places where most residents experience 21 hours of summer daylight.",
+    whyDistinct: "Arctic latitude + continental position on Baffin Island + cold Labrador current offshore + an extreme daylight swing just south of the Arctic Circle (about four hours of sun in December, twenty-one in June). Iqaluit is the largest city in Nunavut and one of the few places where most residents experience 21 hours of summer daylight.",
     climate: {
       tempHighC: [-22, -22, -19, -10, -1, 8, 13, 11, 6, -1, -9, -17], tempLowC: [-31, -32, -28, -19, -8, 1, 4, 4, 0, -6, -15, -25],
       precipMm: [22, 15, 22, 28, 30, 38, 58, 62, 62, 44, 30, 22], snowCm: [22, 15, 22, 25, 15, 3, 0, 0, 5, 35, 30, 22],
@@ -1688,7 +1688,7 @@ export const PLACES_CANADA: Place[] = [
     climateChange: { outlook2050: "Among the fastest-warming places on Earth; winter temperatures up 3–5°C; sea-ice season shortening dramatically.", outlook2100: "Potentially snow-free summers; major implications for food security, hunting, travel on sea ice.", keyShifts: [{ variable: "Sea-ice duration", direction: "down" }, { variable: "Winter extreme cold", direction: "up" }, { variable: "Coastal erosion", direction: "up" }, { variable: "Precipitation", direction: "up" }], resilienceNote: "Climate change is reshaping Arctic life profoundly and rapidly. Adaptation is not optional." },
     risks: { wildfire: { level: "very-low", trend: "worsening" }, flood: { level: "low", trend: "worsening" }, drought: { level: "very-low", trend: "stable" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "very-high", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "moderate", trend: "worsening", note: "Thaw-induced instability increasing." }, coastal: { level: "elevated", trend: "worsening" } },
     scores: { hiddenGem: 38, microclimateUniqueness: 92, comfort: 24, resilience: 36, growability: 8, tradeoff: 86 },
-    relocationFit: ["Nunavut government workers", "Arctic researchers"], travelFit: ["Inuit cultural tourism", "Arctic wildlife", "polar nights / midnight sun"],
+    relocationFit: ["Nunavut government workers", "Arctic researchers"], travelFit: ["Inuit cultural tourism", "Arctic wildlife", "long winter nights / near-midnight sun"],
     whoWouldLove: "People deeply drawn to the Arctic; Inuit residents with cultural/land ties.", whoMightNot: "Essentially anyone not prepared for extreme remoteness and cost of living.",
     confidence: "high",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
@@ -1812,7 +1812,7 @@ export const PLACES_CANADA: Place[] = [
     drivers: ["marine-layer", "polar-jet-exposure", "continentality"],
     summaryShort: "'Iceberg Alley' — a coast so cooled by the Labrador Current that icebergs drift past in May, and summer highs average just 18°C while winters only dip to −10°C.",
     summaryImmersive: "Twillingate sits on the northeast coast of Newfoundland directly in the path of the Labrador Current, which carries Arctic water — and icebergs calved from Greenland — southward every spring. The current keeps coastal waters near freezing into June, making this one of the coolest-summer coasts in eastern North America. Fog is chronic in early summer as warm air meets the cold sea. Winters, paradoxically, are relatively mild for the latitude because the sea stays open most of the season, though Arctic pack ice can drift in late in winter. Iceberg viewing is so reliable in May and June that 'Iceberg Alley' is now a local brand. Whale encounters — humpbacks, minkes, fin whales — are the summer counterpart.",
-    whyDistinct: "Labrador Current + cold-side Gulf Stream boundary position + exposed outer-coast geometry. The annual temperature range is remarkably narrow (~25°C) given the high latitude, and fog/precipitation regimes are fundamentally maritime.",
+    whyDistinct: "Labrador Current + cold-side Gulf Stream boundary position + exposed outer-coast geometry. The annual temperature range is remarkably narrow (a spread of ~25°C) given the high latitude, and fog/precipitation regimes are fundamentally maritime.",
     climate: {
       tempHighC: [-3, -4, 0, 5, 11, 16, 20, 19, 15, 9, 4, -1], tempLowC: [-10, -10, -7, -2, 3, 7, 11, 12, 9, 4, 0, -6],
       precipMm: [110, 95, 95, 90, 80, 80, 80, 100, 110, 130, 130, 125], snowCm: [100, 85, 70, 30, 5, 0, 0, 0, 0, 10, 55, 90],

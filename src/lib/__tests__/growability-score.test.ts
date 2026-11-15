@@ -46,7 +46,7 @@ describe("buildGrowabilityRationale", () => {
 
     expect(text).toContain("Season length caps the score");
     expect(text).toContain("35 frost-free days");
-    expect(text).toContain("GDD10 300");
+    expect(text).toContain("540 growing degree days (base 50°F)");
     expect(text).toContain("zone 3a");
   });
 
@@ -75,6 +75,6 @@ describe("buildGrowabilityRationale", () => {
 
     expect(text).toContain("Selianinov HTC is undefined");
     expect(text).toContain("active growing-season moisture index undefined");
-    expect(text).toContain("GDD10");
+    expect(text).toContain("growing degree days");
   });
 });

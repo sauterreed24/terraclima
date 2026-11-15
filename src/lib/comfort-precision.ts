@@ -356,13 +356,18 @@ export type ThermalStrainBand =
   | "very-strong";
 
 export interface ApparentComfortIndex {
-  /** Mean Jun–Aug apparent ("feels-like") daily high (°C); heat-index based. */
+  /**
+   * Mean apparent ("feels-like") daily high (°C) over the warmest three
+   * consecutive months; heat-index based.
+   */
   warmSeasonApparentHighC: number;
+  /** Those three months, e.g. "Jun–Aug", or "Apr–Jun" on the Mexican plateau. */
+  warmSeasonLabel: string;
   /** Hottest month apparent high (°C). */
   peakApparentHighC: number;
   /** Coldest monthly mean low (°C). No wind-chill input on the cold side. */
   coldSeasonLowC: number;
-  /** Mean Jun–Aug wet-bulb shade proxy (°C) when humidity is available. */
+  /** Mean wet-bulb shade proxy (°C) over the same months, when humidity is available. */
   warmSeasonWetBulbC: number | null;
   /** 0..100 — higher = less physiological thermal strain across the warm season. */
   score: number;
@@ -402,7 +407,20 @@ const APPARENT_COMFORT_METHOD_NOTE =
 
 /** Derive the apparent-comfort index from a prebuilt comfort-precision profile. */
 export function apparentComfortIndexFromProfile(profile: ComfortPrecisionProfile): ApparentComfortIndex {
-  const warm = [profile.months[5]!, profile.months[6]!, profile.months[7]!];
+  // The warmest three consecutive months, not a fixed Jun–Aug: the Mexican
+  // highlands peak in April–June, before the rains cool the afternoons.
+  let start = 5;
+  let best = -Infinity;
+  for (let s = 0; s < 12; s++) {
+    const sum = [0, 1, 2].reduce((acc, k) => acc + profile.months[(s + k) % 12]!.apparentHighC, 0);
+    // Prefer Jun–Aug on a tie so mid-latitude places keep the familiar window.
+    if (sum > best + 1e-9 || (Math.abs(sum - best) <= 1e-9 && s === 5)) {
+      best = sum;
+      start = s;
+    }
+  }
+  const warm = [0, 1, 2].map(k => profile.months[(start + k) % 12]!);
+  const warmSeasonLabel = `${MONTHS[start]}\u2013${MONTHS[(start + 2) % 12]}`;
   const warmApparent = warm.reduce((sum, m) => sum + m.apparentHighC, 0) / warm.length;
   const coldLow = Math.min(...profile.months.map(m => m.lowC));
   const wetBulbs = warm.map(m => m.wetBulbC).filter((v): v is number => v != null);
@@ -419,6 +437,7 @@ export function apparentComfortIndexFromProfile(profile: ComfortPrecisionProfile
 
   return {
     warmSeasonApparentHighC: round1(warmApparent),
+    warmSeasonLabel,
     peakApparentHighC: round1(profile.peakMonth.apparentHighC),
     coldSeasonLowC: round1(coldLow),
     warmSeasonWetBulbC: warmWetBulb == null ? null : round1(warmWetBulb),

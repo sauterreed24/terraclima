@@ -51,6 +51,11 @@ export function resonantWindowFor(profile: RankingProfile): BestWindow["id"] | n
   }
 }
 
+/** Monthly mean high at which a month carries the heat caution (about 90°F). */
+const HEAT_CAUTION_HIGH_C = 32;
+/** A month this dry counts as outdoor-friendly whatever the place's own mean (about 3 in). */
+const OUTDOOR_RAIN_ALLOWANCE_MM = 75;
+
 export function computeBestMonths(place: Place, displayTemp: TempUnit = "F"): BestWindow[] {
   const highs = place.climate.tempHighC;
   const lows = place.climate.tempLowC;
@@ -74,7 +79,10 @@ export function computeBestMonths(place: Place, displayTemp: TempUnit = "F"): Be
   }
 
   const meanPrecip = precip.reduce((a, b) => a + b, 0) / 12;
-  const comfortMask = highs.map((h, i) => h >= 12 && h <= 25 && precip[i] <= meanPrecip * 1.1);
+  // Rain within 10% of the place's own monthly mean, or under 75 mm outright:
+  // in a summer-wet continental climate the mild months are the wetter ones,
+  // and a 50 mm July is still a good month to be outside.
+  const comfortMask = highs.map((h, i) => h >= 12 && h <= 25 && precip[i] <= Math.max(meanPrecip * 1.1, OUTDOOR_RAIN_ALLOWANCE_MM));
   const comfortRange = formatMonthMask(comfortMask);
   if (comfortRange) {
     windows.push({
@@ -83,7 +91,7 @@ export function computeBestMonths(place: Place, displayTemp: TempUnit = "F"): Be
       label: "Outdoor comfort",
       glyph: "\u{1F97E}",
       range: comfortRange,
-      note: "Walkable temperatures with at-or-below-average rainfall.",
+      note: "Walkable temperatures without a heavy-rain month.",
     });
   }
 
@@ -104,9 +112,10 @@ export function computeBestMonths(place: Place, displayTemp: TempUnit = "F"): Be
 
   // The driest third of the year, but only months mild enough to travel in:
   // in continental climates the driest months are midwinter, and a frozen
-  // January is not a "road trip" window just because it is dry.
+  // January is not a "road trip" window just because it is dry. Nor is a
+  // desert June: months that carry the heat caution below are left out.
   const p33 = quantile(precip, 0.33);
-  const dryMask = precip.map((v, i) => v <= p33 && highs[i] >= 10);
+  const dryMask = precip.map((v, i) => v <= p33 && highs[i] >= 10 && highs[i] < HEAT_CAUTION_HIGH_C);
   const dryRange = formatMonthMask(dryMask);
   if (dryRange) {
     windows.push({
@@ -134,7 +143,7 @@ export function computeBestMonths(place: Place, displayTemp: TempUnit = "F"): Be
     }
   }
 
-  const heatMask = highs.map(h => h >= 32);
+  const heatMask = highs.map(h => h >= HEAT_CAUTION_HIGH_C);
   const heatRange = formatMonthMask(heatMask);
   if (heatRange) {
     windows.push({

@@ -1103,7 +1103,7 @@ export function CompareView({
                     <Row label="Live-here fit" value={`${decision.liveFitScore}/100`} />
                     <Row label="Livability" value={`${decision.livabilityScore}/100`} />
                     <Row label="Felt comfort" value={`${decision.feltComfort}/100`} />
-                    <Row label="Feels-like JJA (UTCI*)" value={`${fmtTemp(utci.warmSeasonApparentHighC, temp, { digits: 0 })} · ${utci.score}/100`} wide />
+                    <Row label="Feels-like, warmest months (UTCI*)" value={`${fmtTemp(utci.warmSeasonApparentHighC, temp, { digits: 0 })} (${utci.warmSeasonLabel}) · ${utci.score}/100`} wide />
                     <Row label="Easy months" value={`${decision.easyMonths}/12`} />
                     <Row label="Lived ease" value={`${decision.livedEase}/100`} />
                     <Row label="Uniqueness" value={p.scores.microclimateUniqueness.toString()} />

@@ -31,12 +31,12 @@ export const PLACES_USA: Place[] = [
     archetypes: ["rain-shadow-sanctuary", "mild-winter-foothills", "mediterranean-pocket"],
     drivers: ["rain-shadow", "marine-layer"],
 
-    summaryShort: "The famed Olympic rain shadow keeps Sequim sunny and dry while the Hoh, 50 km west, receives 4000 mm of rain a year.",
-    summaryImmersive: "Sequim sits in one of the most dramatic rain shadows in North America. Pacific systems ride up the Olympic Range, shed their moisture on the windward Quinault and Hoh valleys — among the wettest places on the continent — then descend toward the Dungeness lowland warmer, drier, and already half clear. The town registers roughly 400 mm of annual precipitation, a sixth of what falls just 50 km to the southwest. Summers are cool and breezy off the Strait of Juan de Fuca. Winter mornings glitter under high pressure, with the snowy Olympics standing to the south and Mount Baker visible northeast across the strait. The light here has a distinct quality — a clean, cold-shadow brightness more common in the inland mountain West than along the Pacific.",
+    summaryShort: "The famed Olympic rain shadow keeps Sequim sunny and dry while the Hoh, 65 km southwest, receives 4000 mm of rain a year.",
+    summaryImmersive: "Sequim sits in one of the most dramatic rain shadows in North America. Pacific systems ride up the Olympic Range, shed their moisture on the windward Quinault and Hoh valleys — among the wettest places on the continent — then descend toward the Dungeness lowland warmer, drier, and already half clear. The town registers roughly 430 mm of annual precipitation, about an eighth of what falls in the Hoh valley 65 km to the southwest. Summers are cool and breezy off the Strait of Juan de Fuca. Winter mornings glitter under high pressure, with the snowy Olympics standing to the south and Mount Baker visible northeast across the strait. The light here has a distinct quality — a clean, cold-shadow brightness more common in the inland mountain West than along the Pacific.",
     whyDistinct: "Prevailing southwesterlies force moist marine air up the Olympic Range, condensing rain and snow on the windward slopes. The same air compresses and dries as it descends toward the Dungeness lowland, producing a narrow band — perhaps 30 km wide — of genuinely Mediterranean character on an otherwise soaking coast. The Strait of Juan de Fuca moderates temperatures in every season.",
 
     experience: {
-      feel: "Sequim feels like someone cut a dry, luminous window into the Pacific Northwest's gray. The Olympics wring the storms out to the southwest, so the Dungeness lowland stays bright and breezy while the Hoh drowns 50 km away — a clean, cold-shadow light you usually only find in the inland mountain West.",
+      feel: "Sequim feels like someone cut a dry, luminous window into the Pacific Northwest's gray. The Olympics wring the storms out to the southwest, so the Dungeness lowland stays bright and breezy while the Hoh drowns 65 km away — a clean, cold-shadow light you usually only find in the inland mountain West.",
       seasons: {
         winter: "Mornings glitter under high pressure — snow on the Olympics to the south, Mount Baker across the strait — with afternoons near 8°C and frosty starts near 1°C. It is the gray season by Northwest standards, yet Sequim still steals far more sun than Seattle.",
         spring: "The brightest, driest stretch arrives early: afternoons climb through the teens, the lavender fields green up, and the rain shadow keeps showers brief while the rest of the coast stays sodden.",
@@ -107,11 +107,11 @@ export const PLACES_USA: Place[] = [
     },
 
     localContrast: [
-      { radiusKm: 50, summerHighDeltaC: 0, precipDeltaPct: -75, note: "vs Forks / Hoh valley — approximately one-sixth the annual precipitation." },
+      { radiusKm: 50, precipDeltaPct: -88, note: "vs the windward slopes of the Olympics — roughly a tenth of the annual precipitation." },
       { radiusKm: 100, precipDeltaPct: -55, note: "vs the broader Olympic Peninsula average." },
     ],
     nearbyContrasts: [
-      { label: "Forks, WA (95 km W)", note: "Forks averages >3000 mm annual precipitation — among the wettest lowlands in the lower 48. Sequim averages ~475 mm." },
+      { label: "Forks, WA (95 km W)", note: "Forks averages about 2,800 mm of annual precipitation — among the wettest lowlands in the lower 48. Sequim averages ~430 mm." },
       { label: "Port Townsend, WA", note: "Also in the rain shadow but marginally cooler in summer due to stronger marine exposure." },
     ],
 
@@ -145,7 +145,7 @@ export const PLACES_USA: Place[] = [
         id: "sequim-air-masses",
         title: "Air masses, fronts, and the Olympic barrier",
         paragraphs: [
-          "In winter and spring, mid-latitude cyclones approach the Pacific Northwest with deeply maritime air. The Olympic Mountains act as a multi-kilometre wall: saturated westerly flow lifts on windward slopes, wringing out thousands of millimetres on the Quinault and Hoh. Air that reaches the northern rain-shadow has already surrendered most of its water; subsidence and downslope drying further warm and clear it. That is why Sequim can sit under high pressure with crisp visibility while Forks, about 95 km to the west, records another soaking day.",
+          "In winter and spring, mid-latitude cyclones approach the Pacific Northwest with deeply maritime air. The Olympic Mountains act as a towering wall: saturated westerly flow lifts on windward slopes, wringing out thousands of millimetres on the Quinault and Hoh. Air that reaches the northern rain-shadow has already surrendered most of its water; subsidence and downslope drying further warm and clear it. That is why Sequim can sit under high pressure with crisp visibility while Forks, about 95 km to the west, records another soaking day.",
           "Summer brings a different rhythm: the North Pacific subtropical high strengthens, and the strait becomes a corridor for cool, stable northwesterlies. June can still feel muted — the Pacific Northwest ‘June gloom’ reaches Sequim in softened form — but July and August are genuinely dry. The combination of rain-shadow subsidence and strait ventilation keeps afternoon highs modest even when interior Washington and Oregon bake.",
         ],
       },
@@ -384,7 +384,7 @@ export const PLACES_USA: Place[] = [
     archetypes: ["sky-island-refuge", "monsoon-edge", "high-desert-escape"],
     drivers: ["orographic-lift", "elevation-lapse-rate", "monsoon-lift"],
     summaryShort: "The most-visited Madrean sky island — Sierra Vista's anchor and the best US base for Mexican-affinity birds and upland monsoon hiking.",
-    summaryImmersive: "The Huachuca Mountains punch out of the San Pedro–Sulphur Springs trough abruptly enough that you can stand in a saguaro desert at 1,200 m in the morning and reach subalpine fir near 2,800 meters by afternoon. The range is famous among birders: Ramsey and Miller canyons funnel Mexican species north into the US every spring, producing one of the continent's richest small-area species lists. Monsoon storms build reliably against the range from late June through September, dropping sudden sheets of rain on the high country while the valley floor can stay dry. Winters are mild and sunny in Sierra Vista itself — its elevation (~1,400 m) buffers summer heat that would be oppressive 60 km north on the flats — but morning lows below freezing are routine December through February. The San Pedro River, one of the last free-flowing desert rivers in the Southwest, threads the eastern foot of the range and anchors a cottonwood-willow gallery forest that shelters some 350–400 bird species, one of the richest bird lists in the US.",
+    summaryImmersive: "The Huachuca Mountains punch out of the San Pedro–Sulphur Springs trough abruptly enough that you can stand in mesquite and desert grassland at 1,200 m in the morning and reach Douglas-fir and aspen near 2,800 meters by afternoon. The range is famous among birders: Ramsey and Miller canyons funnel Mexican species north into the US every spring, producing one of the continent's richest small-area species lists. Monsoon storms build reliably against the range from late June through September, dropping sudden sheets of rain on the high country while the valley floor can stay dry. Winters are mild and sunny in Sierra Vista itself — its elevation (~1,400 m) buffers summer heat that would be oppressive 60 km north on the flats — but morning lows below freezing are routine December through February. The San Pedro River, one of the last free-flowing desert rivers in the Southwest, threads the eastern foot of the range and anchors a cottonwood-willow gallery forest that shelters some 350–400 bird species, one of the richest bird lists in the US.",
     whyDistinct: "The combination of ~1,500 m of vertical relief, monsoon-season orographic lift, and binational biogeographic continuity with Mexico's Sierra Madre produces a compact archive of climate zones unmatched elsewhere on the US side of the border. The San Pedro riparian corridor adds a rare hydrologic exception to an otherwise arid regional baseline.",
 
     experience: {
@@ -665,7 +665,7 @@ export const PLACES_USA: Place[] = [
         id: "monterey-upwelling",
         title: "California Current, upwelling, and cold sea-surface temperatures",
         paragraphs: [
-          "Equatorward surface transport in the California Current draws deep, nutrient-rich water toward the surface along the central coast — the same process that feeds kelp forests and cold-water fisheries. Near Monterey Canyon, bathymetry and wind-stress curl intensify upwelling filaments; sea-surface temperatures in summer can sit near 10–14°C only kilometres offshore.",
+          "Equatorward surface transport in the California Current draws deep, nutrient-rich water toward the surface along the central coast — the same process that feeds kelp forests and cold-water fisheries. Near Monterey Canyon, bathymetry and wind-stress curl intensify upwelling filaments; sea-surface temperatures in summer can sit near 10–14°C only a few kilometres offshore.",
           "That cold water is the thermodynamic anchor for the marine layer: warm air aloft over cold water yields strong inversions, capping stratus and fog until solar heating or offshore flow breaks the cap.",
         ],
       },
@@ -2334,7 +2334,7 @@ export const PLACES_USA: Place[] = [
         id: "wenatchee-cascade-shadow",
         title: "Deep Cascade lee and the Columbia River moderation wedge",
         paragraphs: [
-          "Wenatchee sits multiple tens of kilometres east of the crest in one of the continent’s strongest rain shadows — annual precipitation near 240 mm while windward slopes measure metres. The Columbia River’s thermal mass and valley airflow blunt the most extreme diurnal swings that would otherwise characterize pure steppe.",
+          "Wenatchee sits multiple tens of kilometres east of the crest in one of the continent’s strongest rain shadows — annual precipitation near 240 mm while windward slopes measure ten times that or more. The Columbia River’s thermal mass and valley airflow blunt the most extreme diurnal swings that would otherwise characterize pure steppe.",
           "Irrigation from Bureau of Reclamation infrastructure and snowmelt-fed tributaries converts climatic dryness into agricultural productivity — the climate story is incomplete without the plumbing.",
         ],
       },
@@ -2405,11 +2405,11 @@ export const PLACES_USA: Place[] = [
     reliefContext: "Olympic Peninsula west slope — the wettest corner of the contiguous United States.",
     biome: "Temperate rainforest (Sitka spruce–western hemlock)", koppen: "Cfb",
     archetypes: ["hyper-maritime", "cool-summer-maritime"], drivers: ["orographic-lift", "marine-layer"],
-    summaryShort: "The rainforest to Sequim's rain shadow — 3500+ mm of annual rainfall in one of North America's greatest orographic sinks.",
+    summaryShort: "The rainforest to Sequim's rain shadow — about 2,800 mm of rain a year in town and 3,500+ mm up the Hoh, in one of North America's greatest orographic sinks.",
     summaryImmersive: "Forks and the Hoh Valley sit at the foot of the Olympics on the Pacific-facing side. Storms hit the west slope first, unleashing their moisture as they climb — producing one of the wettest climates in the contiguous US. Moss drips from every surface; temperatures barely vary from about 2 to 22°C; sunshine is rare and precious. And yet the same storm system that gives Forks 400 mm in December gives Sequim, 95 km away, less than 30 mm.",
     whyDistinct: "Direct Pacific exposure plus Olympic orographic lift produces persistent, heavy precipitation year-round — the windward twin of Sequim's rain shadow.",
     experience: {
-      feel: "Forks feels like living inside a green cathedral — the wettest corner of the contiguous US where moss drips from every surface, temperatures barely wander between about 2 and 22°C, and a single December can bring 400 mm of rain while Sequim, 95 km east, gets roughly 60.",
+      feel: "Forks feels like living inside a green cathedral — the wettest corner of the contiguous US where moss drips from every surface, temperatures barely wander between about 2 and 22°C, and a single December can bring 400 mm of rain while Sequim, 95 km east, gets roughly 60 mm.",
       seasons: {
         winter: "Soaking and mild — highs near 8°C, nights near 2°C, and rain that falls as steady sheets rather than bursts; the Hoh stays green when the rest of the peninsula freezes.",
         spring: "Still wet, brightening — lengthening days lift highs into the low teens, the rainforest floor erupts in sword fern and moss, and dry windows are measured in hours not weeks.",
@@ -2581,7 +2581,7 @@ export const PLACES_USA: Place[] = [
     archetypes: ["hyper-maritime", "cool-summer-maritime", "fog-belt-coast", "coastal-upwelling"],
     drivers: ["upwelling", "marine-layer", "orographic-lift"],
     summaryShort: "The continental US's most hyper-maritime climate — annual range of only 6°C, thanks to relentless cold-water upwelling.",
-    summaryImmersive: "Eureka's climate is an outlier. The annual temperature range (coldest month mean to warmest month mean) is about 6°C — comparable to tropical coasts — because the adjacent California Current is cold year-round and the prevailing wind is onshore. July afternoons average 17°C; January afternoons average 12°C. Fog and stratus dominate the summer; winter brings steadier rain but never real cold. The redwood coast culture, the lumber history, the Victorian townscapes all trace to the unchanging coolness.",
+    summaryImmersive: "Eureka's climate is an outlier. The annual temperature range (coldest month mean to warmest month mean) is a spread of about 6°C — comparable to tropical coasts — because the adjacent California Current is cold year-round and the prevailing wind is onshore. July afternoons average 17°C; January afternoons average 12°C. Fog and stratus dominate the summer; winter brings steadier rain but never real cold. The redwood coast culture, the lumber history, the Victorian townscapes all trace to the unchanging coolness.",
     whyDistinct: "Strong summer upwelling keeps sea-surface temperatures in the 10–12°C range; persistent onshore flow transfers that cold to the land; the Coast Range walls back the marine influence.",
     experience: {
       feel: "Eureka feels like the Pacific set the thermostat and walked away. Cold upwelling offshore holds the air in a tiny band — summer afternoons near 17°C, winter near 12°C — so the redwood coast stays cool, gray, and astonishingly even all year.",
@@ -4092,7 +4092,7 @@ export const PLACES_USA: Place[] = [
         id: "fairbanks-basin",
         title: "Tanana basin geometry and interior continentality",
         paragraphs: [
-          "Fairbanks sits in a broad lowland rimmed by uplands — a shape that favors both pooling of cold air and long sight lines for radiative cooling under polar night. The Alaska Range to the south blocks mild Pacific air much of the year; the Brooks Range to the north filters Arctic outbreaks differently by season. The practical result is a climate dominated by continental air masses and by the valley’s own nocturnal stratification rather than by maritime moderation.",
+          "Fairbanks sits in a broad lowland rimmed by uplands — a shape that favors both pooling of cold air and long sight lines for radiative cooling through the long subarctic night. The Alaska Range to the south blocks mild Pacific air much of the year; the Brooks Range to the north filters Arctic outbreaks differently by season. The practical result is a climate dominated by continental air masses and by the valley’s own nocturnal stratification rather than by maritime moderation.",
           "Distance from ocean heat storage is the macro control; basin geometry is the micro-scale amplifier. That combination produces one of North America’s largest honest annual temperature ranges for a populated place.",
         ],
       },
@@ -4155,7 +4155,7 @@ export const PLACES_USA: Place[] = [
     growability: { score: 54, growsWell: ["Cool-season greens", "Rhubarb", "Potatoes", "Kale", "Currants", "Blueberries"], tricky: ["Heat-loving crops", "Tomatoes (greenhouse only)", "Most stone fruit"], homeGarden: "A gardener's exercise in shade-tolerance and drainage engineering. Success with roots and brassicas; ambitious people build high tunnels." },
     climateChange: { outlook2050: "Continued mild warming; ocean acidification affecting fisheries; winter rain replacing what little snow falls.", outlook2100: "Hyper-maritime character persists; narrow temperature range may compress further.", keyShifts: [{ variable: "Winter snow", direction: "down" }, { variable: "Ocean pH", direction: "down" }, { variable: "Storm intensity", direction: "up" }], resilienceNote: "Marine buffering keeps extremes modest; the community's fishing-dependent economy is more climate-exposed than its air temperatures." },
     risks: { wildfire: { level: "very-low", trend: "stable" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "very-low", trend: "stable" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "moderate", trend: "worsening", note: "Pacific storms frequent." }, landslide: { level: "elevated", trend: "worsening", note: "Steep saturated slopes." }, coastal: { level: "moderate", trend: "worsening" } },
-    nearbyContrasts: [{ placeId: "fairbanks-ak", label: "Fairbanks, AK", note: "Both subarctic, but Fairbanks' coldest and warmest months average about 37°C apart; Sitka's about 12°C." }],
+    nearbyContrasts: [{ placeId: "fairbanks-ak", label: "Fairbanks, AK", note: "Both subarctic, but Fairbanks' coldest and warmest months average about 37°C apart; Sitka's are only about 12°C apart." }],
     scores: { hiddenGem: 66, microclimateUniqueness: 82, comfort: 56, resilience: 64, growability: 54, tradeoff: 60 },
     liveSignals: {
       costPressure: 58,
@@ -4392,7 +4392,7 @@ export const PLACES_USA: Place[] = [
     archetypes: ["hurricane-coast", "tropical-isothermal"],
     drivers: ["sea-breeze", "hurricane-track", "marine-layer"],
     summaryShort: "One of the mildest subtropical coasts in the continental US — July highs barely reach 32°C and January lows rarely drop below 10°C, moderated by the Gulf on both sides.",
-    summaryImmersive: "South Padre sits at the southern tip of Texas's barrier-island chain, a narrow ribbon of sand separating the Gulf of Mexico from Laguna Madre. The ocean buffers temperature from both sides: summer highs rarely top 33°C because of reliable afternoon sea breeze, and winter lows rarely approach freezing because Gulf water stays near 18–20°C. The annual range here is remarkably narrow for Texas — about 13°C between coolest and warmest months, versus about 18°C in inland San Antonio. The trade-off is hurricane exposure: Padre lies in one of the most active tropical-cyclone corridors in the US, and every few decades a major storm reshapes the entire island.",
+    summaryImmersive: "South Padre sits at the southern tip of Texas's barrier-island chain, a narrow ribbon of sand separating the Gulf of Mexico from Laguna Madre. The ocean buffers temperature from both sides: summer highs rarely top 33°C because of reliable afternoon sea breeze, and winter lows rarely approach freezing because Gulf water stays near 18–20°C. The annual range here is remarkably narrow for Texas — about 13°C between coolest and warmest months, versus a range of about 18°C in inland San Antonio. The trade-off is hurricane exposure: Padre lies in one of the most active tropical-cyclone corridors in the US, and every few decades a major storm reshapes the entire island.",
     whyDistinct: "Double-water exposure (Gulf + Laguna Madre) compresses the annual temperature range; low latitude + subsidence inversion limits summer heat; Texas gulf upwelling is minimal but marine-layer moderation is still substantial.",
     climate: {
       tempHighC: [21, 22, 25, 27, 30, 32, 33, 33, 32, 29, 25, 22], tempLowC: [12, 14, 17, 20, 23, 25, 26, 26, 25, 21, 17, 13],
@@ -4813,7 +4813,7 @@ export const PLACES_USA: Place[] = [
     ],
     thingsToDo: [
       { label: "Drive the Loess Hills National Scenic Byway end-to-end (Akron to Hamburg)", kind: "vista", season: "year-round; peak color mid-October", note: "~350 km of ridgeline cruising plus signed excursion loops to bluff-top overlooks." },
-      { label: "Hike the Loess Hills State Forest (Preparation Canyon, Jones Creek)", kind: "trail", season: "October – April (ticks drop after first frost)", note: "Sharp ridge walking with ~150-m vertical gain per kilometer in places." },
+      { label: "Hike the Loess Hills State Forest (Preparation Canyon, Jones Creek)", kind: "trail", season: "October – April (ticks drop after first frost)", note: "Sharp ridge walking that climbs ~150 m in each 1 km in places." },
       { label: "Stargaze atop Hitchcock Nature Center", kind: "stargazing", season: "year-round", note: "Pottawattamie County's darkest designated site; raptor-migration viewing platform doubles as an astronomy platform." },
       { label: "Watch fall raptor migration at Hitchcock Hawk Watch", kind: "wildlife", season: "mid-September – early December", note: "One of the top inland migration counts in the Midwest; broad-wings peak in late September." },
       { label: "Visit DeSoto National Wildlife Refuge", kind: "wildlife", season: "November for snow geese; April for warblers", note: "Floodplain oxbow lake that hosts up to 500,000 snow geese at peak." },
@@ -4839,7 +4839,7 @@ export const PLACES_USA: Place[] = [
     archetypes: ["thermal-belt", "badland-steppe"],
     drivers: ["aspect-slope", "continentality", "river-moderation"],
     summaryShort: "The last great tallgrass prairie — 1.6 million hectares of chert-uplifted limestone that plow-and-cornfield agriculture could not conquer.",
-    summaryImmersive: "The Flint Hills exist because the rock beneath them won. When 19th-century settlers tried to break the sod, their plows broke instead — the Permian limestone here is shot through with chert nodules that shatter steel. So one of the continent's great ecosystems survived almost by accident: roughly 1.6 million hectares of unbroken tallgrass prairie, the single largest remnant of what once covered some 69 million hectares (170 million acres) of mid-North America. Climate is continental humid subtropical, on the cusp of Dfa territory to the north — hot muggy summers, mild sunny winters broken by periodic arctic outbreaks, and a spring wildfire season that the ranching community has turned into a cultural event. Ride the Tallgrass Prairie Preserve at dawn in June and the grass is already chest-high; by September it's taller than a person on horseback.",
+    summaryImmersive: "The Flint Hills exist because the rock beneath them won. When 19th-century settlers tried to break the sod, their plows broke instead — the Permian limestone here is shot through with chert nodules that shatter steel. So one of the continent's great ecosystems survived almost by accident: roughly 1.6 million hectares of unbroken tallgrass prairie, the single largest remnant of what once covered some 69 million hectares of mid-North America. Climate is continental humid subtropical, on the cusp of Dfa territory to the north — hot muggy summers, mild sunny winters broken by periodic arctic outbreaks, and a spring wildfire season that the ranching community has turned into a cultural event. Ride the Tallgrass Prairie Preserve at dawn in June and the grass is already chest-high; by September it's taller than a person on horseback.",
     whyDistinct: "The Flint Hills preserve the only remaining tallgrass prairie of landscape scale — the ecosystem, the deep-rooted soil, and the Permian-limestone topographic break that drives steep aspect-driven contrasts at fine scale. Fire is part of the climate: the April–May 'range burning' window produces some of the most intense managed-fire atmospheric signatures observed in North America.",
 
     experience: {
@@ -5313,7 +5313,7 @@ export const PLACES_USA: Place[] = [
     archetypes: ["basin-inversion", "gap-wind-corridor", "high-desert-escape"],
     drivers: ["inversion", "gap-winds", "elevation-lapse-rate"],
     summaryShort: "Sierra front-row seats — howling easterlies, blazing sun, and the tallest escarpment in the Lower 48 looming west.",
-    summaryImmersive: "Lone Pine lives in the hydraulic shadow of the Sierra: dry, windy, and often hazy from Owens Lake dust and seasonal smoke. Winter cold pools in the valley; summer convection builds over the peaks while the floor bakes. It is the gateway climate for Whitney Portal — a vertical kilometer of lapse-rate cooling in minutes of driving.",
+    summaryImmersive: "Lone Pine lives in the hydraulic shadow of the Sierra: dry, windy, and often hazy from Owens Lake dust and seasonal smoke. Winter cold pools in the valley; summer convection builds over the peaks while the floor bakes. It is the gateway climate for Whitney Portal — roughly 1,000 vertical metres of lapse-rate cooling in minutes of driving.",
     whyDistinct: "Extreme rain shadow plus basin geometry yields persistent inversions and frequent gap winds through passes.",
     climate: { tempHighC: [12, 14, 18, 22, 27, 33, 37, 36, 31, 24, 16, 12], tempLowC: [-3, -1, 2, 5, 9, 13, 16, 15, 10, 4, -1, -3], precipMm: [28, 25, 20, 8, 6, 3, 8, 10, 8, 10, 12, 22], annualPrecipMm: 159, frostFreeDays: 200, hardinessZone: "7b" },
     soil: { texture: "Sandy alkaline alluvium", drainage: "excessive", phRange: [7.5, 8.5], waterHolding: "low" },
@@ -5572,7 +5572,7 @@ export const PLACES_USA: Place[] = [
     archetypes: ["badland-steppe", "high-desert-escape", "monsoon-edge"],
     drivers: ["continentality", "monsoon-lift", "gap-winds"],
     summaryShort: "Wind, cotton, and supercells — a classic High Plains dryline climate with huge diurnal swings.",
-    summaryImmersive: "Lubbock sits on the Llano Estacado where summer afternoons routinely top 35°C and humidity drops into the teens. Spring brings dryline thunderstorms and occasional dust storms. Winter is sunny and mild by northern standards but punctuated by blue northers.",
+    summaryImmersive: "Lubbock sits on the Llano Estacado where summer afternoons routinely top 35°C and relative humidity drops below 20%. Spring brings dryline thunderstorms and occasional dust storms. Winter is sunny and mild by northern standards but punctuated by blue northers.",
     whyDistinct: "Flat fetch and elevation combine for extreme solar heating and frequent severe convective days.",
     climate: { tempHighC: [11, 14, 19, 24, 29, 33, 35, 34, 29, 24, 17, 12], tempLowC: [-3, -1, 4, 9, 14, 19, 21, 20, 15, 8, 1, -3], precipMm: [15, 20, 25, 35, 60, 75, 50, 55, 60, 40, 25, 20], annualPrecipMm: 470, frostFreeDays: 200, hardinessZone: "7b" },
     soil: { texture: "Fine sandy loam over caliche", drainage: "good", phRange: [7.5, 8.5], waterHolding: "low" },
