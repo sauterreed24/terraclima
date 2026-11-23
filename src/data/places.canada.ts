@@ -29,7 +29,7 @@ export const PLACES_CANADA: Place[] = [
     whyDistinct: "Cascade rain shadow + continental interior + low valley elevation + shallow warm lake = a desert pocket that simply shouldn't exist at this latitude. The climate gradient from Penticton (north) to Osoyoos (south) is one of the sharpest in Canada.",
 
     experience: {
-      feel: "Osoyoos feels like a slice of the Great Basin's dry country carried north into Canada. The Cascades shadow the valley from Pacific moisture, the lake banks heat, and antelope-brush, prickly-pear, and rattlesnakes share the benches with Cabernet vines — the hottest, driest pocket in the country.",
+      feel: "Osoyoos feels like a slice of the Great Basin's dry country carried north into Canada. The Cascades shadow the valley from Pacific moisture, the lake banks heat, and antelope-brush, prickly-pear, and rattlesnakes share the benches with Cabernet vines — the hottest pocket in the country and among its driest.",
       seasons: {
         winter: "Short and cold by valley standards — afternoons hovering near freezing, nights near −6°C, a little snow that comes and goes. The desert sleeps under low, often-gray skies.",
         spring: "The valley wakes fast: orchards and vineyards blossom, afternoons climb through the teens into the 20s, and the sun returns in force while the benches stay dry.",
@@ -1810,7 +1810,7 @@ export const PLACES_CANADA: Place[] = [
     koppen: "Dfb",
     archetypes: ["cool-summer-maritime", "hyper-maritime", "fog-belt-coast"],
     drivers: ["marine-layer", "polar-jet-exposure", "continentality"],
-    summaryShort: "'Iceberg Alley' — a coast so cooled by the Labrador Current that icebergs drift past in May, and summer highs average just 18°C while winters only dip to −10°C.",
+    summaryShort: "'Iceberg Alley' — a coast so cooled by the Labrador Current that icebergs drift past in May, and summer highs average just 21°C while winters only dip to −10°C.",
     summaryImmersive: "Twillingate sits on the northeast coast of Newfoundland directly in the path of the Labrador Current, which carries Arctic water — and icebergs calved from Greenland — southward every spring. The current keeps coastal waters near freezing into June, making this one of the coolest-summer coasts in eastern North America. Fog is chronic in early summer as warm air meets the cold sea. Winters, paradoxically, are relatively mild for the latitude because the sea stays open most of the season, though Arctic pack ice can drift in late in winter. Iceberg viewing is so reliable in May and June that 'Iceberg Alley' is now a local brand. Whale encounters — humpbacks, minkes, fin whales — are the summer counterpart.",
     whyDistinct: "Labrador Current + cold-side Gulf Stream boundary position + exposed outer-coast geometry. The annual temperature range is remarkably narrow (a spread of ~25°C) given the high latitude, and fog/precipitation regimes are fundamentally maritime.",
     climate: {

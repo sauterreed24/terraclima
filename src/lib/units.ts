@@ -630,6 +630,14 @@ function swapKeepCase(text: string, re: RegExp, out: string | ((...groups: strin
   });
 }
 
+/** "a few hundred metres" ≈ 1,000 ft; "several hundred" ≈ 2,000 ft; "hundreds of" ≥ 1,000 ft. */
+function roughHundredsOfMetresInFeet(quantity: string, modifier: string): string {
+  const q = quantity.toLowerCase().replace(/\s+/g, " ");
+  if (q === "several hundred") return `a couple thousand${modifier} feet`;
+  if (q === "hundreds of") return `a thousand${modifier} feet or more`;
+  return `about a thousand${modifier} feet`;
+}
+
 function localizeDistanceProse(text: string): string {
   // --- Hyphenated adjectival forms ---
   //
@@ -759,7 +767,7 @@ function localizeDistanceProse(text: string): string {
     /\b(\d+(?:,\d{3})*)\s+vertical\s+met(?:er|re)s\b/gi,
     (_m, n: string) => `${convertFigure(n, 3.28084, true)} vertical feet`,
   );
-  text = swapKeepCase(text, /\b(a\s+few\s+hundred|several\s+hundred|hundreds\s+of)\s+vertical\s+met(?:er|re)s\b/gi, (_m, q: string) => `${q} vertical feet`);
+  text = swapKeepCase(text, /\b(a\s+few\s+hundred|several\s+hundred|hundreds\s+of)\s+vertical\s+met(?:er|re)s\b/gi, (_m, q: string) => roughHundredsOfMetresInFeet(q, " vertical"));
   text = swapKeepCase(text, /\ba\s+few\s+vertical\s+kilomet(?:er|re)s\b/gi, "a vertical mile or so");
   text = swapKeepCase(text, SPELLED_HYPHEN_METRE, (_m, w: string) => {
     const v = spelledNumberValue(w);
@@ -807,9 +815,26 @@ function localizeDistanceProse(text: string): string {
   // kilometers", "a few hundred meters"). Convert unit nouns only — the
   // quantity words stay, matching common US climate writing.
   text = swapKeepCase(text, /\bthousands of met(?:er|re)s\b/gi, "thousands of feet");
-  text = swapKeepCase(text, /\bhundreds of met(?:er|re)s\b/gi, "hundreds of feet");
+  // A few hundred metres is about a thousand feet, not "a few hundred feet":
+  // keeping the quantity words understated every such height 3.3-fold
+  // ("Mexico City, 1,300 ft lower … a few hundred feet of elevation").
+  // Short ground distances read naturally in yards, which match metres.
+  text = swapKeepCase(
+    text,
+    /\b(in|within)\s+(a\s+few\s+hundred|several\s+hundred|hundreds\s+of)\s+met(?:er|re)s\b/gi,
+    (_m, prep: string, q: string) => `${prep} ${q} yards`,
+  );
+  text = swapKeepCase(
+    text,
+    /\b(a\s+few\s+hundred|several\s+hundred|hundreds\s+of)\s+met(?:er|re)s\s+(away|apart|from)\b/gi,
+    (_m, q: string, tail: string) => `${q} yards ${tail}`,
+  );
+  text = swapKeepCase(
+    text,
+    /\b(a\s+few\s+hundred|few\s+hundred|several\s+hundred|hundreds\s+of)\s+met(?:er|re)s\b/gi,
+    (_m, q: string) => roughHundredsOfMetresInFeet(q, ""),
+  );
   text = swapKeepCase(text, /\bhundreds of (?:kilomet(?:er|re)s|km)\b/gi, "hundreds of miles");
-  text = swapKeepCase(text, /\b((?:a\s+)?few\s+hundred)\s+met(?:er|re)s\b/gi, (_m, qty: string) => `${qty} feet`);
   text = swapKeepCase(text, /(?<![\d+]\s)\bmet(?:er|re)s across\b/gi, "feet across");
   text = swapKeepCase(text, /(?<![\d+]\s)\b(?:kilomet(?:er|re)s|kilometers) wide\b/gi, "miles wide");
 

@@ -24,7 +24,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     koppen: "Cfa",
     archetypes: ["thermal-belt", "mild-winter-foothills", "piedmont-transition"],
     drivers: ["elevation-lapse-rate", "aspect-slope", "cold-air-drainage"],
-    summaryShort: "Alabama’s coolest summer afternoons outside the highest Smokies — a plateau town where elevation buys genuine relief from Gulf humidity below.",
+    summaryShort: "Some of Alabama’s coolest summer afternoons — a plateau town where elevation buys genuine relief from Gulf humidity below.",
     summaryImmersive: "Mentone sits on the same Appalachian escarpment that runs into Georgia and Tennessee, but here the state’s stereotypical swelter finally breaks. Westerly storm systems ride the plateau edge; thermal belts and coves on the scarp produce sharp spring frost contrasts that orchardists still map by hand. It is one of the few places in Alabama where true four-season gardening feels honest.",
     whyDistinct: "Plateau elevation (~550 m) in the subtropical Gulf air mass produces lapse-rate cooling and orographic cloud caps on moist flow — a discrete mountain microclimate inside a state better known for torrid lowlands.",
     climate: {

@@ -4,6 +4,34 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Steady scrolling on the main page, a math audit, and a data consistency pass
+
+- **Main-page scrolling:**
+  - The intro panel no longer collapses on its own as you scroll or first touch the map. That collapse moved the page about 180px under the pointer, so one wheel notch travelled almost three and the map slid past. "Map first" still compacts it on request.
+  - A page scroll that passes over the map keeps scrolling the page instead of stopping to zoom the map. Wheeling that starts over the map, and pinch, still zoom.
+  - The ranked list shows 12 places at a time (was 36). The page is about 6,000px on desktop (was 17,000) and 11,000px on phones (was 35,000).
+  - Rows just outside the screen now report their real height, so the page length and scrollbar thumb no longer lurch while scrolling.
+  - New **Cards / Compact** switch above the list: compact rows show name, setting, one-line summary and core numbers at about a third of the height. The choice is remembered.
+  - New **Top** button after a screen and a half of scrolling. On phones the footer clears the floating buttons.
+- **Heat index and wet-bulb** use the humidity of the afternoon (dew point held constant) instead of pairing the afternoon high with the daily-mean humidity. Austin's August heat index reads about 105°F, not 121°F; New Orleans in July about 101°F, not 113°F. Places with a peak apparent high of 100°F or more drop from 40 to 26.
+- **Rankings that saturate** now order ties by the measurement itself. "Mildest winters" had 93 places tied at 100 and listed them alphabetically, so Key West ranked 35th; it now leads. Same for "best diurnal sleep" and "monsoon drama". Three rankings could go below zero and are now floored at 0.
+- **Köppen:** where both a dry summer and a dry winter qualify, the wetter half-year decides (Beck et al. 2018). Creel classifies Cwb, not Csb.
+- **2050 scenarios** now scale growing degree days with the projected temperatures; they stayed at today's value beside a longer frost-free season.
+- **Atlas comparisons** no longer count the place itself: Death Valley read "hotter than 100%" of a set it belongs to.
+- **"Winter low"** replaces the "January low" label: the figure has always been the December–February mean low, which differs from January's by 1°C or more at 89 places.
+- **Comfort confidence** can reach "high" again; a check that could never pass held all 226 places at "medium".
+- **Monsoon note** reads "Jul–Sep vs Dec–Feb" with units on both figures (it said "JJA" and left the second number in millimetres).
+- **Unit conversion:** "a few hundred metres" became "a few hundred feet", a 3.3-fold understatement in 23 passages. Heights now read "about a thousand feet" and short ground distances "a few hundred yards".
+- **Prose corrected against the place's own data:**
+  - Oaxaca: highs in the high 20s to low 30s°C, not "low-to-mid 20s".
+  - Yuma: Flagstaff is about 14°C cooler in summer, not 20°C.
+  - Twillingate, Fort Davis, Durango, Boone, Mammoth Lakes, Leadville, Zacatecas and Xalapa: summer figures now match their monthly normals.
+  - Osoyoos: "hottest pocket in the country and among its driest" (four atlas places are drier).
+  - Mentone: dropped "outside the highest Smokies" (not in Alabama). La Ventosa: the gap wind is driven by Gulf of Mexico high pressure. Medford: the Klamath-Siskiyou ranges lie west and south.
+  - Prince Rupert: "between about 2 and 16°C" replaces a phrase that converted to "a few degrees and the 57–61°F range".
+- **Anchorage snowfall:** 196 cm a year (77 in), was 100 cm.
+- **Visual:** the Explorer intro text sits at the top of its panel instead of under an empty band; the dossier's pinned chapter bar on phones is opaque, so text no longer shows through it; footer icons keep their size beside long text.
+
 ### Conversion accuracy, honest "twin, but…" lists, and an independent fact check
 
 - **Temperature differences now convert as differences.** With the atlas in °F only, a difference written in °C was often shown as if it were a thermometer reading: Boulder's "sudden 20°C warm-ups" read 68°F instead of 36°F, and Tofino's January-to-July spread read 48°F instead of 16°F. About 40 sentences are corrected, and the reverse error is fixed too (Taos's summer highs showed as 49–52°F because "diurnal swing" sat in the same clause).

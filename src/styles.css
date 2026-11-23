@@ -9172,7 +9172,11 @@
     margin-right: -0.25rem;
     padding: 0.45rem 0.25rem 0.15rem;
     border-bottom: 1px solid rgba(200, 175, 150, 0.35);
-    background: var(--tc-surface-elevated);
+    /* Opaque: body text scrolling underneath showed through the 97% surface. */
+    background: #fffdf8;
+  }
+  html[data-theme="dark"] .tc-reading-nav-mobile {
+    background: #1c263c;
   }
 
   /* Act group headers in the desktop reading nav. */

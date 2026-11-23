@@ -2814,7 +2814,7 @@ const HeroCard = memo(function HeroCard({
       data-compact={compact ? "true" : "false"}
       style={{ ["--hero-accent-rgb" as string]: heroAccentRgb }}
     >
-      <div className="tc-explorer-hero__top flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 min-[1400px]:gap-4">
+      <div className="tc-explorer-hero__top flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3 min-[1400px]:gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <Sparkles className="w-3.5 h-3.5 tc-icon-ochre" aria-hidden />

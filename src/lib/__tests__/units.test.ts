@@ -266,8 +266,16 @@ describe("localizeProse — distances", () => {
     expect(localizeProse("Influence carries hundreds of kilometers inland.", "F", "imperial")).toContain(
       "hundreds of miles",
     );
-    expect(localizeProse("Ridgetops only a few hundred meters higher.", "F", "imperial")).toContain(
-      "a few hundred feet",
+    // A few hundred metres is about a thousand feet, never "a few hundred feet".
+    expect(localizeProse("Ridgetops only a few hundred meters higher.", "F", "imperial")).toBe(
+      "Ridgetops only about a thousand feet higher.",
+    );
+    expect(localizeProse("lifted hundreds of metres above the floor", "F", "imperial")).toBe(
+      "lifted a thousand feet or more above the floor",
+    );
+    expect(localizeProse("a grove a few hundred metres away", "F", "imperial")).toBe("a grove a few hundred yards away");
+    expect(localizeProse("change the hazard in a few hundred metres", "F", "imperial")).toBe(
+      "change the hazard in a few hundred yards",
     );
     expect(localizeProse("They can be meters across or kilometers wide.", "F", "imperial")).toBe(
       "They can be feet across or miles wide.",
