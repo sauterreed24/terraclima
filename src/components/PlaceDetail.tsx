@@ -656,7 +656,7 @@ function DetailHeader({
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-1.5">
         <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />} label="Summer high" value={fmtTemp(summerHigh, temp)} />
-        <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#8cc8e0" }} />} label="January low" value={fmtTemp(janLow, temp)} />
+        <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#8cc8e0" }} />} label="Winter low" value={fmtTemp(janLow, temp)} />
         <HeroStat icon={<Droplets className="w-3.5 h-3.5" style={{ color: "#c6dcbd" }} />} label={precipHeroLabel(place)} value={fmtPrecip(annualP, dist)} />
         <HeroStat
           icon={

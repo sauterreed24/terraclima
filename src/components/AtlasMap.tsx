@@ -58,6 +58,9 @@ import { updateScaleBar } from "../lib/atlas-map-scale-bar";
  *  (notably the dom-test that imports it from "../components/AtlasMap")
  *  keep working unchanged. */
 export const wheelZoomFactor = wheelZoomFactorImpl;
+
+/** How long after a page-scroll wheel tick the map keeps yielding the wheel. */
+const PAGE_WHEEL_HANDOFF_MS = 420;
 import {
   canClusterSeparateAtZoom,
   clusterMapPoints,
@@ -1408,8 +1411,28 @@ export const AtlasMap = memo(function AtlasMap({
   const wheelRAF = useRef<number>(0);
   const wheelBuf = useRef<{ k: number; mx: number; my: number } | null>(null);
 
+  // A page scroll that drifts across the map must keep scrolling the page.
+  // Without this, wheeling back up the page stopped dead at the map and
+  // zoomed it instead. A wheel gesture belongs to the page when it started
+  // outside the map; it stays the page's until the wheel rests. Pinch
+  // (ctrl+wheel on trackpads) is always a map gesture.
+  const pageWheelAtRef = useRef(Number.NEGATIVE_INFINITY);
+  useEffect(() => {
+    const onWindowWheel = (e: WheelEvent) => {
+      const svg = svgRef.current;
+      if (svg && e.target instanceof Node && svg.contains(e.target)) return;
+      pageWheelAtRef.current = e.timeStamp;
+    };
+    window.addEventListener("wheel", onWindowWheel, { passive: true, capture: true });
+    return () => window.removeEventListener("wheel", onWindowWheel, { capture: true });
+  }, []);
+
   const onWheel = useCallback((e: WheelEvent) => {
     if (!mapInteractive) return;
+    if (!e.ctrlKey && e.timeStamp - pageWheelAtRef.current < PAGE_WHEEL_HANDOFF_MS) {
+      pageWheelAtRef.current = e.timeStamp;
+      return;
+    }
     const factor = wheelZoomFactor(e.deltaY, e.deltaMode);
     if (!wheelDeltaConsumable(viewRef.current, factor)) {
       return;

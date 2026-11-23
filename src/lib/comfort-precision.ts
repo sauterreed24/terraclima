@@ -109,6 +109,18 @@ export function dewPointC(tempC: number, relativeHumidityPct: number): number {
   return (b * gamma) / (a - gamma);
 }
 
+/**
+ * Relative humidity at another temperature for the same air mass (dew point
+ * held constant). Monthly humidity normals are relative to the daily MEAN
+ * temperature; the afternoon high holds the same moisture at a lower RH.
+ */
+export function relativeHumidityAtTempC(dewC: number, tempC: number): number {
+  const a = 17.625;
+  const b = 243.04;
+  const es = (t: number) => Math.exp((a * t) / (b + t));
+  return clamp((100 * es(dewC)) / es(tempC), 1, 100);
+}
+
 /** Stull wet-bulb approximation for a shade humidity/heat guardrail. */
 export function wetBulbStullC(tempC: number, relativeHumidityPct: number): number | null {
   const rh = clamp(relativeHumidityPct, 1, 100);
@@ -255,7 +267,8 @@ function heatStressScore(apparentHighC: number, wetBulbC: number | null): number
 }
 
 function confidenceForPlace(p: Place, humiditySource: ComfortPrecisionMonth["humiditySource"]): { confidence: ComfortConfidence; note: string } {
-  if (p.climate.humidity && scoringSunshinePct(p) && p.climate.diurnalSummerC != null) {
+  const hasSky = p.climate.solarEnergyMjM2Day?.length === 12 || scoringSunshinePct(p) != null;
+  if (p.climate.humidity && hasSky && p.climate.diurnalSummerC != null) {
     return { confidence: "high", note: "Monthly humidity, sunshine, and authored diurnal recovery are present." };
   }
   if (humiditySource === "measured") {
@@ -286,8 +299,12 @@ export function buildComfortPrecisionProfile(p: Place, options: ComfortPrecision
     const lowC = p.climate.tempLowC[index]!;
     const { humidityPct, humiditySource } = monthHumidity(p, index, analogHumidity);
     const dew = humidityPct == null ? null : dewPointC((highC + lowC) / 2, humidityPct);
-    const wetBulb = humidityPct == null ? null : wetBulbStullC(highC, humidityPct);
-    const apparentHigh = humidityPct == null ? highC : heatIndexC(highC, humidityPct);
+    // Heat index and wet-bulb describe the afternoon, so they need the RH at
+    // the afternoon high. Pairing the high with mean-temperature RH put Austin's
+    // August heat index at 121°F instead of about 105°F.
+    const rhAtHigh = dew == null ? null : relativeHumidityAtTempC(dew, highC);
+    const wetBulb = rhAtHigh == null ? null : wetBulbStullC(highC, rhAtHigh);
+    const apparentHigh = rhAtHigh == null ? highC : heatIndexC(highC, rhAtHigh);
     const sleep = sleepRecoveryScore(highC, lowC, humidityPct);
     return {
       index,

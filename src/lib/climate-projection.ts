@@ -213,6 +213,17 @@ export function projectClimateProfile(climate: ClimateProfile, delta: ClimateDel
 
   const annualPrecipMm = Math.round(precipMm.reduce((s, v) => s + v, 0));
 
+  // Heat units warm with the temperatures. The measured figure is scaled by
+  // the modelled change (monthly estimate, future over present) so a longer
+  // frost-free season no longer sits beside an unchanged growing-degree total.
+  // Where the present estimate is ~0 (tundra), the modelled gain is added.
+  let projectedGdd10: number | undefined;
+  if (climate.gdd10 != null) {
+    const before = estimateGdd10(climate.tempHighC, climate.tempLowC);
+    const after = estimateGdd10(tempHighC, tempLowC);
+    projectedGdd10 = Math.round(before >= 50 ? climate.gdd10 * (after / before) : climate.gdd10 + (after - before));
+  }
+
   return {
     ...climate,
     tempHighC,
@@ -220,6 +231,7 @@ export function projectClimateProfile(climate: ClimateProfile, delta: ClimateDel
     precipMm,
     annualPrecipMm,
     ...(snowCm ? { snowCm } : {}),
+    ...(projectedGdd10 != null ? { gdd10: projectedGdd10 } : {}),
     // Shift the measured season by the modelled change, so present and
     // future figures share one definition (last spring to first autumn freeze).
     frostFreeDays:
@@ -227,6 +239,15 @@ export function projectClimateProfile(climate: ClimateProfile, delta: ClimateDel
         ? Math.max(0, Math.min(365, climate.frostFreeDays + estimateFrostFreeDays(tempLowC) - estimateFrostFreeDays(climate.tempLowC)))
         : estimateFrostFreeDays(tempLowC),
   };
+}
+
+/** Growing degree days (base 10°C) estimated from monthly means; used as a ratio only. */
+export function estimateGdd10(highsC: readonly number[], lowsC: readonly number[]): number {
+  let gdd = 0;
+  for (let i = 0; i < 12; i += 1) {
+    gdd += DAYS_IN_MONTH[i]! * Math.max(0, (highsC[i]! + lowsC[i]!) / 2 - 10);
+  }
+  return gdd;
 }
 
 const _projectionCache = new WeakMap<Place, Partial<Record<ScenarioId, Place>>>();

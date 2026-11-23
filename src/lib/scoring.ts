@@ -70,7 +70,13 @@ export type RankingProfile =
   | "best-for-remote-work"
   | "best-retirement";
 
-export interface RankingResult { place: Place; score: number; note?: string }
+export interface RankingResult {
+  place: Place;
+  score: number;
+  note?: string;
+  /** Raw metric (higher ranks first) that orders places whose score saturates. */
+  tiebreak?: number;
+}
 
 /**
  * Fixed "livability lens" for the hero — **not** a hidden-gems or novelty sort.
@@ -143,7 +149,7 @@ export const RANKING_PARAMS = {
   mediterraneanPerMmJulAug: 0.3,
   /** "wet-forest-refuges": annual precip divided by 30 capped at 100. */
   wetForestPrecipDivisor: 30,
-  /** "monsoon-drama": JJA / DJF precip ratio multiplied by 18, capped at 100. */
+  /** "monsoon-drama": Jul–Sep / Dec–Feb precip ratio multiplied by 18, capped at 100. */
   monsoonRatioMultiplier: 18,
 } as const;
 
@@ -218,7 +224,9 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
       }
       case "mildest-winters": {
         const s = Math.max(0, 100 - Math.max(0, -janLow) * k.mildWinterPerDegC);
-        return { place: p, score: s, note: `Mean winter low ${toFixedClean(janLow, 1)}°C` };
+        // Every frost-free winter scores 100; the low itself orders them, so
+        // Key West leads instead of whichever name sorts first.
+        return { place: p, score: s, note: `Mean winter low ${toFixedClean(janLow, 1)}°C`, tiebreak: janLow };
       }
       case "sunniest-winters": {
         const winterSun = meanWinterSunshinePct(p);
@@ -230,7 +238,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const shoulder = (p.climate.tempHighC[3] + p.climate.tempHighC[4] + p.climate.tempHighC[8] + p.climate.tempHighC[9]) / 4;
         const base = Math.max(0, 100 - Math.abs(shoulder - k.shoulderIdealHighC) * k.shoulderPerDegC);
         const sunBonus = sunshineComfortBonus(p);
-        const s = Math.min(100, base + sunBonus);
+        const s = Math.max(0, Math.min(100, base + sunBonus));
         return { place: p, score: s, note: `Spring/fall highs near ${toFixedClean(shoulder, 1)}°C` };
       }
       case "driest-air": {
@@ -264,7 +272,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
       }
       case "best-diurnal-sleep": {
         const s = Math.min(100, Math.max(0, (diurnal - k.diurnalSleepBaselineC) * k.diurnalSleepPerDegC));
-        return { place: p, score: s, note: `Summer diurnal swing ${diurnal.toFixed(0)}°C` };
+        return { place: p, score: s, note: `Summer diurnal swing ${diurnal.toFixed(0)}°C`, tiebreak: diurnal };
       }
       case "strongest-geospatial-signal": {
         const g = buildGeospatialAnalysis(p);
@@ -323,7 +331,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const winter = p.climate.precipMm[11] + p.climate.precipMm[0] + p.climate.precipMm[1];
         const ratio = monsoon / Math.max(1, winter);
         const s = Math.min(100, ratio * k.monsoonRatioMultiplier);
-        return { place: p, score: s, note: `${monsoon.toFixed(0)} mm in JJA vs ${winter.toFixed(0)} DJF` };
+        return { place: p, score: s, note: `${monsoon.toFixed(0)} mm in Jul–Sep vs ${winter.toFixed(0)} mm in Dec–Feb`, tiebreak: ratio };
       }
       case "best-this-month": {
         const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"] as const;
@@ -359,7 +367,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const feelBonus = (placeFeelScore(p) - 60) * 0.18;
         const access = p.liveSignals?.accessFriction;
         const accessPenalty = access != null ? Math.max(0, (access - 40)) * 0.32 : 0;
-        const s = Math.min(100, coolSummer + mildWinter + fireScore + smokeScore + sunBonus + livedBonus + feelBonus - accessPenalty);
+        const s = Math.max(0, Math.min(100, coolSummer + mildWinter + fireScore + smokeScore + sunBonus + livedBonus + feelBonus - accessPenalty));
         return { place: p, score: s, note: `${summerHigh.toFixed(0)}°C summers · fire ${p.risks.wildfire.level} · smoke ${p.risks.smoke.level}` };
       }
       case "best-retirement": {
@@ -378,7 +386,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const access = p.liveSignals?.accessFriction;
         const costPenalty = cost != null ? Math.max(0, (cost - 50)) * 0.18 : 0;
         const accessPenalty = access != null ? Math.max(0, (access - 45)) * 0.24 : 0;
-        const s = Math.min(100, winterScore + summerScore + riskScore + growScore + sunBonus + livedBonus + feelBonus - costPenalty - accessPenalty);
+        const s = Math.max(0, Math.min(100, winterScore + summerScore + riskScore + growScore + sunBonus + livedBonus + feelBonus - costPenalty - accessPenalty));
         return { place: p, score: s, note: `Mild all-year · grow ${p.scores.growability}/100 · avg risk ${avgRisk(p).toFixed(1)}` };
       }
     }
@@ -390,6 +398,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
   // regardless of corpus insertion order — matching live-fit / livability.
   return scored.sort((a, b) =>
     b.score - a.score ||
+    (b.tiebreak ?? 0) - (a.tiebreak ?? 0) ||
     a.place.name.localeCompare(b.place.name) ||
     a.place.id.localeCompare(b.place.id),
   );

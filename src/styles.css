@@ -12614,6 +12614,138 @@ html[data-theme="dark"] .score-pill__value[data-tone="ember"] { color: #e8977a; 
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.tc-card-grid__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.tc-card-grid__range {
+  margin: 0;
+  color: var(--color-stone-readable);
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+}
+.tc-density-toggle {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  border-radius: 999px;
+  border: 1px solid rgba(195, 165, 138, 0.42);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+}
+.tc-density-toggle__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2rem;
+  padding: 0.25rem 0.8rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-stone-readable);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms, color 160ms, box-shadow 160ms;
+}
+.tc-density-toggle__btn:hover { color: var(--color-ice); }
+.tc-density-toggle__btn:focus-visible {
+  outline: 2px solid #1a8fa8;
+  outline-offset: 2px;
+}
+.tc-density-toggle__btn[aria-pressed="true"] {
+  background: linear-gradient(180deg, rgba(26, 143, 168, 0.16), rgba(26, 143, 168, 0.1));
+  color: #0d5f72;
+  box-shadow: 0 0 0 1px rgba(26, 143, 168, 0.34) inset;
+}
+html[data-theme="dark"] .tc-density-toggle {
+  border-color: rgba(140, 200, 224, 0.22);
+  background: rgba(18, 26, 44, 0.72);
+  box-shadow: none;
+}
+html[data-theme="dark"] .tc-density-toggle__btn[aria-pressed="true"] {
+  background: rgba(94, 196, 220, 0.18);
+  color: #bfeaf5;
+  box-shadow: 0 0 0 1px rgba(94, 196, 220, 0.4) inset;
+}
+@media (pointer: coarse) {
+  .tc-density-toggle__btn { min-height: 2.75rem; padding-inline: 1rem; }
+}
+/* The virtual grid already keeps off-screen rows out of the DOM. Leaving
+   `content-visibility: auto` on its cards made rows just outside the viewport
+   report the 1,060px placeholder height instead of their real ~720px, so the
+   page length (and the scrollbar thumb) lurched as they scrolled into view. */
+.tc-card-row .place-card { content-visibility: visible; contain-intrinsic-size: none; }
+.tc-card-grid[data-density="compact"] .place-card__open-target { padding-block: 0.75rem; }
+.place-card__compact-facts {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin: 0.3rem 0 0;
+  min-width: 0;
+  color: var(--color-stone-readable);
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+.place-card__compact-facts > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.place-card__compact-facts > span + span {
+  flex-shrink: 0;
+}
+.place-card__compact-facts > span + span::before {
+  content: "·";
+  margin-right: 0.45rem;
+  opacity: 0.55;
+}
+/* Floating Filters / Top buttons must not sit on the footer's last lines. */
+@media (max-width: 1023px) {
+  .tc-footer__inner { padding-bottom: calc(5.25rem + env(safe-area-inset-bottom)); }
+}
+
+/* Back to top: the ranked list is long by nature, so the way home is one tap. */
+.tc-back-to-top {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.875rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid rgba(195, 165, 138, 0.5);
+  background: rgba(255, 254, 251, 0.96);
+  color: var(--color-ice);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 28px -12px rgba(62, 38, 24, 0.35), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  transition: opacity 180ms, transform 180ms, visibility 180ms, border-color 160ms;
+}
+.tc-back-to-top[data-visible="false"] {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+.tc-back-to-top:hover { border-color: rgba(26, 143, 168, 0.6); }
+.tc-back-to-top:focus-visible { outline: 2px solid #1a8fa8; outline-offset: 2px; }
+html[data-theme="dark"] .tc-back-to-top {
+  border-color: rgba(140, 200, 224, 0.28);
+  background: rgba(18, 26, 44, 0.96);
+  box-shadow: 0 10px 28px -12px rgba(0, 0, 0, 0.7);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tc-back-to-top { transition: none; }
+}
 .tc-card-grid__more {
   display: flex;
   flex-wrap: wrap;

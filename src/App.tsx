@@ -2,6 +2,7 @@ import { lazy, memo, startTransition, Suspense, useCallback, useDeferredValue, u
 import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Cloud, Compass, Eye, Globe2, HelpCircle, Home, Library, Link2, Map, Menu, MoreHorizontal, Route, Search, ShieldAlert, Shuffle, Snowflake, Sparkles, Target, X, type LucideIcon } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
+import { BackToTop } from "./components/chrome/BackToTop";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
 import { FilterBar, RANKING_OPTIONS, type LensScope } from "./components/FilterBar";
 import { FootprintPanel } from "./components/FootprintPanel";
@@ -626,67 +627,28 @@ export default function App() {
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
   /** Scout Board / Living Compass / livability rails stay collapsed until asked for. */
   const [scoutToolsOpen, setScoutToolsOpen] = useState(false);
-  /** auto = scroll heuristic; compact/expanded = latched until the other is chosen. */
-  const [heroChromeMode, setHeroChromeMode] = useState<"auto" | "compact" | "expanded">("auto");
+  /**
+   * The intro only compacts when the reader asks ("Map first"). It used to
+   * collapse on its own while scrolling or on the first map gesture, which
+   * moved the page ~180px under the pointer mid-scroll: one wheel notch
+   * travelled almost three, and the map slid out from under a drag.
+   */
   const [heroCompact, setHeroCompact] = useState(false);
   const mapStageRef = useRef<HTMLDivElement>(null);
   const explorerWideMapSplit = useMediaQuery("(min-width: 1500px)");
 
   useEffect(() => {
     if (view !== "explorer" || explorerWideMapSplit) {
-      startTransition(() => {
-        setHeroChromeMode("auto");
-        setHeroCompact(false);
-      });
-      return;
+      startTransition(() => setHeroCompact(false));
     }
-    const stage = mapStageRef.current;
-    if (!stage) return;
-    const update = () => {
-      if (heroChromeMode === "expanded") {
-        startTransition(() => setHeroCompact(false));
-        return;
-      }
-      if (heroChromeMode === "compact") {
-        startTransition(() => setHeroCompact(true));
-        return;
-      }
-      const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
-      const top = stage.getBoundingClientRect().top;
-      // Wait for real scroll toward the map — stacked layouts often show the
-      // map partly in the first viewport without the user having engaged yet.
-      const next = scrollY > 28 && top < 160;
-      startTransition(() => setHeroCompact(prev => (prev === next ? prev : next)));
-    };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, [view, explorerWideMapSplit, heroChromeMode]);
-
-  const engageMapFirstChrome = useCallback(() => {
-    if (explorerWideMapSplit || heroChromeMode === "expanded") return;
-    startTransition(() => {
-      setHeroChromeMode("compact");
-      setHeroCompact(true);
-    });
-  }, [explorerWideMapSplit, heroChromeMode]);
+  }, [view, explorerWideMapSplit]);
 
   const expandHeroChrome = useCallback(() => {
-    startTransition(() => {
-      setHeroChromeMode("expanded");
-      setHeroCompact(false);
-    });
+    startTransition(() => setHeroCompact(false));
   }, []);
 
   const collapseHeroChrome = useCallback(() => {
-    startTransition(() => {
-      setHeroChromeMode("compact");
-      setHeroCompact(true);
-    });
+    startTransition(() => setHeroCompact(true));
   }, []);
 
   const baselinePool = useMemo(() => {
@@ -1681,7 +1643,6 @@ export default function App() {
                     emptyRecoveryLabel={mapEmptyRecovery.emptyRecoveryLabel}
                     bookmarkIds={bookmarkIds}
                     onToggleBookmark={toggleBookmark}
-                    onMapEngaged={engageMapFirstChrome}
                   />
                 </div>
 
@@ -1998,6 +1959,8 @@ export default function App() {
 
         </main>
       </div>
+
+      <BackToTop hidden={Boolean(selectedPlace) || compareOpen || showShortcuts || filterSheetOpen || siteMenuOpen} />
 
       {selectedPlace ? (
         <LazyRouteErrorBoundary routeLabel="Place profile">

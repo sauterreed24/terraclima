@@ -233,7 +233,7 @@ export const PlaceCard = memo(function PlaceCard({
         ))}
       </div>
       <span className="sr-only">
-        {`Year at a glance: summer highs near ${fmtTemp(summerHighC, temp)}, January lows near ${fmtTemp(janLowC, temp)}.`}
+        {`Year at a glance: summer highs near ${fmtTemp(summerHighC, temp)}, winter lows near ${fmtTemp(janLowC, temp)}.`}
       </span>
 
       <button
@@ -265,7 +265,7 @@ export const PlaceCard = memo(function PlaceCard({
           </div>
         ) : null}
 
-        <header className="flex items-start justify-between gap-3 pb-3 border-b tc-border-neutral">
+        <header className={`flex items-start justify-between gap-3 border-b tc-border-neutral ${compact ? "pb-2" : "pb-3"}`}>
           <div className="min-w-0 flex-1">
             <div className="flex items-start gap-2">
               {/* Two lines before clipping: long dossier names ("Death Valley
@@ -278,7 +278,12 @@ export const PlaceCard = memo(function PlaceCard({
               <span className="text-stone/70"> · </span>
               {place.country === "USA" ? "United States" : place.country === "Canada" ? "Canada" : "Mexico"}
             </p>
-            {!compact && (
+            {compact ? (
+              <p className="place-card__compact-facts">
+                <span>{primaryArchetype?.label ?? place.koppen}</span>
+                <span className="font-mono-num">{fmtElev(place.elevationM, dist)}</span>
+              </p>
+            ) : (
               <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 text-[11px] text-stone-readable max-w-md">
                 <dt className="text-stone-readable/85">Archetype</dt>
                 <dd className="text-frost truncate">{primaryArchetype?.label ?? "—"}</dd>
@@ -296,7 +301,9 @@ export const PlaceCard = memo(function PlaceCard({
           </div>
         </header>
 
-        {!compact && (
+        {compact ? (
+          <p className="text-[13px] text-frost leading-snug pt-2 line-clamp-1" title={prose(place.summaryShort)}>{prose(place.summaryShort)}</p>
+        ) : (
           <p className="text-sm text-frost leading-snug pt-3 line-clamp-2">{prose(place.summaryShort)}</p>
         )}
 
@@ -358,11 +365,11 @@ export const PlaceCard = memo(function PlaceCard({
           </div>
         )}
 
-        <div className="pt-3">
-          <div className="text-caption mb-1.5">Core numbers</div>
+        <div className={compact ? "pt-2" : "pt-3"}>
+          {compact ? null : <div className="text-caption mb-1.5">Core numbers</div>}
           <div className="place-card__inset-panel grid grid-cols-2 sm:grid-cols-4 gap-2 rounded-lg px-2 py-2">
             <Stat label="Summer high" value={fmtTemp(summerHighC, temp)} tone="ochre" />
-            <Stat label="January low" value={fmtTemp(janLowC, temp)} tone="glacier" />
+            <Stat label="Winter low" value={fmtTemp(janLowC, temp)} tone="glacier" />
             <Stat label={precipHeroLabel(place)} value={fmtPrecip(annualP, dist)} tone="sage" />
             <Stat label="Uniqueness" value={place.scores.microclimateUniqueness.toString()} tone="ice" />
           </div>

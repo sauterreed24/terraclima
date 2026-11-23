@@ -123,7 +123,7 @@ describe("PlaceDetail overview spotlight", () => {
 
     // The humanistic eyebrow + the four-season walkthrough.
     expect(screen.getByText("Summer high")).toBeInTheDocument();
-    expect(screen.getByText("January low")).toBeInTheDocument();
+    expect(screen.getByText("Winter low")).toBeInTheDocument();
     expect(screen.queryByText("Solar resource")).not.toBeInTheDocument();
     expect(screen.queryByText("JJA high")).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Why it feels different" })).toBeInTheDocument();

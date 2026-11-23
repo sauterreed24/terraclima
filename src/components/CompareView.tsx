@@ -1094,7 +1094,7 @@ export function CompareView({
                     <Row label="UNEP P/PET" value={bio ? bioclimRow(bio.unepAridity, v => v.toFixed(2), prose) : "—"} wide />
                     <Row label="Thornthwaite PET" value={bio ? prose(`${Math.round(bio.thornthwaitePet.value)} mm`) : "—"} />
                     <Row label="Summer high" value={fmtTemp(meanSummerHigh(p), temp, { digits: 1 })} />
-                    <Row label="Jan low" value={fmtTemp(meanJanLow(p), temp, { digits: 1 })} />
+                    <Row label="Winter low" value={fmtTemp(meanJanLow(p), temp, { digits: 1 })} />
                     <Row label="Annual precip" value={fmtPrecip(getAnnualPrecipMm(p), dist)} />
                     <Row label="Sunshine" value={observedSunshinePct(p) == null ? "—" : `${observedSunshinePct(p)}%`} />
                     <Row label="Frost-free" value={`${p.climate.frostFreeDays ?? "—"} d`} />
@@ -1240,7 +1240,7 @@ function buildGroupedComparisonRows(
       return profile ? `${compareLensScore(profile, lens)}/100` : "not graded";
     })),
     row("Comfort", "Summer high", places.map(place => fmtTemp(meanSummerHigh(place), tempUnit, { digits: 1 }))),
-    row("Comfort", "Jan low", places.map(place => fmtTemp(meanJanLow(place), tempUnit, { digits: 1 }))),
+    row("Comfort", "Winter low", places.map(place => fmtTemp(meanJanLow(place), tempUnit, { digits: 1 }))),
     row("Comfort", "Felt comfort", places.map(place => decisionScore(place, profile => profile.feltComfort))),
     row("Comfort", "Humidity", places.map(meanHumidity)),
     row("Seasonality", "Koppen", places.map(place => place.koppen)),

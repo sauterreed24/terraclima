@@ -1,5 +1,6 @@
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { LayoutGrid, Rows3 } from "lucide-react";
 import { PlaceCard } from "./PlaceCard";
 import type { BestWindow } from "../lib/best-months";
 import type { RankingProfile, RankingResult } from "../lib/scoring";
@@ -14,10 +15,12 @@ const ROW_GAP_PX = 12;
  * tall so the virtualizer does not under-reserve scroll range before measure.
  */
 export const PLACE_GRID_ROW_ESTIMATE_PX = {
-  desktop: 820,
-  mobile: 900,
+  desktop: 730,
+  mobile: 780,
   screeningDesktop: 1060,
   screeningMobile: 1140,
+  compactDesktop: 250,
+  compactMobile: 305,
 } as const;
 const OVERSCAN_ROWS = 3;
 /**
@@ -25,8 +28,24 @@ const OVERSCAN_ROWS = 3;
  * cards made the document ~96,000px tall (~208,000px on phones), so one pixel
  * of scrollbar-thumb drag jumped 120–270px. Batches keep the page short enough
  * that the scrollbar is controllable; "Show more" / "Show all" extend it.
+ *
+ * A full card is about a phone screen tall, so twelve is already a dozen
+ * screens of reading. Thirty-six left the page 17,000px (35,000px on phones).
  */
-export const PLACE_GRID_BATCH = 36;
+export const PLACE_GRID_BATCH = 12;
+/** Two-column compact rows are about a third the height, so a batch holds more. */
+export const PLACE_GRID_COMPACT_BATCH = 24;
+
+export type PlaceListDensity = "cards" | "compact";
+export const PLACE_LIST_DENSITY_STORAGE_KEY = "terraclima:list-density";
+
+function readStoredDensity(): PlaceListDensity {
+  try {
+    return window.localStorage.getItem(PLACE_LIST_DENSITY_STORAGE_KEY) === "compact" ? "compact" : "cards";
+  } catch {
+    return "cards";
+  }
+}
 const disableScrollAdjustment = () => false;
 
 function useGridColumns(): 1 | 2 {
@@ -81,15 +100,27 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   onBookmarkToggle?: (id: string) => void;
 }) {
   const cols = useGridColumns();
-  const showScreeningScores = shouldShowPlaceCardScreeningScores(rankingProfile, liveFitFilters);
+  const [density, setDensityState] = useState<PlaceListDensity>(readStoredDensity);
+  const compact = density === "compact";
+  // Two-up compact rows fit 24 in about three screens; one-up phones stay at 12.
+  const batch = compact && cols === 2 ? PLACE_GRID_COMPACT_BATCH : PLACE_GRID_BATCH;
+  const setDensity = (next: PlaceListDensity) => {
+    setDensityState(next);
+    try {
+      window.localStorage.setItem(PLACE_LIST_DENSITY_STORAGE_KEY, next);
+    } catch {
+      // Private mode: the choice simply lasts for this visit.
+    }
+  };
+  const showScreeningScores = !compact && shouldShowPlaceCardScreeningScores(rankingProfile, liveFitFilters);
 
   // A new ranking or filter set starts again from the first batch.
-  const listKey = `${rankingLabel}|${ranked.length}|${ranked.slice(0, 6).map(r => r.place.id).join(",")}`;
-  const [reveal, setReveal] = useState({ key: listKey, count: PLACE_GRID_BATCH });
-  let visibleCount = reveal.key === listKey ? reveal.count : PLACE_GRID_BATCH;
+  const listKey = `${density}|${rankingLabel}|${ranked.length}|${ranked.slice(0, 6).map(r => r.place.id).join(",")}`;
+  const [reveal, setReveal] = useState({ key: listKey, count: batch });
+  let visibleCount = reveal.key === listKey ? reveal.count : batch;
   // Opening a place from the map or search reveals the batch that holds it.
   const selectedIndex = selectedId ? ranked.findIndex(r => r.place.id === selectedId) : -1;
-  if (selectedIndex >= visibleCount) visibleCount = Math.ceil((selectedIndex + 1) / PLACE_GRID_BATCH) * PLACE_GRID_BATCH;
+  if (selectedIndex >= visibleCount) visibleCount = Math.ceil((selectedIndex + 1) / batch) * batch;
   visibleCount = Math.min(visibleCount, ranked.length);
   const visible = useMemo(() => ranked.slice(0, visibleCount), [ranked, visibleCount]);
   const remaining = ranked.length - visibleCount;
@@ -103,7 +134,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   const countRef = useRef<HTMLParagraphElement>(null);
   const focusCountRef = useRef(false);
   const showMore = (all: boolean) => {
-    const count = all ? ranked.length : visibleCount + PLACE_GRID_BATCH;
+    const count = all ? ranked.length : visibleCount + batch;
     focusCountRef.current = count >= ranked.length;
     setReveal({ key: listKey, count });
   };
@@ -143,6 +174,9 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   const virtualizer = useWindowVirtualizer({
     count: rowCount,
     estimateSize: () => {
+      if (compact) {
+        return cols === 1 ? PLACE_GRID_ROW_ESTIMATE_PX.compactMobile : PLACE_GRID_ROW_ESTIMATE_PX.compactDesktop;
+      }
       if (showScreeningScores) {
         return cols === 1 ? PLACE_GRID_ROW_ESTIMATE_PX.screeningMobile : PLACE_GRID_ROW_ESTIMATE_PX.screeningDesktop;
       }
@@ -168,11 +202,43 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
     return () => window.clearTimeout(t);
   }, [selectedId, visible, cols, rowCount, virtualizer]);
 
+  // Estimates differ by density; drop measurements taken in the other one.
+  useLayoutEffect(() => {
+    virtualizer.measure();
+  }, [compact, virtualizer]);
+
   if (rowCount === 0) return null;
 
   return (
-    <div ref={anchorRef} className="tc-card-grid">
+    <div className="tc-card-grid" data-density={density}>
+      <div className="tc-card-grid__toolbar">
+        <p className="tc-card-grid__range">
+          <span className="font-mono-num text-frost">1–{visibleCount}</span> of{" "}
+          <span className="font-mono-num text-frost">{ranked.length}</span>
+        </p>
+        <div className="tc-density-toggle" role="group" aria-label="List density">
+          <button
+            type="button"
+            className="tc-density-toggle__btn"
+            aria-pressed={!compact}
+            onClick={() => setDensity("cards")}
+            title="Full cards: year strip, core numbers and tags"
+          >
+            <LayoutGrid className="w-3.5 h-3.5" aria-hidden /> Cards
+          </button>
+          <button
+            type="button"
+            className="tc-density-toggle__btn"
+            aria-pressed={compact}
+            onClick={() => setDensity("compact")}
+            title="Compact rows: name and core numbers, three times as many per screen"
+          >
+            <Rows3 className="w-3.5 h-3.5" aria-hidden /> Compact
+          </button>
+        </div>
+      </div>
       <div
+        ref={anchorRef}
         className="w-full"
         style={{
           height: `${virtualizer.getTotalSize()}px`,
@@ -209,6 +275,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
                   resonantWindow={resonantWindow}
                   liveFitFilters={liveFitFilters}
                   showScreeningScores={showScreeningScores}
+                  compact={compact}
                   rankingProfile={rankingProfile}
                   homePlace={homePlace}
                   rank={start + colIndex + 1}
@@ -239,9 +306,9 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
         {remaining > 0 ? (
           <div className="tc-card-grid__more-actions">
             <button type="button" className="btn btn-ghost" onClick={() => showMore(false)}>
-              Show {Math.min(PLACE_GRID_BATCH, remaining)} more
+              Show {Math.min(batch, remaining)} more
             </button>
-            {remaining > PLACE_GRID_BATCH ? (
+            {remaining > batch ? (
               <button type="button" className="btn btn-ghost" onClick={() => showMore(true)}>
                 Show all {ranked.length}
               </button>
