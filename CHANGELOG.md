@@ -30,6 +30,11 @@ All notable changes to Terraclima are tracked here.
   - Mentone: dropped "outside the highest Smokies" (not in Alabama). La Ventosa: the gap wind is driven by Gulf of Mexico high pressure. Medford: the Klamath-Siskiyou ranges lie west and south.
   - Prince Rupert: "between about 2 and 16°C" replaces a phrase that converted to "a few degrees and the 57–61°F range".
 - **Anchorage snowfall:** 196 cm a year (77 in), was 100 cm.
+- **Sunshine estimate:** where a place has no station sunshine record, its share of possible sunshine is now estimated from the clearness index (solar energy reaching the ground over what arrives at the top of the atmosphere), fitted to the 1,542 place-months that have both. Mean error against station records is 8.7 points, down from 15.2, and the estimate no longer tracks latitude (Boulder's winter read 43% against a measured 67%; it now reads 64%).
+  - "Sunniest winters" uses the station record where a place has one and says which basis each figure rests on. Yuma, Álamos, Oaxaca, Borrego Springs and Death Valley lead; the top eight used to be all Mexico.
+  - The sunshine term in the comfort, place-feel and live-fit scores applies again. It had been silent for all 226 places since solar data replaced authored sunshine.
+- **Station check on seven suspect places** (GHCN-Daily, 1991–2025): Sitka is within 7% of its gauge, and Álamos, Xilitla, Zacatlán and Orizaba are inside the correction policy's tolerances or lack a qualifying station, so all keep the grid. Lone Pine reads about a third too wet against Independence, but that gauge is 25 km away and the policy allows 15 km. Creel has no usable station.
+- **Point Reyes** text now says which figures are the outer headland and which are Point Reyes Station, the lee-side village the data point sits in. **Ensenada** drops the "(Valle de Guadalupe)" suffix it shared with a separate entry.
 - **Visual:** the Explorer intro text sits at the top of its panel instead of under an empty band; the dossier's pinned chapter bar on phones is opaque, so text no longer shows through it; footer icons keep their size beside long text.
 
 ### Conversion accuracy, honest "twin, but…" lists, and an independent fact check
