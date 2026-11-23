@@ -18,6 +18,14 @@ describe("afternoon humidity for heat index", () => {
     expect((heatIndexC((90 - 32) * 5 / 9, 70) * 9) / 5 + 32).toBeCloseTo(105.9, 0);
   });
 
+  it("lets very dry heat read below the thermometer, as the NWS chart does", () => {
+    const f = (c: number) => (c * 9) / 5 + 32;
+    expect(f(heatIndexC(((100 - 32) * 5) / 9, 10))).toBeCloseTo(94.1, 0);
+    // Humid heat still reads above it, and mild air is returned unchanged.
+    expect(f(heatIndexC(((100 - 32) * 5) / 9, 40))).toBeCloseTo(109.3, 0);
+    expect(heatIndexC(20, 30)).toBe(20);
+  });
+
   it("keeps apparent highs physical across the atlas", () => {
     for (const place of PLACES) {
       for (const month of buildComfortPrecisionProfile(place).months) {

@@ -134,7 +134,13 @@ export function wetBulbStullC(tempC: number, relativeHumidityPct: number): numbe
   );
 }
 
-/** NWS heat-index equation with the sub-80F simple-formula guardrail. */
+/**
+ * NWS heat index (Rothfusz regression with both NWS adjustments). Below the
+ * 80°F threshold the index is not defined and the air temperature is returned.
+ * Above it the regression stands as published, so very dry heat reads a few
+ * degrees under the thermometer (100°F at 10% humidity is 94°F), as the NWS
+ * chart does. It used to be floored at the air temperature.
+ */
 export function heatIndexC(tempC: number, relativeHumidityPct: number): number {
   const t = cToF(tempC);
   const rh = clamp(relativeHumidityPct, 1, 100);
@@ -158,7 +164,7 @@ export function heatIndexC(tempC: number, relativeHumidityPct: number): number {
     hi += ((rh - 85) / 10) * ((87 - t) / 5);
   }
 
-  return fToC(Math.max(t, hi));
+  return fToC(hi);
 }
 
 function hasArchetype(p: Place, ids: readonly MicroclimateArchetype[]): boolean {

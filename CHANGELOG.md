@@ -14,6 +14,7 @@ All notable changes to Terraclima are tracked here.
   - New **Cards / Compact** switch above the list: compact rows show name, setting, one-line summary and core numbers at about a third of the height. The choice is remembered.
   - New **Top** button after a screen and a half of scrolling. On phones the footer clears the floating buttons.
 - **Heat index and wet-bulb** use the humidity of the afternoon (dew point held constant) instead of pairing the afternoon high with the daily-mean humidity. Austin's August heat index reads about 105°F, not 121°F; New Orleans in July about 101°F, not 113°F. Places with a peak apparent high of 100°F or more drop from 40 to 26.
+- **Dry heat:** the heat index is no longer floored at the air temperature. In very dry air it reads a few degrees under the thermometer, as the NWS chart does (100°F at 10% humidity is 94°F).
 - **Rankings that saturate** now order ties by the measurement itself. "Mildest winters" had 93 places tied at 100 and listed them alphabetically, so Key West ranked 35th; it now leads. Same for "best diurnal sleep" and "monsoon drama". Three rankings could go below zero and are now floored at 0.
 - **Köppen:** where both a dry summer and a dry winter qualify, the wetter half-year decides (Beck et al. 2018). Creel classifies Cwb, not Csb.
 - **2050 scenarios** now scale growing degree days with the projected temperatures; they stayed at today's value beside a longer frost-free season.
@@ -29,6 +30,7 @@ All notable changes to Terraclima are tracked here.
   - Osoyoos: "hottest pocket in the country and among its driest" (four atlas places are drier).
   - Mentone: dropped "outside the highest Smokies" (not in Alabama). La Ventosa: the gap wind is driven by Gulf of Mexico high pressure. Medford: the Klamath-Siskiyou ranges lie west and south.
   - Prince Rupert: "between about 2 and 16°C" replaces a phrase that converted to "a few degrees and the 57–61°F range".
+- **Sea-level places:** season lines no longer quote a near-zero elevation ("80°F afternoons at 0 ft" for New Orleans, "at 10 ft" for Charleston and others); they say "near sea level" or drop it.
 - **Anchorage snowfall:** 196 cm a year (77 in), was 100 cm.
 - **Sunshine estimate:** where a place has no station sunshine record, its share of possible sunshine is now estimated from the clearness index (solar energy reaching the ground over what arrives at the top of the atmosphere), fitted to the 1,542 place-months that have both. Mean error against station records is 8.7 points, down from 15.2, and the estimate no longer tracks latitude (Boulder's winter read 43% against a measured 67%; it now reads 64%).
   - "Sunniest winters" uses the station record where a place has one and says which basis each figure rests on. Yuma, Álamos, Oaxaca, Borrego Springs and Death Valley lead; the top eight used to be all Mexico.
