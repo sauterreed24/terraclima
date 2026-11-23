@@ -2,6 +2,8 @@
 
 Last updated: 2026-07-12. Baseline: `main` @ `5e6221a` (clean tree). Quality gate green before edits.
 
+This is a dated audit and is kept as written. Several names in it have since changed in the interface: Scout tools are now **Summary panels**, the Scout Brief is the **Top-picks summary**, Live Finder is **Must-haves**, Fit Finder is **Goals**, the decision matrix is **Side by side**, and a place dossier is a **profile** (its field dossier is **In depth**). The °C/metric switch has also been removed; the interface shows US units only.
+
 ## 1. Current product thesis
 
 Terraclima is a static North American microclimate atlas. The core question is why a place feels climatically different from its region, and what that difference means for visiting, living, growing, or investigating there. Discovery leads; relocation, ranking, tourism, and screening tools are progressive disclosure.

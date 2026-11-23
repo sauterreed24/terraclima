@@ -52,7 +52,9 @@ It is also an engineering portfolio piece: typed data, transparent scoring, dete
 
 The explorer is an Albers-projected North America atlas with tiered pins, climate previews, country and archetype filters, rankings, a top-picks summary for the current list, and shareable URL state. Start from discovery (**Most unique**), then branch into live-here fit, hidden gems, **Most comfortable**, or specialty rankings.
 
-Presets cover cool summers, mild winters, dry air, gardenability, low fire/smoke, four seasons, snow country, coastal buffering, quiet small towns, and a Mexico / Southwest dry-highland goal. Hard constraints let you cap summer highs, winter lows, growability, fire risk, and overall risk. The top-picks summary names the leading match, climate/risk spread, main caution, where contenders win, a scout-day order, and a decision matrix (fit, comfort, easy months, risk, land/garden, first caveat).
+**Goals** cover cool summers, mild winters, dry air, gardenability, low fire/smoke, four seasons, snow country, coastal buffering, quiet small towns, and a Mexico / Southwest dry-highland goal. **Must-haves** set hard limits: Max summer high, Min winter low, a growability floor, Max fire risk, and a ceiling on overall risk. The **Top-picks summary** names the leading match, the climate and risk spread, the main caution, where each contender wins, a scout-day order, and a **Side by side** table (fit, comfort, easy months, risk, land/garden, first caveat).
+
+The ranked list loads 12 places at a time. A **Cards / Compact** switch above it trades the full card for a one-line row at about a third of the height, and the choice is remembered. A **Top** button appears after a screen and a half of scrolling. The intro panel stays open while you scroll; **Map first** compacts it on request.
 
 On a phone, navigation folds into a hamburger and filters into a bottom sheet; on a wide screen the filter dock stays beside the map.
 
@@ -71,7 +73,7 @@ On a phone, navigation folds into a hamburger and filters into a bottom sheet; o
 
 Each **place profile** is a long-form field guide: opening story, a photograph of the place, at-a-glance facts, practical scouting cards, live-here reasons and cautions, seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, climate twins, settlements, things to do, citations, and confidence notes. The Overview leads with why the climate differs, nearby contrast, a short settlement history, and a season-by-season feel.
 
-**Home base (“vs home”):** pin any corpus place as home from the dossier, **H**, or `?hb=`. Cards grow a compact delta strip; dossiers add a **Versus your home base** section; Compare diffs finalists against home (with **Add home**). Deltas use authored 1991–2020 normals; under a 2050 scenario, projected is compared to projected so timelines never mix. See [`src/lib/home-base.ts`](src/lib/home-base.ts).
+**Home base (“vs home”):** pin any corpus place as home from its profile, **H**, or `?hb=`. Cards grow a compact delta strip; profiles add a **Versus your home base** section; Compare diffs finalists against home (with **Add home**). Deltas use the atlas's current normals (1996–2025); under a 2050 scenario, projected is compared to projected so timelines never mix. See [`src/lib/home-base.ts`](src/lib/home-base.ts).
 
 **Climate twins:** every profile answers *where else feels like here across the year?* — warmth, seasonal shape, maritime↔continental swing, moisture amount and timing, air (humidity/sun/diurnal), and shared terrain mechanism. **"Twin, but —"** steers toward milder winters, warmer, cooler, drier, or lower risk without letting unrelated climates jump the queue. See [`src/lib/climate-analog.ts`](src/lib/climate-analog.ts).
 
@@ -79,18 +81,28 @@ Each **place profile** is a long-form field guide: opening story, a photograph o
 
 ### Rank, compare, remember, hand off
 
-- **Ranking lenses:** live-here fit, hidden gems, coolest summers, mildest winters, shoulder seasons, growability, low fire risk, diurnal sleep climate, geospatial signal, monsoon drama, wet-forest refuges, Mediterranean-like conditions, and more.
+- **Rankings:** Most unique, Most comfortable, Live-here fit, Hidden gems, Best for retirement, Coolest summers, Mildest winters, Sunniest winters, Best shoulder seasons, Driest air, Best growability, Lowest fire risk, Best four-season, Coolest nights for sleep, Strongest terrain signal, Strongest summer monsoon, Wet-forest refuges, Mediterranean-like, and more. Each one scores what its name says (constants in `RANKING_PARAMS`, [`scoring.ts`](src/lib/scoring.ts)):
+  - **Mildest winters** and **Driest air** are straight scales with no cap: the winter low (the December–February mean low, labelled **Winter low**) from −25°C to 18°C, and mean annual humidity from 82.5% down to 20%.
+  - **Coolest nights for sleep** scores summer nights in a 10–17°C band (60%) and the drop from the afternoon (40%), less a penalty for muggy nights.
+  - **Strongest summer monsoon** scores the share of the year's rain that falls July–September (70 points) and how much rain that is (30 points).
+  - **Best four-season** asks for a winter that freezes, a warm summer, and a spring and autumn between them.
+  - **Best shoulder seasons** scores April–May and September–October highs against 20°C, plus spring and autumn rain and sunshine.
+  - **Wet-forest refuges** count the driest month as well as the annual total, so a place needs rain all year.
+  - **Mediterranean-like** needs a wet winter as well as a dry summer.
+  - **Lowest fire risk** combines wildfire and smoke grades and orders ties by warm-season rain.
+  - **Sunniest winters** uses the station sunshine record where a place has one, otherwise an estimate, and says which.
+  - Rankings that would tie are ordered by the underlying measurement.
 - **Compare:** up to four places with a finalist verdict, scout sequence, comfort/livability rows, climate ribbons, and focus-managed modal behavior.
 - **Shortlist:** bookmarks persist in your browser (`localStorage`). Export Markdown scout plans or JSON / CSV / GeoJSON / ICS from [`src/lib/shortlist-export.ts`](src/lib/shortlist-export.ts). Copy/share the current filtered view (`navigator.share` where available, clipboard otherwise).
-- **Recently viewed:** last ten profiles on this device. **Print** a profile for a paper-ready brief. Profiles show reading progress and a back-to-top control on long dossiers.
+- **Recently viewed:** last ten profiles on this device. **Print** a profile for a paper-ready brief. Profiles show reading progress and a back-to-top control.
 - **Collections & Learn:** curated bundles and a glossary tying mechanisms (lapse rate, cold-air pooling, orographic lift, marine layer, foehn, thermal belts, karst) to real places.
-- **Units:** corpus authored in metric; the UI localizes temperatures, precip, snow, elevation, wind, and distance for °F/°C (and related units).
+- **Units:** the corpus is authored in metric and the interface shows US units only (°F, inches, feet, miles), converted at render time by `localizeProse` and the formatters in [`units.ts`](src/lib/units.ts). There is no °C switch; `temp=` and `dist=` in older links are ignored and dropped from the address bar. CSV and JSON exports give elevation in feet.
 - **Theme:** Auto / Light / Dark (Sonoran-courtyard light, moonlit dark); atlas map shell stays intentionally dark. Shareable via `?theme=` and remembered in `localStorage`.
 - **Install / offline:** PWA shell precaches so the atlas opens offline after one visit (iOS Add to Home Screen, Android / desktop install icons).
 
 ### Livability, without pretending it’s simple
 
-The hero **Livability blend** mixes felt thermal comfort, atmospheric ease (sky/fog, wind, humidity or arid strain, smoke/air, solar burden), a tail-risk-aware hazard cushion, precipitation moderation, resilience and growability, and lived friction (cost pressure, social fabric, daily services). Fog-belt coasts, hard deserts, humid warm nights, ferry-only outposts, and deep-cold Alaska sit in the same frame as “easy” places — with breakdowns and narratives so you can see *why* a rank landed where it did. See [`src/lib/livability-score.ts`](src/lib/livability-score.ts), [`src/lib/live-fit.ts`](src/lib/live-fit.ts), and [`src/lib/scoring.ts`](src/lib/scoring.ts).
+The hero **Livability blend** mixes felt thermal comfort, atmospheric ease (sky/fog, wind, humidity or arid strain, smoke/air, solar burden), a tail-risk-aware hazard cushion, precipitation moderation, resilience and growability, and lived friction (housing pressure and access remoteness, shown under **Cost and access**). Fog-belt coasts, hard deserts, humid warm nights, ferry-only outposts, and deep-cold Alaska sit in the same frame as “easy” places — with breakdowns and narratives so you can see *why* a rank landed where it did. See [`src/lib/livability-score.ts`](src/lib/livability-score.ts), [`src/lib/live-fit.ts`](src/lib/live-fit.ts), and [`src/lib/scoring.ts`](src/lib/scoring.ts).
 
 ### Keyboard shortcuts (high level)
 
@@ -102,9 +114,9 @@ Free, public, quality-first: fast to open, easy to share, trustworthy to inspect
 
 - No signup wall — the atlas opens immediately.
 - Rankings, profile depth, citations, confidence notes, and risk caveats *are* the product surface.
-- Copy current view and `?p=` profile links so scouting state and dossiers move cleanly between devices.
+- Copy current view and `?p=` profile links so scouting state and profiles move cleanly between devices.
 - Canonical public URL: `https://sauterreed24.github.io/terraclima/`.
-- `npm run quality:check` guards URL parsing, metadata, ranking, corpus shape, prose, °C and polish playtests, coverage, production builds, and gzip byte budgets. Atlas gesture/framing regressions are covered by Vitest atlas suites plus the optional local `npm run playtest:map` sweep. Broader route smoke lives in `npm run playtest:browser` (CI: browser-smoke workflow).
+- `npm run quality:check` guards URL parsing, metadata, ranking, corpus shape, prose, unit-conversion and polish playtests, coverage, climate-data and research verification, production builds, and gzip byte budgets. Atlas gesture/framing regressions are covered by Vitest atlas suites plus the optional local `npm run playtest:map` sweep. Broader route smoke lives in `npm run playtest:browser` (CI: browser-smoke workflow).
 
 ## Climate intelligence
 
@@ -113,7 +125,7 @@ Terraclima combines editorial research with deterministic analysis. It does **no
 - **Terrain and exposure:** elevation, relief, slope context, coast, barriers, valley geometry, regional position.
 - **Climate normals:** monthly temperature, precip, snowfall, seasonality, diurnal range, climate class.
 - **Risk and resilience:** fire, heat, drought, flood, humidity, wind, snow, water stress, long-term pressure — as decision signals, not guarantees.
-- **Live-here scoring:** [`src/lib/live-fit.ts`](src/lib/live-fit.ts) blends comfort, resilience, hazards, growability, hidden-gem signal, presets, and constraints into a match score with plain-language reasons and cautions. No live feeds, appraisal, insurance, or medical heat-stress modeling.
+- **Live-here scoring:** [`src/lib/live-fit.ts`](src/lib/live-fit.ts) blends comfort, resilience, hazards, growability, hidden-gem signal, presets (shown as **Goals**), and constraints (shown as **Must-haves**) into a match score with plain-language reasons and cautions. No live feeds, appraisal, insurance, or medical heat-stress modeling.
 - **Geospatial screening:** where remote-sensing indices, thermal contrast, snow, moisture, burn history, or relief texture would add interpretive value.
 - **Local contrasts:** nearby differences, because microclimate only means something against the surrounding landscape.
 
@@ -123,12 +135,12 @@ Terraclima combines editorial research with deterministic analysis. It does **no
 - **Explainable scoring:** [`scoring.ts`](src/lib/scoring.ts), [`geospatial-analysis.ts`](src/lib/geospatial-analysis.ts), [`atlas-corpus-stats.ts`](src/lib/atlas-corpus-stats.ts).
 - **Verifiable Köppen class:** [`koppen.ts`](src/lib/koppen.ts) recomputes class from monthly normals and reconciles with the authored label; corpus gate errors on gross mislabels; Mediterranean-like ranking and analog family signals use the computed class.
 - **Bioclimatic indices:** [`bioclim.ts`](src/lib/bioclim.ts) — De Martonne, Conrad, Thornthwaite PET, Selianinov, UNEP P/PET — with percentiles, citations, Compare rows, and corpus invariants.
-- **Shortlist / practical / tourism synthesis:** [`explorer-scout-brief.ts`](src/lib/explorer-scout-brief.ts), [`decision-matrix.ts`](src/lib/decision-matrix.ts), [`practical-read.ts`](src/lib/practical-read.ts), [`climate-tourism.ts`](src/lib/climate-tourism.ts).
+- **Shortlist / practical / tourism synthesis:** [`explorer-scout-brief.ts`](src/lib/explorer-scout-brief.ts) (the **Top-picks summary**), [`decision-matrix.ts`](src/lib/decision-matrix.ts) (the **Side by side** table), [`practical-read.ts`](src/lib/practical-read.ts), [`climate-tourism.ts`](src/lib/climate-tourism.ts).
 - **Validation:** [`sanity-check.ts`](scripts/sanity-check.ts), [`audit-corpus.ts`](scripts/audit-corpus.ts), [`test-prose.ts`](scripts/test-prose.ts), [`corpus-rank-gold.ts`](scripts/corpus-rank-gold.ts).
 - **Tests:** `src/lib/__tests__/` (including atlas fit/zoom/cluster/keyboard/touch math) and `src/__tests__/AtlasMap.dom.test.tsx` for real map DOM behavior.
 - **Accessibility:** focus traps on dialogs; live region for filtered counts; pins and clusters share one roving-tabindex; visible focus on map controls; `aria-pressed` / `aria-expanded` on toggles.
-- **Map performance:** custom SVG Albers atlas (no Mapbox/Leaflet/tiles) — drag without React thrash, rAF-coalesced wheel zoom, lazy topology, mobile clustering, capability-gated effects. Framing/clamp/wheel handoff/scroll escape live in `atlas-map-fit.ts`, `atlas-map-zoom.ts`, `atlas-map-cluster.ts`, `atlas-map-keyboard.ts`, `atlas-map-touch-gesture.ts`; [`use-atlas-map-view.ts`](src/hooks/use-atlas-map-view.ts) commits clamped view state.
-- **Cards & bundles:** virtualized place grid; cold routes (Trips, Collections, Learn, Detail, Compare) code-split; post-build performance budget.
+- **Map performance:** custom SVG Albers atlas (no Mapbox/Leaflet/tiles) — drag without React thrash, rAF-coalesced wheel zoom (a page scroll that passes over the map keeps scrolling the page; a wheel that starts over the map zooms it), lazy topology, mobile clustering, capability-gated effects. Framing/clamp/wheel handoff/scroll escape live in `atlas-map-fit.ts`, `atlas-map-zoom.ts`, `atlas-map-cluster.ts`, `atlas-map-keyboard.ts`, `atlas-map-touch-gesture.ts`; [`use-atlas-map-view.ts`](src/hooks/use-atlas-map-view.ts) commits clamped view state.
+- **Cards & bundles:** window-virtualized place list, loaded in batches of 12 with a Cards / Compact switch; cold routes (Trips, Collections, Learn, Detail, Compare) code-split; post-build performance budget.
 - **CI:** [`.github/workflows/quality.yml`](.github/workflows/quality.yml) runs `npm run quality:check` on PRs and non-`main` pushes. [`.github/workflows/browser-smoke.yml`](.github/workflows/browser-smoke.yml) runs the Playwright browser suite against a local preview.
 
 ## Performance targets
@@ -144,15 +156,19 @@ Tuned for real devices, not only high-end laptops.
 Structured editorial research backed by public climate and geospatial references. See [`docs/CLIMATE-DATA-V2.md`](docs/CLIMATE-DATA-V2.md) for formulas and pipeline commands.
 
 - **Current climate (Now):** Daymet V4 R1 rolling **1996–2025** climatology (not a WMO standard normal). Official **1991–2020** WMO normals remain the same-source comparison/reference.
-- **Station validation:** NOAA/GHCN-D & normals (USA), ECCC (Canada), SMN/WMO (Mexico) validate the grid — they do not silently replace it.
+- **Station validation and correction:** NOAA/GHCN-D & normals (USA), ECCC (Canada), SMN/WMO (Mexico) validate the grid. Where a representative GHCN-Daily station sits beside a place (within 15 km and 100 m of elevation, 15 or more overlapping years, no disagreeing neighbour), the grid is corrected month by month to that station, and the profile shows “validated” with the station named. 53 places carry a correction.
+- **Humidity:** Daymet vapour pressure is scaled month by month to hourly dew points from the nearest representative ISD station (within 40 km for 183 places; a reviewed regional station for 17 more).
+- **Sunshine:** station sunshine records where a place has one. Elsewhere the share of possible sunshine is estimated from the clearness index (solar energy at the ground over what arrives at the top of the atmosphere), fitted to the place-months that have both.
+- **Heat index and wet-bulb:** computed from the afternoon high with the humidity of the afternoon (dew point held constant), not the daily-mean humidity. Shown in the profile's **Heat and humidity** section.
+- **Frost-free season:** the median season between the last spring freeze and the first autumn freeze.
 - **Fallback / QA:** ERA5-Land only for Daymet failure, offshore/land-mask exceptions, or independent QA. WorldClim 2.1 (1970–2000) is a historical comparator, not “current” provenance.
 - **Projections:** NASA NEX-GDDP-CMIP6 ensemble deltas (median + P10/P90) when ingested; research/screening only.
 - **Earth observation context:** Sentinel-2 / Landsat for spectral screening (NDVI-class, thermal, moisture, snow, burn history).
 - **Relief texture:** screening where finer topography would materially improve interpretation.
 
-Every place carries citations plus split `editorialConfidence` / `climateDataConfidence`. Derived scores stay conservative; interpretive content is labeled as such. The dossier Evidence disclosure separates measured normals, editorial context, deterministic calculations, projections, and screening scores, including a compact vs-1991–2020 receipt.
+Every place carries citations plus split `editorialConfidence` / `climateDataConfidence`. Derived scores stay conservative; interpretive content is labeled as such. The profile's Evidence disclosure separates measured normals, editorial context, deterministic calculations, projections, and screening scores, including a compact vs-1991–2020 receipt.
 
-The corpus covers **226** North American places, including **8 Tier A flagships** and **54 Tier B** deeper relocation/travel candidates. Tier A/B entries require confidence notes, at least two URL-backed citations, and deep-section coverage. Every profile now carries a researched **Overview history** (settlement, land use, people) plus a longer **People and land** field-dossier chapter, so the first screen is a place you can actually get to know rather than a climate table with a caption.
+The corpus covers **226** North American places, including **8 Tier A flagships** and **54 Tier B** deeper relocation/travel candidates. Tier A/B entries require confidence notes, at least two URL-backed citations, and deep-section coverage. Every profile now carries a researched **Overview history** (settlement, land use, people) plus a longer **People and land** chapter under **In depth**, so the first screen is a place you can actually get to know rather than a climate table with a caption.
 
 ## Stack
 
@@ -249,6 +265,10 @@ npm run audit:corpus
 npm run sanity
 npm run corpus:coverage
 npm run test:corpus-gold
+npm run climate:data:verify
+npm run corpus:research:verify
+npm run corpus:voice:check
+npm run corpus:consistency:check
 npm run build
 npm run check:performance-budget
 ```
@@ -266,10 +286,10 @@ npm run lint               # ESLint src/ + scripts/ (--max-warnings 0)
 npm run test               # Vitest unit + light DOM tests
 npm run test:watch         # Vitest watch
 npm run test:prose         # Prose / unit localization regressions
-npm run test:celsius       # °C localization playtest
+npm run test:celsius       # Unit-conversion playtest (metric source → US units)
 npm run playtest:polish    # UI polish / copy consistency
 npm run playtest:map       # Real-browser atlas sweep (local preview + playwright-core; not in quality:check)
-npm run playtest:browser   # Product smoke: Explorer/map/dossier/Compare + axe (alias: test:browser)
+npm run playtest:browser   # Product smoke: Explorer/map/profile/Compare + axe (alias: test:browser)
 npm run check:metadata     # Shell / discovery metadata
 npm run check:performance-budget # Cold-route modulepreload + initial gzip byte budgets
 npm run audit:corpus       # Corpus prose / units / consistency
@@ -290,7 +310,8 @@ CI cannot fully exercise touch or real-device GPUs. After layout, map, nav, or o
 | **Filters** | Bottom “Filters & rank” sheet; **`F`** | Sticky dock (≥1024px) |
 | **Top-picks summary** | Stacks; Compare leaders opens without clipping | Readable between rank strip and livability lens |
 | **Climate Trips** | Cards fit; Compare top stops works | Pinning returns to Explorer; profiles open |
-| **Map gestures** | One-finger pan/pinch; **Scroll page** / **Use map** | Wheel zooms while room remains; at limits unused wheel scrolls the page; pan stays bounded |
+| **Map gestures** | One-finger pan/pinch; **Scroll page** / **Use map** | A page scroll that passes over the map keeps scrolling the page; a wheel that starts over the map zooms it; pan stays bounded |
+| **List** | 12 places per batch; **Cards / Compact** switch; **Top** button | Same; scrollbar does not lurch while scrolling; intro panel does not collapse on its own |
 | **Map framing** | Fit/selection clear of chrome; rotate width↔height without losing the landmass | Dock-aware frame; tooltip/picker stay on the pin |
 | **Map keyboard** | Tab in; arrows walk pins **and** clusters; `0` / `=` / `-` | One Tab stop among markers |
 | **Most comfortable** | `?r=most-comfortable` — key/readout/hover: fill = driver · aura = feel · gold = comfort leaders | Same on hover |
@@ -298,11 +319,11 @@ CI cannot fully exercise touch or real-device GPUs. After layout, map, nav, or o
 
 Try ~**375px**, **768px**, **1024px**, and full desktop. Run `npm run quality:check` first.
 
-**Dossier layout:** `scripts/playtest-visual.mjs` opens every place profile in headless Chromium and fails on horizontal overflow or clipped chart/header collisions. Needs `npm run preview` plus a local `playwright-core` install (see script header). Not in `quality:check`.
+**Profile layout:** `scripts/playtest-visual.mjs` opens every place profile in headless Chromium and fails on horizontal overflow or clipped chart/header collisions. Needs `npm run preview` plus a local `playwright-core` install (see script header). Not in `quality:check`.
 
 **Atlas map:** `npm run playtest:map` against a local preview. Centers on `/?r=most-comfortable`, sweeps **1440×900** → **360×800**, checks overflow and unified roving focus, exercises fit/pan/zoom keys, wheel, pin open, cluster activate, orientation flip, light/dark low-power, and hybrid scroll escape. Local-only base URL; off-host network aborted. Artifacts: `/opt/cursor/artifacts/playtest-map` or `TC_MAP_ARTIFACT_DIR`. Run after `AtlasMap`, `atlas-map-*`, map styles, or map keyboard/touch changes.
 
-**Browser smoke:** `npm run playtest:browser` (or `test:browser`) after `npm run build` + `npm run preview`. Covers discovery load, empty-results recovery, dossier evidence disclosure, Compare under a scenario layer, map keyboard/touch samples, and axe serious/critical checks across light/dark and several viewports. Network is local-only. Artifacts: `TC_BROWSER_ARTIFACT_DIR` (default `/opt/cursor/artifacts/playtest-browser`). Install Chromium once with `npx playwright install chromium`. CI runs this in `browser-smoke.yml`; it is intentionally not part of `quality:check`.
+**Browser smoke:** `npm run playtest:browser` (or `test:browser`) after `npm run build` + `npm run preview`. Covers discovery load, empty-results recovery, the profile's Evidence disclosure, Compare under a scenario layer, map keyboard/touch samples, and axe serious/critical checks across light/dark and several viewports. Network is local-only. Artifacts: `TC_BROWSER_ARTIFACT_DIR` (default `/opt/cursor/artifacts/playtest-browser`). Install Chromium once with `npx playwright install chromium`. CI runs this in `browser-smoke.yml`; it is intentionally not part of `quality:check`.
 
 ## Human review guide
 
@@ -337,11 +358,10 @@ src/
     AtlasMapTooltip.tsx        Compact hover / focus peek (name, archetype, climate line)
     charts/                    SVG chart primitives
     chrome/                    TopBar / Footer / LogoMark / ShortcutsOverlay / ThemeToggle
-    place-detail/              Per-section dossier + shared UI primitives
+    place-detail/              Per-section profile components + shared UI primitives
     ExplorerFilterSheet.tsx    Mobile filter dialog + FAB
     ClimateTripsView.tsx       Trip-theme funnel
     FootprintPanel.tsx         Country / tier counts
-    TempToggle.tsx             °F / °C control
   data/                        Places, collections, archetypes, glossary, field notes
   hooks/                       Focus trap, media query, reading spy, atlas view commit
     use-atlas-map-view.ts      Clamped pan/zoom commit helpers

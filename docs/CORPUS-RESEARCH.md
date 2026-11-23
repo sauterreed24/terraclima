@@ -1,4 +1,4 @@
-# Corpus research, voice, and lived indicators
+# Corpus research, voice, and cost-and-access indicators
 
 ## Base SHA
 
@@ -19,9 +19,11 @@ This overhaul started from `origin/main` at
   for all 226 place IDs.
 - **Voice guide**: `docs/VOICE-GUIDE.md`.
 
-## Lived indicators
+## Cost and access (lived indicators)
 
-`socialStress` is removed from UI, ranking, and published data. Lived reality
+The profile section is titled **Cost and access**; the code calls these fields
+lived indicators (`liveSignals`, `lived-indicators.ts`). `socialStress` is
+removed from UI, ranking, and published data. Lived reality
 uses housing pressure (within-country percentile) and access remoteness, with
 optional dated fields for housing-cost burden, hospital/airport minutes,
 service-hub class, and transport constraints. Missing data is not imputed.

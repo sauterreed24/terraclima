@@ -1,6 +1,8 @@
 # Terraclima Improvement Context
 
-Last reconciled: 2026-07-12.
+Last reconciled: 2026-11-23.
+
+Interface names changed after much of this file was written. Code identifiers keep the older words; the visible names are: **Goals** (Fit Finder, `fit=` presets), **Must-haves** (Live Finder limits), **Summary panels** (Scout tools), **Top-picks summary** (Scout Brief / Scout Board, `explorer-scout-brief.ts`), **Side by side** (decision matrix, `decision-matrix.ts`), **profile** (dossier), **In depth** (field dossier), **Heat and humidity** (comfort precision, `PlaceComfortPrecision`), **Cost and access** (lived indicators), and **Winter low** (January low: the December–February mean low).
 
 ## Repo Reality
 
@@ -38,13 +40,13 @@ npm run playtest:browser
 
 ## Evidence hierarchy (2026-07)
 
-- [`src/lib/evidence-summary.ts`](../src/lib/evidence-summary.ts) classifies dossier sections and citations into measured normals, authored context, deterministic derivation, regional projection, screening scores, and field observations.
-- The dossier surfaces a compact Evidence disclosure and section labels; rankings remain screening aids.
+- [`src/lib/evidence-summary.ts`](../src/lib/evidence-summary.ts) classifies profile sections and citations into measured normals, authored context, deterministic derivation, regional projection, screening scores, and field observations.
+- The profile surfaces a compact Evidence disclosure and section labels; rankings remain screening aids.
 - Compare uses [`placeForCompareSlot`](../src/lib/climate-projection.ts) so out-of-pool slots under `scn≠now` stay on the projected layer.
 
 ## Filter state contract
 
-- **`createEmptyFilterState()`** in [`src/lib/scoring.ts`](../src/lib/scoring.ts) is the canonical reset for “clear all filters” (omits optional Live Finder / elevation keys).
+- **`createEmptyFilterState()`** in [`src/lib/scoring.ts`](../src/lib/scoring.ts) is the canonical reset for “clear all filters” (omits optional Must-haves / elevation keys).
 - **`filterStateFromValidated()`** hydrates explorer filters from URL-validated fields on first paint and `popstate` — keep in sync with [`validatedStateFromSearch`](../src/lib/app-url.ts), not duplicated in `App.tsx`.
 - **`hasActiveExplorerFilters()`** / **`countActiveExplorerFilterSignals()`** are the single source for “filters active” in FilterBar and the mobile filter sheet badge.
 - **FilterBar `onClearAll`:** Lens Receipt / sheet Clear all must call App’s `clearAllFilters` (empty filters **and** clear curated `col`). Do not leave FilterBar on a local `createEmptyFilterState()`-only clear.
@@ -58,10 +60,10 @@ npm run playtest:browser
 
 ## Evolution v4.8 (2026-05)
 
-- **Apparent-comfort (UTCI-style) proxy:** [`apparentComfortIndex`](../src/lib/comfort-precision.ts) reuses the existing heat-index + wet-bulb shade math to report a warm-season thermal-strain band. It is explicitly **not** a true UTCI (the corpus has no wind / solar / mean-radiant inputs); the UI carries that caption. Surfaced in `PlaceComfortPrecision` and a `CompareView` row.
-- **2050 scenario projection:** [`src/lib/climate-projection.ts`](../src/lib/climate-projection.ts) deterministically morphs normals to SSP2-4.5 / SSP5-8.5 mid-century layers from a coarse **sourced regional anomaly table** (country + latitude band; IPCC AR6 Atlas, NASA NEX-GDDP-CMIP6). No per-site fabrication; authored `Place.projection` overrides win. `scn=` URL param; the dossier stays present-day.
+- **Apparent-comfort (UTCI-style) proxy:** [`apparentComfortIndex`](../src/lib/comfort-precision.ts) reuses the existing heat-index + wet-bulb shade math to report a warm-season thermal-strain band. It is explicitly **not** a true UTCI (the corpus has no wind / solar / mean-radiant inputs); the UI carries that caption. Surfaced in `PlaceComfortPrecision` (the profile's **Heat and humidity** section) and a `CompareView` row. Since then the heat index and wet-bulb use the humidity of the afternoon (dew point held constant) with the afternoon high, the heat index is no longer floored at the air temperature, and the band uses each place's warmest three months instead of always June–August.
+- **2050 scenario projection:** [`src/lib/climate-projection.ts`](../src/lib/climate-projection.ts) deterministically morphs normals to SSP2-4.5 / SSP5-8.5 mid-century layers from a coarse **sourced regional anomaly table** (country + latitude band; IPCC AR6 Atlas, NASA NEX-GDDP-CMIP6). No per-site fabrication; authored `Place.projection` overrides win. `scn=` URL param; the profile stays present-day. Projected growing degree days scale with the projected temperatures.
 - **Compute worker:** [`src/workers/climate-processor.worker.ts`](../src/workers/climate-processor.worker.ts) + [`use-climate-processor`](../src/hooks/use-climate-processor.ts) run the project→filter→rank pipeline off-thread via the pure [`runScenarioRanking`](../src/lib/climate-processor.ts) orchestrator. HONEST SCALE NOTE: at 226 places the synchronous path is ~1 ms, so the worker is architectural headroom (loaded lazily only when a future scenario is engaged), not a measured win; the sync seed is the source of truth and tests run synchronously.
-- **Native CSS:** Tailwind v4 `@property`-registered animatable accent (motion-gated), container queries on `.place-card` / `.tc-compare-col` / `.tc-card-grid`, `@starting-style` entry. The window virtualizer still drives card column COUNT in JS (it needs it for row math); container queries handle per-card/per-column internals.
+- **Native CSS:** Tailwind v4 `@property`-registered animatable accent (motion-gated), container queries on `.place-card` / `.tc-compare-col` / `.tc-card-grid`, `@starting-style` entry. The window virtualizer still drives card column COUNT in JS (it needs it for row math); container queries handle per-card/per-column internals. The list now loads in batches (`PLACE_GRID_BATCH` = 12; 24 for two-column compact rows) with a **Cards / Compact** switch, and off-screen rows report their measured height.
 - **Vite 8:** `server.forwardConsole` forwards browser + worker runtime errors to the dev terminal. `resolve.tsconfigPaths` left off (no `paths` map; would be a no-op).
 - **Projection data integrity:** `sanity-check` + `audit-corpus` validate any authored `Place.projection` deltas (finite, plausibility-bounded, pathway ordering) — dormant until per-place overrides are authored.
 
@@ -69,9 +71,9 @@ npm run playtest:browser
 
 - **Lifestyle bundles:** [`src/lib/lifestyle-bundles.ts`](../src/lib/lifestyle-bundles.ts) — hero quick-picks and FilterBar dock share `applyLifestyleBundle()`; auto **`live-fit`** ranking when constraints are active without a full bundle match.
 - **Map ↔ list:** `AtlasMap` pans to the selected pin via `fitMapViewToPoints` (respects `motionPolicy()`); `VirtualPlaceGrid` scrolls the selected card into view (debounced `scrollToIndex`).
-- **Compare → profile:** Compare column titles and highlight strips call `onOpenPlace` with `{ trigger }`; App closes Compare with `restoreFocus: false`, skips Compare-trigger restore while a dossier is open, and returns focus to the Explorer Compare launcher (or main) when the dossier closes.
+- **Compare → profile:** Compare column titles and highlight strips call `onOpenPlace` with `{ trigger }`; App closes Compare with `restoreFocus: false`, skips Compare-trigger restore while a profile is open, and returns focus to the Explorer Compare launcher (or main) when the profile closes.
 - **Visit-now month pin:** `useRankingCalendarMonth` supplies a shared `nowEpochMs` / `referenceMonth` to the climate processor, baseline reshuffle pass, and `VirtualPlaceGrid` cards; refreshes on visibility/focus so month-boundary tabs stay coherent.
-- **Share depth:** `CopyPlaceLink` uses `shareUrl()` and preserves `#deep-…` dossier section hashes when copying from a scrolled profile.
+- **Share depth:** `CopyPlaceLink` uses `shareUrl()` and preserves `#deep-…` profile section hashes when copying from a scrolled profile.
 - **Corpus:** 28 fog-belt / cool-summer-maritime places now ship station-sourced `climate.humidity` (sanity WARNs cleared).
 
 ## Improvement Priorities
@@ -88,7 +90,7 @@ npm run playtest:browser
 After visual or map-pin changes, spot-check in the browser:
 
 - **Light beauty pass:** Explorer hero glow → lens receipt chips → place card hover → open place detail; surfaces should feel layered (inset highlights, not flat white slabs in nested blocks).
-- **Dark theme:** lens receipt, Live Finder (`.tc-accent-panel`), reading nav, map loading pill, and **climate scenario control** should read as moonlit jewel/chrome — no paper-white flash on `data-theme="dark"`. Hero spectrum bar and map instrument contrast unchanged. In the dossier, also spot-check the place-signature panel, At a glance lattice, Field story, and field-dossier shell (their light defaults are hardcoded paper; dark remaps live near the other `html[data-theme="dark"]` drawer rules).
+- **Dark theme:** lens receipt, Must-haves (`.tc-accent-panel`), reading nav, map loading pill, and **climate scenario control** should read as moonlit jewel/chrome — no paper-white flash on `data-theme="dark"`. Hero spectrum bar and map instrument contrast unchanged. In the profile, also spot-check the place-signature panel, At a glance lattice, Field story, and the **In depth** shell (their light defaults are hardcoded paper; dark remaps live near the other `html[data-theme="dark"]` drawer rules).
 - **No-blur tier:** with DevTools CPU throttling/save-data (or `html.tc-low-power`), open Compare and the shortcuts overlay — the scrim must fall back to the opaque `--tc-scrim-veil` + tint stack, not a see-through tint. Avoid `!important` on layered component rules that dark mode needs to override: important-in-layer beats the unlayered dark remap.
 - **Motion tier:** `document.documentElement.dataset.motion` follows `motionPolicy()` (`full` / `minimal` / `reduced`). With OS reduce motion on, view cross-fade and drawer spring should calm or disable while layout stays usable.
 - **Reduced motion:** enable OS “reduce motion”; modals and map topo load should skip blur/long fades (`motionPolicy()` → `reduced` / `minimal`).
@@ -96,6 +98,8 @@ After visual or map-pin changes, spot-check in the browser:
 - **Map ↔ list sync:** select a pin or card — map view should center the pin; virtual grid should scroll the matching card into view. Centering is an **instant** view jump (no animated fly); reduced-motion users get the same snap, which avoids vestibular-unfriendly interpolation on the SVG stage.
 - **Lifestyle bundle:** hero Remote Work and dock Remote Work should produce the same URL (`fit=cool-summers,low-fire-smoke`, `sh=26`, ranking `best-for-remote-work`).
 - **Scroll page mode:** with the Scroll page / Use map toggle (coarse or hybrid), wheel and one-finger pan must release to the page — the map must not `preventDefault` wheel while in page mode.
+- **Page scroll over the map:** a wheel scroll that starts on the page and passes over the map keeps scrolling the page; a wheel that starts over the map, and pinch, zoom it.
+- **Intro panel and list:** the Explorer intro panel must not collapse on its own while scrolling (**Map first** compacts it on request); the list shows 12 places per batch, and the scrollbar must not lurch as rows measure.
 
 ## Inapplicable Research Items
 
