@@ -95,8 +95,10 @@ describe("climate-metrics", () => {
         solarEnergyMjM2Day: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
       }),
     });
-    // 10 + 10*3.75 = 47.5 — must not jump to the 90% sunshine series.
-    expect(meanAnnualSunshinePct(both)).toBeCloseTo(47.5, 6);
+    // The clearness-index estimate, not the authored 90% sunshine series.
+    const estimate = meanAnnualSunshinePct(both)!;
+    expect(estimate).toBeGreaterThan(0);
+    expect(estimate).toBeLessThan(80);
     expect(scoringSunshinePct(both)).toBeUndefined();
   });
 

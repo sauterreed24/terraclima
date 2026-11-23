@@ -2651,7 +2651,7 @@ export const PLACES_USA: Place[] = [
     biome: "Coastal prairie / Bishop pine / Douglas-fir", koppen: "Csb (cool oceanic)",
     archetypes: ["fog-belt-coast", "cool-summer-maritime", "coastal-upwelling", "mediterranean-pocket"],
     drivers: ["upwelling", "marine-layer", "aspect-slope"],
-    summaryShort: "The foggiest point on the US West Coast — summer upwelling keeps coastal ridges at 12–15°C in August.",
+    summaryShort: "The foggiest point on the US West Coast — summer upwelling holds the outer headland near 13–15°C in August, while Point Reyes Station, 20 km inland in the lee of Inverness Ridge, reaches the mid 20s.",
     summaryImmersive: "Point Reyes juts 15 km into the Pacific at the Bay Area's north edge and catches the full force of California Current upwelling. The outer lighthouse recorded the highest fog frequency in the continental US. Step inland 8 km and you gain 8°C on a typical summer afternoon. The dairy ranches thriving here for 150 years are the direct consequence of the unchanging cool.",
     whyDistinct: "Peninsula geometry maximizes exposure to cold-water upwelling and marine stratus; San Andreas-fault origins give steep aspect variability.",
     experience: {
@@ -2659,7 +2659,7 @@ export const PLACES_USA: Place[] = [
       seasons: {
         winter: "Cool and wet — highs near 14°C, nights near 5°C, and Pacific fronts that keep grass green when inland California browns.",
         spring: "Fog and wildflowers — coastal prairie erupts in color, elephant seals depart, and marine layer still dominates afternoon highs in the low teens.",
-        summer: "The fog season — outer lighthouse highs barely reach 17°C under stratus, inland ridges warm into the high teens, and upwelling keeps the ocean painfully cold.",
+        summer: "The fog season — outer lighthouse highs barely reach 17°C under stratus, the village of Point Reyes Station in the lee warms to about 25°C, and upwelling keeps the ocean painfully cold.",
         autumn: "Clear windows — September and October bring the year's best sun, tule elk rut on the pastures, and the first storms that close Highway 1.",
       },
       travelerFit: "Visitors come for elk, wildflower hikes, and the shock of cool fog 50 km from San Francisco heat.",

@@ -1676,7 +1676,7 @@ export const PLACES_MEXICO: Place[] = [
   },
 
   {
-    id: "ensenada-mx", tier: "C", country: "Mexico", region: "Baja California", municipality: "Ensenada", name: "Ensenada (Valle de Guadalupe)",
+    id: "ensenada-mx", tier: "C", country: "Mexico", region: "Baja California", municipality: "Ensenada", name: "Ensenada",
     lat: 31.8714, lon: -116.6016, elevationM: 15,
     reliefContext: "Pacific coast of northern Baja California; Valle de Guadalupe inland 30 km at 350 m elevation.",
     biome: "Mediterranean chaparral / coastal sage",

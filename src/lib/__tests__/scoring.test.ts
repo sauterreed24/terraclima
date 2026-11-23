@@ -270,18 +270,19 @@ describe("rankPlaces — sunniest-winters", () => {
     const ranked = rankPlaces("sunniest-winters", [gray, missing, bright]);
 
     expect(ranked.map(r => r.place.id)).toEqual(["bright-winter", "gray-winter", "missing-winter-sun"]);
-    expect(ranked[0]!.note).toBe("Winter sunshine ~82% possible");
+    expect(ranked[0]!.note).toBe("Winter sunshine ~82% of possible (station record)");
     expect(ranked[2]!.note).toBe("Winter sunshine unavailable");
   });
 
   it("keeps the sunniest-winter corpus leaders in bright subtropical highlands", () => {
     const ids = rankPlaces("sunniest-winters", PLACES).slice(0, 8).map(r => r.place.id);
-    // Climate V2 Daymet winter solar resource favors clear subtropical
-    // highlands (e.g. Oaxaca / Toluca / Puebla) over SW desert stations.
+    // Station sunshine where it exists, a clearness-index estimate elsewhere:
+    // the Sonoran desert and the clear subtropical highlands share the top.
+    expect(ids[0]).toBe("yuma-az");
     expect(ids).toEqual(expect.arrayContaining([
       "oaxaca-mx",
       "toluca-mx",
-      "puebla-mx",
+      "death-valley-ca",
     ]));
   });
 });

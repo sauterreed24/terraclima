@@ -61,3 +61,18 @@ describe("projected growing degree days", () => {
     expect(projected.gdd10!).toBeGreaterThan(place.climate.gdd10!);
   });
 });
+
+describe("clearness-based sunshine estimate", () => {
+  it("matches the FAO-56 top-of-atmosphere reference", async () => {
+    const { extraterrestrialRadiationMjM2Day } = await import("../climate-metrics");
+    // FAO-56 example 8: 20°S on 3 September (day 246) = 32.2 MJ/m²/day.
+    expect(extraterrestrialRadiationMjM2Day(-20, 246)).toBeCloseTo(32.2, 1);
+  });
+
+  it("does not read a short bright northern winter day as gloom", async () => {
+    const { estimatedSunshinePct } = await import("../climate-metrics");
+    const boulder = PLACES.find(p => p.id === "boulder-co")!;
+    // Station record is ~67% in winter; the old energy mapping said 43%.
+    expect(estimatedSunshinePct(boulder, 0)!).toBeGreaterThan(55);
+  });
+});

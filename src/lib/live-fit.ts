@@ -7,7 +7,7 @@ import {
   meanSummerHigh,
   meanWinterSunshinePct,
   RISK_VALUE,
-  scoringSunshinePct,
+  meanAnnualSunshinePct,
   seasonalUsabilityScore,
 } from "./climate-metrics";
 import {
@@ -234,23 +234,17 @@ export function winterSunshineScore(place: Place): number {
  *   cultural outdoor expectations is the most mood-damaging pattern.
  */
 function sunshineScore(place: Place): number {
-  const sunny = scoringSunshinePct(place);
-  const solar = place.climate.solarEnergyMjM2Day;
+  const annualSun = meanAnnualSunshinePct(place);
   const hum = place.climate.humidity;
   const diurnal = place.climate.diurnalSummerC ?? (place.climate.tempHighC[6] - place.climate.tempLowC[6]);
 
-  if (!sunny && !solar && !hum) return 50; // no data — neutral
+  if (annualSun == null && !hum) return 50; // no data — neutral
 
   let score = 50; // neutral baseline tied to US average
 
-  if (sunny) {
-    const annualSun = sunny.reduce((a, b) => a + b, 0) / 12;
+  if (annualSun != null) {
     // 58% = US avg = 50 pts; +1.5 pts per % above, -1.5 below; capped 0–100
     score = clamp100(50 + (annualSun - 58) * 1.5);
-  } else if (solar) {
-    const annualSolar = solar.reduce((a, b) => a + b, 0) / 12;
-    const annualSunProxy = Math.max(0, Math.min(100, 10 + annualSolar * 3.75));
-    score = clamp100(50 + (annualSunProxy - 58) * 1.5);
   }
 
   if (hum) {

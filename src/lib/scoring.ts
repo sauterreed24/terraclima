@@ -12,7 +12,8 @@ import {
   meanSummerHigh,
   meanJanLow,
   getAnnualPrecipMm,
-  scoringSunshinePct,
+  meanAnnualSunshinePct,
+  winterSunshineIsMeasured,
   coolSummer,
 } from "./climate-metrics";
 import { assessLiveFit, liveFitFilterPass, meanWinterSunshinePct, winterSunshineScore, type LiveFitPresetId } from "./live-fit";
@@ -165,15 +166,17 @@ export const RANKING_PARAMS = {
  * diurnal swings that prevent quality sleep cooling.
  */
 function sunshineComfortBonus(p: Place): number {
-  const sunny = scoringSunshinePct(p);
+  const annualSun = meanAnnualSunshinePct(p);
   const hum = p.climate.humidity;
   const diurnal = p.climate.diurnalSummerC ?? (p.climate.tempHighC[6] - p.climate.tempLowC[6]);
 
   let bonus = 0;
 
-  // Direct sunshine reward — calibrated to US avg (58% = neutral, 80% ≈ +7.3 pts, 95%+ ≈ +15)
-  if (sunny) {
-    const annualSun = sunny.reduce((a, b) => a + b, 0) / 12;
+  // Direct sunshine reward: nothing below 45% of possible, +0.33 per point
+  // above it (58% ≈ +4, 80% ≈ +11.5), capped at +15. This term went silent
+  // for every place when Daymet solar replaced authored sunshine; it now
+  // reads the clearness-based estimate.
+  if (annualSun != null) {
     bonus += Math.min(15, Math.max(0, (annualSun - 45) * 0.33));
   }
 
@@ -232,7 +235,8 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const winterSun = meanWinterSunshinePct(p);
         if (winterSun == null) return { place: p, score: 0, note: "Winter sunshine unavailable" };
         const s = winterSunshineScore(p);
-        return { place: p, score: s, note: `Winter sunshine ~${Math.round(winterSun)}% possible` };
+        const basis = winterSunshineIsMeasured(p) ? "station record" : "estimated from solar energy";
+        return { place: p, score: s, note: `Winter sunshine ~${Math.round(winterSun)}% of possible (${basis})`, tiebreak: winterSun };
       }
       case "best-shoulder-seasons": {
         const shoulder = (p.climate.tempHighC[3] + p.climate.tempHighC[4] + p.climate.tempHighC[8] + p.climate.tempHighC[9]) / 4;
