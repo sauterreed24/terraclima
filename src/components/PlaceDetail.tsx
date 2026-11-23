@@ -339,7 +339,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
             transition={drawerPanelTransition(!!reduceMotion, coarsePointer)}
             className="place-detail-drawer fixed top-0 right-0 h-full w-full md:w-[min(92vw,900px)] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-y-auto overflow-x-hidden outline-none border-l"
           >
-            <h1 id={dialogTitleId} className="sr-only">{place.name} climate dossier</h1>
+            <h1 id={dialogTitleId} className="sr-only">{place.name} climate profile</h1>
             <PlaceReadingProgress panelRef={panelRef} />
             <DetailHeader
               place={place}
@@ -417,9 +417,9 @@ function DetailHeader({
   );
   const homeBaseLabel = isHome
     ? `Clear ${place.name} as your home base`
-    : `Set ${place.name} as your home base for climate deltas`;
+    : `Set ${place.name} as your home base, to compare other places against it`;
   const compareLabel = inCompare ? `Remove ${place.name} from compare` : `Add ${place.name} to compare`;
-  const residencyBriefLabel = `Jump to ${place.name} residency brief`;
+  const residencyBriefLabel = `Jump to the fit summary for ${place.name}`;
 
   return (
     <div
@@ -459,7 +459,7 @@ function DetailHeader({
               const meta = ARCHETYPE_BY_ID[a];
               const isPrimary = a === place.archetypes[0];
               const chipTitle = meta
-                ? `${meta.label}: ${prose(meta.blurb)}${isPrimary ? " — expand field guide below" : ""}`
+                ? `${meta.label}: ${prose(meta.blurb)}${isPrimary ? " (explained below)" : ""}`
                 : a;
               return (
                 <button
@@ -490,7 +490,7 @@ function DetailHeader({
             <div
               id="place-archetype-guide"
               role="region"
-              aria-label={`${primaryArchetype.label} field guide`}
+              aria-label={`About ${primaryArchetype.label} climates`}
               className="mt-2.5 panel-thin p-2.5 border-l-2"
               style={{ borderLeftColor: "rgba(240, 210, 156, 0.65)" }}
               hidden={!archetypeGuideOpen}
@@ -504,8 +504,8 @@ function DetailHeader({
                 <button
                   type="button"
                   className="btn-ghost !text-[11px] !py-1 mt-2"
-                  aria-label={`Filter atlas to ${primaryArchetype.label} places`}
-                  title={`Filter atlas to ${primaryArchetype.label} places`}
+                  aria-label={`Show only ${primaryArchetype.label} places in the atlas`}
+                  title={`Show only ${primaryArchetype.label} places in the atlas`}
                   onClick={(e) => {
                     e.stopPropagation();
                     onPickArchetype(place.archetypes[0]!);
@@ -531,7 +531,7 @@ function DetailHeader({
             className="btn-ghost !text-xs"
           >
             <FileText className="w-3 h-3" aria-hidden />
-            Brief
+            Fit
           </a>
           <CopyPlaceLink placeId={place.id} placeName={place.name} />
           {onHomeBaseToggle && (
@@ -584,7 +584,7 @@ function DetailHeader({
       <dl
         className="detail-signature-panel detail-signature-panel--quiet"
         style={{ ["--signature-rgb" as string]: visualSignature.mapAccentRgb }}
-        aria-label={`${place.name} place signature`}
+        aria-label={`${place.name} place feel`}
       >
         <div className="detail-signature-panel__primary">
           <dt>Feel</dt>
@@ -624,7 +624,7 @@ function DetailHeader({
               {hero.creditLine}
             </a>
           ) : (
-            <span>January–December temperature palette from this place&apos;s monthly normals.</span>
+            <span>Colors show this place&apos;s average temperature for each month, January to December.</span>
           )}
         </figcaption>
       </figure>
@@ -703,8 +703,8 @@ function HeroClimateFallback({
   }, [tempHighC, tempLowC]);
 
   const ariaLabel = photoFailed
-    ? `${place.name} — photo unavailable; showing its January-to-December temperature palette instead`
-    : `${place.name} — January-to-December temperature palette from monthly normals`;
+    ? `${place.name}: no photo available. The colors show its average temperature for each month, January to December.`
+    : `${place.name}: colors show its average temperature for each month, January to December.`;
 
   return (
     <div
@@ -719,7 +719,7 @@ function HeroClimateFallback({
       </div>
       <div className="tc-hero-fallback__scale" aria-hidden>
         <span>Jan</span>
-        <span>Monthly temperature palette</span>
+        <span>Monthly temperatures as color</span>
         <span>Dec</span>
       </div>
     </div>
@@ -766,7 +766,7 @@ function DetailBody({
   const activeConcept = activeDriver
     ? CONCEPTS.find(c => c.id === DRIVER_CONCEPT_MAP[activeDriver])
     : null;
-  const driverGlossaryCloseLabel = "Close glossary explanation";
+  const driverGlossaryCloseLabel = "Close explanation";
   const closeDriverGlossary = useCallback(() => {
     setActiveDriver(null);
     window.setTimeout(() => {
@@ -836,7 +836,7 @@ function DetailBody({
       {/* The overview's "Why it feels different" essay carries the mechanism in
           prose; this section names the drivers and explains each on demand. */}
       <Section anchorId={PD.whyHere} icon={<Sparkles className="w-4 h-4" style={{ color: "#f0d29c" }} />} title="What shapes the climate here">
-        <p className="text-sm text-stone-readable">Tap a driver for a plain-language explanation of how it works.</p>
+        <p className="text-sm text-stone-readable">Select a driver to read how it works.</p>
 
         <div className="flex flex-wrap gap-1.5 mt-3">
           {place.drivers.map(d => {
@@ -882,7 +882,7 @@ function DetailBody({
               <div className="text-sm text-frost">{prose(activeConcept.short)}</div>
               <div className="text-sm text-ice leading-relaxed mt-2">{prose(activeConcept.long)}</div>
               {activeConcept.mechanism && (
-                <div className="text-xs text-stone italic mt-2"><span className="uppercase tracking-wider not-italic">Under the hood ·</span> {prose(activeConcept.mechanism)}</div>
+                <div className="text-xs text-stone italic mt-2"><span className="uppercase tracking-wider not-italic">How it works ·</span> {prose(activeConcept.mechanism)}</div>
               )}
             </div>
           ) : null
@@ -903,14 +903,14 @@ function DetailBody({
                 <div className="text-sm text-frost">{prose(activeConcept.short)}</div>
                 <div className="text-sm text-ice leading-relaxed mt-2">{prose(activeConcept.long)}</div>
                 {activeConcept.mechanism && (
-                  <div className="text-xs text-stone italic mt-2"><span className="uppercase tracking-wider not-italic">Under the hood ·</span> {prose(activeConcept.mechanism)}</div>
+                  <div className="text-xs text-stone italic mt-2"><span className="uppercase tracking-wider not-italic">How it works ·</span> {prose(activeConcept.mechanism)}</div>
                 )}
               </motion.div>
             )}
           </AnimatePresence>
         )}
 
-        <div className="text-sm text-stone mt-3 italic">Relief context: {prose(place.reliefContext)}</div>
+        <div className="text-sm text-stone mt-3 italic">Terrain: {prose(place.reliefContext)}</div>
       </Section>
 
       {deepMerged.length > 0 ? (
@@ -971,7 +971,7 @@ function DetailBody({
       <ZoneDivider
         eyebrow="Chapter 2"
         title={PD_NAV_GROUP.liveOrVisit}
-        blurb="Resident and traveler fit side by side — lived indicators, settlements, things to do, and one decision lens that pulls the scores together."
+        blurb="For residents and for visitors: how it compares with your home, similar climates, fit scores, cost and access, nearby towns and things to do."
         icon={<Users className="w-3.5 h-3.5" aria-hidden />}
       />
 
@@ -991,10 +991,10 @@ function DetailBody({
       <div className="detail-doc-section detail-decision-lens anim-fade-in">
         <h3 className="font-atlas text-[1.15rem] md:text-lg text-ice mb-3.5 flex items-center gap-2 tracking-tight border-b border-[rgba(200,170,140,0.35)] pb-2">
           <Scale className="w-4 h-4 shrink-0" style={{ color: "#5ec4dc" }} aria-hidden />
-          Decision lens
+          Fit summary
         </h3>
         <p className="text-[12px] text-stone-readable leading-relaxed mb-3.5 max-w-2xl">
-          One shortlist-grade read: live-here fit, livability, place feel, and what to verify — plus the full reasons, cautions, and score breakdown behind each number.
+          Three scores for living here (live-here fit, livability and place feel), the best season, and the first thing to check. The reasons and score breakdowns follow.
         </p>
         <PlaceResidencyBrief
           place={place}
@@ -1012,7 +1012,7 @@ function DetailBody({
         />
         <div id={PD.liveHereFit} className="detail-decision-lens__detail scroll-mt-28">
           <h4 className="detail-decision-lens__detail-title font-atlas text-sm text-ice mb-2.5 flex items-center gap-1.5 tracking-tight opacity-90">
-            Full fit detail
+            Live-here fit in detail
           </h4>
           <div className="grid sm:grid-cols-2 gap-3">
             <div className="panel-thin p-4 border-l-2" style={{ borderLeftColor: "#5ec4dc" }}>
@@ -1028,7 +1028,7 @@ function DetailBody({
                   {liveFit.cautions.map(c => <li key={c}>{prose(c)}</li>)}
                 </ul>
               ) : (
-                <p className="text-sm text-frost">No single hard warning dominates the structured profile; still read risks, water, and fit before shortlisting.</p>
+                <p className="text-sm text-frost">No single warning stands out. Still read the risk, water and fit sections before shortlisting.</p>
               )}
             </div>
           </div>
@@ -1043,7 +1043,7 @@ function DetailBody({
             </div>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <div>
-                <div className="text-[10px] uppercase tracking-wider text-stone-readable">Blended livability score</div>
+                <div className="text-[10px] uppercase tracking-wider text-stone-readable">Livability score</div>
                 <div className="font-mono-num text-3xl text-ice mt-0.5">
                   {livability.score}<span className="text-sm text-stone">/100</span>
                 </div>
@@ -1084,13 +1084,13 @@ function DetailBody({
               <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
                 {livability.drivers.length > 0 ? (
                   <div className="rounded-lg border border-[rgba(61,143,85,0.28)] bg-[rgba(236,248,232,0.55)] px-3 py-2">
-                    <div className="text-[10px] uppercase tracking-wider text-sage-700 mb-0.5">Drivers</div>
+                    <div className="text-[10px] uppercase tracking-wider text-sage-700 mb-0.5">Helps</div>
                     <div className="text-frost">{livability.drivers.map(k => livability.components.find(c => c.key === k)?.label).filter(Boolean).join(" · ")}</div>
                   </div>
                 ) : null}
                 {livability.drags.length > 0 ? (
                   <div className="rounded-lg border border-[rgba(232,90,50,0.28)] bg-[rgba(255,236,228,0.55)] px-3 py-2">
-                    <div className="text-[10px] uppercase tracking-wider text-ember-700 mb-0.5">Drags</div>
+                    <div className="text-[10px] uppercase tracking-wider text-ember-700 mb-0.5">Hurts</div>
                     <div className="text-frost">{livability.drags.map(k => livability.components.find(c => c.key === k)?.label).filter(Boolean).join(" · ")}</div>
                   </div>
                 ) : null}
@@ -1101,15 +1101,15 @@ function DetailBody({
       </div>
 
       {place.liveSignals ? (
-        <Section anchorId={PD.livedSignals} title="Lived indicators" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
+        <Section anchorId={PD.livedSignals} title="Cost and access" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
           <div className="panel-thin p-4">
             <div className="text-[11px] text-stone-readable leading-snug mb-3 max-w-2xl">
               Factual housing and access reads that climate normals cannot capture. 0 = no friction, 100 = severe. Screening indicators anchored to public sources — not appraisals or insurance underwriting.
             </div>
             <ul className="tc-livability-signal-grid">
               {([
-                { key: "housing", label: "Housing pressure", desc: "Within-country housing burden percentile.", value: effectiveHousingPressure(place.liveSignals) },
-                { key: "access", label: "Access remoteness", desc: "Hospital, airport, and service-hub distance.", value: effectiveAccessRemoteness(place.liveSignals) },
+                { key: "housing", label: "Housing pressure", desc: "Housing cost against income, ranked within the country. Higher is harder.", value: effectiveHousingPressure(place.liveSignals) },
+                { key: "access", label: "Remoteness", desc: "Travel time to a hospital, an airport and a service town. Higher is farther.", value: effectiveAccessRemoteness(place.liveSignals) },
               ] as const).map(axis => {
                 const value = axis.value;
                 if (value == null) return null;
@@ -1186,7 +1186,7 @@ function DetailBody({
       ) : null}
 
       {settlementAnchors.length > 0 && (
-        <Section anchorId={PD.settlements} title="Settlements and scouting bases" icon={<Users className="w-4 h-4" style={{ color: "#c3e4f1" }} />}>
+        <Section anchorId={PD.settlements} title="Nearby towns" icon={<Users className="w-4 h-4" style={{ color: "#c3e4f1" }} />}>
           <div className="grid md:grid-cols-2 gap-2">
             {settlementAnchors.map(s => (
               <div key={s.name} className="panel-thin p-3 flex items-start gap-3">
@@ -1254,7 +1254,7 @@ function DetailBody({
         return (
           <Section
             anchorId={PD.activities}
-            title={attractions.length > 0 ? "Things to do nearby" : "Scouting tasks"}
+            title={attractions.length > 0 ? "Things to do nearby" : "Things to check in person"}
             icon={<Compass className="w-4 h-4" style={{ color: "#c6dcbd" }} />}
           >
             {attractions.length > 0 ? (
@@ -1263,10 +1263,10 @@ function DetailBody({
             {tasks.length > 0 ? (
               <>
                 {attractions.length > 0 ? (
-                  <h4 className="text-[11px] uppercase tracking-wider text-stone-readable mt-4 mb-2">Scouting tasks</h4>
+                  <h4 className="text-[11px] uppercase tracking-wider text-stone-readable mt-4 mb-2">Things to check in person</h4>
                 ) : null}
                 <p className="text-[12px] text-stone-readable mb-2">
-                  Field checks worked out from this place's climate and terrain, for anyone sizing it up in person.
+                  Suggested from this place's climate and terrain, for anyone visiting to judge it in person.
                 </p>
                 <div className="grid md:grid-cols-2 gap-2">{tasks.map(card)}</div>
               </>
@@ -1295,7 +1295,7 @@ function DetailBody({
       <ZoneDivider
         eyebrow="Chapter 3"
         title={PD_NAV_GROUP.climateLand}
-        blurb="The measurements behind the feel — monthly rhythm, screening scores, full atlas context, remote-sensing checks, and what the ground offers."
+        blurb="The measurements: month-by-month climate, comfort scores, how this place ranks against the rest of the atlas, terrain, and soil."
         icon={<TrendingUp className="w-3.5 h-3.5" aria-hidden />}
       />
 
@@ -1305,7 +1305,7 @@ function DetailBody({
 
       <ScoreDetails
         id={PD.signature}
-        title="Climate signature"
+        title="Climate basics"
         icon={<Sparkles className="w-4 h-4" style={{ color: "#8cc8e0" }} />}
       >
         <div className="grid md:grid-cols-[1fr_260px] gap-6 items-center">
@@ -1314,7 +1314,7 @@ function DetailBody({
             <KeyValue label="Frost-free days (est.)" value={`${place.climate.frostFreeDays ?? "—"}`} />
             <KeyValue label="Hardiness zone" value={place.climate.hardinessZone ?? place.growability.hardinessZone ?? "—"} />
             <KeyValue label="Chill hours (est.)" value={`${place.climate.chillHours ?? "—"}`} />
-            <KeyValue label="Summer diurnal swing" value={place.climate.diurnalSummerC != null ? fmtDelta(place.climate.diurnalSummerC, temp, { signed: false }) : "—"} />
+            <KeyValue label="Summer day-to-night swing" value={place.climate.diurnalSummerC != null ? fmtDelta(place.climate.diurnalSummerC, temp, { signed: false }) : "—"} />
             <KeyValue label="Biome" value={prose(place.biome)} />
           </div>
           <MicroclimateFingerprint place={place} />
@@ -1360,7 +1360,7 @@ function DetailBody({
             ))}
           </div>
           <div className="text-[11px] text-stone italic mt-2">
-            Penciled from typical monthly patterns — a rough planning guide, not a forecast.
+            Worked out from average monthly conditions. A planning guide, not a forecast.
           </div>
         </Section>
       )}
@@ -1392,7 +1392,7 @@ function DetailBody({
 
       <ScoreDetails id={PD.corpus} title="How this place sits in the full atlas" icon={<Scale className="w-4 h-4" style={{ color: "var(--color-glacier-500)" }} />}>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
-          Every row compares this stop to the other <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> curated places on the same map — same fields as the header stats and comfort matrix. A high &ldquo;wetter than&rdquo; share means annual totals here beat most other entries, not that more rain is intrinsically &ldquo;better.&rdquo;
+          Each row compares this place with the <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places in the atlas, using the same figures as the header. &ldquo;Wetter than 80%&rdquo; means four in five atlas places get less rain and snow in a year. It does not mean wetter is better.
         </p>
         <div className="atlas-corpus-matrix panel-thin overflow-hidden p-0">
           <div className="atlas-corpus-matrix__head grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1.15fr)] gap-x-2 gap-y-1 px-3 py-2.5 text-[10px] uppercase tracking-wider text-stone bg-[linear-gradient(90deg,rgba(94,196,220,0.14),rgba(255,196,214,0.08))] border-b border-[rgba(200,160,120,0.3)]">
@@ -1421,28 +1421,28 @@ function DetailBody({
           <EvidenceClassLabel cls={classifyDossierSection("geospatial")} />
         </div>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
-          Screening blends atlas terrain, climate seasonality, risks, and corpus ranks. Sentinel-2 and Landsat appear below as <span className="text-frost font-medium">reference</span> sensor families for the spectral checks a field analyst would queue — not live scenes from this app. Relief texture is a separate atlas proxy for where fine-scale topography would usually matter.
+          These figures estimate how strongly terrain shapes the climate here, from elevation, seasonality, hazards and how the place ranks in the atlas. Sentinel-2 and Landsat are listed as the <span className="text-frost font-medium">satellites an analyst would use</span> to check the pattern. The atlas does not load live satellite images.
         </p>
         <details className="place-geospatial-details">
           <summary className="place-geospatial-details__summary cursor-pointer text-sm text-frost font-medium py-2 px-3 rounded-lg border border-[rgba(200,160,120,0.28)] bg-[rgba(255,248,240,0.35)] list-none [&::-webkit-details-marker]:hidden">
-            Show geospatial screening detail
+            Show the detailed figures
           </summary>
           <div className="mt-3 space-y-3">
         <div className="grid md:grid-cols-[1.05fr_0.95fr] gap-3">
           <div className="panel-thin p-4 space-y-2">
-            <KeyValue label="Geospatial signal score" value={`${geospatial.geospatialSignalScore}/100`} />
-            <KeyValue label="EO observability" value={`${geospatial.eoObservabilityScore}/100`} />
+            <KeyValue label="Terrain signal score" value={`${geospatial.geospatialSignalScore}/100`} />
+            <KeyValue label="Satellite visibility" value={`${geospatial.eoObservabilityScore}/100`} />
             <KeyValue label="Analysis confidence" value={titleCaseLocal(geospatial.analysisConfidence)} />
             <KeyValue
-              label="Relief energy"
+              label="Relief (elevation change)"
               value={`${Math.round(geospatial.reliefEnergyMPerKm * FT_PER_MI_PER_M_PER_KM)} ft/mi`}
             />
             <KeyValue
-              label="Hydro seasonality"
+              label="Rain seasonality"
               value={`${geospatial.hydroSeasonalityRatio.toFixed(1)}x wettest/driest month`}
             />
             <KeyValue
-              label="Thermal amplitude"
+              label="Annual temperature range"
               value={fmtDelta(geospatial.annualThermalAmplitudeC, temp, { signed: false })}
             />
             <KeyValue
@@ -1450,7 +1450,7 @@ function DetailBody({
               value={geospatial.terrainExposureIndex.toFixed(1)}
             />
             <KeyValue
-              label="Relief texture (atlas proxy)"
+              label="Fine-scale terrain (estimate)"
               value={`${geospatial.structuralTextureScore}/100`}
             />
           </div>
@@ -1474,7 +1474,7 @@ function DetailBody({
           {prose(geospatial.contextLine)}
         </p>
         <div className="mt-3 panel-thin p-3">
-          <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Likely spectral checks</div>
+          <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Satellite checks an analyst would run</div>
           <div className="grid md:grid-cols-2 gap-2">
             {geospatial.spectralSignals.map(signal => (
               <div key={`${signal.sourceId}-${signal.index}-${signal.label}`} className="tc-inset-panel px-3 py-2">
@@ -1489,7 +1489,7 @@ function DetailBody({
           </div>
         </div>
         <div className="mt-3 panel-thin p-3">
-          <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Earth-observation stack</div>
+          <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Satellite sources</div>
           <ul className="space-y-1.5 text-sm text-frost">
             {EARTH_OBSERVATION_SOURCES.map(source => (
               <li key={source.id}>
@@ -1558,7 +1558,7 @@ function DetailBody({
       <ZoneDivider
         eyebrow="Chapter 4"
         title={PD_NAV_GROUP.risksFuture}
-        blurb="Hazards, the shift already showing up in the record, and how far the climate-change outlook can be trusted."
+        blurb="Hazards, the change already measured, and the outlook to 2050 with how much confidence it deserves."
         icon={<CloudRain className="w-3.5 h-3.5" aria-hidden />}
       />
 
@@ -1566,7 +1566,7 @@ function DetailBody({
         <div className="compare-scenario-banner dossier-scenario-banner" role="note">
           <Clock3 className="w-3.5 h-3.5 shrink-0 mt-0.5" aria-hidden />
           <span>
-            Explorer and Compare use the <strong>{scenarioMeta(scenario).label}</strong> projection layer. This dossier shows recent observed normals ({CLIMATE_NORMALS_PERIOD}; rolling climatology, not WMO standard normal).
+            Explorer and Compare use the <strong>{scenarioMeta(scenario).label}</strong> projection layer. This profile always shows recent averages ({CLIMATE_NORMALS_PERIOD}).
           </span>
         </div>
       ) : null}
@@ -1588,18 +1588,18 @@ function DetailBody({
       <ZoneDivider
         eyebrow="Chapter 5"
         title={PD_NAV_GROUP.evidenceMethods}
-        blurb="What's measured versus derived, who reviewed it and when, the sources behind each claim, and how to pull the raw data."
+        blurb="Which figures are measured and which are estimated, when the entry was reviewed, the sources, and a raw data export."
         icon={<BookOpen className="w-3.5 h-3.5" aria-hidden />}
       />
 
       <PlaceEvidenceSummary place={place} anchorId={PD.evidence} />
 
-      <Section anchorId={PD.verdict} title="Hidden-gem verdict · sources">
+      <Section anchorId={PD.verdict} title="Scores and sources">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <EvidenceClassLabel cls={classifyDossierSection("scores")} />
         </div>
         <p className="text-[11px] text-stone leading-relaxed mb-3 max-w-2xl">
-          These score pills are screening aids for ranking and comparison, not measured station products or an appraisal of the place.
+          These scores are editorial ratings from 0 to 100, used for ranking and comparison. They are not measurements and not an appraisal of the place.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
           <ScorePill label="Hidden gem" value={place.scores.hiddenGem} tone="sage" />

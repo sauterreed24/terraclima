@@ -196,7 +196,7 @@ function buildMapStageContext({
   if (!activeBundle) {
     return {
       mode: "rank",
-      eyebrow: "Rank trail",
+      eyebrow: "On the map",
       headline: rankTitle,
       detail: null,
       title: rankTitle,
@@ -207,18 +207,18 @@ function buildMapStageContext({
   const scoutLead = scoutBrief?.leader.place.name ?? null;
   const finalistCount = scoutBrief?.compareIds.length ?? featuredCount;
   const detail = scoutLead
-    ? `Scout lead ${scoutLead} / ${finalistCount} finalist${finalistCount === 1 ? "" : "s"}`
+    ? `Top pick ${scoutLead} / ${finalistCount} to compare`
     : `${rankingLabel} / top ${featuredCount}`;
   const title = `${activeBundle.label} / ${activeBundle.cue} / ${rankingLabel}`;
   return {
     mode: "fit-path",
-    eyebrow: "Fit path map",
+    eyebrow: "Goal on the map",
     headline: activeBundle.label,
     detail,
     title,
     ariaLabel: scoutLead
-      ? `Map follows the active ${activeBundle.label} Fit Finder path. Scout lead ${scoutLead}. ${finalistCount} finalists are highlighted.`
-      : `Map follows the active ${activeBundle.label} Fit Finder path for ${rankingLabel}.`,
+      ? `Map shows the ${activeBundle.label} goal. Top pick: ${scoutLead}. ${finalistCount} top places are highlighted.`
+      : `Map shows the ${activeBundle.label} goal, ranked by ${rankingLabel}.`,
   };
 }
 
@@ -1062,7 +1062,7 @@ export default function App() {
     const placeName = place?.name ?? "Place";
     if (pinned && ids.length === BOOKMARK_LIMIT) {
       setTransientFeedback(
-        `Pinned ${placeName}. Shortlist is at the ${BOOKMARK_LIMIT}-place cap — older pins drop off the tail.`,
+        `Pinned ${placeName}. The shortlist holds ${BOOKMARK_LIMIT} places, so the oldest pin was removed.`,
       );
     } else if (pinned) {
       setTransientFeedback(`Pinned ${placeName} to your shortlist.`);
@@ -1089,14 +1089,14 @@ export default function App() {
     persistHomeBaseId(next);
     setHomeBaseIdRaw(next);
     setTransientFeedback(next
-      ? `${place.name} is now your home base — cards, dossiers, and Compare read climate deltas against it.`
-      : `Cleared your home base — cards and dossiers return to absolute readings.`);
+      ? `${place.name} is now your home base. Cards, profiles and Compare show how each place differs from it.`
+      : `Home base cleared. Cards and profiles show plain figures again.`);
   }, [homeBaseId]);
 
   const clearHomeBase = useCallback(() => {
     persistHomeBaseId(null);
     setHomeBaseIdRaw(null);
-    setTransientFeedback("Cleared your home base — cards and dossiers return to absolute readings.");
+    setTransientFeedback("Home base cleared. Cards and profiles show plain figures again.");
     focusMainContentNextFrame();
   }, [focusMainContentNextFrame]);
 
@@ -1111,7 +1111,7 @@ export default function App() {
       if (finalists.length >= COMPARE_LIMIT) break;
     }
     if (finalists.length === 0) {
-      setTransientFeedback("No Scout finalists are available to save yet.");
+      setTransientFeedback("No top picks to save yet. Loosen a filter to bring places back.");
       return;
     }
 
@@ -1119,14 +1119,14 @@ export default function App() {
     setBookmarkIds(new Set(saved.ids));
     const savedCount = finalists.filter(id => saved.ids.includes(id)).length;
     if (saved.added.length === 0) {
-      setTransientFeedback(`${savedCount} Scout finalists are already in your shortlist.`);
+      setTransientFeedback(`These ${savedCount} top picks are already in your shortlist.`);
     } else if (saved.capped) {
       setTransientFeedback(
-        `Saved ${saved.added.length} new finalist${saved.added.length === 1 ? "" : "s"}; shortlist cap kept the top ${BOOKMARK_LIMIT}.`,
+        `Saved ${saved.added.length} new place${saved.added.length === 1 ? "" : "s"}. The shortlist holds ${BOOKMARK_LIMIT}, so only the top ${BOOKMARK_LIMIT} were kept.`,
       );
     } else {
       setTransientFeedback(
-        `Saved ${saved.added.length} new finalist${saved.added.length === 1 ? "" : "s"}; ${savedCount} Scout finalists are ready to compare or export.`,
+        `Saved ${saved.added.length} new place${saved.added.length === 1 ? "" : "s"}. ${savedCount} top picks are in your shortlist, ready to compare or export.`,
       );
     }
   }, []);
@@ -1199,7 +1199,7 @@ export default function App() {
     if (!evictedComparePlaceId) return;
     const place = PLACES_BY_ID[evictedComparePlaceId];
     setTransientFeedback(
-      `Compare holds ${COMPARE_LIMIT} places — replaced ${place?.name ?? "the oldest"} with the new pick.`,
+      `Compare holds ${COMPARE_LIMIT} places, so ${place?.name ?? "the oldest"} was replaced with the new pick.`,
     );
     setEvictedComparePlaceId(null);
   }, [evictedComparePlaceId]);
@@ -1405,8 +1405,8 @@ export default function App() {
 
   const explorerPendingMessage = resultsPending
     ? processor.projecting && deferredFilters === filters
-      ? "Updating ranked results for the selected climate layer."
-      : "Updating ranked results for the current filters."
+      ? "Updating the ranking for the selected climate layer."
+      : "Updating the ranking for the current filters."
     : "";
 
   const pickRandomPlace = useCallback((opts?: { trigger?: HTMLElement | null }): boolean => {
@@ -1417,7 +1417,7 @@ export default function App() {
   }, [openPlace, recentIds]);
 
   const onRandomEmpty = useCallback(() => {
-    setTransientFeedback("No places match your filters — clear one to enable Surprise / R.");
+    setTransientFeedback("No places match your filters. Clear one, then try Surprise me again.");
   }, []);
 
   const openShortcutsHelp = useCallback((trigger?: HTMLElement | null) => {
@@ -1721,15 +1721,15 @@ export default function App() {
                   <h2 id="reader-path-heading" className="sr-only">How to read Terraclima</h2>
                   <div>
                     <div className="tc-reader-path__label">Discover</div>
-                    <p>Pins are unusual climates. Start from Most unique or Surprise me.</p>
+                    <p>Each pin is a place with an unusual local climate. Start from Most unique or Surprise me.</p>
                   </div>
                   <div>
                     <div className="tc-reader-path__label">Read</div>
-                    <p>Open a place for the physical mechanism before any screening score.</p>
+                    <p>Open a place to read why its climate differs from its surroundings, then look at the scores.</p>
                   </div>
                   <div>
                     <div className="tc-reader-path__label">Narrow</div>
-                    <p>Filters, trips, Compare, and Scout tools wait until you have a curious shortlist.</p>
+                    <p>Use filters, Trips and Compare once you have a few places in mind.</p>
                   </div>
                 </section>
 
@@ -1751,7 +1751,7 @@ export default function App() {
                     {resultsPending ? <span className="tc-results-pending-inline"> · Updating…</span> : null}
                   </div>
                   <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-                    {`${ranked.length === PLACE_COUNTS.total ? `All ${ranked.length} places` : `${ranked.length} of ${PLACE_COUNTS.total} places match`}, ranked by ${scenarioRankingLabel}.${homeBasePlace ? ` Cards show climate deltas against your home base, ${homeBasePlace.name}.` : ""}`}
+                    {`${ranked.length === PLACE_COUNTS.total ? `All ${ranked.length} places` : `${ranked.length} of ${PLACE_COUNTS.total} places match`}, ranked by ${scenarioRankingLabel}.${homeBasePlace ? ` Cards show how each place differs from your home base, ${homeBasePlace.name}.` : ""}`}
                   </div>
                   {homeBasePlace ? (
                     <div className="text-xs text-stone flex items-center gap-1.5 min-w-0">
@@ -1898,7 +1898,7 @@ export default function App() {
                   <div className="text-xs uppercase tracking-wider text-stone">Curated</div>
                   <h1 className="font-atlas text-3xl text-ice text-depth-hero mt-0.5">Collections</h1>
                   <p className="text-sm text-frost mt-1 max-w-2xl">
-                    Hand-assembled routes through the atlas: rain shadows, sky islands, eternal springs, lake snowbelts, and other climate families. Pin one to narrow the map.
+                    Hand-picked groups of places that share a kind of climate: rain shadows, sky islands, eternal springs, lake snowbelts and more. Pin one to show only its places on the map.
                   </p>
                 </div>
                 <LazyRouteErrorBoundary routeLabel="Collections">
@@ -1921,7 +1921,7 @@ export default function App() {
                   <div className="text-xs uppercase tracking-wider text-stone">Learn</div>
                   <h1 className="font-atlas text-3xl text-ice text-depth-hero mt-0.5">Field guide</h1>
                   <p className="text-sm text-frost mt-1 max-w-2xl">
-                    Microclimate has a grammar. Lapse rate, cold-air pooling, orographic lift, and thermal belts give readers and agents the words to explain why a place feels unlike its neighbors.
+                    The terms the atlas uses, in plain language: lapse rate, cold-air pooling, orographic lift, thermal belts and others. Each explains one reason a place can feel unlike its neighbors, with example places.
                   </p>
                 </div>
                 <LazyRouteErrorBoundary routeLabel="Learn">
@@ -2341,14 +2341,14 @@ function ActiveFitJourneyReceipt({
   const canCompare = (scoutBrief?.compareIds.length ?? 0) >= 2;
 
   return (
-    <section className="fit-journey-receipt" aria-label={`Active Fit Finder path: ${bundle.label}`}>
+    <section className="fit-journey-receipt" aria-label={`Goal applied: ${bundle.label}`}>
       <div className="fit-journey-receipt__main">
         <div className="fit-journey-receipt__head">
-          <span className="fit-journey-receipt__eyebrow">Fit Finder path active</span>
+          <span className="fit-journey-receipt__eyebrow">Goal applied</span>
           <strong className="fit-journey-receipt__title">{bundle.label}</strong>
         </div>
         <p className="fit-journey-receipt__copy">{bundle.description}</p>
-        <div className="fit-journey-receipt__chips" aria-label={`${bundle.label} applied lens`}>
+        <div className="fit-journey-receipt__chips" aria-label={`${bundle.label} ranking and filters`}>
           <span>Rank by {rankingRead}</span>
           <span>{signals}</span>
           {scope ? <span>{scope}</span> : null}
@@ -2357,7 +2357,7 @@ function ActiveFitJourneyReceipt({
           <span>Next</span>{" "}
           {scoutBrief
             ? prose(scoutBrief.advisorRead.nextAction)
-            : "No shortlist yet. Ease one constraint or clear the search before opening dossiers."}
+            : "No places match yet. Loosen one filter or clear the search."}
         </p>
       </div>
       {scoutBrief ? (
@@ -2366,10 +2366,10 @@ function ActiveFitJourneyReceipt({
             type="button"
             className="fit-journey-receipt__action"
             onClick={event => onOpenPlace(scoutBrief.leader.place.id, { trigger: event.currentTarget })}
-            aria-label={`Open first scout dossier: ${scoutBrief.leader.place.name}`}
+            aria-label={`Open the top pick: ${scoutBrief.leader.place.name}`}
           >
             <BookOpen className="w-3.5 h-3.5" aria-hidden />
-            Open first scout
+            Open top pick
           </button>
           <button
             type="button"
@@ -2378,11 +2378,11 @@ function ActiveFitJourneyReceipt({
             onFocus={onPreloadCompare}
             onPointerDown={onPreloadCompare}
             onClick={event => onCompareLeaders(scoutBrief.compareIds, { trigger: event.currentTarget })}
-            aria-label={`Compare ${scoutBrief.compareIds.length} Fit Finder leaders`}
+            aria-label={`Compare the top ${scoutBrief.compareIds.length} places for this goal`}
             disabled={!canCompare}
           >
             <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
-            Compare leaders
+            Compare top places
           </button>
         </div>
       ) : null}
@@ -2415,35 +2415,35 @@ function ActiveTripRouteReceipt({
   return (
     <section
       className="fit-journey-receipt fit-journey-receipt--trip"
-      aria-label={`Active trip route: ${theme.title}`}
+      aria-label={`Trip pinned: ${theme.title}`}
     >
       <div className="fit-journey-receipt__main">
         <div className="fit-journey-receipt__head">
-          <span className="fit-journey-receipt__eyebrow">Trip route active</span>
+          <span className="fit-journey-receipt__eyebrow">Top stop on this trip</span>
           <strong className="fit-journey-receipt__title">{lead.place.name}</strong>
         </div>
         <p className="fit-journey-receipt__copy">
           {prose(lead.profile.climateStory)}
         </p>
-        <div className="fit-journey-receipt__chips" aria-label={`${theme.title} trip route signals`}>
+        <div className="fit-journey-receipt__chips" aria-label={`${theme.title} trip facts`}>
           <span>{lead.profile.scores.tourismAppeal}/100 tourism appeal</span>
           <span>{count} stop{count === 1 ? "" : "s"} in view</span>
           <span>{windowRead}</span>
         </div>
         <p className="fit-journey-receipt__next">
-          <span>Field check</span>{" "}
+          <span>When to go</span>{" "}
           {prose(theme.seasonHint)}
         </p>
       </div>
-      <div className="fit-journey-receipt__actions" aria-label={`${theme.title} trip route actions`}>
+      <div className="fit-journey-receipt__actions" aria-label={`${theme.title} trip actions`}>
         <button
           type="button"
           className="fit-journey-receipt__action"
           onClick={event => onOpenPlace(lead.place.id, { trigger: event.currentTarget })}
-          aria-label={`Open trip lead: ${lead.place.name}`}
+          aria-label={`Open the top stop: ${lead.place.name}`}
         >
           <Route className="w-3.5 h-3.5" aria-hidden />
-          Open trip lead
+          Open top stop
         </button>
         <button
           type="button"
@@ -2486,35 +2486,35 @@ function CurrentScoutReadReceipt({
   return (
     <section
       className="fit-journey-receipt fit-journey-receipt--scout"
-      aria-label={`Current scout read: ${leader.place.name}`}
+      aria-label={`Current top pick: ${leader.place.name}`}
     >
       <div className="fit-journey-receipt__main">
         <div className="fit-journey-receipt__head">
-          <span className="fit-journey-receipt__eyebrow">Current scout read</span>
+          <span className="fit-journey-receipt__eyebrow">Current top pick</span>
           <strong className="fit-journey-receipt__title">{leader.place.name}</strong>
         </div>
         <p className="fit-journey-receipt__copy">
           {prose(scoutBrief.advisorRead.why)}
         </p>
-        <div className="fit-journey-receipt__chips" aria-label={`${leader.place.name} current scout signals`}>
+        <div className="fit-journey-receipt__chips" aria-label={`${leader.place.name} key facts`}>
           <span>{leaderScore}/100 {rankingLabel}</span>
           <span>{count} in view</span>
-          <span>{scoutBrief.compareIds.length} compare-ready finalists</span>
+          <span>{scoutBrief.compareIds.length} top places to compare</span>
         </div>
         <p className="fit-journey-receipt__next">
-          <span>Verify first</span>{" "}
+          <span>Check first</span>{" "}
           {prose(scoutBrief.advisorRead.checkFirst)}
         </p>
       </div>
-      <div className="fit-journey-receipt__actions" aria-label={`Current scout actions for ${leader.place.name}`}>
+      <div className="fit-journey-receipt__actions" aria-label={`Actions for ${leader.place.name}`}>
         <button
           type="button"
           className="fit-journey-receipt__action"
           onClick={event => onOpenPlace(leader.place.id, { trigger: event.currentTarget })}
-          aria-label={`Open current scout dossier: ${leader.place.name}`}
+          aria-label={`Open the profile for ${leader.place.name}`}
         >
           <BookOpen className="w-3.5 h-3.5" aria-hidden />
-          Open dossier
+          Open profile
         </button>
         <button
           type="button"
@@ -2523,11 +2523,11 @@ function CurrentScoutReadReceipt({
           onFocus={onPreloadCompare}
           onPointerDown={onPreloadCompare}
           onClick={event => onCompareLeaders(scoutBrief.compareIds, { trigger: event.currentTarget })}
-          aria-label={`Compare ${scoutBrief.compareIds.length} current scout finalists`}
+          aria-label={`Compare the top ${scoutBrief.compareIds.length} places`}
           disabled={!canCompare}
         >
           <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
-          Compare leaders
+          Compare top places
         </button>
       </div>
     </section>
@@ -2551,7 +2551,7 @@ const FieldNoteStrip = memo(function FieldNoteStrip() {
         <div className="flex flex-col gap-0.5">
           <span className="text-[10px] uppercase tracking-wider text-sage-700">Field note</span>
           {pick === null ? (
-            <span className="text-[10px] text-stone">Today&apos;s draw — shuffle for more</span>
+            <span className="text-[10px] text-stone">Today&apos;s note</span>
           ) : (
             <span className="text-[10px] text-stone">Picked just now</span>
           )}
@@ -2591,14 +2591,14 @@ const ClimateSignalRail = memo(function ClimateSignalRail({
     <section
       className="climate-signal-rail"
       style={{ ["--signature-rgb" as string]: leader.signature.mapAccentRgb }}
-      aria-label={`Current ${rankingLabel} climate signal leaders`}
+      aria-label={`Top places for ${rankingLabel}`}
       aria-describedby="climate-signal-rail-scroll-hint"
     >
       <p id="climate-signal-rail-scroll-hint" className="sr-only">
-        Swipe or scroll horizontally to browse more current climate signal leaders.
+        Swipe or scroll sideways to see more top places.
       </p>
       <div className="climate-signal-rail__head">
-        <span>Climate signal</span>
+        <span>Top places</span>
         <strong>{rankingLabel}</strong>
       </div>
       <div className="climate-signal-rail__beam" aria-hidden="true">
@@ -2611,7 +2611,7 @@ const ClimateSignalRail = memo(function ClimateSignalRail({
       </div>
       <div className="climate-signal-rail__grid">
         {visibleRows.map((row, i) => {
-          const openLabel = `Open ${row.place.name}, climate signal rank ${i + 1} by ${rankingLabel}`;
+          const openLabel = `Open ${row.place.name}, rank ${i + 1} by ${rankingLabel}`;
           return (
             <button
               key={row.place.id}
@@ -2751,7 +2751,7 @@ const HeroCard = memo(function HeroCard({
     return () => window.clearTimeout(focusId);
   }, [shareFallbackUrl, shareStatus]);
   const active = activeCollection ? CURATED_SET_BY_ID[activeCollection] ?? null : null;
-  const compareHeroLabel = `Open compare setup from Explorer hero (${compareCount} ${compareCount === 1 ? "place" : "places"})`;
+  const compareHeroLabel = `Open Compare (${compareCount} ${compareCount === 1 ? "place" : "places"})`;
   const liveSignalCount = (filters.fitPresets?.size ?? 0) + [
     filters.maxSummerHighC,
     filters.minWinterLowC,
@@ -2767,16 +2767,16 @@ const HeroCard = memo(function HeroCard({
   const searchTerm = (filters.search ?? "").trim();
   const copyViewLabel =
     shareStatus === "shared"
-      ? "Shared current Explorer view"
+      ? "Shared a link to this view"
       : shareStatus === "copied"
-        ? "Copied current Explorer view link"
+        ? "Copied a link to this view"
         : shareStatus === "failed"
-          ? "Retry copy or use the selected manual Explorer URL"
-          : "Copy or share current Explorer view";
-  const surpriseLabel = "Open a unique microclimate from the current filtered list";
-  const scoutBriefJumpLabel = "Jump to Scout Brief synthesis";
-  const findHomeBaseLabel = "Find your home-base analog using Explorer search";
-  const scoutToolsLabel = scoutToolsOpen ? "Hide scouting tools" : "Show scouting tools";
+          ? "Copy failed. Try again, or copy the link shown below"
+          : "Copy a link to this view, with its filters and ranking";
+  const surpriseLabel = "Open a random place from the current list (R)";
+  const scoutBriefJumpLabel = "Jump to the top-picks summary";
+  const findHomeBaseLabel = "Search for the atlas place closest to where you live, then set it as your home base";
+  const scoutToolsLabel = scoutToolsOpen ? "Hide the top-picks summary and livability panels" : "Show a summary of the top places, plus livability panels";
   const [heroMoreOpen, setHeroMoreOpen] = useState(false);
   const heroMoreRef = useRef<HTMLDivElement>(null);
   // Close the More menu like any menu: Escape (focus back to its button) or
@@ -2807,7 +2807,7 @@ const HeroCard = memo(function HeroCard({
     });
     target.focus({ preventScroll: true });
   }, []);
-  const compactChromeLabel = compact ? "Expand atlas intro" : "Compact atlas intro for the map";
+  const compactChromeLabel = compact ? "Show the full intro" : "Shrink the intro so the map sits higher";
   return (
     <div
       className="panel panel-hero tc-explorer-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4"
@@ -2822,13 +2822,13 @@ const HeroCard = memo(function HeroCard({
               {active
                 ? active.kind === "trip" ? "Trip pinned" : "Collection pinned"
                 : liveSignalCount > 0
-                  ? `Live Finder · ${liveSignalCount} signal${liveSignalCount > 1 ? "s" : ""}`
+                  ? `Must-haves · ${liveSignalCount} set`
                     : activeArchetypes.size > 0
                     ? `Filtered by ${activeArchetypes.size} archetype${activeArchetypes.size > 1 ? "s" : ""}`
                     : comfortLensActive
                       ? comfortLensFullAtlas
-                        ? "Comfort lens · full atlas"
-                        : "Comfort lens · filtered view"
+                        ? "Ranked by comfort · full atlas"
+                        : "Ranked by comfort · filtered"
                       : "Microclimate atlas"}
             </span>
             {active && (
@@ -2864,25 +2864,25 @@ const HeroCard = memo(function HeroCard({
                 aria-label={compactChromeLabel}
                 title={compactChromeLabel}
               >
-                {compact ? "Expand intro" : "Map first"}
+                {compact ? "Expand intro" : "Shrink intro"}
               </button>
             ) : null}
           </div>
           <h1 className="font-atlas text-2xl min-[1400px]:text-3xl text-ice leading-tight text-depth-hero">
-            {active ? active.title : "Discover microclimates hiding in plain sight"}
+            {active ? active.title : `${PLACE_COUNTS.total} places with unusual local climates`}
           </h1>
           <p className="hero-lede text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-4 min-[1400px]:line-clamp-none">
             {active
               ? active.description
               : comfortLensActive
                 ? MOST_COMFORTABLE_LENS_SUMMARY
-                : "Rain shadows, sky islands, fog belts, thermal belts, and other terrain climates most people never hear of. Open a pin, try Surprise me, or start from Most unique."}
+                : "Rain shadows, sky islands, fog belts, thermal belts and other places where terrain makes the climate differ from the region around it. Open a pin, try Surprise me, or start from Most unique."}
           </p>
           {!homeBasePlace && !active ? (
             <p className="hero-secondary-tip text-xs text-stone-readable mt-1.5 max-w-2xl leading-snug">
               {comfortLensActive
-                ? "Open a leader to see the score and first tradeoff behind its position."
-                : "Surprise opens a profile — set your home city there to unlock climate deltas and twins with clearer tradeoffs."}
+                ? "Open a top place to see its score and its main tradeoff."
+                : "Set a home base in any profile and every place then shows how it differs from where you live."}
             </p>
           ) : null}
 
@@ -2916,8 +2916,8 @@ const HeroCard = memo(function HeroCard({
             <button
               type="button"
               className={`btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)] ${shareStatus === "failed" ? "!border-[rgba(232,90,50,0.45)] !text-ember-700" : ""}`}
-              aria-label="More atlas actions"
-              title="More atlas actions"
+              aria-label="More actions"
+              title="More actions: copy a link, show summary panels"
               aria-expanded={heroMoreOpen}
               aria-controls="hero-more-menu-panel"
               onClick={() => setHeroMoreOpen(open => !open)}
@@ -2930,7 +2930,7 @@ const HeroCard = memo(function HeroCard({
               id="hero-more-menu-panel"
               className="hero-more-menu__panel mt-2 flex flex-col gap-2 sm:absolute sm:right-0 sm:z-20 sm:min-w-[12.5rem] sm:rounded-lg sm:border sm:border-[rgba(122,212,240,0.28)] sm:bg-[color:var(--color-slate-1)] sm:p-2 sm:shadow-lg"
               role="group"
-              aria-label="More atlas actions menu"
+              aria-label="More actions menu"
             >
               <button
                 type="button"
@@ -2941,7 +2941,7 @@ const HeroCard = memo(function HeroCard({
               >
                 <Link2 className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
                 <span aria-live="polite">
-                  {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Manual copy" : "Copy view"}
+                  {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy by hand" : "Copy link"}
                 </span>
               </button>
               <button
@@ -2953,7 +2953,7 @@ const HeroCard = memo(function HeroCard({
                 title={scoutToolsLabel}
               >
                 <Compass className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
-                Scouting tools
+                Summary panels
               </button>
               {scoutToolsOpen && scoutBrief ? (
                 <button
@@ -2964,7 +2964,7 @@ const HeroCard = memo(function HeroCard({
                   title={scoutBriefJumpLabel}
                 >
                   <BookOpen className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
-                  Scout brief
+                  Go to summary
                 </button>
               ) : null}
             </div>
@@ -2985,15 +2985,15 @@ const HeroCard = memo(function HeroCard({
             </button>
           ) : null}
           {shareStatus === "failed" && shareFallbackUrl ? (
-            <div className="tc-share-fallback" role="group" aria-label="Manual Explorer share link">
-              <span className="tc-share-fallback__label">Shareable link</span>
+            <div className="tc-share-fallback" role="group" aria-label="Link to this view, for copying by hand">
+              <span className="tc-share-fallback__label">Link to this view</span>
               <input
                 ref={shareFallbackInputRef}
                 type="text"
                 readOnly
                 value={shareFallbackUrl}
                 className="tc-share-fallback__input"
-                aria-label="Shareable Explorer URL for manual copy"
+                aria-label="Link to this view. Select it and copy."
                 onFocus={event => event.currentTarget.select()}
                 onClick={event => event.currentTarget.select()}
               />
@@ -3001,8 +3001,8 @@ const HeroCard = memo(function HeroCard({
           ) : null}
           {!compact ? (
             <div className="hero-metrics flex items-center gap-4 shrink-0 text-right justify-end flex-wrap">
-              <Metric label="In view" value={count} animated />
-              <Metric label="Atlas total" value={PLACE_COUNTS.total} />
+              <Metric label="In this list" value={count} animated />
+              <Metric label="All places" value={PLACE_COUNTS.total} />
               <Metric label="Flagships" value={PLACE_COUNTS.tierA} />
             </div>
           ) : null}
@@ -3014,14 +3014,14 @@ const HeroCard = memo(function HeroCard({
           <Home className="tc-hero-home-receipt__icon" aria-hidden />
           <div className="tc-hero-home-receipt__copy">
             <strong>Home base: {homeBasePlace.name}</strong>
-            <span>Cards, dossiers, and Compare read climate deltas against this anchor.</span>
+            <span>Cards, profiles and Compare show how each place differs from it.</span>
           </div>
           <button
             type="button"
             className="tc-hero-home-receipt__action"
             onClick={onClearHomeBase}
-            aria-label={`Stop comparing against ${homeBasePlace.name} from the Explorer hero (clear home base)`}
-            title={`Stop comparing against ${homeBasePlace.name} from the Explorer hero (clear home base)`}
+            aria-label={`Clear home base (stop comparing against ${homeBasePlace.name})`}
+            title={`Clear home base (stop comparing against ${homeBasePlace.name})`}
           >
             Clear
           </button>
@@ -3053,28 +3053,28 @@ const HeroCard = memo(function HeroCard({
         <div
           className="hero-quick-picks"
           role="group"
-          aria-label="Discovery quick picks"
+          aria-label="Quick starts"
           aria-describedby="hero-quick-picks-scroll-hint"
         >
           <span id="hero-quick-picks-scroll-hint" className="sr-only">
-            Swipe or scroll horizontally to browse more discovery paths.
+            Swipe or scroll sideways for more quick starts.
           </span>
-          <QuickPick icon={Sparkles} label="Most unique" description="Rank places by microclimate uniqueness." onClick={() => onApplyQuickPick("most-unique")} active={isQuickPickActive("most-unique")} />
-          <QuickPick icon={Compass} label="Most comfortable" description="Rank by felt temperature, atmosphere, usable months, hazards, and daily friction." onClick={() => onApplyQuickPick("most-comfortable")} active={isQuickPickActive("most-comfortable")} />
-          <QuickPick icon={Eye} label="Hidden gems" description="Surface lesser-known stops with strong atlas signal." onClick={() => onApplyQuickPick("hidden-gems")} active={isQuickPickActive("hidden-gems")} />
-          <QuickPick icon={Snowflake} label="Cool summers" description="Find places where peak-season afternoons stay restrained." onClick={() => onApplyQuickPick("coolest-summers")} active={isQuickPickActive("coolest-summers")} />
+          <QuickPick icon={Sparkles} label="Most unique" description="Rank by how far the local climate departs from the region around it." onClick={() => onApplyQuickPick("most-unique")} active={isQuickPickActive("most-unique")} />
+          <QuickPick icon={Compass} label="Most comfortable" description="Rank by day-to-day comfort: felt temperature, humidity and sky, usable months, hazards and daily hassles." onClick={() => onApplyQuickPick("most-comfortable")} active={isQuickPickActive("most-comfortable")} />
+          <QuickPick icon={Eye} label="Hidden gems" description="Rank lesser-known places with distinctive climates first." onClick={() => onApplyQuickPick("hidden-gems")} active={isQuickPickActive("hidden-gems")} />
+          <QuickPick icon={Snowflake} label="Cool summers" description="Rank by the lowest summer afternoon highs." onClick={() => onApplyQuickPick("coolest-summers")} active={isQuickPickActive("coolest-summers")} />
           <QuickPick icon={Cloud} label="Fog & marine" description="Filter to fog belts, cool maritime coasts, and upwelling shores." onClick={() => onApplyQuickPick("fog-marine")} active={isQuickPickActive("fog-marine")} />
-          <QuickPick icon={Globe2} label="Another country" description="Pin the climate-dissonance trip: places that feel unlike their map." onClick={() => onApplyQuickPick("another-country")} active={isQuickPickActive("another-country")} />
-          <QuickPick icon={CalendarDays} label="Visit now" description="Rank places by the current month's scouting weather." onClick={() => onApplyQuickPick("best-this-month")} active={isQuickPickActive("best-this-month")} />
+          <QuickPick icon={Globe2} label="Another country" description="Show the trip of places whose climate feels like a different country." onClick={() => onApplyQuickPick("another-country")} active={isQuickPickActive("another-country")} />
+          <QuickPick icon={CalendarDays} label="Visit now" description="Rank by typical weather for the current month (climate normals, not a forecast)." onClick={() => onApplyQuickPick("best-this-month")} active={isQuickPickActive("best-this-month")} />
         </div>
       )}
 
       {count === 0 ? (
-        <div className="tc-hero-empty-recovery" role="group" aria-label="Immediate zero-result recovery">
+        <div className="tc-hero-empty-recovery" role="group" aria-label="No results: ways to get places back">
           <Search className="tc-hero-empty-recovery__icon" aria-hidden />
           <div className="tc-hero-empty-recovery__copy">
-            <strong>{searchTerm ? `No matches for "${searchTerm}"` : "No places in this screen"}</strong>
-            <span>Recover here before scrolling: loosen one part of the screen instead of losing the whole scouting context.</span>
+            <strong>{searchTerm ? `No matches for "${searchTerm}"` : "No places match these filters"}</strong>
+            <span>Loosen one filter below to bring places back. The rest of your settings stay as they are.</span>
           </div>
           <div className="tc-hero-empty-recovery__actions">
             {buildExplorerRecoveryActions({
@@ -3091,7 +3091,7 @@ const HeroCard = memo(function HeroCard({
                 className="tc-hero-empty-recovery__action"
                 data-primary={action.primary || undefined}
                 onClick={action.onClick}
-                aria-label={`${action.label} from hero recovery`}
+                aria-label={`${action.label} (no results)`}
                 title={action.detail}
               >
                 {action.label}
@@ -3285,32 +3285,32 @@ const LivabilityTopTenRail = memo(function LivabilityTopTenRail({
     >
       <div className="min-w-0">
         <div className="text-[10px] uppercase tracking-wider text-sage-700">
-          {detailed ? "Livability lens · top ten" : "Livability lens - top ten"}
+          {detailed ? "Livability · top ten" : "Livability · top ten"}
         </div>
         {detailed ? (
           <>
             <p className="hidden min-[1400px]:block text-xs text-stone-readable mt-1 leading-relaxed max-w-3xl">
-              Same filtered pool as the map and cards. This row is <span className="font-medium text-frost">always</span> sorted by our published blend — not by whatever you picked in Rank by.
+              The same filtered places as the map and cards. This row is <span className="font-medium text-frost">always</span> sorted by the livability score below, whatever you picked in Rank by.
             </p>
-            <div className="mt-2 hidden min-[1400px]:flex flex-wrap items-center gap-1.5 text-[10px] text-stone-readable" aria-label="Livability blend weights (v3)">
-              <span className="livability-weight-pill" title="Blends the thermal plateau, warm-night recovery, year-round usable-month runway, sky/dampness, and curated comfort.">Felt comfort {Math.round(LIVABILITY_WEIGHTS.thermalComfort * 100)}%</span>
-              <span className="livability-weight-pill" title="Sky, wind exposure, humidity or arid-air strain, smoke/air, and solar burden.">Atmosphere {Math.round(LIVABILITY_WEIGHTS.atmosphericEase * 100)}%</span>
-              <span className="livability-weight-pill" title="0.6 × mean-of-9 + 0.4 × max-of-9 — surfaces tail risk that an averaged hazard score would hide.">Hazard cushion {Math.round(LIVABILITY_WEIGHTS.hazardCushion * 100)}%</span>
+            <div className="mt-2 hidden min-[1400px]:flex flex-wrap items-center gap-1.5 text-[10px] text-stone-readable" aria-label="What the livability score is made of">
+              <span className="livability-weight-pill" title="How many months sit in a comfortable temperature range, whether nights cool off, sky and dampness, and an editorial comfort rating.">Felt comfort {Math.round(LIVABILITY_WEIGHTS.thermalComfort * 100)}%</span>
+              <span className="livability-weight-pill" title="Cloud and sunshine, wind exposure, humid or very dry air, smoke and air quality, and sun intensity.">Atmosphere {Math.round(LIVABILITY_WEIGHTS.atmosphericEase * 100)}%</span>
+              <span className="livability-weight-pill" title="Nine hazards, scored as 60% their average and 40% the worst one, so a single severe hazard still counts.">Hazard cushion {Math.round(LIVABILITY_WEIGHTS.hazardCushion * 100)}%</span>
               <span className="livability-weight-pill">Resilience {Math.round(LIVABILITY_WEIGHTS.resilience * 100)}%</span>
               <span className="livability-weight-pill">Growability {Math.round(LIVABILITY_WEIGHTS.growability * 100)}%</span>
-              <span className="livability-weight-pill" title={prose("U-shaped penalty: full marks at 700–1,500 mm/yr; both arid (<300 mm) and saturated (>2,500 mm) reduce the score.")}>Precip moderation {Math.round(LIVABILITY_WEIGHTS.precipModeration * 100)}%</span>
-              <span className="livability-weight-pill" title="Curated cost, social-fabric, and daily-services friction.">Lived friction {Math.round(LIVABILITY_WEIGHTS.livedFriction * 100)}%</span>
-              <span className="livability-weight-pill" title="Derived actual-place read from sensory comfort, daily ease, place identity, and scouting clarity.">Place feel {Math.round(LIVABILITY_WEIGHTS.placeFeel * 100)}%</span>
+              <span className="livability-weight-pill" title={prose("Full marks at 700–1,500 mm of rain and snow a year. Very dry (under 300 mm) and very wet (over 2,500 mm) both score lower.")}>Moderate rainfall {Math.round(LIVABILITY_WEIGHTS.precipModeration * 100)}%</span>
+              <span className="livability-weight-pill" title="Editorial ratings for housing cost, distance to services and everyday hassle.">Cost & access {Math.round(LIVABILITY_WEIGHTS.livedFriction * 100)}%</span>
+              <span className="livability-weight-pill" title="A combined score for how the place feels: comfort, ease of daily life, character, and how well it is documented.">Place feel {Math.round(LIVABILITY_WEIGHTS.placeFeel * 100)}%</span>
             </div>
             <p className="hidden min-[1400px]:block mt-1.5 text-[10px] text-stone-readable/85 italic">
-              v3 livability lens — felt comfort, atmosphere, usable-month runway, hazard cushion, precip moderation, lived friction, and place feel. Editorial triage for exploration, not appraisal or medical heat-stress advice.
+              An editorial score for narrowing a list. It is not a property appraisal and not medical advice about heat.
             </p>
           </>
         ) : null}
       </div>
       <div
         className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory scroll-smooth [scrollbar-width:thin]"
-        aria-label="Top ten places by livability blend in the current filtered list"
+        aria-label="Top ten places by livability score in the current list"
       >
         {rows.map((row, i) => {
           const openLabel = `Livability rank ${i + 1}. ${row.place.name}, ${row.place.koppen}. Open place profile.`;
@@ -3344,20 +3344,20 @@ const LivabilityTopTenRail = memo(function LivabilityTopTenRail({
 });
 
 function scenarioRankMoveLabel(row: ScenarioReshuffleRow): string {
-  if (row.currentRank == null) return "new to this future top set";
+  if (row.currentRank == null) return "not in today's top four";
   if (row.rankDelta == null || row.rankDelta === 0) return `holds #${row.currentRank}`;
   return row.rankDelta > 0 ? `up ${row.rankDelta} from #${row.currentRank}` : `down ${Math.abs(row.rankDelta)} from #${row.currentRank}`;
 }
 
 function scenarioScoreLabel(row: ScenarioReshuffleRow): string {
   const projected = Math.round(row.projectedScore);
-  if (row.currentScore == null || row.scoreDelta == null) return `${projected} lens score`;
+  if (row.currentScore == null || row.scoreDelta == null) return `${projected} ranking score`;
   const delta = Math.round(row.scoreDelta);
   // Authored-score lenses (most-unique, hidden gems, …) stay flat under
   // projection — omit a noisy "+0" that reads like a climate miss.
-  if (delta === 0) return `${projected} lens score (unchanged vs present-day climate)`;
+  if (delta === 0) return `${projected} ranking score (same as today)`;
   const signed = delta > 0 ? `+${delta}` : `${delta}`;
-  return `${projected} lens score · ${signed} vs present-day climate`;
+  return `${projected} ranking score · ${signed} vs today`;
 }
 
 const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
@@ -3374,10 +3374,10 @@ const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
   const meta = scenarioMeta(summary.scenario);
   const leaderLine = summary.leaderChanged
     ? `${summary.projectedLeaderName ?? "A new leader"} overtakes ${summary.baselineLeaderName ?? "the present-day leader"}.`
-    : `${summary.projectedLeaderName ?? "The leader"} still leads, but the margins are recalculated against projected normals.`;
+    : `${summary.projectedLeaderName ?? "The leader"} still leads; the scores are recalculated from the projected climate.`;
   const churnLine = summary.newTopCount === 0
-    ? "Projected top-four places are already present-day leaders; use the deltas to judge how their comfort margin changes."
-    : `${summary.newTopCount} projected top-four ${summary.newTopCount === 1 ? "place is" : "places are"} new compared with the present-day top four.`;
+    ? "The projected top four are the same places as today; the chips show how much each one changes."
+    : `${summary.newTopCount} of the projected top four ${summary.newTopCount === 1 ? "is" : "are"} not in today's top four.`;
   const newTopFact = summary.newTopCount === 1 ? "1 new top-four place" : `${summary.newTopCount} new top-four places`;
 
   return (
@@ -3385,23 +3385,23 @@ const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
       <div className="scenario-remap__head">
         <div className="min-w-0">
           <h2 id="scenario-remap-title" className="scenario-remap__eyebrow">
-            {meta.short} remap
+            {meta.short} ranking
           </h2>
           <p className="scenario-remap__headline">
-            {meta.short} reranks {rankingLabel.toLowerCase()} against projected 2041-2060 normals.
+            {rankingLabel} re-ranked on projected 2041–2060 climate ({meta.short}).
           </p>
           <p className="scenario-remap__copy">
-            {leaderLine} {churnLine} Lens-score chips compare the active ranking under projected vs present-day climate; summer / winter / precip chips are climate deltas vs 1991-2020 normals.
+            {leaderLine} {churnLine} The score chip compares each place's ranking score under the projection with today's. The summer, winter and precipitation chips show the projected change from 1991–2020 normals. Projections are illustrative, not forecasts.
           </p>
         </div>
-        <div className="scenario-remap__facts" aria-label={`${meta.short} remap summary`}>
+        <div className="scenario-remap__facts" aria-label={`${meta.short} ranking summary`}>
           <span>{meta.label}</span>
           <span>{summary.leaderChanged ? "new #1" : "leader holds"}</span>
           <span>{newTopFact}</span>
         </div>
       </div>
 
-      <div className="scenario-remap__rows" aria-label={`${meta.short} projected leaders`}>
+      <div className="scenario-remap__rows" aria-label={`${meta.short} projected top four`}>
         {summary.rows.map(row => {
           const openLabel = `Open ${row.place.name}, projected ${meta.short} rank ${row.projectedRank}`;
           return (
@@ -3419,7 +3419,7 @@ const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
                 <span className="scenario-remap__move">{scenarioRankMoveLabel(row)}</span>
                 <span className="scenario-remap__score">{scenarioScoreLabel(row)}</span>
               </span>
-              <span className="scenario-remap__deltas" aria-label={`${row.place.name} projected climate deltas`}>
+              <span className="scenario-remap__deltas" aria-label={`${row.place.name} projected changes`}>
                 <span>Summer {fmtDelta(row.summerHighDeltaC, temp, { digits: 1 })}</span>
                 <span>Winter {fmtDelta(row.winterLowDeltaC, temp, { digits: 1 })}</span>
                 <span>Precip {row.precipDeltaPct > 0 && toFixedClean(row.precipDeltaPct) !== "0" ? "+" : ""}{toFixedClean(row.precipDeltaPct)}%</span>
@@ -3509,7 +3509,7 @@ const LivingCompassWorkbench = memo(function LivingCompassWorkbench({
   if (!leader || !leaderSignature || !leaderLivability || !leaderLiveFit) return null;
 
   const radarValues = axes.map(axis => axis.value);
-  const leaderReason = leaderLiveFit.reasons[0] ?? leader.note ?? `${Math.round(leader.score)}/100 current ranking signal.`;
+  const leaderReason = leaderLiveFit.reasons[0] ?? leader.note ?? `Scores ${Math.round(leader.score)}/100 on the current ranking.`;
   const leaderWatch = leaderDecision?.watch ?? leaderLiveFit.cautions[0] ?? `Verify ${leaderSignature.verify.shortLabel.toLowerCase()} before deciding.`;
   const leaderBestFor = leaderDecision?.bestFor ?? leaderReason;
 
@@ -3521,7 +3521,7 @@ const LivingCompassWorkbench = memo(function LivingCompassWorkbench({
     >
       <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {ranking === "live-fit"
-          ? `Live-fit leader: ${leader.place.name}, score ${leaderLiveFit.score} out of 100.`
+          ? `Top live-here fit: ${leader.place.name}, score ${leaderLiveFit.score} out of 100.`
           : `Top match for ${rankingLabel}: ${leader.place.name}, ranking score ${Math.round(leader.score)}.`}
       </p>
       <div className="living-compass__leader">
@@ -3579,13 +3579,13 @@ const LivingCompassWorkbench = memo(function LivingCompassWorkbench({
 
       <div className="living-compass__shortlist">
         <div className="living-compass__shortlist-head">
-          <div className="living-compass__eyebrow">Current rank</div>
-          <p>Leading matches by <span>{rankingLabel}</span>.</p>
+          <div className="living-compass__eyebrow">Top five</div>
+          <p>Ranked by <span>{rankingLabel}</span>.</p>
         </div>
 
         <div
           className="living-compass__rank-list"
-          aria-label={`Top five places for the selected ranking profile: ${rankingLabel}`}
+          aria-label={`Top five places by ${rankingLabel}`}
         >
           {rankRows.map((row, i) => {
             const openLabel = `Rank ${i + 1}. ${row.place.name}. Score ${Math.round(row.score)}. Open place profile.`;
@@ -3658,10 +3658,10 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
   );
   const shortlistPacketCounterweight = shortlistPacketCue?.counterweight ?? null;
   const shortlistPacketPrimaryLabel = shortlistPacketCue
-    ? `Open first shortlist dossier: ${shortlistPacketCue.primary.name}`
+    ? `Open the first shortlist profile: ${shortlistPacketCue.primary.name}`
     : "";
   const shortlistPacketCounterweightLabel = shortlistPacketCounterweight
-    ? `Open shortlist contrast dossier: ${shortlistPacketCounterweight.name}`
+    ? `Open the most different shortlist place: ${shortlistPacketCounterweight.name}`
     : "";
   const recentPlaces = useMemo(
     () =>
@@ -3676,8 +3676,8 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
   );
   const recentClearLabel = `Clear recently viewed list (${recentPlaces.length} ${recentPlaces.length === 1 ? "place" : "places"} shown)`;
   const pinnedCompareLabel = pinnedCompareIds.length === 1
-    ? `Open Compare Workbench setup for ${pinnedPlaces[0]?.name ?? "this place"} from your shortlist`
-    : `Open Compare Workbench for ${pinnedCompareIds.length} pinned places from your shortlist`;
+    ? `Open Compare with ${pinnedPlaces[0]?.name ?? "this place"} and add a second place`
+    : `Compare ${pinnedCompareIds.length} places from your shortlist side by side`;
 
   if (pinnedPlaces.length === 0 && recentPlaces.length === 0) return null;
 
@@ -3703,22 +3703,22 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
                   title={pinnedCompareLabel}
                 >
                   <ArrowLeftRight className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
-                  {pinnedCompareIds.length === 1 ? "Workbench setup" : "Workbench"}
+                  {pinnedCompareIds.length === 1 ? "Start compare" : "Compare"}
                 </button>
               ) : null}
               <ShortlistExportMenu places={pinnedPlaces} />
             </div>
           </div>
           {shortlistReadiness ? (
-            <p className="hero-mini-rail__readiness" aria-label="Shortlist scout packet status">
+            <p className="hero-mini-rail__readiness" aria-label="Shortlist status">
               <span>{shortlistReadiness.label}</span>
               {shortlistReadiness.detail}
             </p>
           ) : null}
           {shortlistPacketCue ? (
-            <div className="hero-shortlist-packet" aria-label="Shortlist packet decision cue">
+            <div className="hero-shortlist-packet" aria-label="Where to start in your shortlist">
               <div className="hero-shortlist-packet__head">
-                <span>Scout packet</span>
+                <span>Your shortlist</span>
                 <strong>Start with {shortlistPacketCue.primary.name}</strong>
               </div>
               <p className="hero-shortlist-packet__summary">
@@ -3733,7 +3733,7 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
                   title={shortlistPacketPrimaryLabel}
                 >
                   <BookOpen className="w-3.5 h-3.5" aria-hidden />
-                  Start dossier
+                  Open first
                 </button>
                 {shortlistPacketCounterweight ? (
                   <button
@@ -3744,7 +3744,7 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
                     title={shortlistPacketCounterweightLabel}
                   >
                     <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
-                    Contrast
+                    Most different
                   </button>
                 ) : null}
               </div>
@@ -3759,7 +3759,7 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
           </p>
           <ul
             className="hero-mini-rail"
-            aria-label="Pinned places — click to open, × to remove"
+            aria-label="Your shortlist. Select a place to open it, or × to remove it"
             aria-describedby="hero-pinned-rail-scroll-hint"
           >
             {pinnedPlaces.map((p, index) => {
@@ -3811,7 +3811,7 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
             </button>
           </div>
           <p id="hero-recent-rail-scroll-hint" className="sr-only">
-            Swipe or scroll horizontally to browse recently opened place profiles.
+            Swipe or scroll sideways for more recently opened places.
           </p>
           <ul
             className="hero-mini-rail"
@@ -3859,17 +3859,17 @@ const ContextStressPanel = memo(function ContextStressPanel({
       <div className="context-stress__head">
         <div className="min-w-0">
           <div id="context-stress-title" className="context-stress__eyebrow">
-            Context stress test
+            Same list, other priorities
           </div>
           <p className="context-stress__summary">
-            Same place context, rerun through different living priorities so leader shifts and caveats surface before you dig into cards.
+            The current list re-ranked for other priorities. See whether the top place holds up or a different one takes over.
             {leaderSummary ? (
               <span className="context-stress__split">{leaderSummary.summary}</span>
             ) : null}
           </p>
         </div>
         <div className="context-stress__head-actions">
-          <div className="context-stress__count" aria-label={`${rows.length} context reads`}>
+          <div className="context-stress__count" aria-label={`${rows.length} priorities`}>
             {rows.length} reads
           </div>
           {leaderSummary && leaderSummary.compareIds.length >= 2 ? (
@@ -3880,7 +3880,7 @@ const ContextStressPanel = memo(function ContextStressPanel({
               onFocus={onPreloadCompare}
               onPointerDown={onPreloadCompare}
               onClick={event => onCompareContextLeaders(leaderSummary.compareIds, { trigger: event.currentTarget })}
-              aria-label={`Compare context top picks: ${leaderSummary.compareIds.length} places`}
+              aria-label={`Compare the top picks across priorities: ${leaderSummary.compareIds.length} places`}
               title={leaderSummary.summary}
             >
               <ArrowLeftRight className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
@@ -3891,11 +3891,11 @@ const ContextStressPanel = memo(function ContextStressPanel({
       </div>
 
       <p id="context-stress-scroll-hint" className="sr-only">
-        Swipe or scroll horizontally to browse alternate context leaders and apply a different scouting lens.
+        Swipe or scroll sideways for more priorities. Apply one to re-rank the list.
       </p>
       <div
         className="context-stress__rail"
-        aria-label="Scenario leaders for the current place context"
+        aria-label="Top place for each priority"
         aria-describedby="context-stress-scroll-hint"
       >
         {rows.map(row => {
@@ -3925,7 +3925,7 @@ const ContextStressPanel = memo(function ContextStressPanel({
               </span>
             </button>
 
-            <div className="context-stress__stats" aria-label={`${row.label} decision metrics`}>
+            <div className="context-stress__stats" aria-label={`${row.label} key scores`}>
               <span>Fit {row.decision.liveFitScore}</span>
               <span>Comfort {row.decision.comfortScore}</span>
               <span>Feel {row.decision.placeFeelScore}</span>
@@ -3953,7 +3953,7 @@ const ContextStressPanel = memo(function ContextStressPanel({
                   type="button"
                   className="btn-primary !text-xs !py-1.5"
                   onClick={() => onApplyContextScenario(row.scenario!.id)}
-                  aria-label={`Apply context: ${row.label}`}
+                  aria-label={`Re-rank the list by ${row.label}`}
                   title={prose(row.description)}
                 >
                   Apply
@@ -3983,15 +3983,15 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
 }) {
   const prose = useProse();
   const canSaveFinalists = brief.compareIds.length >= 2;
-  const openLeaderLabel = `Open scout brief leader ${brief.leader.place.name}`;
-  const compareLeadersLabel = `Compare current leaders: ${brief.compareIds.length} places`;
-  const saveFinalistsLabel = `Save ${brief.compareIds.length} Scout Brief finalists to your shortlist`;
+  const openLeaderLabel = `Open the top pick, ${brief.leader.place.name}`;
+  const compareLeadersLabel = `Compare the top ${brief.compareIds.length} places`;
+  const saveFinalistsLabel = `Save the top ${brief.compareIds.length} places to your shortlist`;
   return (
     <section id="explorer-scout-brief" tabIndex={-1} className="scout-brief" aria-labelledby="explorer-scout-brief-title">
       <div className="scout-brief__head">
         <div className="min-w-0">
           <div id="explorer-scout-brief-title" className="scout-brief__eyebrow">
-            Scout brief
+            Top-picks summary
           </div>
           <p className="scout-brief__summary">{prose(brief.summary)}</p>
         </div>
@@ -4004,7 +4004,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
             title={openLeaderLabel}
           >
             <Target className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
-            Open leader
+            Open top pick
           </button>
           {brief.compareIds.length >= 2 ? (
             <button
@@ -4018,7 +4018,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
               title={compareLeadersLabel}
             >
               <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
-              Compare leaders
+              Compare top places
             </button>
           ) : null}
           {canSaveFinalists ? (
@@ -4030,7 +4030,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
               title={saveFinalistsLabel}
             >
               <BookmarkCheck className="w-3.5 h-3.5 text-ochre-700" aria-hidden />
-              Save finalists
+              Save top picks
             </button>
           ) : null}
         </div>
@@ -4055,9 +4055,9 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
               {Math.round(brief.leader.score)}
             </span>
           </button>
-          <div className="scout-brief__advisor" aria-label="Advisor verdict">
+          <div className="scout-brief__advisor" aria-label="Bottom line">
             <div className="scout-brief__advisor-head">
-              <span className="scout-brief__advisor-title">Advisor verdict</span>
+              <span className="scout-brief__advisor-title">Bottom line</span>
               <span className="scout-brief__advisor-confidence">{prose(brief.advisorRead.confidence)}</span>
             </div>
             <p><span>Read</span> {prose(brief.advisorRead.verdict)}</p>
@@ -4065,10 +4065,10 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
             <p><span>Check</span> {prose(brief.advisorRead.checkFirst)}</p>
             <p><span>Next</span> {prose(brief.advisorRead.nextAction)}</p>
           </div>
-          <div className="scout-brief__visit-plan" role="group" aria-label="Scout day plan">
+          <div className="scout-brief__visit-plan" role="group" aria-label="Visit plan">
             <div className="scout-brief__visit-plan-head">
-              <span className="scout-brief__visit-plan-title">Scout day plan</span>
-              <span className="scout-brief__visit-plan-copy">Visit order, field check, then the first tradeoff read.</span>
+              <span className="scout-brief__visit-plan-title">Visit plan</span>
+              <span className="scout-brief__visit-plan-copy">Where to go first, what to check on the ground, and which tradeoff to weigh.</span>
             </div>
             <div className="scout-brief__visit-plan-list">
               {brief.scoutPlan.map((step, index) => {
@@ -4086,7 +4086,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
                     className={`${toneClass} scout-brief__visit-plan-step`}
                     onClick={event => onOpenPlace(step.place.id, { trigger: event.currentTarget })}
                     title={detail}
-                    aria-label={`Scout day plan step ${index + 1}. ${step.label}: ${action} ${detail} Open place profile.`}
+                    aria-label={`Visit plan step ${index + 1}. ${step.label}: ${action} ${detail} Open place profile.`}
                   >
                     <span className="scout-brief__visit-plan-index" aria-hidden>{index + 1}</span>
                     <span className="min-w-0">
@@ -4099,19 +4099,19 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
               })}
             </div>
           </div>
-          <div className="scout-brief__audience" aria-label="Who this shortlist fits and who should pause">
+          <div className="scout-brief__audience" aria-label="Who these places suit, and who should think twice">
             <div>
               <span className="scout-brief__audience-label">Best for</span>{" "}
               <p>{prose(brief.audienceRead.love)}</p>
             </div>
             <div>
-              <span className="scout-brief__audience-label">Pause if</span>{" "}
+              <span className="scout-brief__audience-label">Think twice if</span>{" "}
               <p>{prose(brief.audienceRead.pause)}</p>
             </div>
           </div>
         </div>
 
-        <div className="scout-brief__metrics" aria-label="Current shortlist climate and risk summary">
+        <div className="scout-brief__metrics" aria-label="Climate and risk summary for the top places">
           {brief.metrics.map(metric => (
             <div key={metric.label} className="scout-brief__metric" title={metric.detail}>
               <span className="scout-brief__metric-label">{metric.label}</span>
@@ -4120,9 +4120,9 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
           ))}
         </div>
 
-        <div className="scout-brief__signals" aria-label="Where current leaders win across living priorities">
+        <div className="scout-brief__signals" aria-label="Which top place is best at what">
           <div className="scout-brief__signals-head">
-            <span className="scout-brief__signals-title">Where leaders win</span>
+            <span className="scout-brief__signals-title">Best at what</span>
             <span className="scout-brief__signals-line">{prose(brief.decisionLine)}</span>
           </div>
           <div className="scout-brief__signal-grid">
@@ -4144,10 +4144,10 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
         </div>
 
         {brief.decisionRows.length > 0 ? (
-          <div className="scout-brief__matrix" aria-label="Shortlist decision matrix">
+          <div className="scout-brief__matrix" aria-label="Top places side by side">
             <div className="scout-brief__matrix-head">
-              <span className="scout-brief__matrix-title">Decision matrix</span>
-              <span className="scout-brief__matrix-line">Top places, translated into fit, comfort, risk, land, and the first caveat to check.</span>
+              <span className="scout-brief__matrix-title">Side by side</span>
+              <span className="scout-brief__matrix-line">Each top place with its fit, comfort, risk and land scores, and the first thing to check.</span>
             </div>
             <div className="scout-brief__matrix-grid">
               {brief.decisionRows.map(row => (
@@ -4157,7 +4157,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
                   className="scout-brief__matrix-row"
                   onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
                   title={prose(row.decisionCue)}
-                  aria-label={`Decision matrix rank ${row.rank}. ${row.place.name}. ${row.decisionCue} Open place profile.`}
+                  aria-label={`Rank ${row.rank}. ${row.place.name}. ${row.decisionCue} Open place profile.`}
                 >
                   <span className="scout-brief__matrix-rank" aria-hidden>{row.rank}</span>
                   <span className="scout-brief__matrix-main">
@@ -4208,10 +4208,10 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
   const prose = useProse();
   const leaderPinned = bookmarkIds.has(brief.leader.place.id);
   const canSaveFinalists = brief.compareIds.length >= 2;
-  const leaderOpenLabel = `Open ${brief.leader.place.name} from the desktop relocation workbench`;
-  const dossierLabel = `Open ${brief.leader.place.name} climate dossier from the Scout Board`;
-  const compareLabel = `Compare current Scout Board finalists: ${brief.compareIds.length} places`;
-  const saveFinalistsLabel = `Save ${brief.compareIds.length} Scout Board finalists to your shortlist`;
+  const leaderOpenLabel = `Open the top pick, ${brief.leader.place.name}`;
+  const dossierLabel = `Open the profile for ${brief.leader.place.name}`;
+  const compareLabel = `Compare the top ${brief.compareIds.length} places`;
+  const saveFinalistsLabel = `Save the top ${brief.compareIds.length} places to your shortlist`;
   const pinLabel = leaderPinned
     ? `Unpin ${brief.leader.place.name} from your shortlist`
     : `Pin ${brief.leader.place.name} to your shortlist`;
@@ -4220,11 +4220,11 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
       id="explorer-scout-brief"
       tabIndex={-1}
       className="desktop-scout-board"
-      aria-label="Desktop relocation workbench"
+      aria-label="Top-picks summary"
     >
       <div className="desktop-scout-board__leader">
         <div>
-          <div className="desktop-scout-board__eyebrow">Relocation read</div>
+          <div className="desktop-scout-board__eyebrow">Top-picks summary</div>
           <button
             type="button"
             className="desktop-scout-board__leader-button"
@@ -4235,7 +4235,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             <span className="desktop-scout-board__place">{brief.leader.place.name}</span>
             <span className="desktop-scout-board__note">{prose(brief.fitLine)}</span>
           </button>
-          <div className="desktop-scout-board__actions" aria-label={`Scout actions for ${brief.leader.place.name}`}>
+          <div className="desktop-scout-board__actions" aria-label={`Actions for ${brief.leader.place.name}`}>
             <button
               type="button"
               className="desktop-scout-board__action"
@@ -4244,7 +4244,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
               title={dossierLabel}
             >
               <BookOpen className="w-3.5 h-3.5" aria-hidden />
-              Dossier
+              Profile
             </button>
             <button
               type="button"
@@ -4284,16 +4284,16 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
               {leaderPinned ? "Pinned" : "Pin"}
             </button>
           </div>
-          <div className="desktop-scout-board__advisor" aria-label="Advisor verdict">
-            <div className="desktop-scout-board__advisor-title">Advisor verdict</div>
+          <div className="desktop-scout-board__advisor" aria-label="Bottom line">
+            <div className="desktop-scout-board__advisor-title">Bottom line</div>
             <p><span>Read</span> {prose(brief.advisorRead.verdict)}</p>
             <p><span>Why</span> {prose(brief.advisorRead.why)}</p>
             <p><span>Check</span> {prose(brief.advisorRead.checkFirst)}</p>
             <p><span>Next</span> {prose(brief.advisorRead.nextAction)}</p>
             <p><span>Confidence</span> {prose(brief.advisorRead.confidence)}</p>
           </div>
-          <div className="desktop-scout-board__visit-plan" role="group" aria-label="Desktop scout day plan">
-            <div className="desktop-scout-board__visit-plan-title">Scout day plan</div>
+          <div className="desktop-scout-board__visit-plan" role="group" aria-label="Visit plan">
+            <div className="desktop-scout-board__visit-plan-title">Visit plan</div>
             {brief.scoutPlan.slice(0, 3).map((step, index) => {
               const Icon = step.kind === "field-check" ? Compass : step.kind === "tradeoff" ? ArrowLeftRight : Target;
               const labelClass = step.kind === "field-check" ? "desktop-scout-board__field-check-label" : "desktop-scout-board__next-step-label";
@@ -4308,7 +4308,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
                   className={`${toneClass} desktop-scout-board__visit-plan-step`}
                   onClick={event => onOpenPlace(step.place.id, { trigger: event.currentTarget })}
                   title={detail}
-                  aria-label={`Desktop scout day plan step ${index + 1}. ${step.label}: ${action} ${detail} Open place profile.`}
+                  aria-label={`Visit plan step ${index + 1}. ${step.label}: ${action} ${detail} Open place profile.`}
                 >
                   <span className="desktop-scout-board__visit-plan-index" aria-hidden>{index + 1}</span>
                   <span className="min-w-0">
@@ -4319,9 +4319,9 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
               );
             })}
           </div>
-          <div className="desktop-scout-board__audience" aria-label="Who this shortlist fits and who should pause">
+          <div className="desktop-scout-board__audience" aria-label="Who these places suit, and who should think twice">
             <p><span>Best for</span> {prose(brief.audienceRead.love)}</p>
-            <p><span>Pause if</span> {prose(brief.audienceRead.pause)}</p>
+            <p><span>Think twice if</span> {prose(brief.audienceRead.pause)}</p>
           </div>
         </div>
         <div className="desktop-scout-board__score" aria-label={`Score ${Math.round(brief.leader.score)}`}>
@@ -4329,7 +4329,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
         </div>
       </div>
 
-      <div className="desktop-scout-board__metrics" aria-label="Current shortlist desktop metrics">
+      <div className="desktop-scout-board__metrics" aria-label="Climate and risk summary for the top places">
         {brief.metrics.slice(0, 4).map(metric => (
           <div key={metric.label} className="desktop-scout-board__metric" title={metric.detail}>
             <span className="desktop-scout-board__metric-label">{metric.label}</span>
@@ -4338,8 +4338,8 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
         ))}
       </div>
 
-      <div className="desktop-scout-board__evidence" aria-label="Compact desktop shortlist evidence">
-        <div className="desktop-scout-board__signals" aria-label="Priority leaders in the current shortlist">
+      <div className="desktop-scout-board__evidence" aria-label="Top places in detail">
+        <div className="desktop-scout-board__signals" aria-label="Which top place is best at what">
           {brief.decisionSignals.slice(0, 3).map(signal => (
             <button
               key={signal.label}
@@ -4356,8 +4356,8 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
           ))}
         </div>
 
-        <div className="desktop-scout-board__matrix" aria-label="Desktop decision matrix">
-        <div className="desktop-scout-board__matrix-title">Decision matrix</div>
+        <div className="desktop-scout-board__matrix" aria-label="Top places side by side">
+        <div className="desktop-scout-board__matrix-title">Side by side</div>
         {brief.decisionRows.slice(0, 3).map(row => (
           <button
             key={row.place.id}
@@ -4365,7 +4365,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             className="desktop-scout-board__matrix-row"
             onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
             title={prose(row.decisionCue)}
-            aria-label={`Open ${row.place.name} from the desktop decision matrix`}
+            aria-label={`Open ${row.place.name}, rank ${row.rank}`}
           >
             <span className="desktop-scout-board__matrix-rank" aria-hidden>{row.rank}</span>
             <span className="desktop-scout-board__matrix-name">{row.place.name}</span>

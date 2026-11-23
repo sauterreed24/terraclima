@@ -114,7 +114,7 @@ export function PlaceDetailReadingNav({
         aria-describedby="tc-reading-nav-mobile-scroll-hint"
       >
         <p id="tc-reading-nav-mobile-scroll-hint" className="sr-only">
-          Swipe or scroll horizontally to browse more dossier chapters.
+          Swipe or scroll sideways for more sections.
         </p>
         <div className="text-[10px] uppercase tracking-[0.18em] text-stone mb-2 px-0.5">On this page</div>
         <div

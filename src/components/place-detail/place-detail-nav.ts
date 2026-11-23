@@ -99,7 +99,7 @@ const PD_SECTION_DEFS: PdSectionDef[] = [
   { id: PD.overview, label: "Overview", group: "portrait" },
   { id: PD.seasons, label: "Season by season", group: "portrait" },
   { id: PD.whyHere, label: "Climate drivers", group: "portrait" },
-  { id: PD.deepDives, label: "Field dossier", group: "portrait", optional: "deepDives" },
+  { id: PD.deepDives, label: "In depth", group: "portrait", optional: "deepDives" },
   { id: PD.contrast, label: "Local contrast", group: "portrait", optional: "contrast" },
   { id: PD.fieldStory, label: "On the ground", group: "portrait" },
 
@@ -107,26 +107,26 @@ const PD_SECTION_DEFS: PdSectionDef[] = [
   // activities, and the consolidated decision lens.
   { id: PD.vsHome, label: "Versus home", group: "liveOrVisit" },
   { id: PD.similar, label: "Climate twins", group: "liveOrVisit" },
-  { id: PD.residency, label: "Decision lens", group: "liveOrVisit" },
-  { id: PD.liveHereFit, label: "Full fit detail", group: "liveOrVisit" },
+  { id: PD.residency, label: "Fit summary", group: "liveOrVisit" },
+  { id: PD.liveHereFit, label: "Live-here fit", group: "liveOrVisit" },
   { id: PD.livability, label: "Livability breakdown", group: "liveOrVisit" },
-  { id: PD.livedSignals, label: "Lived indicators", group: "liveOrVisit", optional: "livedSignals" },
-  { id: PD.settlements, label: "Scouting bases", group: "liveOrVisit", optional: "settlements" },
+  { id: PD.livedSignals, label: "Cost and access", group: "liveOrVisit", optional: "livedSignals" },
+  { id: PD.settlements, label: "Nearby towns", group: "liveOrVisit", optional: "settlements" },
   { id: PD.activities, label: "Things to do", group: "liveOrVisit", optional: "activities" },
-  { id: PD.practical, label: "Practical read", group: "liveOrVisit" },
+  { id: PD.practical, label: "Practical notes", group: "liveOrVisit" },
   { id: PD.tourism, label: "Climate tourism", group: "liveOrVisit" },
   { id: PD.who, label: "Who it suits", group: "liveOrVisit" },
 
   // Climate & Land — monthly climate, screening scores, terrain, soil.
   { id: PD.atAGlance, label: "At a glance", group: "climateLand" },
   { id: PD.placeFeel, label: "Place feel", group: "climateLand" },
-  { id: PD.signature, label: "Climate signature", group: "climateLand" },
+  { id: PD.signature, label: "Climate basics", group: "climateLand" },
   { id: PD.rhythm, label: "Seasonal rhythm", group: "climateLand" },
   { id: PD.bestMonths, label: "Best months", group: "climateLand", optional: "bestMonths" },
-  { id: PD.comfortPrecision, label: "Comfort precision", group: "climateLand" },
+  { id: PD.comfortPrecision, label: "Heat and humidity", group: "climateLand" },
   { id: PD.bioclimaticIndices, label: "Bioclimatic indices", group: "climateLand" },
   { id: PD.numbersTogether, label: "Numbers together", group: "climateLand" },
-  { id: PD.corpus, label: "Full atlas context", group: "climateLand" },
+  { id: PD.corpus, label: "Versus the atlas", group: "climateLand" },
   { id: PD.geospatial, label: "Geospatial analysis", group: "climateLand" },
   { id: PD.soil, label: "Agriculture & soil", group: "climateLand" },
 
@@ -179,7 +179,7 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
       id: def.id,
       // Matches the section heading, which says "Scouting tasks" when the
       // place has no listed attractions, only derived field checks.
-      label: def.id === PD.activities && !activities.some(a => a.source !== "derived") ? "Scouting tasks" : def.label,
+      label: def.id === PD.activities && !activities.some(a => a.source !== "derived") ? "Things to check" : def.label,
       group: PD_NAV_GROUP[def.group],
     }));
 }

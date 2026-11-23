@@ -12,10 +12,10 @@ export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: 
     <section id={anchorId} className="detail-doc-section anim-fade-in scroll-mt-28">
       <h3 className="font-atlas text-[1.15rem] md:text-lg text-ice mb-3.5 flex items-center gap-2 tracking-tight border-b border-[rgba(200,170,140,0.35)] pb-2">
         <Route className="w-4 h-4 shrink-0" style={{ color: "#f0d29c" }} aria-hidden />
-        Climate tourism
+        Visiting for the climate
       </h3>
       <p className="text-[12px] text-stone-readable leading-relaxed mb-3.5 max-w-2xl">
-        Want to test this place in person? Use this as a scouting itinerary, not a booking engine.
+        When to come, what to see and what to check if you visit to try the climate. These are suggestions from climate averages; confirm lodging, roads and closures yourself.
       </p>
 
       <div className="grid md:grid-cols-3 gap-2 mb-4">
@@ -51,7 +51,7 @@ export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: 
           <p className="text-[11px] text-stone italic mt-2">{prose(profile.riskRead.caveat)}</p>
         </TourismPanel>
 
-        <TourismPanel icon={<Home className="w-4 h-4" aria-hidden />} title="Nearby lodging search cues">
+        <TourismPanel icon={<Home className="w-4 h-4" aria-hidden />} title="Where to look for lodging">
           <List items={[`Base: ${profile.lodgingRead.base}`, ...profile.lodgingRead.searchCues]} />
           <p className="text-[11px] text-stone italic mt-2">{prose(profile.lodgingRead.caveat)}</p>
         </TourismPanel>
@@ -60,7 +60,7 @@ export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: 
       <div className="panel-thin p-4 mt-3">
         <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-stone mb-2">
           <MapPin className="w-3.5 h-3.5" aria-hidden />
-          Scouting itinerary
+          Sample visit
         </div>
         <h4 className="font-atlas text-lg text-ice">{profile.itinerary.title}</h4>
         <div className="grid md:grid-cols-3 gap-3 mt-3">
@@ -72,7 +72,7 @@ export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: 
                 `Morning: ${day.morning}`,
                 `Afternoon: ${day.afternoon}`,
                 `Evening: ${day.evening}`,
-                `Climate lens: ${day.climateLens}`,
+                `Climate to notice: ${day.climateLens}`,
               ]} />
             </article>
           ))}
@@ -104,7 +104,7 @@ function TourismPanel({ icon, title, children }: { icon: ReactNode; title: strin
     <article className="panel-thin p-4 border-l-2 border-[rgba(240,210,156,0.65)]">
       <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-stone mb-2">
         <span className="text-ochre-500">{icon}</span>
-        Climate trip read
+        For visitors
       </div>
       <h4 className="font-atlas text-base text-ice tracking-tight">{title}</h4>
       <div className="mt-2">{children}</div>

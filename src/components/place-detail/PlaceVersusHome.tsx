@@ -41,7 +41,7 @@ export function PlaceVersusHome({
     () => (home ? buildHomeBaseComparison(home, place) : null),
     [home, place],
   );
-  const setHomeLabel = `Set ${place.name} as your home base for climate deltas`;
+  const setHomeLabel = `Set ${place.name} as your home base, to compare other places against it`;
   const clearHomeBaseLabel = `Clear ${place.name} as your home base`;
 
   if (!home || !comparison) {
@@ -50,8 +50,8 @@ export function PlaceVersusHome({
         <div className="tc-accent-panel px-4 py-3 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-frost leading-snug max-w-xl">
             Set a home base to see how summers, winters, moisture, sun, snow, comfortable months,
-            and hazard load here compare with the climate you know. Use this place, or open your
-            town&apos;s dossier and press <kbd className="kbd">H</kbd>.
+            and hazards here compare with the climate you know. Use this place, or open your
+            town&apos;s profile and press <kbd className="kbd">H</kbd>.
           </p>
           {onHomeBaseToggle ? (
             <button
@@ -74,7 +74,7 @@ export function PlaceVersusHome({
       <Section anchorId={PD.vsHome} title="Your home base" icon={SECTION_ICON}>
         <div className="tc-accent-panel px-4 py-3 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-frost leading-snug max-w-xl">
-            {place.name} is your climate baseline. Every other card, dossier, and Compare column
+            {place.name} is your climate baseline. Every other card, profile, and Compare column
             now reads as a delta against it — summers, winters, moisture, sun, snow, comfortable
             months, and hazard load.
           </p>
@@ -108,14 +108,14 @@ export function PlaceVersusHome({
           ))}
         </ul>
         <p className="text-[11px] text-stone-readable leading-snug mt-3">
-          Deltas read {place.name} minus {home.name} from recent {CLIMATE_NORMALS_PERIOD} climatology — a
-          screening lens, not a forecast. Change your home base from any dossier header, the{" "}
+          Each figure is {place.name} minus {home.name}, from {CLIMATE_NORMALS_PERIOD} averages. It is a
+          comparison of typical climate, not a forecast. Change your home base from any profile header, the{" "}
           <kbd className="kbd">H</kbd> shortcut, or the count strip above the ranked cards.
           {scenario !== "now" ? (
             <>
               {" "}Explorer cards and Compare currently use the{" "}
-              <strong>{scenarioMeta(scenario).short}</strong> projected layer for vs-home chips;
-              this dossier section stays on present-day normals.
+              <strong>{scenarioMeta(scenario).short}</strong> projection for their home comparisons;
+              this section stays on recent averages.
             </>
           ) : null}
         </p>

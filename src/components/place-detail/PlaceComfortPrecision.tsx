@@ -30,9 +30,9 @@ function monthList(months: ComfortPrecisionMonth[]): string {
 
 function humiditySourceLabel(month: ComfortPrecisionMonth): string {
   if (month.humiditySource === "measured") return "measured humidity";
-  if (month.humiditySource === "analog") return "climate-analog humidity";
-  if (month.humiditySource === "archetype") return "archetype humidity";
-  return "humidity unmodeled";
+  if (month.humiditySource === "analog") return "humidity estimated from a similar climate";
+  if (month.humiditySource === "archetype") return "humidity estimated from the climate type";
+  return "no humidity data";
 }
 
 export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionProfile }) {
@@ -44,7 +44,7 @@ export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionPr
     profile.confidence === "high" ? "sage" : profile.confidence === "medium" ? "ochre" : "ember";
   const cards = [
     {
-      label: "Peak day feel",
+      label: "Hottest month feels like",
       value: precisionTemp(peak.apparentHighC, temp),
       note: `${peak.label}: air ${precisionTemp(peak.highC, temp)}; ${humiditySourceLabel(peak)}.`,
       tone: "glacier",
@@ -53,26 +53,26 @@ export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionPr
       label: "Dew point",
       value: precisionTemp(peak.dewPointC, temp),
       note: peak.humidityPct == null
-        ? "Local humidity check needed."
+        ? "No humidity data; check locally."
         : `${peak.label} mean humidity ${Math.round(peak.humidityPct)}%.`,
       tone: "sage",
     },
     {
-      label: "Wet-bulb proxy",
+      label: "Wet-bulb (est.)",
       value: precisionTemp(peak.wetBulbC, temp),
-      note: "Shade heat guardrail; not a full sun-and-wind WBGT.",
+      note: "Heat and humidity combined, in shade. Ignores sun and wind.",
       tone: "ochre",
     },
     {
-      label: "Night recovery",
+      label: "Night cooling",
       value: `${Math.round(sleep.sleepRecoveryScore)}/100`,
       note: `${sleep.label}: low ${precisionTemp(sleep.lowC, temp)} with ${fmtDelta(sleep.highC - sleep.lowC, temp, { signed: false })} day-night spread.`,
       tone: "aurora",
     },
     {
-      label: "Thermal strain (UTCI*)",
+      label: "Heat or cold stress (UTCI*)",
       value: `${utci.score}/100`,
-      note: `${utci.bandLabel}; feels-like ${utci.warmSeasonLabel} ${precisionTemp(utci.warmSeasonApparentHighC, temp)}. *approximation — no wind/radiant inputs.`,
+      note: `${utci.bandLabel}; feels-like ${utci.warmSeasonLabel} ${precisionTemp(utci.warmSeasonApparentHighC, temp)}. *Approximate: no wind or direct-sun data.`,
       tone: "ochre",
     },
   ] as const;
@@ -82,7 +82,7 @@ export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionPr
       <div className="comfort-precision-panel">
         <div className="comfort-precision-panel__head">
           <div>
-            <div className="comfort-precision-panel__eyebrow">Human thermal read</div>
+            <div className="comfort-precision-panel__eyebrow">Heat and humidity on the body</div>
             <p>
               {profile.annualComfortMonths}/12 pleasant months and {profile.annualUsableMonths}/12 broadly usable months.
             </p>
@@ -108,7 +108,7 @@ export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionPr
               key={month.label}
               className="comfort-precision-month"
               data-level={precisionBand(Math.min(month.usabilityScore, month.sleepRecoveryScore, month.heatStressScore))}
-              title={`${month.label}: usability ${Math.round(month.usabilityScore)}/100, heat guardrail ${Math.round(month.heatStressScore)}/100, sleep recovery ${Math.round(month.sleepRecoveryScore)}/100`}
+              title={`${month.label}: outdoor usability ${Math.round(month.usabilityScore)}/100, heat safety ${Math.round(month.heatStressScore)}/100, cool nights for sleep ${Math.round(month.sleepRecoveryScore)}/100`}
             >
               <span>{month.label}</span>
               <i aria-hidden>
@@ -121,15 +121,15 @@ export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionPr
 
         <div className="comfort-precision-panel__footer">
           <div>
-            <span>Easy field window</span>
+            <span>Easiest months outdoors</span>
             <strong>{monthList(profile.easiestMonths)}</strong>
           </div>
           <div>
-            <span>Months to verify</span>
+            <span>Hardest months</span>
             <strong>{monthList(profile.hardestMonths)}</strong>
           </div>
           <div>
-            <span>Moisture basis</span>
+            <span>Humidity data</span>
             <strong>{profile.humidityBasisNote}</strong>
           </div>
           <div>

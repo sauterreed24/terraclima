@@ -32,10 +32,10 @@ export const PHYSICAL_LABELS: readonly PhysicalLabelSpec[] = [
   { id: "atlantic", text: "Atlantic Ocean", kind: "ocean", at: [-63, 30], minK: 0, maxK: 2.6 },
   { id: "gulf-mexico", text: "Gulf of Mexico", kind: "sea", at: [-90.6, 25.4], minK: 0, maxK: 4.2 },
   { id: "hudson-bay", text: "Hudson Bay", kind: "sea", at: [-85.5, 59.6], minK: 0, maxK: 4.2 },
-  { id: "gulf-alaska", text: "Gulf of Alaska", kind: "sea", at: [-145.5, 56.6], minK: 0, maxK: 4.2 },
+  { id: "gulf-alaska", text: "Gulf of Alaska", kind: "sea", at: [-147.5, 54.6], minK: 0, maxK: 4.2 },
   { id: "labrador-sea", text: "Labrador Sea", kind: "sea", at: [-55.5, 58.6], minK: 0, maxK: 4.2 },
-  { id: "beaufort-sea", text: "Beaufort Sea", kind: "sea", at: [-139, 72.4], minK: 0, maxK: 4.2 },
-  { id: "bering-sea", text: "Bering Sea", kind: "sea", at: [-172, 58.5], minK: 0, maxK: 4.2 },
+  { id: "beaufort-sea", text: "Beaufort Sea", kind: "sea", at: [-141, 73.0], minK: 0, maxK: 4.2 },
+  { id: "bering-sea", text: "Bering Sea", kind: "sea", at: [-177, 57.6], minK: 0, maxK: 4.2 },
   { id: "caribbean", text: "Caribbean Sea", kind: "sea", at: [-80, 16.2], minK: 0, maxK: 4.2 },
   { id: "gulf-california", text: "Gulf of California", kind: "sea", at: [-111.2, 27.4], toward: [-113.6, 30.6], minK: 0.8, maxK: 6 },
 

@@ -72,17 +72,17 @@ function summarizeActiveExplorerLens(
       .map(id => LIVE_FIT_PRESET_BY_ID[id]?.shortLabel ?? id)
       .slice(0, 3);
     const more = (filters.fitPresets?.size ?? 0) - labels.length;
-    parts.push(`Live Finder ${labels.join(", ")}${more > 0 ? ` + ${more} more` : ""}`);
+    parts.push(`must-haves ${labels.join(", ")}${more > 0 ? ` + ${more} more` : ""}`);
   }
   if (filters.maxSummerHighC != null) parts.push(`summer at or below ${fmtTemp(filters.maxSummerHighC, temp)}`);
   if (filters.minWinterLowC != null) parts.push(`winter at or above ${fmtTemp(filters.minWinterLowC, temp)}`);
-  if (filters.minGrowability != null) parts.push(`garden ${filters.minGrowability}+`);
+  if (filters.minGrowability != null) parts.push(`growability ${filters.minGrowability}+`);
   if (filters.maxFireRisk != null) parts.push(`fire ${RISK_SUMMARY_LABELS[filters.maxFireRisk]} or lower`);
   if (filters.maxOverallRisk != null) parts.push(`risk ${RISK_SUMMARY_LABELS[filters.maxOverallRisk]} or lower`);
   if (scenario && scenario !== "now") parts.push(`climate layer ${scenarioMeta(scenario).short}`);
 
   if (parts.length === 0) return null;
-  return `Active Explorer filters: ${parts.join("; ")}.`;
+  return `Active filters: ${parts.join("; ")}.`;
 }
 
 export const ExplorerFilterSheet = memo(
@@ -222,8 +222,8 @@ export const ExplorerFilterSheet = memo(
     );
     const triggerLabel =
       signalCount > 0
-        ? `Open Explorer filters and ranking (${signalCount} active ${signalCount === 1 ? "filter" : "filters"})`
-        : "Open Explorer filters and ranking";
+        ? `Open filters and ranking (${signalCount} active ${signalCount === 1 ? "filter" : "filters"})`
+        : "Open filters and ranking";
 
     return (
       <>
@@ -238,7 +238,7 @@ export const ExplorerFilterSheet = memo(
             aria-controls="tc-explorer-filter-sheet"
             aria-label={triggerLabel}
             aria-describedby={triggerSummary ? "tc-explorer-filter-sheet-trigger-summary" : undefined}
-            title={triggerSummary ?? "Open Explorer filters and ranking"}
+            title={triggerSummary ?? "Open filters and ranking"}
           >
             <SlidersHorizontal className="w-4 h-4 shrink-0" aria-hidden />
             <span className="tc-filter-sheet-trigger__label">Filters</span>

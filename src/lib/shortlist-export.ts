@@ -220,19 +220,19 @@ export function exportShortlistAsMarkdown(
   const rows = buildShortlistDecisionRows(
     places.map(place => {
       const livability = scoreLivability(place).score;
-      return { place, score: livability, note: `${livability}/100 livability screen` };
+      return { place, score: livability, note: `${livability}/100 livability` };
     }),
     {},
     places.length,
   );
   const lines = [
-    "# Terraclima Scout Plan",
+    "# Terraclima visit plan",
     "",
     `Generated: ${ctx.generatedAt.toISOString()}`,
     `Source: ${ctx.appUrl}`,
     `Places: ${places.length}`,
     "",
-    "Screening-grade climate and livability intelligence only. Verify housing, services, hazards, medical needs, schools, insurance, and local rules with official local sources before making decisions.",
+    "This plan is built from climate averages and editorial scores. It is not live weather and not advice. Check housing, services, hazards, medical needs, schools, insurance and local rules with official local sources before deciding anything.",
     "",
     "## Pinned shortlist",
     "",
@@ -248,33 +248,33 @@ export function exportShortlistAsMarkdown(
       lines.push(`### ${row.rank}. ${place.name}`);
       lines.push("");
       lines.push(`- Location: ${location}`);
-      lines.push(`- Climate class: ${place.koppen}; tier ${place.tier}`);
+      lines.push(`- Köppen climate class: ${place.koppen}; tier ${place.tier}`);
       if (bestWindow) {
         const note = bestWindow.note ? ` - ${bestWindow.note}` : "";
         lines.push(`- Best visit window: ${bestWindow.label} (${bestWindow.range})${note}`);
       } else {
-        lines.push("- Best visit window: Check the dossier's season-by-season read before scheduling.");
+        lines.push("- Best visit window: see the profile's season-by-season section before picking dates.");
       }
-      lines.push(`- Why scout: ${row.bestFor}`);
-      lines.push(`- Watch first: ${row.watch}`);
+      lines.push(`- Why visit: ${row.bestFor}`);
+      lines.push(`- Check first: ${row.watch}`);
       lines.push(
-        `- Score ingredients: live-here fit ${row.liveFitScore}/100; felt comfort ${row.comfortScore}/100; ` +
-        `risk load ${row.riskLoad}/100; growability ${row.growability}/100; lived ease ${row.livedEase}/100.`,
+        `- Scores: live-here fit ${row.liveFitScore}/100; felt comfort ${row.comfortScore}/100; ` +
+        `overall risk ${row.riskLoad}/100; growability ${row.growability}/100; cost and access ${row.livedEase}/100.`,
       );
       lines.push(`- Dossier: ${ctx.appUrl}?p=${encodeURIComponent(place.id)}`);
       lines.push("");
     }
 
-    lines.push("## Evidence readiness");
+    lines.push("## How well sourced");
     lines.push("");
-    lines.push("Weakest source reads first. Use this section to decide what must be verified before booking a scout trip, comparing housing, or treating a finalist as move-ready.");
+    lines.push("Least well-sourced places first. Use this to decide what to confirm before booking a visit or looking at housing.");
     lines.push("");
     for (const row of buildExportEvidenceReadiness(places)) {
       lines.push(`### ${row.place.name} - ${row.label} (${row.score}/100)`);
       lines.push("");
-      lines.push(`- Evidence facts: ${row.facts.join("; ")}.`);
-      lines.push(`- Verify first: ${row.gaps.join("; ")}.`);
-      lines.push(`- Planner action: ${row.action}`);
+      lines.push(`- Sources: ${row.facts.join("; ")}.`);
+      lines.push(`- Gaps: ${row.gaps.join("; ")}.`);
+      lines.push(`- Next step: ${row.action}`);
       lines.push("");
     }
   }
@@ -287,20 +287,20 @@ export function exportShortlistAsMarkdown(
     lines.push(`Compare URL: ${compareUrl(ctx.appUrl, comparePlaces)}`);
     lines.push("");
     if (places.length > COMPARE_LIMIT) {
-      lines.push(`Compare opens the first ${COMPARE_LIMIT} pinned places; this export still keeps all ${places.length} places in the pinned shortlist above.`);
+      lines.push(`Compare opens the first ${COMPARE_LIMIT} pinned places; all ${places.length} pinned places are listed above.`);
       lines.push("");
     }
     if (compareRead) {
-      lines.push(`Decision read: ${compareRead.summary}`);
-      lines.push(`Next action: ${compareRead.nextAction}`);
+      lines.push(`Summary: ${compareRead.summary}`);
+      lines.push(`Next step: ${compareRead.nextAction}`);
       lines.push(`Caution: ${compareRead.caution}`);
       lines.push("");
-      lines.push("Scout verification checklist:");
+      lines.push("Check before you go:");
       for (const item of compareRead.verificationChecklist) {
         lines.push(`- ${item.label} - ${item.place.name}: ${item.action} Proof: ${item.proof}`);
       }
       lines.push("");
-      lines.push("| Role | Place | Score | Fit | Risk | Visit | Watch first |");
+      lines.push("| Role | Place | Score | Fit | Risk | Visit | Check first |");
       lines.push("| --- | --- | ---: | --- | --- | --- | --- |");
       for (const row of compareRead.tableRows) {
         lines.push(`| ${[
@@ -318,18 +318,18 @@ export function exportShortlistAsMarkdown(
   } else if (places.length === 1) {
     const anchor = places[0];
     const row = rows[0];
-    lines.push(`Compare setup URL: ${compareUrl(ctx.appUrl, places)}`);
+    lines.push(`Compare URL: ${compareUrl(ctx.appUrl, places)}`);
     lines.push("");
-    lines.push(`${anchor.name} is saved as the anchor finalist. Use Compare setup to add a similar peer or a counterweight before trusting the side-by-side read.`);
+    lines.push(`${anchor.name} is the only pinned place. Add a second place in Compare to see tradeoffs.`);
     if (row) {
-      lines.push(`Anchor read: ${row.bestFor} Watch first: ${row.watch}`);
+      lines.push(`${row.bestFor} Check first: ${row.watch}`);
     }
     lines.push("");
   } else {
-    lines.push("Pin at least two places to generate a Compare-ready finalist table.");
+    lines.push("Pin at least two places to get a side-by-side table.");
     lines.push("");
   }
-  lines.push("Use Compare for finalists that survived the watch-first caveats. This plan preserves your pinned order; it is not a route, booking, appraisal, or recommendation to move.");
+  lines.push("Places are listed in the order you pinned them. This plan is not a route, a booking, an appraisal or a recommendation to move.");
 
   return {
     body: lines.join("\n") + "\n",
@@ -422,21 +422,21 @@ function buildExportEvidenceReadiness(places: readonly Place[]): ExportEvidenceR
       (hasSunshine ? 5 : 0),
     ));
     const gaps = [
-      ...(place.confidence === "low" ? ["low confidence profile"] : place.confidence === "moderate" ? ["moderate confidence profile"] : []),
-      ...(httpsCitations < 2 ? ["adding a second HTTPS source"] : []),
-      ...(hasThinChapterDepth(place) ? ["expanding deep-dive context"] : []),
-      ...(!hasLiveSignals ? ["filling lived-friction signals"] : []),
-      ...(!hasHumidity ? ["sourcing humidity normals"] : []),
-      ...(!hasSunshine ? ["sourcing sunshine normals"] : []),
+      ...(place.confidence === "low" ? ["the low-confidence entry"] : place.confidence === "moderate" ? ["the moderate-confidence entry"] : []),
+      ...(httpsCitations < 2 ? ["finding a second web source"] : []),
+      ...(hasThinChapterDepth(place) ? ["the thin in-depth text"] : []),
+      ...(!hasLiveSignals ? ["missing cost and access data"] : []),
+      ...(!hasHumidity ? ["missing measured humidity"] : []),
+      ...(!hasSunshine ? ["missing measured sunshine"] : []),
     ].slice(0, 5);
     const label = score >= 78 && gaps.length <= 1
-      ? "Ready for scout plan"
+      ? "Well sourced"
       : score >= 58
-        ? "Verify before booking"
-        : "Thin read - source first";
+        ? "Check before booking"
+        : "Thinly sourced";
     const action = gaps.length === 0
-      ? "Good enough for side-by-side scouting; still verify parcel-level hazards and logistics."
-      : `Start with ${gaps[0]}; do not treat this finalist as travel- or move-ready until that source gap is checked.`;
+      ? "Enough to compare with confidence. Still check hazards for the exact address, and logistics."
+      : `Start with ${gaps[0]}. Check it before planning a trip or a move.`;
 
     return {
       place,
@@ -444,13 +444,13 @@ function buildExportEvidenceReadiness(places: readonly Place[]): ExportEvidenceR
       score,
       facts: [
         `${place.confidence} confidence`,
-        `${httpsCitations} HTTPS source${httpsCitations === 1 ? "" : "s"}`,
+        `${httpsCitations} web source${httpsCitations === 1 ? "" : "s"}`,
         chapterCountLabel(chapters),
-        hasLiveSignals ? "lived signals present" : "lived signals missing",
-        hasHumidity ? "humidity sourced" : "humidity missing",
-        hasSunshine ? "sunshine sourced" : "sunshine missing",
+        hasLiveSignals ? "cost and access data" : "no cost or access data",
+        hasHumidity ? "measured humidity" : "no measured humidity",
+        hasSunshine ? "measured sunshine" : "no measured sunshine",
       ],
-      gaps: gaps.length ? gaps : ["no major source gaps in the current profile"],
+      gaps: gaps.length ? gaps : ["no major gaps"],
       action,
     };
   }).sort((a, b) => a.score - b.score || a.place.name.localeCompare(b.place.name) || a.place.id.localeCompare(b.place.id));

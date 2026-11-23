@@ -12,7 +12,7 @@ const ICON_COLOR = "#9bd9c2";
 function fmtPercentile(share: number | null): string | null {
   if (share == null) return null;
   const pct = Math.round(share * 100);
-  return `higher than ${pct}% of the corpus`;
+  return `higher than ${pct}% of atlas places`;
 }
 
 function valueWithClass(idx: BioclimIndex, format: (v: number) => string): { primary: string; secondary: string } {
@@ -43,7 +43,7 @@ function deMartonneRead(b: BioclimResult): string {
   const cls = b.deMartonne.class;
   if (cls === "hyperarid") return "Annual precipitation is a tiny fraction of warmth — desert-end of the spectrum.";
   if (cls === "arid") return "Sparse rain against warm temperatures: irrigation-dependent agriculture.";
-  if (cls === "semi-arid") return "Steppe / rain-shadow signature; rain barely keeps pace with warmth.";
+  if (cls === "semi-arid") return "Typical of steppe and rain shadows: rain barely keeps pace with warmth.";
   if (cls === "mediterranean") return "Le Houérou's Mediterranean band — wet enough for forest where summer rain isn't required.";
   if (cls === "sub-humid") return "Rain moderately exceeds warmth — temperate woodland regime.";
   if (cls === "humid") return "Comfortable annual moisture surplus relative to warmth.";
@@ -111,7 +111,7 @@ function buildCards(bio: BioclimResult, ranks: PlaceBioclimRanks): CardConfig[] 
       description: () => conradRead(bio),
     },
     {
-      label: "Thornthwaite PET",
+      label: "Evaporative demand (PET)",
       full: "Annual potential evapotranspiration",
       citation: "Thornthwaite 1948",
       format: v => `${Math.round(v)} mm`,
@@ -128,7 +128,7 @@ function buildCards(bio: BioclimResult, ranks: PlaceBioclimRanks): CardConfig[] 
     },
     {
       label: "UNEP aridity",
-      full: "Annual precipitation ÷ PET",
+      full: "Annual precipitation ÷ potential evapotranspiration (PET)",
       citation: "UNEP 1992",
       format: v => v.toFixed(2),
       read: () => ({ idx: bio.unepAridity, share: ranks.unepAridityAboveShare }),
@@ -165,13 +165,13 @@ export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ p
         <EvidenceClassLabel cls={classifyDossierSection("bioclim")} />
       </div>
       <p className="text-sm text-stone mb-3 max-w-2xl">
-        Five standard climate-science indices computed directly from this place's monthly temperature and precipitation normals — independent of the authored Köppen label, citable to original sources, comparable across the atlas.
+        Five standard indices from climate science that measure how dry a place is and how far its seasons swing. Each is computed from this place's monthly temperature and precipitation averages, so the figures compare directly across the atlas.
       </p>
       {undefinedReads.length > 0 ? (
         <div className="tc-accent-panel px-3 py-2.5 mb-3 text-[12px] leading-snug text-stone-readable">
-          <div className="text-[10px] uppercase tracking-wider text-glacier-700 mb-1">Undefined bioclimatic edge</div>
+          <div className="text-[10px] uppercase tracking-wider text-glacier-700 mb-1">Not defined here</div>
           <p>
-            {undefinedReads.map(({ card }) => card.label).join(", ")} is undefined for this place because the active growing season never crosses the index threshold. The annual water-balance and continentality reads still compare normally.
+            {undefinedReads.map(({ card }) => card.label).join(", ")} cannot be calculated here because no month is warm enough to count as a growing season. The other indices still apply.
           </p>
         </div>
       ) : null}

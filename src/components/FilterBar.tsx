@@ -275,7 +275,7 @@ export const FilterBar = memo(function FilterBar({
             clearSearch();
           }}
           placeholder={searchPlaceholder}
-          aria-label="Search places by name, region, or archetype"
+          aria-label="Search places by name, region, climate type or Köppen code"
           enterKeyHint="search"
           autoComplete="off"
           className="bg-transparent text-[15px] text-ice placeholder:text-stone/65 outline-none flex-1 min-w-0"
@@ -346,7 +346,7 @@ export const FilterBar = memo(function FilterBar({
         onToggle={onDetailsToggle(setFitOpen)}
       >
         <summary className="tc-filter-sheet-details__summary">
-          Fit Finder{activeBundle ? ` · ${activeBundle.label}` : ""}
+          Goals{activeBundle ? ` · ${activeBundle.label}` : ""}
         </summary>
         <FitFinderPanel
           searchFieldId={searchFieldId}
@@ -365,7 +365,7 @@ export const FilterBar = memo(function FilterBar({
         onToggle={onDetailsToggle(setLiveOpen)}
       >
         <summary className="tc-filter-sheet-details__summary">
-          Live Finder{liveSignalCount > 0 ? ` · ${liveSignalCount} signal${liveSignalCount === 1 ? "" : "s"}` : ""}
+          Must-haves{liveSignalCount > 0 ? ` · ${liveSignalCount} set` : ""}
         </summary>
         <LiveFinderPanel
           filters={filters}
@@ -492,7 +492,7 @@ function RankByControl({
         </span>
       </label>
       <p id={`${rankingSelectId}-hint`} className="rank-menu__hint">
-        Current list and map: {rankingLabel}
+        Orders the list and picks the top places on the map.
       </p>
     </div>
   );
@@ -519,9 +519,9 @@ function FitFinderPanel({
     <section className="fit-finder-panel" aria-labelledby={fitFinderTitleId}>
       <div className="fit-finder-panel__head">
         <div>
-          <div id={fitFinderTitleId} className="fit-finder-panel__eyebrow">Fit Finder</div>
+          <div id={fitFinderTitleId} className="fit-finder-panel__eyebrow">Start from a goal</div>
           <p className="fit-finder-panel__intro">
-            Start with what you are escaping or seeking; each path applies the existing ranking and Live Finder constraints.
+            Pick what you want from a climate. Each goal sets a ranking and a few must-haves, which you can then adjust.
           </p>
         </div>
         {activeBundle ? (
@@ -530,7 +530,7 @@ function FitFinderPanel({
           </span>
         ) : null}
       </div>
-      <div className="fit-finder-panel__grid" aria-label="Guided climate-fit paths">
+      <div className="fit-finder-panel__grid" aria-label="Goals">
         {LIFESTYLE_BUNDLE_GROUPS.map(group => {
           const groupBundles = LIFESTYLE_BUNDLES.filter(bundle => bundle.group === group.id);
           if (groupBundles.length === 0) return null;
@@ -548,8 +548,8 @@ function FitFinderPanel({
                   const appliesId = `${searchFieldId}-fit-${bundle.id}-applies`;
                   const appliedRead = bundleAppliedRead(bundle, temp);
                   const actionLabel = isActive
-                    ? `${bundle.label} Fit Finder path is active`
-                    : `Apply ${bundle.label} Fit Finder path`;
+                    ? `${bundle.label} goal is applied`
+                    : `Apply the ${bundle.label} goal`;
                   return (
                     <button
                       key={bundle.id}
@@ -572,7 +572,7 @@ function FitFinderPanel({
                       <span
                         id={appliesId}
                         className="fit-finder-panel__applies"
-                        aria-label={`${bundle.label} applied settings: ${appliedRead.full}`}
+                        aria-label={`${bundle.label} sets: ${appliedRead.full}`}
                         title={appliedRead.full}
                       >
                         <span className="fit-finder-panel__applies-row">
@@ -623,18 +623,18 @@ function LiveFinderPanel({
     <div className="tc-accent-panel p-2.5 space-y-2">
       <div className="flex items-center justify-between gap-2">
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-stone-readable">Live Finder signals</div>
-          <div className="text-[11px] text-stone-readable leading-snug">Fine-tune the path; cards explain fit and tradeoffs.</div>
+          <div className="text-[10px] uppercase tracking-wider text-stone-readable">Must-haves</div>
+          <div className="text-[11px] text-stone-readable leading-snug">Keep only places that meet every item you turn on. Cards then show a live-here fit score.</div>
         </div>
         {(filters.fitPresets?.size ?? 0) > 0 ? (
           <button
             type="button"
             onClick={() => setFilters(f => ({ ...f, fitPresets: new Set() }))}
             className="text-stone hover:text-ice normal-case text-[11px] tracking-normal shrink-0"
-            aria-label="Clear Live Finder presets"
-            title="Clear Live Finder presets"
+            aria-label="Clear the must-have chips"
+            title="Clear the must-have chips (limits below stay)"
           >
-            Clear presets
+            Clear chips
           </button>
         ) : null}
       </div>
@@ -661,43 +661,43 @@ function LiveFinderPanel({
       <div className="live-filter-controls">
         <ConstraintSelectRow
           id={`${liveControlBaseId}-summer-cap`}
-          label="Summer cap"
+          label="Max summer high"
           value={filters.maxSummerHighC}
           options={[
-            { label: "None", value: undefined },
+            { label: "Any", value: undefined },
             ...LIVE_FIT_SUMMER_CAPS_C.map(value => ({ label: `<= ${fmtTemp(value, temp)}`, value })),
           ]}
           onPick={v => setLiveNumber("maxSummerHighC", v)}
         />
         <ConstraintSelectRow
           id={`${liveControlBaseId}-winter-floor`}
-          label="Winter floor"
+          label="Min winter low"
           value={filters.minWinterLowC}
           options={[
-            { label: "None", value: undefined },
+            { label: "Any", value: undefined },
             ...LIVE_FIT_WINTER_FLOORS_C.map(value => ({ label: `>= ${fmtTemp(value, temp)}`, value })),
           ]}
           onPick={v => setLiveNumber("minWinterLowC", v)}
         />
         <ConstraintSelectRow
           id={`${liveControlBaseId}-garden-floor`}
-          label="Garden floor"
+          label="Min growability"
           value={filters.minGrowability}
           options={[
-            { label: "None", value: undefined },
+            { label: "Any", value: undefined },
             ...LIVE_FIT_GROWABILITY_FLOORS.map(value => ({ label: `${value}+`, value })),
           ]}
           onPick={v => setLiveNumber("minGrowability", v)}
         />
         <RiskConstraintSelectRow
           id={`${liveControlBaseId}-fire-ceiling`}
-          label="Fire ceiling"
+          label="Max fire risk"
           value={filters.maxFireRisk}
           onPick={v => setLiveRisk("maxFireRisk", v)}
         />
         <RiskConstraintSelectRow
           id={`${liveControlBaseId}-risk-ceiling`}
-          label="Risk ceiling"
+          label="Max overall risk"
           value={filters.maxOverallRisk}
           onPick={v => setLiveRisk("maxOverallRisk", v)}
         />
@@ -786,7 +786,7 @@ function LensReceipt({
   if (presetCount > 0) {
     chips.push({
       key: "presets",
-      label: `${presetCount} Live Finder preset${presetCount === 1 ? "" : "s"}`,
+      label: `${presetCount} must-have${presetCount === 1 ? "" : "s"}`,
       tone: "sage",
       onDismiss: () => setFilters(f => ({ ...f, fitPresets: new Set() })),
     });
@@ -850,26 +850,26 @@ function LensReceipt({
   }
 
   const scopeLine = lensScope
-    ? `Limited to the ${lensScope.title} ${lensScope.kind} (${lensScope.count} place${lensScope.count === 1 ? "" : "s"}).`
+    ? `Showing only the ${lensScope.title} ${lensScope.kind} (${lensScope.count} place${lensScope.count === 1 ? "" : "s"}).`
     : null;
   const lensLine = scopeLine
     ? scopeLine
     : activeBundle
     ? activeBundle.description
     : scenario !== "now"
-      ? `${scenarioMeta(scenario).label} — ensemble projection reshaping ranks and cards.`
+      ? `${scenarioMeta(scenario).label}: ranks and card figures use projected climate, not recent normals.`
       : liveSignalCount > 0
       ? sortedByLiveFit
-        ? `${liveSignalCount} living signal${liveSignalCount === 1 ? "" : "s"} — sorted by live-fit.`
-        : `${liveSignalCount} living signal${liveSignalCount === 1 ? "" : "s"} active — switch ranking to Live-fit for aligned sort.`
+        ? `${liveSignalCount} must-have${liveSignalCount === 1 ? "" : "s"} set. Sorted by live-here fit.`
+        : `${liveSignalCount} must-have${liveSignalCount === 1 ? "" : "s"} set. Rank by Live-here fit to sort by how well each place meets them.`
       : hasAny
-        ? "Filtered atlas view with the selected ranking lens."
+        ? "Filtered list, in the order of the ranking above."
         : ranking === "most-comfortable"
           ? MOST_COMFORTABLE_LENS_DESCRIPTION
-          : "Broad atlas scan with ranking only.";
+          : "All places, no filters.";
 
   return (
-    <section className="lens-receipt" aria-label="Current Explorer lens">
+    <section className="lens-receipt" aria-label="Current ranking and filters">
       <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {`${rankingLabel}. ${lensLine}`}
       </div>
@@ -878,7 +878,7 @@ function LensReceipt({
           <Compass className="w-4 h-4" />
         </span>
         <div className="min-w-0">
-          <div className="lens-receipt__eyebrow">Current lens</div>
+          <div className="lens-receipt__eyebrow">Ranked by</div>
           <div className="lens-receipt__title">{rankingLabel}</div>
         </div>
         {hasAny && !hideClearAll ? (
@@ -894,7 +894,7 @@ function LensReceipt({
         ) : null}
       </div>
       <p className="lens-receipt__line">{lensLine}</p>
-      <div className="lens-receipt__chips" aria-label="Active lens signals">
+      <div className="lens-receipt__chips" aria-label="Active filters">
         {chips.length > 0 ? (
           chips.slice(0, 7).map(chip => {
             const removeLabel = `Remove filter: ${chip.label}`;
@@ -919,7 +919,7 @@ function LensReceipt({
           })
         ) : (
           <span className="lens-receipt__chip" data-tone="glacier">
-            Full atlas
+            No filters
           </span>
         )}
         {chips.length > 7 ? (
@@ -993,7 +993,7 @@ function RiskConstraintSelectRow({
   onPick: (value: RiskLevel | undefined) => void;
 }) {
   const options: { label: string; value: RiskLevel | undefined }[] = [
-    { label: "None", value: undefined },
+    { label: "Any", value: undefined },
     ...LIVE_FIT_RISK_CEILINGS.map(value => ({ label: RISK_LABELS[value], value })),
   ];
   return (

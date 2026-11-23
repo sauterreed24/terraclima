@@ -45,10 +45,10 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
   const style: CSSProperties = {
     left: compactMap ? "0.5rem" : `${xPct}%`,
     top: `${yPct}%`,
-    transform: `translate(${compactMap ? "0" : onRight ? "12px" : "calc(-100% - 12px)"}, ${onTop ? "calc(-100% - 10px)" : "10px"})`,
+    transform: `translate(${compactMap ? "0" : onRight ? "12px" : "calc(-100% - 12px)"}, ${onTop ? "calc(-100% - 28px)" : "28px"})`,
     width: compactMap ? "calc(100% - 1rem)" : undefined,
     maxWidth: compactMap ? "calc(100% - 1rem)" : "min(18rem, calc(100vw - 1rem))",
-    ["--tc-map-hover-max-height" as string]: `calc(${availableHeightPct}% - 1.25rem)`,
+    ["--tc-map-hover-max-height" as string]: `calc(${availableHeightPct}% - 2.375rem)`,
   };
 
   const countryLabel =

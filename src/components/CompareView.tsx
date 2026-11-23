@@ -52,7 +52,7 @@ const CANDIDATE_SOURCE_FILTERS: readonly { id: CandidateSourceFilter; label: str
 
 const CANDIDATE_SORT_OPTIONS: readonly { id: CandidateSortId; label: string }[] = [
   { id: "curated", label: "Curated" },
-  { id: "lens", label: "Lens score" },
+  { id: "lens", label: "Priority score" },
   { id: "risk", label: "Lowest risk" },
   { id: "easy", label: "Easy months" },
   { id: "name", label: "A-Z" },
@@ -109,7 +109,7 @@ export function CompareView({
   const titleId = useId();
   const candidateSearchId = useId();
   const candidateSortId = useId();
-  const candidateSearchLabel = "Find Workbench candidates by name, region, source, or scouting note";
+  const candidateSearchLabel = "Find places to add, by name, region or source";
   const [showDifferencesOnly, setShowDifferencesOnly] = useState(false);
   const [candidateQuery, setCandidateQuery] = useState("");
   const [candidateSourceFilter, setCandidateSourceFilter] = useState<CandidateSourceFilter>("all");
@@ -121,11 +121,11 @@ export function CompareView({
   const title = isSinglePlace ? `${placeCount} saved to compare` : `${placeCount} side by side`;
   const helperText = isSinglePlace
     ? "Add another place from any card or profile to start a side-by-side comparison."
-    : "Compare climate fingerprints, seasonal ranges, and screening scores across the saved places.";
+    : "Monthly climate, key figures and scores for each place, side by side.";
   const copyComparisonLabel =
     shareStatus === "failed"
-      ? "Retry copy or use the selected manual comparison URL"
-      : "Copy or share comparison link";
+      ? "Copy failed. Try again, or copy the link shown below"
+      : "Copy a link to this comparison";
   const decisionProfiles = useMemo<CompareDecisionProfile[]>(
     () => buildCompareDecisionProfiles(places, liveFitFilters),
     [places, liveFitFilters],
@@ -168,7 +168,7 @@ export function CompareView({
       { label: "Mildest winter", place: mildestWinter, value: fmtTemp(meanJanLow(mildestWinter), temp, { digits: 1 }) },
       { label: "Best live-here fit", place: bestLiveFit.place, value: `${bestLiveFit.liveFitScore}/100` },
       { label: "Top livability", place: topLivability.place, value: `${topLivability.livabilityScore}/100` },
-      { label: "Lowest risk load", place: lowestRisk.place, value: `${lowestRisk.riskLoad}/100` },
+      { label: "Lowest overall risk", place: lowestRisk.place, value: `${lowestRisk.riskLoad}/100` },
       { label: "Best growability", place: bestGrowability, value: `${bestGrowability.scores.growability}/100` },
     ];
   }, [decisionProfiles, places, temp]);
@@ -183,7 +183,7 @@ export function CompareView({
     for (const place of places) {
       if (seen.has(place.id)) continue;
       seen.add(place.id);
-      rows.push({ place, source: "Active", note: "Active slot" });
+      rows.push({ place, source: "Active", note: "In the comparison" });
     }
     for (const candidate of candidates) {
       if (seen.has(candidate.place.id)) continue;
@@ -261,8 +261,8 @@ export function CompareView({
     ? `${filteredInactiveCandidateTray.length}/${inactiveCandidateTray.length} ${candidateMatchWord}`
     : `${candidateTray.length} candidates`;
   const candidateTrayHelper = candidateFinderActive
-    ? "Active places stay pinned; finder matches appear after them."
-    : "Shortlist, recent places, and current leaders stay in reach.";
+    ? "Places already in the comparison come first, then search matches."
+    : "From your shortlist, recently opened places and the current top of the ranking.";
   const noInactiveCandidateMatches =
     candidateFinderActive && filteredInactiveCandidateTray.length === 0 && inactiveCandidateTray.length > 0;
   const coachRecommendations = useMemo(
@@ -382,7 +382,7 @@ export function CompareView({
                     onClick={() => onAddPlace(homePlace.id)}
                     className="btn-ghost !text-xs !py-1.5"
                     aria-label={`Add your home base, ${homePlace.name}, to the comparison`}
-                    title={`Put ${homePlace.name} side by side with the finalists so the columns share your baseline.`}
+                    title={`Add ${homePlace.name} as a column, so you can read the others against it.`}
                   >
                     <Home className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
                     Add home ({homePlace.name})
@@ -398,20 +398,20 @@ export function CompareView({
                   >
                     <Link2 className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
                     <span aria-live="polite">
-                      {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Manual copy" : "Copy comparison"}
+                      {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy by hand" : "Copy link"}
                     </span>
                   </button>
                 ) : null}
                 {shareStatus === "failed" && shareFallbackUrl ? (
                   <div className="tc-share-fallback compare-dialog__share-fallback" role="group" aria-label="Manual comparison share link">
-                    <span className="tc-share-fallback__label">Shareable link</span>
+                    <span className="tc-share-fallback__label">Link to this comparison</span>
                     <input
                       ref={shareFallbackInputRef}
                       type="text"
                       readOnly
                       value={shareFallbackUrl}
                       className="tc-share-fallback__input"
-                      aria-label="Shareable comparison URL for manual copy"
+                      aria-label="Link to this comparison. Select it and copy."
                       onFocus={event => event.currentTarget.select()}
                       onClick={event => event.currentTarget.select()}
                     />
@@ -427,42 +427,42 @@ export function CompareView({
               <div className="compare-scenario-banner" role="note">
                 <Clock3 className="w-3.5 h-3.5 shrink-0" aria-hidden />
                 <span>
-                  Climate charts and scores use the <strong>{scenarioMeta(scenario).label}</strong> projection layer — the same layer as the Explorer. Place dossiers still show recent observed normals.
+                  Climate charts and scores use the <strong>{scenarioMeta(scenario).label}</strong> projection, the same climate layer as the Explorer. Place profiles always show recent averages.
                 </span>
               </div>
             ) : null}
 
-            <nav className="compare-dialog__shortcuts" aria-label="Compare decision shortcuts">
+            <nav className="compare-dialog__shortcuts" aria-label="Jump to a section of Compare">
               {decisionRead ? (
-                <a className="compare-dialog__shortcut compare-dialog__shortcut--primary" href="#compare-decision-read" aria-label="Jump to Compare decision read">
-                  Decision read
+                <a className="compare-dialog__shortcut compare-dialog__shortcut--primary" href="#compare-decision-read" aria-label="Jump to the summary">
+                  Summary
                 </a>
               ) : singlePlaceGuide ? (
-                <a className="compare-dialog__shortcut compare-dialog__shortcut--primary" href="#compare-setup-guide" aria-label="Jump to Compare setup guide">
-                  Setup guide
+                <a className="compare-dialog__shortcut compare-dialog__shortcut--primary" href="#compare-setup-guide" aria-label="Jump to getting started">
+                  Get started
                 </a>
               ) : null}
               {evidenceReadiness.length > 0 ? (
-                <a className="compare-dialog__shortcut" href="#compare-evidence-readiness" aria-label="Jump to Compare evidence readiness">
-                  Evidence
+                <a className="compare-dialog__shortcut" href="#compare-evidence-readiness" aria-label="Jump to how well each place is sourced">
+                  Sources
                 </a>
               ) : null}
-              <a className="compare-dialog__shortcut" href="#compare-diff-board" aria-label="Jump to Compare difference board">
-                Difference board
+              <a className="compare-dialog__shortcut" href="#compare-diff-board" aria-label="Jump to the table of differences">
+                Differences
               </a>
-              <a className="compare-dialog__shortcut" href="#compare-candidates" aria-label="Jump to Compare candidate workbench">
-                Candidates
+              <a className="compare-dialog__shortcut" href="#compare-candidates" aria-label="Jump to add or swap places">
+                Add places
               </a>
             </nav>
 
-            <section id="compare-candidates" className="compare-workbench" aria-label="Compare workbench">
+            <section id="compare-candidates" className="compare-workbench" aria-label="Add or swap places">
               <div className="compare-workbench__lens">
                 <div className="compare-workbench__lens-copy">
-                  <span className="compare-workbench__eyebrow">Priority lens</span>
+                  <span className="compare-workbench__eyebrow">Compare for</span>
                   <strong>{comparisonLensLabel(activeComparisonLens)}</strong>
                   <span>{COMPARISON_LENS_OPTIONS.find(option => option.id === activeComparisonLens)?.detail}</span>
                 </div>
-                <div className="compare-workbench__lens-options" role="group" aria-label="Comparison priority lens">
+                <div className="compare-workbench__lens-options" role="group" aria-label="What to compare for">
                   {COMPARISON_LENS_OPTIONS.map(option => (
                     <button
                       key={option.id}
@@ -490,10 +490,10 @@ export function CompareView({
                       type="button"
                       className="btn-ghost compare-workbench__candidate-reset"
                       onClick={resetCandidateFinder}
-                      aria-label="Reset candidate finder to all sources"
-                      title="Clear candidate search and show all source filters"
+                      aria-label="Clear the search and show all places you can add"
+                      title="Clear the search and show all places you can add"
                     >
-                      Reset finder
+                      Reset search
                     </button>
                   ) : null}
                 </div>
@@ -514,7 +514,7 @@ export function CompareView({
                       }}
                       aria-label={candidateSearchLabel}
                       title={candidateSearchLabel}
-                      placeholder="Find by place, region, source..."
+                      placeholder="Find a place to add"
                     />
                   </label>
                   <div className="compare-workbench__source-filter" role="group" aria-label="Candidate source filter">
@@ -524,7 +524,7 @@ export function CompareView({
                         type="button"
                         className="compare-workbench__source-filter-btn"
                         aria-pressed={filter.id === candidateSourceFilter}
-                        title={`Show ${filter.label.toLowerCase()} compare candidates`}
+                        title={`Show places from: ${filter.label.toLowerCase()}`}
                         onClick={() => setCandidateSourceFilter(filter.id)}
                       >
                         {filter.label}
@@ -533,7 +533,7 @@ export function CompareView({
                   </div>
                   <label className="compare-workbench__candidate-sort" htmlFor={candidateSortId}>
                     <span aria-hidden="true">Sort</span>
-                    <span className="sr-only">Sort Workbench candidates</span>
+                    <span className="sr-only">Sort places you can add</span>
                     <select
                       id={candidateSortId}
                       value={candidateSort}
@@ -547,7 +547,7 @@ export function CompareView({
                 </div>
                 {noInactiveCandidateMatches ? (
                   <div className="compare-workbench__candidate-empty compare-workbench__candidate-empty--filtered" role="status">
-                    No finder matches outside the active set. Reset finder or try a broader place, region, or source.
+                    Nothing else matches. Reset the search or try a broader place or region.
                   </div>
                 ) : null}
                 <div className="compare-workbench__candidate-scroll">
@@ -564,10 +564,10 @@ export function CompareView({
                       : null;
                     const replacementPlace = !active ? swapOut : null;
                     const action = active
-                      ? `Remove ${candidate.place.name} from active comparison`
+                      ? `Remove ${candidate.place.name} from the comparison`
                       : places.length >= COMPARE_LIMIT
-                        ? `Swap ${candidate.place.name} into active comparison`
-                        : `Add ${candidate.place.name} to active comparison`;
+                        ? `Swap ${candidate.place.name} into the comparison`
+                        : `Add ${candidate.place.name} to the comparison`;
                     const actionCue = active
                       ? { label: "Remove", tone: "remove", Icon: X }
                       : places.length >= COMPARE_LIMIT
@@ -577,7 +577,7 @@ export function CompareView({
                     const title = [
                       candidate.note ?? `${candidate.place.region}, ${candidate.place.country}`,
                       candidateInsight ? `${candidateInsight.label}: ${prose(candidateInsight.detail)}` : null,
-                      replacementPlace ? `Replaces the weakest active ${activeComparisonLensLabel.toLowerCase()} read: ${replacementPlace.name}.` : null,
+                      replacementPlace ? `Replaces ${replacementPlace.name}, which scores lowest for ${activeComparisonLensLabel.toLowerCase()}.` : null,
                     ].filter(Boolean).join(" ");
                     return (
                       <button
@@ -620,7 +620,7 @@ export function CompareView({
                           <span
                             className="compare-workbench__candidate-insight"
                             data-tone={candidateInsight.tone}
-                            aria-label={`${candidate.place.name} swap insight`}
+                            aria-label={`What adding ${candidate.place.name} would change`}
                           >
                             <strong>{candidateInsight.label}</strong>
                             <span>{prose(candidateInsight.detail)}</span>
@@ -635,7 +635,7 @@ export function CompareView({
                     );
                   }) : (
                     <div className="compare-workbench__candidate-empty" role="status">
-                      No candidates match this finder.
+                      No places match this search.
                     </div>
                   )}
                 </div>
@@ -645,16 +645,16 @@ export function CompareView({
                 <div className="compare-workbench__coach" aria-label="Contrast coach">
                   <div className="compare-workbench__coach-head">
                     <div>
-                      <span className="compare-workbench__eyebrow">Contrast coach</span>
-                      <strong>Best swaps to learn faster</strong>
+                      <span className="compare-workbench__eyebrow">Suggested swaps</span>
+                      <strong>Places that would sharpen the comparison</strong>
                     </div>
-                    <span>Use these candidates when the active set needs a clearer tradeoff.</span>
+                    <span>Each one adds a contrast the current set lacks.</span>
                   </div>
                   <div className="compare-workbench__coach-grid">
                     {coachRecommendations.map(recommendation => {
                       const action = places.length >= COMPARE_LIMIT
-                        ? `Swap ${recommendation.place.name} into active comparison from Contrast coach: ${recommendation.label}`
-                        : `Add ${recommendation.place.name} to active comparison from Contrast coach: ${recommendation.label}`;
+                        ? `Swap ${recommendation.place.name} into the comparison. Suggested because: ${recommendation.label}`
+                        : `Add ${recommendation.place.name} to the comparison. Suggested because: ${recommendation.label}`;
                       return (
                         <button
                           key={`${recommendation.lane}-${recommendation.place.id}`}
@@ -680,13 +680,13 @@ export function CompareView({
             </section>
 
             {compareLensReceipt ? (
-              <section className="compare-lens-receipt" aria-label="Comparison scoring lens">
+              <section className="compare-lens-receipt" aria-label="What the scores are based on">
                 <div className="compare-lens-receipt__copy">
-                  <span className="compare-lens-receipt__eyebrow">Score lens</span>
+                  <span className="compare-lens-receipt__eyebrow">What the scores use</span>
                   <p>{compareLensReceipt.summary}</p>
                   <span>{compareLensReceipt.honesty}</span>
                 </div>
-                <div className="compare-lens-receipt__chips" aria-label="Active comparison lens ingredients">
+                <div className="compare-lens-receipt__chips" aria-label="Must-haves and climate layer in use">
                   {compareLensReceipt.chips.map(chip => (
                     <span key={`${chip.label}-${chip.value}`} className="compare-lens-receipt__chip">
                       <span>{chip.label}</span>
@@ -700,30 +700,30 @@ export function CompareView({
             {decisionRead ? (
               <section id="compare-decision-read" className="compare-decision-read" aria-label="Comparison decision read">
                 <div className="compare-decision-read__summary">
-                  <span className="compare-decision-read__eyebrow">Decision read</span>
+                  <span className="compare-decision-read__eyebrow">Summary</span>
                   <p>{decisionRead.summary}</p>
                   <span className="compare-decision-read__caution">{decisionRead.caution}</span>
                   <div className="compare-decision-read__next">
-                    <span className="compare-decision-read__next-label">Next action</span>
+                    <span className="compare-decision-read__next-label">Next step</span>
                     <span className="compare-decision-read__next-copy">{decisionRead.nextAction}</span>
                     {onOpenPlace ? (
                       <div className="compare-decision-read__actions">
                         <button
                           type="button"
                           className="compare-decision-read__action"
-                          aria-label={`Open first dossier: ${decisionRead.primary.place.name}`}
-                          title={`Open first dossier: ${decisionRead.primary.place.name}`}
+                          aria-label={`Open first profile: ${decisionRead.primary.place.name}`}
+                          title={`Open first profile: ${decisionRead.primary.place.name}`}
                           onClick={event => onOpenPlace(decisionRead.primary.place.id, { trigger: event.currentTarget })}
                         >
-                          <span>Start dossier</span>
+                          <span>Read first</span>
                           <strong title={decisionRead.primary.place.name}>{decisionRead.primary.place.name}</strong>
                         </button>
                         {decisionRead.counterweight ? (
                           <button
                             type="button"
                             className="compare-decision-read__action"
-                            aria-label={`Open counterweight dossier: ${decisionRead.counterweight.place.name}`}
-                            title={`Open counterweight dossier: ${decisionRead.counterweight.place.name}`}
+                            aria-label={`Open the strongest alternative: ${decisionRead.counterweight.place.name}`}
+                            title={`Open the strongest alternative: ${decisionRead.counterweight.place.name}`}
                             onClick={event => {
                               const counterweight = decisionRead.counterweight;
                               if (counterweight) onOpenPlace(counterweight.place.id, { trigger: event.currentTarget });
@@ -739,8 +739,8 @@ export function CompareView({
                 </div>
                 <div className="compare-decision-read__scout-sequence" aria-label="Scouting sequence">
                   <div className="compare-decision-read__scout-head">
-                    <span className="compare-decision-read__scout-kicker">Scout sequence</span>
-                    <span className="compare-decision-read__scout-copy">Visit order, timing, and the first caveat to verify.</span>
+                    <span className="compare-decision-read__scout-kicker">Visit order</span>
+                    <span className="compare-decision-read__scout-copy">Where to go first, when, and what to check there.</span>
                   </div>
                   <div className="compare-decision-read__scout-steps">
                     {decisionRead.scoutSequence.map((step, index) => {
@@ -758,8 +758,8 @@ export function CompareView({
                           key={`${step.label}-${step.place.id}`}
                           type="button"
                           className="compare-decision-read__scout-step compare-decision-read__scout-step--button"
-                          aria-label={`Open ${step.place.name} from scouting sequence: ${step.label}. ${step.why}`}
-                          title={`Open ${step.place.name} from scouting sequence: ${step.label}. ${step.why}`}
+                          aria-label={`Open ${step.place.name}. ${step.label}. ${step.why}`}
+                          title={`Open ${step.place.name}. ${step.label}. ${step.why}`}
                           onClick={event => onOpenPlace(step.place.id, { trigger: event.currentTarget })}
                         >
                           {content}
@@ -774,8 +774,8 @@ export function CompareView({
                 </div>
                 <div className="compare-verification-checklist" aria-label="Scout verification checklist">
                   <div className="compare-verification-checklist__head">
-                    <span className="compare-verification-checklist__kicker">Scout verification checklist</span>
-                    <span>What to prove before booking a visit, comparing housing, or treating a finalist as move-ready.</span>
+                    <span className="compare-verification-checklist__kicker">Check before you go</span>
+                    <span>What to confirm for each place before booking a visit or looking at housing.</span>
                   </div>
                   <div className="compare-verification-checklist__grid">
                     {decisionRead.verificationChecklist.map(item => {
@@ -793,8 +793,8 @@ export function CompareView({
                           type="button"
                           className="compare-verification-checklist__item compare-verification-checklist__item--button"
                           data-tone={item.tone}
-                          aria-label={`Open ${item.place.name} from scout verification checklist: ${item.label}`}
-                          title={`Open ${item.place.name} from scout verification checklist: ${item.label}`}
+                          aria-label={`Open ${item.place.name} to check: ${item.label}`}
+                          title={`Open ${item.place.name} to check: ${item.label}`}
                           onClick={event => onOpenPlace(item.place.id, { trigger: event.currentTarget })}
                         >
                           {card}
@@ -819,12 +819,12 @@ export function CompareView({
                 </div>
                 <div className="compare-finalist-table" aria-label="Finalist decision table">
                   <div className="compare-finalist-table__head">
-                    <span className="compare-finalist-table__kicker">Finalist table</span>
-                    <span className="compare-finalist-table__copy">Role, score, timing, and first caution for every saved place.</span>
+                    <span className="compare-finalist-table__kicker">All places at a glance</span>
+                    <span className="compare-finalist-table__copy">Role, score, best season and first caution for each place.</span>
                   </div>
                   <div className="compare-finalist-table__scroll" aria-label="Scrollable finalist decision table">
                     <table>
-                      <caption className="sr-only">Decision table for saved compare finalists</caption>
+                      <caption className="sr-only">Role, score, best season and first caution for each compared place</caption>
                       <thead>
                         <tr>
                           <th scope="col">Role</th>
@@ -845,8 +845,8 @@ export function CompareView({
                                 <button
                                   type="button"
                                   className="compare-finalist-table__place"
-                                  aria-label={`Open ${row.place.name} from finalist decision table`}
-                                  title={`Open ${row.place.name} from finalist decision table`}
+                                  aria-label={`Open ${row.place.name}`}
+                                  title={`Open ${row.place.name}`}
                                   onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
                                 >
                                   {row.place.name}
@@ -873,10 +873,10 @@ export function CompareView({
               <section id="compare-evidence-readiness" className="compare-evidence-readiness" aria-label="Evidence readiness">
                 <div className="compare-evidence-readiness__head">
                   <div>
-                    <span className="compare-evidence-readiness__eyebrow">Evidence readiness</span>
+                    <span className="compare-evidence-readiness__eyebrow">How well sourced</span>
                     <strong>{evidenceReadiness[0].place.name}: {evidenceReadiness[0].label}</strong>
                   </div>
-                  <span>Source depth, lived signals, and climate-measurement gaps before booking a scout trip or comparing housing.</span>
+                  <span>How many sources back each entry and what data is missing. Check the gaps before booking a visit or looking at housing.</span>
                 </div>
                 <div className="compare-evidence-readiness__grid">
                   {evidenceReadiness.map(row => (
@@ -884,7 +884,7 @@ export function CompareView({
                       key={row.place.id}
                       className="compare-evidence-readiness__card"
                       data-tone={row.tone}
-                      aria-label={`${row.place.name} evidence readiness`}
+                      aria-label={`How well sourced ${row.place.name} is`}
                     >
                       <div className="compare-evidence-readiness__card-head">
                         <span>{row.label}</span>
@@ -894,8 +894,8 @@ export function CompareView({
                         <button
                           type="button"
                           className="compare-evidence-readiness__place"
-                          aria-label={`Open ${row.place.name} dossier from evidence readiness`}
-                          title={`Open ${row.place.name} dossier from evidence readiness`}
+                          aria-label={`Open the ${row.place.name} profile`}
+                          title={`Open the ${row.place.name} profile`}
                           onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
                         >
                           {row.place.name}
@@ -917,13 +917,13 @@ export function CompareView({
             ) : null}
 
             {singlePlaceGuide ? (
-              <section id="compare-setup-guide" className="compare-single-guide" aria-label="Single finalist compare setup">
+              <section id="compare-setup-guide" className="compare-single-guide" aria-label="Getting started with one place">
                 <div className="compare-single-guide__copy">
-                  <span className="compare-single-guide__eyebrow">Shortlist setup</span>
+                  <span className="compare-single-guide__eyebrow">One place so far</span>
                   <p>{singlePlaceGuide.summary}</p>
                   <span>{singlePlaceGuide.nextMove}</span>
                 </div>
-                <div className="compare-single-guide__checks" aria-label="Next compare contrasts">
+                <div className="compare-single-guide__checks" aria-label="What to add next">
                   {singlePlaceGuide.checks.map(check => (
                     <div key={check.label} className="compare-single-guide__check">
                       <span>{check.label}</span>
@@ -936,16 +936,16 @@ export function CompareView({
                     <button
                       type="button"
                       className="compare-decision-read__action"
-                      aria-label={`Review anchor dossier: ${singlePlaceGuide.placeName}`}
-                      title={`Review anchor dossier: ${singlePlaceGuide.placeName}`}
+                      aria-label={`Open the profile for ${singlePlaceGuide.placeName}`}
+                      title={`Open the profile for ${singlePlaceGuide.placeName}`}
                       onClick={event => onOpenPlace(singlePlaceGuide.placeId, { trigger: event.currentTarget })}
                     >
-                      <span>Review anchor</span>
+                      <span>Open profile</span>
                       <strong title={singlePlaceGuide.placeName}>{singlePlaceGuide.placeName}</strong>
                     </button>
                   ) : null}
                   <button type="button" className="compare-single-guide__keep-scouting" onClick={onClose}>
-                    Keep scouting
+                    Back to the atlas
                   </button>
                 </div>
               </section>
@@ -954,8 +954,8 @@ export function CompareView({
             <section id="compare-diff-board" className="compare-diff-board" aria-label="Grouped comparison rows">
               <div className="compare-diff-board__head">
                 <div>
-                  <span className="compare-diff-board__eyebrow">Difference board</span>
-                  <strong>{showDifferencesOnly ? `${visibleGroupedRows.length} signals differ` : `${groupedRows.length} grouped signals`}</strong>
+                  <span className="compare-diff-board__eyebrow">Differences</span>
+                  <strong>{showDifferencesOnly ? `${visibleGroupedRows.length} rows differ` : `${groupedRows.length} rows`}</strong>
                 </div>
                 <button
                   type="button"
@@ -968,7 +968,7 @@ export function CompareView({
               </div>
               <div className="compare-diff-board__scroll" aria-label="Scrollable grouped comparison rows">
                 <table>
-                  <caption className="sr-only">Grouped comparison signals for active places</caption>
+                  <caption className="sr-only">Figures and scores for each compared place, grouped by topic</caption>
                   <thead>
                     <tr>
                       <th scope="col">Group</th>
@@ -989,7 +989,7 @@ export function CompareView({
                       </tr>
                     )) : (
                       <tr>
-                        <td colSpan={places.length + 2}>All visible grouped signals match across these active places.</td>
+                        <td colSpan={places.length + 2}>Every row shown is the same for these places.</td>
                       </tr>
                     )}
                   </tbody>
@@ -1006,8 +1006,8 @@ export function CompareView({
                       <button
                         type="button"
                         className="compare-insight-strip__place compare-insight-strip__place--link"
-                        aria-label={`Open ${item.place.name} profile from comparison highlight: ${item.label}`}
-                        title={`Open ${item.place.name} profile from comparison highlight: ${item.label}`}
+                        aria-label={`Open the ${item.place.name} profile. ${item.label}`}
+                        title={`Open the ${item.place.name} profile. ${item.label}`}
                         onClick={event => onOpenPlace(item.place.id, { trigger: event.currentTarget })}
                       >
                         {item.place.name}
@@ -1023,7 +1023,7 @@ export function CompareView({
 
             <p className="text-caption text-stone-readable lg:hidden mb-2 flex items-center gap-1">
               {isSinglePlace ? (
-                "Add a second place to unlock the comparison lane."
+                "Add a second place to compare side by side."
               ) : (
                 <>
                   <span>Swipe sideways to compare</span>
@@ -1033,7 +1033,7 @@ export function CompareView({
               )}
             </p>
             <details className="compare-bioclim-key lg:hidden">
-              <summary>Bioclim key</summary>
+              <summary>What the index rows mean</summary>
               <dl>
                 <div>
                   <dt>De Martonne</dt>
@@ -1087,7 +1087,7 @@ export function CompareView({
 
                   <div className="grid grid-cols-2 gap-2 mt-3 text-sm tc-compare-stats">
                     <Row label="Elevation" value={fmtElev(p.elevationM, dist)} />
-                    <Row label="Köppen" value={p.koppen} wide />
+                    <Row label="Köppen class" value={p.koppen} wide />
                     <Row label="De Martonne" value={bio ? bioclimRow(bio.deMartonne, v => v.toFixed(1), prose) : "—"} wide />
                     <Row label="Conrad" value={bio ? bioclimRow(bio.conrad, v => v.toFixed(1), prose) : "—"} wide />
                     <Row label="Selianinov HTC" value={bio ? bioclimRow(bio.selianinov, v => v.toFixed(2), prose) : "—"} wide />
@@ -1099,16 +1099,16 @@ export function CompareView({
                     <Row label="Sunshine" value={observedSunshinePct(p) == null ? "—" : `${observedSunshinePct(p)}%`} />
                     <Row label="Frost-free" value={`${p.climate.frostFreeDays ?? "—"} d`} />
                     <Row label="Hardiness" value={p.growability.hardinessZone ?? p.climate.hardinessZone ?? "—"} />
-                    <Row label="Chill hrs" value={`${p.climate.chillHours ?? "—"}`} />
+                    <Row label="Chill hours" value={`${p.climate.chillHours ?? "—"}`} />
                     <Row label="Live-here fit" value={`${decision.liveFitScore}/100`} />
                     <Row label="Livability" value={`${decision.livabilityScore}/100`} />
                     <Row label="Felt comfort" value={`${decision.feltComfort}/100`} />
                     <Row label="Feels-like, warmest months (UTCI*)" value={`${fmtTemp(utci.warmSeasonApparentHighC, temp, { digits: 0 })} (${utci.warmSeasonLabel}) · ${utci.score}/100`} wide />
                     <Row label="Easy months" value={`${decision.easyMonths}/12`} />
-                    <Row label="Lived ease" value={`${decision.livedEase}/100`} />
+                    <Row label="Cost & access" value={`${decision.livedEase}/100`} />
                     <Row label="Uniqueness" value={p.scores.microclimateUniqueness.toString()} />
-                    <Row label="Geo signal" value={`${geo.geospatialSignalScore}/100`} />
-                    <Row label="EO fit" value={`${geo.eoObservabilityScore}/100`} />
+                    <Row label="Terrain signal" value={`${geo.geospatialSignalScore}/100`} />
+                    <Row label="Satellite visibility" value={`${geo.eoObservabilityScore}/100`} />
                     <Row label="Hidden gem" value={p.scores.hiddenGem.toString()} />
                     <Row label="Resilience" value={p.scores.resilience.toString()} />
                     <Row label="Growability" value={p.scores.growability.toString()} />
@@ -1119,7 +1119,7 @@ export function CompareView({
                   ) : null}
 
                   <div className="mt-3">
-                    <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Climate ribbon</div>
+                    <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Monthly highs and lows</div>
                     <ClimateRibbon highs={p.climate.tempHighC} lows={p.climate.tempLowC} height={140} />
                   </div>
 
@@ -1177,22 +1177,22 @@ function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenc
       (hasSunshine ? 5 : 0),
     ));
     const gaps = [
-      ...(place.confidence === "low" ? ["Low confidence profile"] : place.confidence === "moderate" ? ["Moderate confidence profile"] : []),
-      ...(httpsCitations < 2 ? ["Add a second HTTPS source"] : []),
-      ...(hasThinChapterDepth(place) ? ["Expand deep-dive context"] : []),
-      ...(!hasLiveSignals ? ["Fill lived-friction signals"] : []),
-      ...(!hasHumidity ? ["Source humidity normals"] : []),
-      ...(!hasSunshine ? ["Source sunshine normals"] : []),
+      ...(place.confidence === "low" ? ["Low-confidence entry"] : place.confidence === "moderate" ? ["Moderate-confidence entry"] : []),
+      ...(httpsCitations < 2 ? ["Fewer than two web sources"] : []),
+      ...(hasThinChapterDepth(place) ? ["Little in-depth text"] : []),
+      ...(!hasLiveSignals ? ["No cost or access data"] : []),
+      ...(!hasHumidity ? ["No measured humidity"] : []),
+      ...(!hasSunshine ? ["No measured sunshine"] : []),
     ].slice(0, 4);
     const label = score >= 78 && gaps.length <= 1
-      ? "Ready for scout plan"
+      ? "Well sourced"
       : score >= 58
-        ? "Verify before booking"
-        : "Thin read - source first";
-    const tone: EvidenceReadinessTone = label === "Ready for scout plan" ? "strong" : label === "Verify before booking" ? "review" : "thin";
+        ? "Check before booking"
+        : "Thinly sourced";
+    const tone: EvidenceReadinessTone = label === "Well sourced" ? "strong" : label === "Check before booking" ? "review" : "thin";
     const action = gaps.length === 0
-      ? "Good enough for side-by-side scouting; still verify parcel-level hazards and logistics."
-      : `Check ${gaps[0].toLowerCase()} before treating this finalist as travel- or move-ready.`;
+      ? "Enough to compare with confidence. Still check hazards for the exact address, and logistics."
+      : `Main gap: ${gaps[0].toLowerCase()}. Check it before planning a trip or a move.`;
     return {
       place,
       label,
@@ -1200,11 +1200,11 @@ function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenc
       tone,
       facts: [
         `${place.confidence} confidence`,
-        `${httpsCitations} HTTPS source${httpsCitations === 1 ? "" : "s"}`,
+        `${httpsCitations} web source${httpsCitations === 1 ? "" : "s"}`,
         chapterCountLabel(chapters),
-        hasLiveSignals ? "lived signals" : "lived signals missing",
+        hasLiveSignals ? "cost and access data" : "no cost or access data",
       ],
-      gaps: gaps.length ? gaps : ["No major source gaps in the current profile"],
+      gaps: gaps.length ? gaps : ["No major gaps"],
       action,
     };
   }).sort((a, b) => a.score - b.score || a.place.name.localeCompare(b.place.name) || a.place.id.localeCompare(b.place.id));
@@ -1223,21 +1223,21 @@ function buildGroupedComparisonRows(
     values,
     different: new Set(values.map(value => value.toLowerCase())).size > 1,
   });
-  const score = (value: number | null | undefined) => value == null ? "not graded" : `${Math.round(value)}/100`;
+  const score = (value: number | null | undefined) => value == null ? "no score" : `${Math.round(value)}/100`;
   const decisionScore = (place: Place, pick: (profile: CompareDecisionProfile) => number) => {
     const profile = decisionById.get(place.id);
-    return profile ? `${pick(profile)}/100` : "not graded";
+    return profile ? `${pick(profile)}/100` : "no score";
   };
   const meanPercent = (values: readonly number[] | undefined) => values?.length
     ? `${Math.round(values.reduce((sum, value) => sum + value, 0) / values.length)}%`
-    : "not sourced";
+    : "no data";
   const meanHumidity = (place: Place) => meanPercent(place.climate.humidity);
   const httpsCitations = (place: Place) => `${place.citations.filter(citation => citation.url?.startsWith("https://")).length}`;
 
   return [
-    row("Comfort", "Priority lens score", places.map(place => {
+    row("Comfort", "Priority score", places.map(place => {
       const profile = decisionById.get(place.id);
-      return profile ? `${compareLensScore(profile, lens)}/100` : "not graded";
+      return profile ? `${compareLensScore(profile, lens)}/100` : "no score";
     })),
     row("Comfort", "Summer high", places.map(place => fmtTemp(meanSummerHigh(place), tempUnit, { digits: 1 }))),
     row("Comfort", "Winter low", places.map(place => fmtTemp(meanJanLow(place), tempUnit, { digits: 1 }))),
@@ -1246,31 +1246,31 @@ function buildGroupedComparisonRows(
     row("Seasonality", "Koppen", places.map(place => place.koppen)),
     row("Seasonality", "Easy months", places.map(place => {
       const profile = decisionById.get(place.id);
-      return profile ? `${profile.easyMonths}/12` : "not graded";
+      return profile ? `${profile.easyMonths}/12` : "no score";
     })),
     row("Seasonality", "Annual precip", places.map(place => fmtPrecip(getAnnualPrecipMm(place), distUnit))),
     row("Seasonality", "Sunshine", places.map(sunshineDisplayValue)),
-    row("Seasonality", "Frost-free", places.map(place => place.climate.frostFreeDays == null ? "not sourced" : `${place.climate.frostFreeDays} d`)),
-    row("Hazards", "Risk load", places.map(place => {
+    row("Seasonality", "Frost-free", places.map(place => place.climate.frostFreeDays == null ? "no data" : `${place.climate.frostFreeDays} d`)),
+    row("Hazards", "Overall risk", places.map(place => {
       const profile = decisionById.get(place.id);
-      return profile ? `${profile.riskLoad}/100` : "not graded";
+      return profile ? `${profile.riskLoad}/100` : "no score";
     })),
     row("Hazards", "Top hazard", places.map(topRiskValue)),
     row("Hazards", "Extreme heat", places.map(place => RISK_LABELS[place.risks.extremeHeat.level])),
     row("Hazards", "Wildfire / smoke", places.map(place => `${RISK_LABELS[place.risks.wildfire.level]} / ${RISK_LABELS[place.risks.smoke.level]}`)),
-    row("Lived friction", "Live-here fit", places.map(place => decisionScore(place, profile => profile.liveFitScore))),
-    row("Lived friction", "Livability", places.map(place => decisionScore(place, profile => profile.livabilityScore))),
-    row("Lived friction", "Lived ease", places.map(place => decisionScore(place, profile => profile.livedEase))),
+    row("Living there", "Live-here fit", places.map(place => decisionScore(place, profile => profile.liveFitScore))),
+    row("Living there", "Livability", places.map(place => decisionScore(place, profile => profile.livabilityScore))),
+    row("Living there", "Cost & access", places.map(place => decisionScore(place, profile => profile.livedEase))),
     row("Access/cost", "Housing pressure", places.map(place => score(effectiveHousingPressure(place.liveSignals)))),
-    row("Access/cost", "Access remoteness", places.map(place => score(effectiveAccessRemoteness(place.liveSignals)))),
+    row("Access/cost", "Remoteness", places.map(place => score(effectiveAccessRemoteness(place.liveSignals)))),
     row("Garden/land", "Growability", places.map(place => score(place.scores.growability))),
-    row("Garden/land", "Hardiness", places.map(place => place.growability.hardinessZone ?? place.climate.hardinessZone ?? "not sourced")),
+    row("Garden/land", "Hardiness", places.map(place => place.growability.hardinessZone ?? place.climate.hardinessZone ?? "no data")),
     row("Garden/land", "Elevation", places.map(place => fmtElev(place.elevationM, distUnit))),
     row("Garden/land", "Soil drainage", places.map(place => place.soil.drainage)),
     row("Evidence", "Tier", places.map(place => place.tier)),
     row("Evidence", "Confidence", places.map(place => place.confidence)),
-    row("Evidence", "HTTPS citations", places.map(httpsCitations)),
-    row("Evidence", "Researched chapters", places.map(place => `${researchedChapterCount(place)}`)),
+    row("Evidence", "Web sources", places.map(httpsCitations)),
+    row("Evidence", "In-depth chapters", places.map(place => `${researchedChapterCount(place)}`)),
   ];
 }
 
@@ -1374,32 +1374,32 @@ function buildCompareLensReceipt(
   const chips: { label: string; value: string }[] = [];
 
   if (presetLabels.length > 0) {
-    chips.push({ label: "Signals", value: joinReadable(presetLabels.slice(0, 3)) });
+    chips.push({ label: "Must-haves", value: joinReadable(presetLabels.slice(0, 3)) });
   }
   if (filters?.maxSummerHighC != null) {
     const value = `summer <= ${fmtTemp(filters.maxSummerHighC, tempUnit)}`;
     thresholds.push(value);
-    chips.push({ label: "Heat cap", value });
+    chips.push({ label: "Max summer high", value });
   }
   if (filters?.minWinterLowC != null) {
     const value = `winter >= ${fmtTemp(filters.minWinterLowC, tempUnit)}`;
     thresholds.push(value);
-    chips.push({ label: "Cold floor", value });
+    chips.push({ label: "Min winter low", value });
   }
   if (filters?.minGrowability != null) {
     const value = `growability >= ${filters.minGrowability}/100`;
     thresholds.push(value);
-    chips.push({ label: "Garden floor", value });
+    chips.push({ label: "Min growability", value });
   }
   if (filters?.maxFireRisk) {
     const value = `fire <= ${RISK_LABELS[filters.maxFireRisk]}`;
     thresholds.push(value);
-    chips.push({ label: "Fire ceiling", value });
+    chips.push({ label: "Max fire risk", value });
   }
   if (filters?.maxOverallRisk) {
     const value = `risk <= ${RISK_LABELS[filters.maxOverallRisk]}`;
     thresholds.push(value);
-    chips.push({ label: "Risk ceiling", value });
+    chips.push({ label: "Max overall risk", value });
   }
 
   const hasFitLens = presetLabels.length > 0 || thresholds.length > 0;
@@ -1409,11 +1409,11 @@ function buildCompareLensReceipt(
   const scenarioLabel = hasScenarioLens ? scenarioMeta(scenario).label : "present-day normals";
   chips.push({ label: "Climate layer", value: scenarioLabel });
 
-  const signalRead = presetLabels.length > 0 ? joinReadable(presetLabels.slice(0, 3)) : "the broad Compare blend";
-  const thresholdRead = thresholds.length > 0 ? ` with hard checks for ${joinReadable(thresholds.slice(0, 3))}` : "";
+  const signalRead = presetLabels.length > 0 ? joinReadable(presetLabels.slice(0, 3)) : "the default balanced mix";
+  const thresholdRead = thresholds.length > 0 ? `, with limits on ${joinReadable(thresholds.slice(0, 3))}` : "";
   return {
-    summary: `Fit and finalist scores are being read through ${signalRead}${thresholdRead}.`,
-    honesty: `Use this as a screening lens under ${scenarioLabel}; open dossiers before treating a place as a real-world finalist.`,
+    summary: `Fit scores here use ${signalRead}${thresholdRead}.`,
+    honesty: `Scores use ${scenarioLabel} and are for narrowing a list. Read each profile before deciding.`,
     chips,
   };
 }
@@ -1424,12 +1424,12 @@ function buildSinglePlaceGuide(profile: CompareDecisionProfile | undefined) {
   return {
     placeId: place.id,
     placeName: place.name,
-    summary: `${place.name} is saved as the anchor finalist (${profile.liveFitScore}/100 fit · ${profile.easyMonths}/12 easy months).`,
-    nextMove: "Add a peer or counterweight before trusting the comparison read; two places unlock tradeoffs, while three or four make the Scout sequence stronger.",
+    summary: `${place.name} is the only place here so far (${profile.liveFitScore}/100 live-here fit · ${profile.easyMonths}/12 easy months).`,
+    nextMove: "Add a second place to see tradeoffs. Three or four give a more useful visit order.",
     checks: [
-      { label: "Anchor signal", value: `${profile.livabilityScore}/100 livability` },
-      { label: "First contrast", value: "similar goal, different climate" },
-      { label: "Counterweight", value: "lower risk or lower friction" },
+      { label: "This place", value: `${profile.livabilityScore}/100 livability` },
+      { label: "Add next", value: "same goal, different climate" },
+      { label: "Then add", value: "lower risk or easier access" },
     ],
   };
 }

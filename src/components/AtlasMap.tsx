@@ -18,6 +18,7 @@ import {
   type RiverTier,
 } from "../lib/atlas-map-hydrography";
 import { physicalLabelOpacity, projectPhysicalLabels, type PhysicalLabelKind } from "../lib/atlas-map-physical-labels";
+import { estimateMapLabelWidth, placeMapLabels, type MapLabelObstacle, type MapLabelRequest } from "../lib/atlas-map-label-placement";
 import { motionPolicy, useRichVisualEffects } from "../lib/device-profile";
 import {
   atlasSafeAreaForChrome,
@@ -118,11 +119,23 @@ const DESKTOP_PIN_MAX_OFFSET_PX = 50;
 const MOBILE_CLUSTER_ENABLE_MIN_POINTS = 18;
 const DESKTOP_CLUSTER_ENABLE_MIN_POINTS = 60;
 const CLUSTER_VISUAL_BANDS = [
-  { max: 3, band: "small", outerR: 18, innerR: 12.5, fontSize: 12, textY: 4 },
-  { max: 8, band: "standard", outerR: 21, innerR: 15, fontSize: 13, textY: 4.5 },
-  { max: 24, band: "dense", outerR: 23, innerR: 17, fontSize: 13.5, textY: 5 },
-  { max: Number.POSITIVE_INFINITY, band: "mass", outerR: 24, innerR: 18, fontSize: 14, textY: 5 },
+  { max: 3, band: "small", outerR: 14.5, innerR: 11, fontSize: 11.5, textY: 4 },
+  { max: 8, band: "standard", outerR: 17, innerR: 13, fontSize: 12.5, textY: 4.4 },
+  { max: 24, band: "dense", outerR: 20, innerR: 15.5, fontSize: 13.5, textY: 4.8 },
+  { max: Number.POSITIVE_INFINITY, band: "mass", outerR: 23.5, innerR: 18.5, fontSize: 14.5, textY: 5.2 },
 ] as const;
+
+/** Candidate screen-pixel offsets for country names, in preference order. */
+const COUNTRY_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [
+  [0, 0], [0, -24], [0, 24], [-64, 0], [64, 0],
+  [-56, -26], [56, -26], [-56, 26], [56, 26],
+  [0, -48], [0, 48], [-112, -12], [112, -12], [-112, 14], [112, 14],
+];
+const OCEAN_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0], [0, -22], [0, 22], [-48, 0], [48, 0]];
+const SEA_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0], [0, -13], [0, 13]];
+const STATIC_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0]];
+const COUNTRY_LABEL_FONT_PX = 12.5;
+const COUNTRY_LABEL_TRACKING_EM = 0.3;
 
 function clusterVisualForCount(count: number) {
   return CLUSTER_VISUAL_BANDS.find(band => count <= band.max) ?? CLUSTER_VISUAL_BANDS[CLUSTER_VISUAL_BANDS.length - 1];
@@ -1226,6 +1239,60 @@ export const AtlasMap = memo(function AtlasMap({
     () => markerRenderOrder.filter(pt => rankTrailTopMarkerIds.has(pt.place.id)),
     [markerRenderOrder, rankTrailTopMarkerIds],
   );
+  // Background lettering (country names, oceans, seas) yields to pins and
+  // cluster badges: each label takes the first clear candidate seat or steps
+  // aside. Keyed on the settled view so gestures never re-run it per frame.
+  const backgroundLabelPlacement = useMemo(() => {
+    const k = settledView.k;
+    const obstacles: MapLabelObstacle[] = [];
+    for (const cluster of clusterItems) {
+      obstacles.push({ x: cluster.x, y: cluster.y, r: clusterVisualForCount(cluster.points.length).outerR + 4 });
+    }
+    for (const pt of markerRenderOrder) {
+      obstacles.push({ x: pt.x, y: pt.y, r: featuredRankById.has(pt.place.id) ? 24 : 12 });
+    }
+    // Seats may only wander as far as the land is wide on screen, so a
+    // country name never drifts out to sea on a phone-sized map.
+    const west = projection([-124, 40]);
+    const east = projection([-72, 40]);
+    const landSpanPx = west && east ? Math.abs(east[0] - west[0]) * k : 480;
+    const reach = Math.max(0.2, Math.min(1, landSpanPx / 520));
+    const letterScale = smallMapLettering ? 0.88 : 1;
+    const requests: MapLabelRequest[] = [];
+    for (const cl of countryLabels) {
+      const labelW = estimateMapLabelWidth(cl.label, COUNTRY_LABEL_FONT_PX * letterScale, COUNTRY_LABEL_TRACKING_EM, 0.7);
+      // A name wider than its country has no honest seat — leave it out.
+      const fits = labelW <= landSpanPx * (cl.id === "mexico" ? 0.5 : 0.95);
+      requests.push({
+        id: `country:${cl.id}`,
+        x: cl.x,
+        y: cl.y,
+        halfW: fits ? labelW / 2 : Number.POSITIVE_INFINITY,
+        halfH: 8,
+        candidates: COUNTRY_LABEL_CANDIDATES.map(([dx, dy]) => [dx * reach, dy * reach] as const),
+      });
+    }
+    for (const label of physicalLabels) {
+      if (label.kind !== "ocean" && label.kind !== "sea") continue;
+      const style = PHYSICAL_LABEL_STYLE[label.kind];
+      const size = style.size * letterScale;
+      const halfW = estimateMapLabelWidth(label.text, size, Number.parseFloat(style.tracking) || 0, style.upper ? 0.66 : 0.5) / 2;
+      const rotated = Math.abs(label.angle) > 1;
+      const rad = (label.angle * Math.PI) / 180;
+      requests.push({
+        id: label.id,
+        x: label.x,
+        y: label.y,
+        halfW: rotated ? Math.abs(halfW * Math.cos(rad)) + 6 : halfW,
+        halfH: rotated ? Math.abs(halfW * Math.sin(rad)) + 6 : 7,
+        candidates: rotated
+          ? STATIC_LABEL_CANDIDATES
+          : label.kind === "ocean" ? OCEAN_LABEL_CANDIDATES : SEA_LABEL_CANDIDATES,
+      });
+    }
+    return placeMapLabels(requests, obstacles, k);
+  }, [settledView.k, clusterItems, markerRenderOrder, featuredRankById, countryLabels, physicalLabels, projection, smallMapLettering]);
+
   const rankTrailTone =
     clusterEnabled || settledView.k < 1.35
       ? "quiet"
@@ -2118,10 +2185,10 @@ export const AtlasMap = memo(function AtlasMap({
 
           {/* Land — layered mineral tones (cool north → warm low-latitude hint) */}
           <linearGradient id="landGrad" x1="0.15" y1="0" x2="0.25" y2="1">
-            <stop offset="0" stopColor="#526a8e" />
-            <stop offset="0.35" stopColor="#3d5578" />
-            <stop offset="0.72" stopColor="#334a68" />
-            <stop offset="1" stopColor="#283850" />
+            <stop offset="0" stopColor="#546d92" />
+            <stop offset="0.35" stopColor="#435c80" />
+            <stop offset="0.72" stopColor="#3b5376" />
+            <stop offset="1" stopColor="#35496a" />
           </linearGradient>
 
           {/* Hillshade-like cross-hatch — slightly richer on capable GPUs */}
@@ -2214,6 +2281,30 @@ export const AtlasMap = memo(function AtlasMap({
               strokeWidth="0.4"
               vectorEffect="non-scaling-stroke"
             />
+
+            {/* Continental-shelf halo — two wide non-scaling strokes under the
+                land fill read as shallow water hugging the coast at every
+                zoom. No filter; the inner half is covered by the land. */}
+            <path
+              d={focusPath}
+              fill="none"
+              stroke="rgba(120,186,222,0.06)"
+              strokeWidth="13"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+              data-atlas-shelf="outer"
+            />
+            {!coarsePointer ? (
+              <path
+                d={focusPath}
+                fill="none"
+                stroke="rgba(150,212,236,0.085)"
+                strokeWidth="5"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+                data-atlas-shelf="inner"
+              />
+            ) : null}
 
             {/* Coastline glow — holed land, clipped to NA so lakes and
                 distant continents stay water/silhouette. Blur skipped on modest hardware. */}
@@ -2387,21 +2478,34 @@ export const AtlasMap = memo(function AtlasMap({
           {/* Country labels — big, quiet, sit under markers. Opacity falls
               off at high zoom so they don't compete with marker labels. */}
           <g pointerEvents="none" opacity={Math.max(0, Math.min(0.9, 1.15 - view.k * 0.42))}>
-            {countryLabels.map(cl => (
-              <g key={cl.id} transform={`translate(${cl.x} ${cl.y})`} data-atlas-inv-scale-host="">
+            {countryLabels.map(cl => {
+              const seat = backgroundLabelPlacement.get(`country:${cl.id}`);
+              return (
+              <g
+                key={cl.id}
+                transform={`translate(${cl.x} ${cl.y})`}
+                data-atlas-inv-scale-host=""
+                data-country-label={cl.id}
+                className="map-country-label"
+                style={{ opacity: seat && !seat.clear ? 0 : 1 }}
+              >
                 <g data-atlas-inv-scale="" transform={`scale(${1 / view.k})`}>
                 <text
+                  x={seat?.dx ?? 0}
+                  y={seat?.dy ?? 0}
                   textAnchor="middle"
-                  fontSize={13}
-                  letterSpacing="0.32em"
+                  dominantBaseline="middle"
+                  fontSize={smallMapLettering ? COUNTRY_LABEL_FONT_PX * 0.88 : COUNTRY_LABEL_FONT_PX}
+                  letterSpacing={`${COUNTRY_LABEL_TRACKING_EM}em`}
                   fontWeight={600}
-                  fill="rgba(230,242,252,0.62)"
+                  fill="rgba(236,244,252,0.8)"
                   fontFamily="var(--font-sans), system-ui, sans-serif"
-                  style={{ paintOrder: "stroke fill", stroke: "rgba(8,14,26,0.85)", strokeWidth: 4, strokeLinejoin: "round" }}
+                  style={{ paintOrder: "stroke fill", stroke: "rgba(30,46,72,0.72)", strokeWidth: 3, strokeLinejoin: "round" }}
                 >{cl.label}</text>
                 </g>
               </g>
-            ))}
+              );
+            })}
           </g>
 
           {/* Physical geography lettering — seas in italic serif, mountain
@@ -2415,6 +2519,8 @@ export const AtlasMap = memo(function AtlasMap({
                 view.k,
               );
               if (opacity <= 0.02) return null;
+              const seat = backgroundLabelPlacement.get(label.id);
+              if (seat && !seat.clear) return null;
               const style = PHYSICAL_LABEL_STYLE[label.kind];
               const text = style.upper ? label.text.toUpperCase() : label.text;
               return (
@@ -2426,6 +2532,8 @@ export const AtlasMap = memo(function AtlasMap({
                 >
                   <g data-atlas-inv-scale="" transform={`scale(${1 / view.k})`}>
                     <text
+                      x={seat?.dx || undefined}
+                      y={seat?.dy || undefined}
                       transform={label.angle ? `rotate(${label.angle.toFixed(1)})` : undefined}
                       textAnchor="middle"
                       dominantBaseline="middle"
@@ -3048,16 +3156,16 @@ const ClusterMarker = memo(function ClusterMarker({
         <circle
           className="map-cluster__outer"
           r={visual.outerR}
-          fill="rgba(8,14,24,0.88)"
-          stroke="rgba(245,250,255,0.86)"
-          strokeWidth="1.35"
+          fill="rgba(122,210,232,0.2)"
+          stroke="rgba(170,228,244,0.42)"
+          strokeWidth="1"
         />
         <circle
           className="map-cluster__inner"
           r={visual.innerR}
-          fill="rgba(94,196,220,0.3)"
-          stroke="rgba(94,196,220,0.72)"
-          strokeWidth="1.05"
+          fill="#113548"
+          stroke="rgba(222,244,252,0.94)"
+          strokeWidth="1.4"
         />
         <text
           textAnchor="middle"
@@ -3065,8 +3173,8 @@ const ClusterMarker = memo(function ClusterMarker({
           fontSize={labelFontSize}
           fontFamily="var(--font-mono),ui-monospace,monospace"
           fontWeight={700}
-          fill="rgba(245,250,255,0.98)"
-          style={{ paintOrder: "stroke fill", stroke: "rgba(6,10,18,0.9)", strokeWidth: 2, strokeLinejoin: "round" }}
+          fill="#f6fbff"
+          letterSpacing={count >= 10 ? "-0.02em" : undefined}
         >
           {count}
         </text>
@@ -3392,8 +3500,8 @@ const PHYSICAL_LABEL_STYLE: Record<PhysicalLabelKind, {
   upper: boolean;
   halo?: string;
 }> = {
-  ocean: { size: 13, weight: 400, tracking: "0.32em", fill: "rgba(150, 202, 236, 0.5)", italic: true, serif: true, upper: true },
-  sea: { size: 11.5, weight: 400, tracking: "0.14em", fill: "rgba(156, 206, 238, 0.58)", italic: true, serif: true, upper: false },
+  ocean: { size: 13, weight: 400, tracking: "0.32em", fill: "rgba(160, 208, 238, 0.62)", italic: true, serif: true, upper: true },
+  sea: { size: 11.5, weight: 400, tracking: "0.14em", fill: "rgba(166, 212, 240, 0.74)", italic: true, serif: true, upper: false, halo: "rgba(14, 24, 44, 0.5)" },
   lake: { size: 9.5, weight: 400, tracking: "0.06em", fill: "rgba(176, 218, 242, 0.72)", italic: true, serif: true, upper: false, halo: "rgba(14, 26, 46, 0.7)" },
   range: { size: 8.4, weight: 650, tracking: "0.34em", fill: "rgba(240, 218, 182, 0.56)", italic: false, serif: false, upper: true, halo: "rgba(10, 18, 32, 0.62)" },
   region: { size: 11, weight: 400, tracking: "0.12em", fill: "rgba(214, 228, 244, 0.46)", italic: true, serif: true, upper: false, halo: "rgba(10, 18, 32, 0.55)" },

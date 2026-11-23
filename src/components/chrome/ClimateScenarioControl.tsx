@@ -22,7 +22,7 @@ export function ClimateScenarioControl({
 }) {
   const note = scenario === "now"
     ? `Recent · 1996–2025 — ${CLIMATE_ROLLING_DISCLAIMER}`
-    : `${projecting ? "Projecting… " : ""}${scenarioMeta(scenario).short} (2041–2060) ensemble illustration — dossier still shows recent observed normals.`;
+    : `${projecting ? "Projecting… " : ""}${scenarioMeta(scenario).short} (2041–2060) ensemble illustration — profile still shows recent observed normals.`;
 
   return (
     <div

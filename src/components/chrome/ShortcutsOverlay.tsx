@@ -58,7 +58,7 @@ export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { on
           <Kbds keys={["F"]} />        <span className="text-frost">Atlas: open filter sheet (narrow screens only)</span>
           <Kbds keys={["R"]} />        <span className="text-frost">Surprise - random place in your current list</span>
           <Kbds keys={["B"]} />        <span className="text-frost">Pin / unpin the currently open place to your shortlist</span>
-          <Kbds keys={["H"]} />        <span className="text-frost">Set / clear the open place as your home base — cards and dossiers then show climate deltas against it</span>
+          <Kbds keys={["H"]} />        <span className="text-frost">Set / clear the open place as your home base — cards and profiles then show climate deltas against it</span>
           <Kbds keys={["Esc"]} />      <span className="text-frost">Close shortcuts, compare, filter sheet, site menu, or place detail (or clear a non-empty search field)</span>
           <Kbds keys={["?"]} />        <span className="text-frost">Toggle this help</span>
         </div>
@@ -68,13 +68,13 @@ export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { on
             Phone map: one-finger drag pans the atlas and pinch zooms by default. Tap <strong className="text-frost font-normal">Scroll page</strong> when you want browser scrolling over the map, then tap <strong className="text-frost font-normal">Use map</strong> to return to direct map control.
           </p>
           <p>
-            Place profiles: tap any pin or card. Read the opening story, then use On this page to move through practical read, climate tourism, field dossier, seasons, geospatial analysis, soils, risks, similar stops, and sources.
+            Place profiles: tap any pin or card. Read the opening story, then use On this page to move through practical read, climate tourism, field profile, seasons, geospatial analysis, soils, risks, similar stops, and sources.
           </p>
           <p>
             Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header. The URL encodes the place and view. Surprise uses the same filtered pool as the cards.
           </p>
           <p>
-            Climate layer: use the <strong className="text-frost font-normal">Climate layer</strong> control below the map to flip the Atlas (and Compare) between present-day normals and illustrative 2050 SSP2-4.5 / SSP5-8.5 projections. Place dossiers stay on present-day data.
+            Climate layer: use the <strong className="text-frost font-normal">Climate layer</strong> control below the map to flip the Atlas (and Compare) between present-day normals and illustrative 2050 SSP2-4.5 / SSP5-8.5 projections. Place profiles stay on present-day data.
           </p>
         </div>
       </div>

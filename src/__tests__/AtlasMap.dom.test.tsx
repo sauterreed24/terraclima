@@ -883,8 +883,8 @@ describe("AtlasMap DOM controls", () => {
     expect(ninetyPlaceCluster).toHaveAttribute("data-cluster-size", "mass");
     expect(twoPlaceCluster.querySelector("title")).toHaveTextContent("2 nearby microclimates");
     expect(ninetyPlaceCluster.querySelector("title")).toHaveTextContent("90 nearby microclimates");
-    expect(twoPlaceCluster.querySelector(".map-cluster__outer")).toHaveAttribute("r", "18");
-    expect(ninetyPlaceCluster.querySelector(".map-cluster__outer")).toHaveAttribute("r", "24");
+    expect(twoPlaceCluster.querySelector(".map-cluster__outer")).toHaveAttribute("r", "14.5");
+    expect(ninetyPlaceCluster.querySelector(".map-cluster__outer")).toHaveAttribute("r", "23.5");
     expect(twoPlaceCluster.querySelector(".map-cluster__hit-area")).toHaveAttribute("r", "30");
     expect(ninetyPlaceCluster.querySelector(".map-cluster__hit-area")).toHaveAttribute("r", "30");
   });

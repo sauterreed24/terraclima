@@ -214,28 +214,28 @@ function topRiskRead(place: Place): string | null {
     .sort((a, b) => RISK_VALUE[b[1].level] - RISK_VALUE[a[1].level] || RISK_LABELS[a[0]].localeCompare(RISK_LABELS[b[0]]))[0]!;
   if (RISK_VALUE[risk.level] < 3) return null;
   const trend = risk.trend && risk.trend !== "stable" ? `, ${risk.trend}` : "";
-  return `${RISK_LABELS[key]}: ${risk.level.replace(/-/g, " ")}${trend}; verify this hazard in the dossier.`;
+  return `${RISK_LABELS[key]}: ${risk.level.replace(/-/g, " ")}${trend}; verify this hazard in the profile.`;
 }
 
 function visitWindowRead(place: Place): Pick<CompareScoutStep, "visitWindow" | "visitDetail"> {
   const window = getBestMonths(place, "C").find(item => item.kind === "good");
   if (!window) {
     return {
-      visitWindow: "Season read needed",
-      visitDetail: "Use the dossier's season-by-season section before putting dates on a scout trip.",
+      visitWindow: "See seasons in profile",
+      visitDetail: "Use the profile's season-by-season section before picking dates.",
     };
   }
   return {
     visitWindow: `${window.label}: ${window.range}`,
-    visitDetail: window.note ?? "Use this favorable window for first-pass climate scouting.",
+    visitDetail: window.note ?? "A good first window for a visit, from monthly averages.",
   };
 }
 
 function caveatRead(profile: CompareDecisionProfile): string {
   const risk = topRiskRead(profile.place);
   if (risk) return risk;
-  if (profile.riskLoad >= 34) return `Risk load: ${profile.riskLoad}/100; read hazards before treating it as easy.`;
-  if (profile.livedEase < 58) return `Lived ease: ${profile.livedEase}/100; verify housing pressure and hospital/airport access.`;
+  if (profile.riskLoad >= 34) return `Overall risk: ${profile.riskLoad}/100; read hazards before treating it as easy.`;
+  if (profile.livedEase < 58) return `Cost and access: ${profile.livedEase}/100; verify housing pressure and hospital/airport access.`;
   return compactSentence(profile.place.whoMightNot, 96);
 }
 
@@ -245,12 +245,12 @@ function sourceGapLabels(place: Place): string[] {
   const hasHumidity = Boolean(place.climate.humidity?.length);
   const hasSunshine = hasSourcedSkySeries(place);
   return [
-    ...(place.confidence === "low" ? ["low-confidence profile"] : place.confidence === "moderate" ? ["moderate-confidence profile"] : []),
-    ...(httpsCitations < 2 ? ["second HTTPS source"] : []),
-    ...(hasThinChapterDepth(place) ? ["deep-dive context"] : []),
-    ...(!hasLiveSignals ? ["lived-friction signals"] : []),
-    ...(!hasHumidity ? ["humidity normals"] : []),
-    ...(!hasSunshine ? ["sunshine normals"] : []),
+    ...(place.confidence === "low" ? ["low-confidence entry"] : place.confidence === "moderate" ? ["moderate-confidence entry"] : []),
+    ...(httpsCitations < 2 ? ["second web source"] : []),
+    ...(hasThinChapterDepth(place) ? ["in-depth text"] : []),
+    ...(!hasLiveSignals ? ["cost and access data"] : []),
+    ...(!hasHumidity ? ["measured humidity"] : []),
+    ...(!hasSunshine ? ["measured sunshine"] : []),
   ];
 }
 
@@ -279,11 +279,11 @@ function pickCounterweight(
   livedEase: CompareDecisionProfile,
 ): CounterweightRead | null {
   const rankedSignals: CounterweightRead[] = [
-    { place: lowestRisk.place, label: "Lower risk", preference: "risk load is the deciding constraint" },
-    { place: comfort.place, label: "Comfort", preference: "felt comfort matters more than the blended score" },
-    { place: garden.place, label: "Garden", preference: "garden or land fit outranks the broader relocation blend" },
-    { place: longestSeason.place, label: "Season runway", preference: "more easy months matter most" },
-    { place: livedEase.place, label: "Lived ease", preference: "daily friction is the deciding constraint" },
+    { place: lowestRisk.place, label: "Lower risk", preference: "overall risk is the deciding constraint" },
+    { place: comfort.place, label: "Comfort", preference: "comfort matters more than the overall score" },
+    { place: garden.place, label: "Garden", preference: "gardening matters more than the overall score" },
+    { place: longestSeason.place, label: "Longest season", preference: "more easy months matter most" },
+    { place: livedEase.place, label: "Cost & access", preference: "cost and access are the deciding constraint" },
   ];
   const signal = rankedSignals.find(item => item.place.id !== primary.place.id);
   if (signal) return signal;
@@ -316,7 +316,7 @@ function buildScoutSequence(
   append(scoutStep(
     "Start here",
     primary,
-    `Best ${lensRead} finalist; pressure-test this dossier before the rest.`,
+    `Highest ${lensRead} score. Read this profile first.`,
   ));
 
   const counterweightProfile = counterweight ? byId.get(counterweight.place.id) : undefined;
@@ -333,7 +333,7 @@ function buildScoutSequence(
     append(scoutStep(
       "Risk check",
       highestRisk,
-      "Heaviest risk load in this comparison; verify hazards before ranking it as equivalent.",
+      "Highest overall risk in this comparison; check the hazards before treating it as equal.",
     ));
   }
 
@@ -341,7 +341,7 @@ function buildScoutSequence(
     append(scoutStep(
       "Runner-up",
       runnerUp,
-      "Second all-around option; keep it warm if the first read exposes a dealbreaker.",
+      "Second-best overall. Keep it as a backup in case the first has a dealbreaker.",
     ));
   }
 
@@ -370,7 +370,7 @@ function buildDecisionTableRows(
       const role = profile.place.id === primary.place.id
         ? "Start here"
         : sequenceRole.get(profile.place.id)
-          ?? (counterweight?.place.id === profile.place.id ? counterweight.label : "Keep warm");
+          ?? (counterweight?.place.id === profile.place.id ? counterweight.label : "Keep as backup");
       return {
         place: profile.place,
         role,
@@ -400,10 +400,10 @@ function buildVerificationChecklist(
   const items: CompareVerificationItem[] = [
     {
       id: "scout-window",
-      label: "Scout window",
+      label: "When to visit",
       place: primary.place,
-      action: `Start with ${visit.visitWindow}; use that season to test the ${lensRead} promise.`,
-      proof: "Confirm heat, rain, smoke, daylight, and lodging logistics against the dossier before dates harden.",
+      action: `Start with ${visit.visitWindow}; use that season to see whether it lives up to its ${lensRead} score.`,
+      proof: "Confirm heat, rain, smoke, daylight, and lodging logistics against the profile before fixing dates.",
       tone: "book",
     },
   ];
@@ -414,7 +414,7 @@ function buildVerificationChecklist(
       label: "Tradeoff check",
       place: counterweight.place,
       action: `Compare ${counterweight.place.name} before locking travel if ${counterweight.preference}.`,
-      proof: "Use the same dates, errands, neighborhood walk, and housing notes so the tradeoff is not just a ranking-table read.",
+      proof: "Use the same dates, errands, neighborhood walk, and housing notes so you compare like with like.",
       tone: "book",
     });
   }
@@ -423,17 +423,17 @@ function buildVerificationChecklist(
     id: "hazard",
     label: "Hazard check",
     place: highestRisk.place,
-    action: `Resolve ${possessive(highestRisk.place.name)} hardest risk before it stays equivalent to the leader.`,
+    action: `Resolve ${possessive(highestRisk.place.name)} highest risk before treating it as equal to the leader.`,
     proof: caveatRead(highestRisk),
     tone: highestRisk.riskLoad >= 34 ? "verify" : "book",
   });
 
   items.push({
     id: "daily-life",
-    label: "Daily-life friction",
+    label: "Daily life",
     place: lowestLivedEase.place,
-    action: `Stress-test ${lowestLivedEase.place.name} for errands, housing, health care, internet, and access remoteness before calling it move-ready.`,
-    proof: `${lowestLivedEase.livedEase}/100 lived-ease read; a visit should prove the friction is tolerable, not just scenic.`,
+    action: `Check ${lowestLivedEase.place.name} for errands, housing, health care, internet, and access remoteness before treating it as a place to move.`,
+    proof: `${lowestLivedEase.livedEase}/100 cost-and-access score; a visit should show whether daily logistics are workable.`,
     tone: lowestLivedEase.livedEase < 60 ? "verify" : "book",
   });
 
@@ -443,11 +443,11 @@ function buildVerificationChecklist(
     label: "Source gap",
     place: weakestEvidence.place,
     action: sourceGaps.length
-      ? `Source-check ${weakestEvidence.place.name} before using it as a travel or moving anchor.`
-      : `Keep ${possessive(weakestEvidence.place.name)} evidence profile attached to the comparison packet.`,
+      ? `Source-check ${weakestEvidence.place.name} before planning travel or a move around it.`
+      : `Keep ${possessive(weakestEvidence.place.name)} sources in mind.`,
     proof: sourceGaps.length
-      ? `Verify ${sourceGaps.slice(0, 3).join(", ")} before booking around this finalist.`
-      : "No major source gap is visible in the current profile; still verify parcel-level hazards and local logistics.",
+      ? `Verify ${sourceGaps.slice(0, 3).join(", ")} before booking.`
+      : "No major gaps in the sources. Still check hazards for the exact location, and logistics.",
     tone: sourceGaps.length >= 3 ? "source" : sourceGaps.length > 0 ? "verify" : "book",
   });
 
@@ -470,32 +470,32 @@ export function buildCompareDecisionRead(
   const livedEase = pickProfile(profiles, profile => profile.livedEase);
   const highestRisk = pickProfile(profiles, profile => profile.riskLoad);
   const counterweight = pickCounterweight(primary, runnerUp, lowestRisk, comfort, garden, longestSeason, livedEase);
-  const lensRead = lens === DEFAULT_COMPARISON_LENS ? "all-around" : `${comparisonLensLabel(lens).toLowerCase()}-lens`;
+  const lensRead = lens === DEFAULT_COMPARISON_LENS ? "overall" : comparisonLensLabel(lens).toLowerCase();
   const scoutSequence = buildScoutSequence(profiles, primary, counterweight, runnerUp, highestRisk, lensRead);
   const tableRows = buildDecisionTableRows(profiles, primary, counterweight, scoutSequence, lens);
   const verificationChecklist = buildVerificationChecklist(profiles, primary, counterweight, highestRisk, lensRead);
 
   const landClause = garden.place.id === primary.place.id
-    ? `${primary.place.name} also keeps the garden edge`
-    : `${garden.place.name} keeps the garden edge`;
+    ? `${primary.place.name} is also best for gardening`
+    : `${garden.place.name} is best for gardening`;
   const riskClause = lowestRisk.place.id === primary.place.id
-    ? `${primary.place.name} also carries the lowest risk load`
-    : `${lowestRisk.place.name} is the lower-risk anchor`;
+    ? `${primary.place.name} also has the lowest overall risk`
+    : `${lowestRisk.place.name} has the lowest overall risk`;
   const caution = highestRisk.riskLoad - lowestRisk.riskLoad >= 14
-    ? `${highestRisk.place.name} carries the heaviest risk load (${highestRisk.riskLoad}/100); read the risk notes before treating it as equivalent.`
-    : "Risk loads are close enough that seasonal comfort, access, and lived friction should break the tie.";
+    ? `${highestRisk.place.name} has the highest overall risk (${highestRisk.riskLoad}/100); read the risk notes before treating it as equal.`
+    : "Risk levels are close enough that seasonal comfort, access, and cost and access should break the tie.";
   const counterweightClause = counterweight
-    ? ` ${counterweight.place.name} is the counterweight if ${counterweight.preference}.`
+    ? ` ${counterweight.place.name} is the alternative if ${counterweight.preference}.`
     : "";
 
   return {
     primary,
     counterweight,
-    summary: `${primary.place.name} is the first finalist to pressure-test (${compareLensScore(primary, lens)}/100 ${lensRead}); ${riskClause}, and ${landClause}.${counterweightClause}`,
+    summary: `${primary.place.name} is the place to read first (${compareLensScore(primary, lens)}/100 ${lensRead} score); ${riskClause}, and ${landClause}.${counterweightClause}`,
     caution,
     nextAction: counterweight
-      ? `Open ${possessive(primary.place.name)} dossier first; read ${counterweight.place.name} second if ${counterweight.preference}.`
-      : `Open ${possessive(primary.place.name)} dossier first, then add another place to test the tradeoff.`,
+      ? `Open ${possessive(primary.place.name)} profile first; read ${counterweight.place.name} second if ${counterweight.preference}.`
+      : `Open ${possessive(primary.place.name)} profile first, then add another place to test the tradeoff.`,
     scoutSequence,
     verificationChecklist,
     tableRows,
@@ -505,26 +505,26 @@ export function buildCompareDecisionRead(
         place: primary.place,
         value: `${compareLensScore(primary, lens)}/100`,
         detail: lens === DEFAULT_COMPARISON_LENS
-          ? "Blend of live-fit, livability, felt comfort, lived ease, garden signal, and low-risk margin."
-          : `Priority read using the ${comparisonLensLabel(lens).toLowerCase()} comparison lens.`,
+          ? "Live-here fit, livability, felt comfort, cost and access, gardening and low risk, combined."
+          : `Scored for the ${comparisonLensLabel(lens).toLowerCase()} priority.`,
       },
       {
         label: "Lowest risk",
         place: lowestRisk.place,
         value: `${lowestRisk.riskLoad}/100`,
-        detail: "Composite hazard load; lower is easier to underwrite before deeper research.",
+        detail: "Overall hazard risk; lower is safer.",
       },
       {
-        label: "Comfort leader",
+        label: "Most comfortable",
         place: comfort.place,
         value: `${comfort.feltComfort}/100`,
-        detail: "Human-felt thermal and atmospheric comfort signal.",
+        detail: "How comfortable the temperature, humidity and sky feel.",
       },
       {
-        label: "Garden edge",
+        label: "Best for gardening",
         place: garden.place,
         value: `${garden.place.scores.growability}/100`,
-        detail: `Season runway check: ${longestSeason.place.name} has ${longestSeason.easyMonths}/12 easy months.`,
+        detail: `Longest season: ${longestSeason.place.name} has ${longestSeason.easyMonths}/12 easy months.`,
       },
     ],
   };

@@ -32,10 +32,10 @@ export const EmptyResults = memo(function EmptyResults({
       : "Nothing matches that search and those filters";
 
   const body = searchOnly
-    ? "Try a shorter or different term — names, regions, archetypes, and Köppen codes all match, and accents are forgiving (“san jose” finds San José)."
+    ? "Try a shorter or different term. Search matches place names, regions, climate types and Köppen codes (such as Csb), and ignores accents (“san jose” finds San José)."
     : filtersOnly
-      ? "That's a tight intersection — try loosening one. Drop a country, drop one of the archetypes, or relax a Live-Finder limit."
-      : "That's a tight combination — try shortening the search or loosening one filter. Names, regions, archetypes, and Köppen codes all match.";
+      ? "No place meets all of these at once. Remove a country or a climate type, or loosen one must-have."
+      : "No place meets the search and the filters together. Shorten the search or loosen one filter. Search matches names, regions, climate types and Köppen codes.";
   const recoveryActions = buildExplorerRecoveryActions({
     filters,
     searchTerm,
@@ -53,12 +53,12 @@ export const EmptyResults = memo(function EmptyResults({
       <h3 className="font-atlas text-lg text-ice mb-1">{heading}</h3>
       <p className="text-sm text-frost mb-2 max-w-md mx-auto">{body}</p>
       <p className="text-xs text-stone mb-4 max-w-md mx-auto">
-        Nothing is broken: the atlas still holds <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> curated stops behind the filters.
+        The atlas has <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places; the current settings hide all of them.
       </p>
-      <div className="tc-empty-results__recovery" role="group" aria-label="Ways to recover matching places">
+      <div className="tc-empty-results__recovery" role="group" aria-label="Ways to bring places back">
         <div className="tc-empty-results__recovery-head">
           <span>Try next</span>
-          <p>Loosen one part of the screen instead of losing the whole scouting context.</p>
+          <p>Loosen one thing at a time and keep the rest of your settings.</p>
         </div>
         <div className="tc-empty-results__actions">
           {recoveryActions.map(action => (
