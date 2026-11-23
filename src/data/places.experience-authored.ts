@@ -1267,7 +1267,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     feel: "Squamish feels like the sea and the Coast Mountains squeezed into one fjord. At the head of Howe Sound, Pacific storms pile against the granite walls and drop about 2,200 mm of rain, mostly from October to March; summers turn warm and sunny, with afternoons near 25°C and a steady sea wind up the sound, while winter outflow winds can howl down the valley.",
     seasons: {
       winter: "Squamish (Howe Sound) keeps winter highs near 5.7°C while 0.3°C overnight lows test housing and travel plans.",
-      spring: "Squamish (Howe Sound) climbs toward 14.5°C spring afternoons while 5 m elevation preserves 5°C nights.",
+      spring: "Squamish (Howe Sound) climbs toward 14.5°C spring afternoons while the fjord-head valley floor holds nights near 5°C.",
       summer: "Squamish (Howe Sound) summer is an honest 23.7°C afternoon climate; nights to 12.6°C keep diurnal swing real.",
       autumn: "Squamish (Howe Sound) autumn highs near 14.3°C and lows near 6.7°C suit longer outdoor days than midsummer.",
     },
