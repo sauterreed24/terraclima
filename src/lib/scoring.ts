@@ -31,6 +31,7 @@ import { placeFeelScore } from "./place-feel";
 import { computeKoppen, parseAuthoredKoppen } from "./koppen";
 import { computeBioclim } from "./bioclim";
 import { toFixedClean } from "./units";
+import { dewPointC } from "./comfort-precision";
 
 // Re-exported so the public surface of scoring.ts stays unchanged for callers
 // (components, charts, tests) that previously imported these from here.
@@ -125,34 +126,88 @@ export const RANKING_PARAMS = {
   /** "coolest-summers": ideal mean Jun–Aug high (°C); each °C above subtracts 5. */
   coolSummerIdealHighC: 14,
   coolSummerPerDegC: 5,
-  /** "mildest-winters": each °C below 0 in mean Jan low subtracts 5. */
-  mildWinterPerDegC: 5,
-  /** "best-shoulder-seasons": ideal Apr/May + Sep/Oct mean high (°C). */
+  /**
+   * "mildest-winters": linear in the mean Dec–Feb low, from 0 at −25°C to 100
+   * at 18°C. No plateau: the old rule gave every frost-free winter 100, so 93
+   * places tied.
+   */
+  mildWinterFloorC: -25,
+  mildWinterCeilingC: 18,
+  /**
+   * "best-shoulder-seasons": Apr/May + Sep/Oct mean high against a 20°C ideal
+   * (75 points), a dry-month share (10) and the sunshine bonus (−12…+15).
+   */
   shoulderIdealHighC: 20,
   shoulderPerDegC: 6,
-  /** "driest-air": comfort threshold (%). Each % above subtracts 2. */
-  dryAirComfortPct: 35,
-  dryAirPerPct: 2,
-  /** "lowest-fire-risk": each step on RISK_VALUE subtracts 18. */
+  shoulderTempWeight: 0.75,
+  shoulderDryBudget: 10,
+  shoulderDryFreeMm: 60,
+  shoulderDryPerMm: 0.1,
+  /** "driest-air": linear in mean annual relative humidity, 100 at 20% to 0 at 82.5%. */
+  dryAirFloorPct: 20,
+  dryAirPerPct: 1.6,
+  /** "lowest-fire-risk": each wildfire step subtracts 18, each smoke step 4. */
   fireRiskPerStep: 18,
-  /** "best-four-season": sweet-spot seasonal range (°C); each °C off subtracts 3. */
-  fourSeasonIdealRangeC: 26,
-  fourSeasonPerDegC: 3,
-  /** "best-diurnal-sleep": baseline diurnal °C; each °C above adds 10. */
-  diurnalSleepBaselineC: 6,
-  diurnalSleepPerDegC: 10,
-  /** "mediterranean-like": warm-summer Csb gets a clean +30; hot-summer Csa gets +20. */
-  mediterraneanCsbBonus: 30,
-  mediterraneanCsaBonus: 20,
-  mediterraneanWinterBudget: 30,
+  fireSmokePerStep: 4,
+  /**
+   * "best-four-season": a real winter, a warm summer and distinct shoulders.
+   * Each term is 100 inside its band and falls off per °C outside it.
+   */
+  fourSeasonWinterMeanBandC: [-7, 2] as const,
+  fourSeasonSummerHighBandC: [24, 30] as const,
+  fourSeasonShoulderHighBandC: [11, 22] as const,
+  fourSeasonPerDegC: 8,
+  /**
+   * "best-diurnal-sleep": summer nights in the 10–17°C sleeping band (60%),
+   * a day-to-night swing from 8°C (0) to 18°C (100) (40%), less a muggy-night
+   * penalty per °C of dew point above 16°C.
+   */
+  sleepNightBandC: [10, 17] as const,
+  sleepNightPerDegC: 7,
+  sleepSwingFloorC: 8,
+  sleepSwingCeilingC: 18,
+  sleepMuggyDewPointC: 16,
+  sleepMuggyPerDegC: 4,
+  /** "mediterranean-like": class match 34 (Csb) / 24 (Csa), mild winter 33, dry summer after a wet winter 33. */
+  mediterraneanCsbBonus: 34,
+  mediterraneanCsaBonus: 24,
+  mediterraneanWinterBudget: 33,
   mediterraneanWinterPerDegC: 4,
-  mediterraneanSummerBudget: 30,
-  mediterraneanPerMmJulAug: 0.3,
-  /** "wet-forest-refuges": annual precip divided by 30 capped at 100. */
+  mediterraneanSummerBudget: 33,
+  mediterraneanJulAugDryMm: 100,
+  mediterraneanWinterHalfShare: 0.65,
+  mediterraneanMinAnnualMm: 300,
+  /** "wet-forest-refuges": annual total (70%, full at 3,000 mm) and the driest month (30%, full at 120 mm). */
   wetForestPrecipDivisor: 30,
-  /** "monsoon-drama": Jul–Sep / Dec–Feb precip ratio multiplied by 18, capped at 100. */
-  monsoonRatioMultiplier: 18,
+  wetForestDriestMonthFullMm: 120,
+  /**
+   * "monsoon-drama": share of the year's rain that falls Jul–Sep (70 points,
+   * from an even 25% up to 75%) and its amount (30 points, full at 400 mm).
+   */
+  monsoonEvenShare: 0.25,
+  monsoonFullShare: 0.75,
+  monsoonFullMm: 400,
 } as const;
+
+function bandScore100(value: number, band: readonly [number, number], perUnit: number): number {
+  const miss = value < band[0] ? band[0] - value : value > band[1] ? value - band[1] : 0;
+  return Math.max(0, 100 - miss * perUnit);
+}
+
+/** Like bandScore100, but leans gently toward the middle of the band so in-band places still order. */
+function peakedBandScore100(value: number, band: readonly [number, number], perUnit: number): number {
+  const centre = (band[0] + band[1]) / 2;
+  if (value >= band[0] && value <= band[1]) return 100 - Math.abs(value - centre) * 1.5;
+  const edge = 100 - ((band[1] - band[0]) / 2) * 1.5;
+  const miss = value < band[0] ? band[0] - value : value - band[1];
+  return Math.max(0, edge - miss * perUnit);
+}
+
+function meanOf(values: readonly number[], indices: readonly number[]): number {
+  return indices.reduce((sum, i) => sum + values[i]!, 0) / indices.length;
+}
+
+const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
 
 /**
  * Sunshine comfort bonus (range −12 to +15 pts).
@@ -223,12 +278,10 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
       }
       case "coolest-summers": {
         const s = Math.max(0, 100 - Math.max(0, summerHigh - k.coolSummerIdealHighC) * k.coolSummerPerDegC);
-        return { place: p, score: s, note: `Mean summer high ${toFixedClean(summerHigh, 1)}°C` };
+        return { place: p, score: s, note: `Mean summer high ${toFixedClean(summerHigh, 1)}°C`, tiebreak: -summerHigh };
       }
       case "mildest-winters": {
-        const s = Math.max(0, 100 - Math.max(0, -janLow) * k.mildWinterPerDegC);
-        // Every frost-free winter scores 100; the low itself orders them, so
-        // Key West leads instead of whichever name sorts first.
+        const s = 100 * clamp01((janLow - k.mildWinterFloorC) / (k.mildWinterCeilingC - k.mildWinterFloorC));
         return { place: p, score: s, note: `Mean winter low ${toFixedClean(janLow, 1)}°C`, tiebreak: janLow };
       }
       case "sunniest-winters": {
@@ -241,17 +294,19 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
       case "best-shoulder-seasons": {
         const shoulder = (p.climate.tempHighC[3] + p.climate.tempHighC[4] + p.climate.tempHighC[8] + p.climate.tempHighC[9]) / 4;
         const base = Math.max(0, 100 - Math.abs(shoulder - k.shoulderIdealHighC) * k.shoulderPerDegC);
+        const shoulderRain = meanOf(p.climate.precipMm, [3, 4, 8, 9]);
+        const dry = Math.max(0, k.shoulderDryBudget - Math.max(0, shoulderRain - k.shoulderDryFreeMm) * k.shoulderDryPerMm);
         const sunBonus = sunshineComfortBonus(p);
-        const s = Math.max(0, Math.min(100, base + sunBonus));
-        return { place: p, score: s, note: `Spring/fall highs near ${toFixedClean(shoulder, 1)}°C` };
+        const s = Math.max(0, Math.min(100, base * k.shoulderTempWeight + dry + sunBonus));
+        return { place: p, score: s, note: `Spring/fall highs near ${toFixedClean(shoulder, 1)}°C · ${shoulderRain.toFixed(0)} mm of rain a month`, tiebreak: -Math.abs(shoulder - k.shoulderIdealHighC) };
       }
       case "driest-air": {
         const hum = p.climate.humidity
           ? p.climate.humidity.reduce((a, b) => a + b, 0) / 12
           : CORPUS_MEAN_HUMIDITY;
-        const s = Math.max(0, 100 - Math.max(0, hum - k.dryAirComfortPct) * k.dryAirPerPct);
+        const s = Math.max(0, Math.min(100, 100 - (hum - k.dryAirFloorPct) * k.dryAirPerPct));
         const noteSuffix = p.climate.humidity ? "" : " (atlas mean)";
-        return { place: p, score: s, note: `Mean humidity ~${hum.toFixed(0)}%${noteSuffix}` };
+        return { place: p, score: s, note: `Mean humidity ~${hum.toFixed(0)}%${noteSuffix}`, tiebreak: -hum };
       }
       case "best-growability":
         return { place: p, score: p.scores.growability, note: p.growability.hardinessZone };
@@ -261,22 +316,47 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         return { place: p, score: p.scores.microclimateUniqueness };
       case "lowest-fire-risk": {
         const fire = RISK_VALUE[p.risks.wildfire.level];
-        const s = Math.max(0, 100 - fire * k.fireRiskPerStep);
-        return { place: p, score: s, note: p.risks.wildfire.level };
+        const smoke = RISK_VALUE[p.risks.smoke.level];
+        const s = Math.max(0, 100 - fire * k.fireRiskPerStep - smoke * k.fireSmokePerStep);
+        // Equal risk grades are ordered by warm-season rain: a wetter May–Sep
+        // leaves less cured fuel.
+        const warmSeasonRain = [4, 5, 6, 7, 8].reduce((sum, i) => sum + p.climate.precipMm[i]!, 0);
+        return { place: p, score: s, note: `Wildfire ${p.risks.wildfire.level} · smoke ${p.risks.smoke.level}`, tiebreak: warmSeasonRain };
       }
       case "climate-resilient":
         return { place: p, score: p.scores.resilience };
       case "best-four-season": {
-        const range = summerHigh - janLow;
-        const sweetSpot = Math.abs(range - k.fourSeasonIdealRangeC);
-        const s = Math.max(0, 100 - sweetSpot * k.fourSeasonPerDegC);
-        // "Annual range" triggers delta detection in localizeProse so the
-        // value is converted as a Δ (×9/5), not as an absolute reading.
-        return { place: p, score: s, note: `Annual range ${range.toFixed(0)}°C` };
+        // Four seasons means each one shows up: a winter that freezes without
+        // being brutal, a warm summer, and a spring and autumn that sit between
+        // them. The old rule scored only the summer-to-winter range, which put
+        // the Gulf coast (Apalachicola, Ocean Springs) at the top.
+        const winterMean = (meanOf(p.climate.tempHighC, [11, 0, 1]) + janLow) / 2;
+        const spring = meanOf(p.climate.tempHighC, [2, 3, 4]);
+        const autumn = meanOf(p.climate.tempHighC, [8, 9, 10]);
+        const winter = peakedBandScore100(winterMean, k.fourSeasonWinterMeanBandC, k.fourSeasonPerDegC);
+        const summer = peakedBandScore100(summerHigh, k.fourSeasonSummerHighBandC, k.fourSeasonPerDegC);
+        const shoulders = (peakedBandScore100(spring, k.fourSeasonShoulderHighBandC, k.fourSeasonPerDegC)
+          + peakedBandScore100(autumn, k.fourSeasonShoulderHighBandC, k.fourSeasonPerDegC)) / 2;
+        // The weakest season holds the score back: three good seasons and no
+        // winter is not four seasons.
+        const blend = 0.35 * winter + 0.3 * summer + 0.35 * shoulders;
+        const s = blend * (0.5 + 0.5 * (Math.min(winter, summer, shoulders) / 100));
+        return { place: p, score: s, note: `Winter days average ${toFixedClean(winterMean)}°C · summer highs ${toFixedClean(summerHigh)}°C` };
       }
       case "best-diurnal-sleep": {
-        const s = Math.min(100, Math.max(0, (diurnal - k.diurnalSleepBaselineC) * k.diurnalSleepPerDegC));
-        return { place: p, score: s, note: `Summer diurnal swing ${diurnal.toFixed(0)}°C`, tiebreak: diurnal };
+        // Sleep needs a cool bedroom, and a dry one: summer nights in the
+        // 10–17°C band, a real drop from the afternoon, and no muggy air. The
+        // old rule scored the swing alone and tied 46 places at 100.
+        const summerNight = meanOf(p.climate.tempLowC, [5, 6, 7]);
+        const night = bandScore100(summerNight, k.sleepNightBandC, k.sleepNightPerDegC);
+        const swing = 100 * clamp01((diurnal - k.sleepSwingFloorC) / (k.sleepSwingCeilingC - k.sleepSwingFloorC));
+        const hum = p.climate.humidity;
+        const nightDew = hum
+          ? dewPointC((meanOf(p.climate.tempHighC, [5, 6, 7]) + summerNight) / 2, meanOf(hum, [5, 6, 7]))
+          : null;
+        const muggy = nightDew == null ? 0 : Math.max(0, nightDew - k.sleepMuggyDewPointC) * k.sleepMuggyPerDegC;
+        const s = Math.max(0, Math.min(100, 0.6 * night + 0.4 * swing - muggy));
+        return { place: p, score: s, note: `Summer nights near ${toFixedClean(summerNight)}°C; summer diurnal swing ${diurnal.toFixed(0)}°C`, tiebreak: diurnal };
       }
       case "strongest-geospatial-signal": {
         const g = buildGeospatialAnalysis(p);
@@ -289,7 +369,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
       case "most-continental": {
         const bio = computeBioclim(p);
         if (!bio || bio.conrad.value == null) return { place: p, score: 0, note: "Bioclim unavailable" };
-        return { place: p, score: bio.conrad.value, note: `Conrad K ${bio.conrad.value.toFixed(1)} · ${bio.conrad.classLabel}` };
+        return { place: p, score: Math.max(0, bio.conrad.value), note: `Conrad K ${bio.conrad.value.toFixed(1)} · ${bio.conrad.classLabel}` };
       }
       case "driest-growing-season": {
         const bio = computeBioclim(p);
@@ -323,18 +403,41 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
             ? k.mediterraneanCsaBonus
             : 0;
         const wint = Math.max(0, k.mediterraneanWinterBudget - Math.max(0, -janLow) * k.mediterraneanWinterPerDegC);
-        const dry = Math.max(0, k.mediterraneanSummerBudget - (p.climate.precipMm[6] + p.climate.precipMm[7]) * k.mediterraneanPerMmJulAug);
-        return { place: p, score: bonus + wint + dry };
+        // A Mediterranean year is a dry summer after a wet winter. Dry summers
+        // alone also describe deserts, so the term needs most of the year's
+        // rain to fall Oct–Mar and enough rain for it to matter.
+        const julAug = p.climate.precipMm[6] + p.climate.precipMm[7];
+        const winterHalf = [9, 10, 11, 0, 1, 2].reduce((sum, i) => sum + p.climate.precipMm[i]!, 0);
+        const winterShare = annualPrecip > 0 ? winterHalf / annualPrecip : 0;
+        const dry = k.mediterraneanSummerBudget
+          * clamp01(1 - julAug / k.mediterraneanJulAugDryMm)
+          * clamp01(winterShare / k.mediterraneanWinterHalfShare)
+          * clamp01(annualPrecip / k.mediterraneanMinAnnualMm);
+        return {
+          place: p,
+          score: bonus + wint + dry,
+          note: `${Math.round(winterShare * 100)}% of the year's rain falls Oct–Mar · ${julAug.toFixed(0)} mm in Jul–Aug`,
+          tiebreak: -julAug,
+        };
       }
       case "wet-forest-refuges": {
-        const s = Math.min(100, annualPrecip / k.wetForestPrecipDivisor);
-        return { place: p, score: s, note: `${annualPrecip.toFixed(0)} mm / yr` };
+        // A forest refuge is wet all year, not just in total: a dry month
+        // stresses the canopy however much falls in winter.
+        const driest = Math.min(...p.climate.precipMm);
+        const s = 0.7 * Math.min(100, annualPrecip / k.wetForestPrecipDivisor)
+          + 0.3 * Math.min(100, (driest / k.wetForestDriestMonthFullMm) * 100);
+        return { place: p, score: s, note: `${annualPrecip.toFixed(0)} mm of rain a year · driest month ${driest.toFixed(0)} mm`, tiebreak: annualPrecip };
       }
       case "monsoon-drama": {
         const monsoon = p.climate.precipMm[6] + p.climate.precipMm[7] + p.climate.precipMm[8];
         const winter = p.climate.precipMm[11] + p.climate.precipMm[0] + p.climate.precipMm[1];
         const ratio = monsoon / Math.max(1, winter);
-        const s = Math.min(100, ratio * k.monsoonRatioMultiplier);
+        // Drama is a summer that carries the year: its share of the annual
+        // total, and enough rain to be felt. The old ratio to winter rain hit
+        // its cap for 43 places, so a dry winter alone was enough to tie first.
+        const share = annualPrecip > 0 ? monsoon / annualPrecip : 0;
+        const s = 70 * clamp01((share - k.monsoonEvenShare) / (k.monsoonFullShare - k.monsoonEvenShare))
+          + 30 * clamp01(monsoon / k.monsoonFullMm);
         return { place: p, score: s, note: `${monsoon.toFixed(0)} mm in Jul–Sep vs ${winter.toFixed(0)} mm in Dec–Feb`, tiebreak: ratio };
       }
       case "best-this-month": {
