@@ -198,9 +198,9 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "charleston-sc": {
     feel: "Charleston feels like a city built by and for the water: on its low peninsula between the Ashley and Cooper rivers, the harbour and the afternoon sea breeze take the edge off long, humid summers, while hurricanes and king tides are the price of the setting.",
     seasons: {
-      winter: "Charleston holds winter light near 16.6°C afternoons and 5.9°C nights at 3 m.",
+      winter: "Charleston holds winter light near 16.6°C afternoons and 5.9°C nights near sea level.",
       spring: "Charleston spring afternoons reach about 24.3°C, nights near 13.7°C, before peak-season heat arrives.",
-      summer: "Charleston summer highs near 31.6°C at 3 m still leave sea breeze mattering after sunset near 23.1°C.",
+      summer: "Charleston sea-level summer highs near 31.6°C still leave sea breeze mattering after sunset near 23.1°C.",
       autumn: "Charleston autumn returns to roughly 25.1°C days and 15.4°C nights — often the clearest travel window.",
     },
     travelerFit: "Charleston earns its visitors through history and food — reason enough on their own, before the climate even factors in.",
@@ -282,7 +282,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "corpus-christi-tx": {
     feel: "Corpus Christi feels like a bayfront city living in a steady Gulf wind. Behind the shelter of Mustang and Padre islands, the bay feeds a near-constant southeasterly breeze that makes humid August afternoons near 34°C bearable and fills the sails on the water; winters are short and mild, with January nights near 9°C until a norther blows through, and September, at the height of hurricane season, is the wettest month at about 150 mm.",
     seasons: {
-      winter: "Corpus Christi (Laguna Madre) holds winter light near 20.4°C afternoons and 9.9°C nights at 2 m.",
+      winter: "Corpus Christi (Laguna Madre) holds winter light near 20.4°C afternoons and 9.9°C nights near sea level.",
       spring: "Corpus Christi (Laguna Madre) shoulder season sits near 27.4°C days and 18.3°C nights, with hurricane track still cooling mornings.",
       summer: "Corpus Christi (Laguna Madre) warm season centers on 33.7°C days; 25°C nights are the practical relief.",
       autumn: "Corpus Christi (Laguna Madre) closes the warm half-year near 28.6°C by day; 18.9°C nights and wetter storms reset the calendar.",
@@ -522,7 +522,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "honolulu-hi": {
     feel: "Honolulu feels like a city on the dry, sunny side of a rain machine. Trade winds pile cloud against the green Koʻolau Range behind town and wring out their rain on the windward side and the crest, leaving the south shore only about 510 mm a year, most of it from October to March; afternoons barely shift from about 27°C in January to 30°C in August, and winter nights still average near 19°C.",
     seasons: {
-      winter: "Honolulu (Leeward Oʻahu) holds winter light near 26.7°C afternoons and 19.1°C nights at 5 m.",
+      winter: "Honolulu (Leeward Oʻahu) holds winter light near 26.7°C afternoons and 19.1°C nights near sea level.",
       spring: "Honolulu (Leeward Oʻahu) shoulder season sits near 27.6°C days and 20.2°C nights, with trade wind still cooling mornings.",
       summer: "Honolulu (Leeward Oʻahu) asks for 29.9°C summer-day planning across Tropical dry–wet coastal, then 22.7°C nights for sleep and gardens.",
       autumn: "Honolulu (Leeward Oʻahu) closes the warm half-year near 29.4°C by day; 22.1°C nights and wetter storms reset the calendar.",
@@ -704,7 +704,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     seasons: {
       winter: "Mazatlán (Pacific Humid Tropical) winter afternoons settle near 28.2°C — nights 13.6°C — under Aw seasonality.",
       spring: "Mazatlán (Pacific Humid Tropical) shoulder season sits near 31°C days and 16.7°C nights, with tropical convection still cooling mornings.",
-      summer: "Mazatlán (Pacific Humid Tropical) summer highs near 34.7°C at 5 m still leave tropical convection mattering after sunset near 24.7°C.",
+      summer: "Mazatlán (Pacific Humid Tropical) sea-level summer highs near 34.7°C still leave tropical convection mattering after sunset near 24.7°C.",
       autumn: "Mazatlán (Pacific Humid Tropical) autumn stays usable at 33.1°C days and 21.9°C nights as tropical convection reasserts cooler evenings.",
     },
     travelerFit: "The draw for visitors is straightforward: historic centro and carnival, set inside a tropical wet-dry climate that is easy to underestimate from a distance.",
@@ -750,7 +750,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "merida-mx": {
     feel: "Mérida feels like heat held in white stone: a flat limestone plain with no rivers, where rain sinks straight into cenotes, afternoons sit in the 30s °C most of the year, and life moves to shaded courtyards and evening plazas. The wet season brings short, heavy storms from June.",
     seasons: {
-      winter: "Mérida holds winter light near 29.8°C afternoons and 17.4°C nights at 9 m.",
+      winter: "Mérida holds winter light near 29.8°C afternoons and 17.4°C nights near sea level.",
       spring: "Mérida spring afternoons reach about 34.3°C, nights near 20.7°C, before peak-season heat arrives.",
       summer: "Mérida warm season centers on 34.4°C days; 22.7°C nights are the practical relief.",
       autumn: "Mérida autumn stays usable at 32.2°C days and 21.1°C nights as karst infiltration reasserts cooler evenings.",
@@ -858,7 +858,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "nags-head-nc": {
     feel: "Nags Head feels like a thin line of sand facing the Atlantic: on the Outer Banks the ocean moderates both seasons and the wind hardly stops, building the tall dunes of Jockey's Ridge — and hurricanes, nor'easters and shifting inlets are part of life.",
     seasons: {
-      winter: "Outer Banks (Nags Head) holds winter light near 12.4°C afternoons and 3.6°C nights at 3 m.",
+      winter: "Outer Banks (Nags Head) holds winter light near 12.4°C afternoons and 3.6°C nights near sea level.",
       spring: "Outer Banks (Nags Head) shoulder season sits near 20.1°C days and 11.2°C nights, with hurricane track still cooling mornings.",
       summer: "Outer Banks (Nags Head) asks for 29.6°C summer-day planning across Maritime scrub and dune grassland, then 22.2°C nights for sleep and gardens.",
       autumn: "Outer Banks (Nags Head) autumn stays usable at 22.3°C days and 14.8°C nights as hurricane track reasserts cooler evenings.",
@@ -892,12 +892,12 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Settling in Naples means accepting a real bargain, not a free ride. Where it costs you back: flooding (very-high) and severe storms (very-high) are the two to weigh. Weigh it against the subtropical mangrove and palm coastal and the hurricane-exposed coast pattern before writing Naples off or romanticizing it.",
   },
   "new-orleans-la": {
-    feel: "Mississippi River deltaic plain below sea level in places — that is the short version of why New Orleans feels the way it does at 0 m. Tropical-cyclone exposure sets the tone, and the river-valley moderation signature shows up in almost every season here, not just one.",
+    feel: "Mississippi River deltaic plain below sea level in places — that is the short version of why New Orleans feels the way it does. Tropical-cyclone exposure sets the tone, and the river-valley moderation signature shows up in almost every season here, not just one.",
     seasons: {
       winter: "New Orleans keeps winter highs near 18.3°C while 8°C overnight lows test housing and travel plans.",
-      spring: "New Orleans climbs toward 26°C spring afternoons while 0 m elevation preserves 15.9°C nights.",
+      spring: "New Orleans climbs toward 26°C spring afternoons while the sea-level delta holds nights near 15.9°C.",
       summer: "New Orleans in summer means about 32.8°C heat, wetter rainfall pattern, and 23.8°C overnight air.",
-      autumn: "New Orleans autumn light means 26.7°C afternoons at 0 m and 16.8°C after dark.",
+      autumn: "New Orleans autumn light means 26.7°C afternoons and 16.8°C after dark.",
     },
     travelerFit: "It is jazz, Mardi Gras, and swamp tours that pulls most visitors to New Orleans, and the Cfa-class weather turns out to be part of the appeal, not just a backdrop.",
     residentFit: "New Orleans works best as a home base for culture seekers and port workers, provided the day-to-day realities of a smaller Louisiana town don't come as a surprise.",
@@ -908,7 +908,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     seasons: {
       winter: "Nome (Seward Peninsula) in winter is a −9.5°C daytime story; nights to −17.4°C make polar jet exposure tangible.",
       spring: "Nome (Seward Peninsula) shoulder season sits near −1.1°C days and −9.3°C nights, with polar jet exposure still cooling mornings.",
-      summer: "Nome (Seward Peninsula) summer highs near 14.1°C at 6 m still leave polar jet exposure mattering after sunset near 6.4°C.",
+      summer: "Nome (Seward Peninsula) sea-level summer highs near 14.1°C still leave polar jet exposure mattering after sunset near 6.4°C.",
       autumn: "Nome (Seward Peninsula) autumn stays usable at 2.7°C days and −4°C nights as polar jet exposure reasserts cooler evenings.",
     },
     travelerFit: "The draw for visitors is straightforward: Iditarod finish and Bering land bridge archaeology, set inside a subarctic continental climate that is easy to underestimate from a distance.",
@@ -942,7 +942,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "ocean-springs-ms": {
     feel: "Ocean Springs feels like the Gulf at its gentlest: live oaks, bayous and Mississippi Sound, with long, steamy summers, frequent thunderstorms and mild winters — and hurricanes as the season's lasting risk.",
     seasons: {
-      winter: "Ocean Springs (Mississippi Sound) holds winter light near 17.6°C afternoons and 6.7°C nights at 7 m.",
+      winter: "Ocean Springs (Mississippi Sound) holds winter light near 17.6°C afternoons and 6.7°C nights near sea level.",
       spring: "Ocean Springs (Mississippi Sound) opens spring under roughly 25.3°C days — wetter moisture — and 14.7°C overnight recovery.",
       summer: "Ocean Springs (Mississippi Sound) warm season centers on 32.3°C days; 23.1°C nights are the practical relief.",
       autumn: "Ocean Springs (Mississippi Sound) autumn stays usable at 26.5°C days and 15.5°C nights as sea breeze reasserts cooler evenings.",
@@ -1245,7 +1245,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
       winter: "South Padre Island winters run near 21.8°C by day and 12.9°C at night, shaped by sea breeze across Subtropical coastal dune / maritime savanna.",
       spring: "South Padre Island spring highs near 27.5°C and lows near 20.2°C favor scouting walks over midsummer crowds.",
       summer: "South Padre Island summer afternoons land near 32.8°C, with nights easing toward 25.6°C when skies clear.",
-      autumn: "South Padre Island autumn light means 29°C afternoons at 2 m and 20.9°C after dark.",
+      autumn: "South Padre Island autumn light means 29°C afternoons near sea level and 20.9°C after dark.",
     },
     travelerFit: "Travelers come to South Padre Island mainly for spring break, sea turtle nesting (Kemp's ridley), and birding, and most leave surprised by how much the hurricane-exposed coast pattern shapes the visit.",
     residentFit: "Long-term residents in South Padre Island skew toward winter-residents, surfers, and subtropical-coast lovers, the group most likely to find the tradeoffs of living here worth the climate on offer.",
@@ -1374,9 +1374,9 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "tofino-ucluelet-corridor": {
     feel: "Ucluelet feels like the open Pacific's front porch: storms sweep in off the North Pacific for much of the year, the ocean keeps winter mild and summer cool, and between them the Wild Pacific Trail looks out on surf, rock and fog.",
     seasons: {
-      winter: "Ucluelet holds winter light near 8.4°C afternoons and 2.7°C nights at 6 m.",
+      winter: "Ucluelet holds winter light near 8.4°C afternoons and 2.7°C nights near sea level.",
       spring: "Ucluelet opens spring under roughly 12.1°C days — wetter moisture — and 5.1°C overnight recovery.",
-      summer: "Ucluelet summer highs near 18°C at 6 m still leave marine layer mattering after sunset near 10.8°C.",
+      summer: "Ucluelet sea-level summer highs near 18°C still leave marine layer mattering after sunset near 10.8°C.",
       autumn: "Ucluelet autumn stays usable at 13.9°C days and 7.3°C nights as marine layer reasserts cooler evenings.",
     },
     travelerFit: "Most people show up in Ucluelet for surfing and storm watching and stay a day longer than planned once the local rhythm sets in.",
