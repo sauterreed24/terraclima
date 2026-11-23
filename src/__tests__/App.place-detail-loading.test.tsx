@@ -78,10 +78,10 @@ describe("App place-detail loading boundary", () => {
     window.history.replaceState(null, "", "/?p=sequim-wa");
     const { container } = renderApp();
 
-    const fallback = await screen.findByRole("dialog", { name: "Sequim climate dossier" });
+    const fallback = await screen.findByRole("dialog", { name: "Sequim climate profile" });
     expect(fallback).toHaveAttribute("data-place-detail-loading");
     expect(fallback).toHaveClass("place-detail-drawer");
-    expect(screen.getByRole("status")).toHaveTextContent("Opening Sequim climate dossier");
+    expect(screen.getByRole("status")).toHaveTextContent("Opening Sequim climate profile");
 
     const shell = container.querySelector("[data-app-shell]");
     expect(shell).not.toBeNull();
@@ -96,7 +96,7 @@ describe("App place-detail loading boundary", () => {
     fireEvent.click(close);
 
     await waitFor(() => {
-      expect(screen.queryByRole("dialog", { name: "Sequim climate dossier" })).toBeNull();
+      expect(screen.queryByRole("dialog", { name: "Sequim climate profile" })).toBeNull();
       expect(window.location.search).toBe("");
     });
     expect(shell).not.toHaveAttribute("aria-hidden");
@@ -107,7 +107,7 @@ describe("App place-detail loading boundary", () => {
     window.history.replaceState(null, "", "/?p=sequim-wa");
     const { container } = renderApp();
 
-    expect(await screen.findByRole("dialog", { name: "Sequim climate dossier" })).toHaveAttribute("data-place-detail-loading");
+    expect(await screen.findByRole("dialog", { name: "Sequim climate profile" })).toHaveAttribute("data-place-detail-loading");
     const shell = container.querySelector("[data-app-shell]");
     expect(shell).not.toBeNull();
     await waitFor(() => expect(shell).toHaveAttribute("aria-hidden", "true"));
@@ -118,7 +118,7 @@ describe("App place-detail loading boundary", () => {
     fireEvent.keyDown(close, { key: "Escape" });
 
     await waitFor(() => {
-      expect(screen.queryByRole("dialog", { name: "Sequim climate dossier" })).toBeNull();
+      expect(screen.queryByRole("dialog", { name: "Sequim climate profile" })).toBeNull();
       expect(window.location.search).toBe("");
     });
     expect(shell).not.toHaveAttribute("aria-hidden");

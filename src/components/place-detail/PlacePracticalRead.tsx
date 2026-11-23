@@ -28,10 +28,10 @@ export function PlacePracticalRead({ place, anchorId }: { place: Place; anchorId
     <section id={anchorId} className="detail-doc-section anim-fade-in scroll-mt-28">
       <h3 className="font-atlas text-[1.15rem] md:text-lg text-ice mb-3.5 flex items-center gap-2 tracking-tight border-b border-[rgba(200,170,140,0.35)] pb-2">
         <Compass className="w-4 h-4 shrink-0" style={{ color: "#c7b5ea" }} aria-hidden />
-        Practical read
+        Practical notes
       </h3>
       <p className="text-[12px] text-stone-readable leading-relaxed mb-3.5 max-w-2xl">
-        Start here when the profile needs to become practical: what the ground can grow, how to read the terrain, which tradeoffs matter, and where to test the contrast in person.
+        What grows here, how terrain changes conditions over short distances, the main tradeoffs, and where to go to feel the difference in person.
       </p>
       <div className="grid md:grid-cols-2 gap-3">
         {cards.map(card => (

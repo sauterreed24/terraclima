@@ -19,7 +19,7 @@ export function CompareLoadingFallback({ places, onClose }: Props) {
   }, []);
 
   const placeCount = `${places.length} ${places.length === 1 ? "place" : "places"}`;
-  const title = places.length === 1 ? "Loading compare setup" : `Loading compare for ${placeCount}`;
+  const title = places.length === 1 ? "Loading Compare" : `Loading compare for ${placeCount}`;
   const placeNames = useMemo(
     () => places.map(place => place.name).join(", "),
     [places],
@@ -75,8 +75,8 @@ export function CompareLoadingFallback({ places, onClose }: Props) {
             <ArrowLeftRight className="h-8 w-8 text-[rgba(26,143,168,0.9)]" aria-hidden />
             <p className="m-0 mt-4 text-sm leading-relaxed text-stone-readable">
               {placeNames
-                ? `Preparing ${placeNames}.`
-                : "Preparing the saved comparison."}
+                ? `Loading ${placeNames}.`
+                : "Loading the comparison."}
             </p>
           </div>
 

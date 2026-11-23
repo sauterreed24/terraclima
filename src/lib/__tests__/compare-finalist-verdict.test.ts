@@ -72,20 +72,20 @@ describe("compare finalist verdict", () => {
 
     expect(read?.primary.place.name).toBe("Broad Town");
     expect(read?.counterweight).toMatchObject({ label: "Lower risk", place: lowerRisk.place });
-    expect(read?.summary).toContain("Broad Town is the first finalist to pressure-test");
-    expect(read?.summary).toContain("Quiet Basin is the counterweight");
-    expect(read?.caution).toContain("Heat Bluff carries the heaviest risk load");
-    expect(read?.nextAction).toContain("Open Broad Town's dossier first");
+    expect(read?.summary).toContain("Broad Town is the place to read first");
+    expect(read?.summary).toContain("Quiet Basin is the alternative");
+    expect(read?.caution).toContain("Heat Bluff has the highest overall risk");
+    expect(read?.nextAction).toContain("Open Broad Town's profile first");
     expect(read?.scoutSequence.map(step => step.label)).toEqual(["Start here", "Counterweight", "Risk check"]);
     expect(read?.scoutSequence.map(step => step.place.name)).toEqual(["Broad Town", "Quiet Basin", "Heat Bluff"]);
     expect(read?.scoutSequence[0].visitWindow).toContain("Gardening window");
-    expect(read?.scoutSequence[0].why).toContain("Best all-around finalist");
-    expect(read?.scoutSequence[2].caveat).toContain("Risk load: 42/100");
+    expect(read?.scoutSequence[0].why).toContain("Highest overall score");
+    expect(read?.scoutSequence[2].caveat).toContain("Overall risk: 42/100");
     expect(read?.verificationChecklist.map(item => item.label)).toEqual([
-      "Scout window",
+      "When to visit",
       "Tradeoff check",
       "Hazard check",
-      "Daily-life friction",
+      "Daily life",
       "Source gap",
     ]);
     expect(read?.verificationChecklist[0]).toMatchObject({
@@ -100,9 +100,9 @@ describe("compare finalist verdict", () => {
       place: highRisk.place,
       tone: "verify",
     });
-    expect(read?.verificationChecklist[3].proof).toContain("70/100 lived-ease read");
-    expect(read?.verificationChecklist[4].proof).toContain("second HTTPS source");
-    expect(read?.lanes.map(lane => lane.label)).toEqual(["Broadest fit", "Lowest risk", "Comfort leader", "Garden edge"]);
+    expect(read?.verificationChecklist[3].proof).toContain("70/100 cost-and-access score");
+    expect(read?.verificationChecklist[4].proof).toContain("second web source");
+    expect(read?.lanes.map(lane => lane.label)).toEqual(["Broadest fit", "Lowest risk", "Most comfortable", "Best for gardening"]);
     expect(read?.tableRows.map(row => row.role)).toEqual(["Start here", "Counterweight", "Risk check"]);
     expect(read?.tableRows.map(row => row.place.name)).toEqual(["Broad Town", "Quiet Basin", "Heat Bluff"]);
     expect(read?.tableRows[0]).toMatchObject({
@@ -110,7 +110,7 @@ describe("compare finalist verdict", () => {
       fitSummary: "92/100 fit · 8/12 easy months",
       riskSummary: "28/100 risk",
     });
-    expect(read?.tableRows[2].watch).toContain("Risk load: 42/100");
+    expect(read?.tableRows[2].watch).toContain("Overall risk: 42/100");
   });
 
   it("uses stable name/id tie-breakers for equal blended scores", () => {

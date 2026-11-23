@@ -152,7 +152,7 @@ async function main() {
       await page.waitForSelector("h1", { timeout: 10000 });
 
       const heading = await page.locator("h1").first().textContent();
-      if (!/microclimate|Discover|Trip|Collection/i.test(heading ?? "")) {
+      if (!/microclimate|local climates|Trip|Collection/i.test(heading ?? "")) {
         findings.push({ label, kind: "unexpected-hero-heading", heading });
       }
 
@@ -169,7 +169,7 @@ async function main() {
       }
 
       // Fit Finder / Most comfortable lens.
-      const more = page.getByRole("button", { name: /More atlas actions|Show scouting tools|Most comfortable/i }).first();
+      const more = page.getByRole("button", { name: /More actions|Show a summary of the top places|Most comfortable/i }).first();
       if (await more.count()) {
         // Prefer ranking control in filter dock when visible.
       }
@@ -185,7 +185,7 @@ async function main() {
       if (await search.count()) {
         const visible = await search.isVisible().catch(() => false);
         if (!visible) {
-          const openFilters = page.getByRole("button", { name: /Open Explorer filters/i }).first();
+          const openFilters = page.getByRole("button", { name: /Open filters and ranking/i }).first();
           if (await openFilters.count()) {
             await openFilters.click();
             await page.waitForTimeout(250);

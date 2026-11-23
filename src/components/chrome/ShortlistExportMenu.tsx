@@ -16,13 +16,13 @@ const FORMATS: ReadonlyArray<{
 }> = [
   {
     id: "markdown",
-    label: "Scout plan",
-    hint: "Visit windows, source gaps, and verification steps",
+    label: "Visit plan",
+    hint: "Best months, data gaps and what to check, as text",
   },
-  { id: "json", label: "JSON", hint: "Minimal place rows for scripts" },
-  { id: "csv", label: "CSV", hint: "Spreadsheet-friendly table" },
-  { id: "geojson", label: "GeoJSON", hint: "RFC 7946 map points" },
-  { id: "ics", label: "Calendar (.ics)", hint: "Best-month scouting windows" },
+  { id: "json", label: "JSON", hint: "One record per place, for scripts" },
+  { id: "csv", label: "CSV", hint: "A table for spreadsheets" },
+  { id: "geojson", label: "GeoJSON", hint: "Map points for GIS and mapping tools" },
+  { id: "ics", label: "Calendar (.ics)", hint: "Best months to visit, as calendar events" },
 ];
 const MENU_NAV_KEYS = new Set(["ArrowDown", "ArrowRight", "ArrowUp", "ArrowLeft", "Home", "End"]);
 
@@ -125,10 +125,10 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
   const statusMessage =
     status === "preparing" ? "Preparing export..."
       : status === "ready" ? "Download started."
-        : status === "failed" ? "Download blocked. Try another format or browser."
+        : status === "failed" ? "The download did not start. Try another format or browser."
           : "";
   const triggerLabel = disabled
-    ? "Export shortlist unavailable until places are pinned"
+    ? "Pin a place to export your shortlist"
     : status === "preparing"
       ? "Exporting shortlist"
       : "Export shortlist";

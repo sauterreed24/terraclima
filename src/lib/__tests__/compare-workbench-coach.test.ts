@@ -73,7 +73,7 @@ describe("compare workbench coach", () => {
 
     expect(insight.label).toBe("Move upgrade");
     expect(insight.tone).toBe("upgrade");
-    expect(insight.detail).toContain("active move read");
+    expect(insight.detail).toContain("move score");
     expect(insight.score).toBeGreaterThan(0);
   });
 });

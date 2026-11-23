@@ -31,6 +31,6 @@ describe("App pending affordances", () => {
     const stage = document.querySelector(".tc-map-stage");
     expect(stage).toHaveAttribute("data-pending", "true");
     expect(stage).toHaveAttribute("aria-busy", "true");
-    expect(screen.getByText(/Updating ranked results for the selected climate layer/i)).toBeInTheDocument();
+    expect(screen.getByText(/Updating the ranking for the selected climate layer/i)).toBeInTheDocument();
   });
 });

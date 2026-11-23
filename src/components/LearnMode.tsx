@@ -16,7 +16,7 @@ export function LearnMode({ onOpenPlace }: Props) {
         <h3 className="font-atlas text-lg text-ice mb-2">Where the climate numbers come from</h3>
         <p className="text-sm text-frost leading-relaxed mb-2">
           Default <span className="text-ice font-medium">Recent · 1996–2025</span> is a rolling Daymet V4 R1 climatology
-          — not a WMO standard normal. Official <span className="text-ice font-medium">1991–2020</span> normals stay as
+          (a recent 30-year average, not the official WMO 1991–2020 period). Official <span className="text-ice font-medium">1991–2020</span> normals stay as
           the same-source comparison. Station products (NOAA, ECCC, SMN) validate the grid; ERA5-Land is fallback/QA only.
           Solar resource is daily shortwave energy in kWh/m² per day (the NREL convention), from radiation × day length, not observed sunshine hours. Daymet SWE is
           snowpack, never snowfall inches. Mid-century layers use NEX-GDDP-CMIP6 ensemble deltas when ingested
@@ -32,9 +32,9 @@ export function LearnMode({ onOpenPlace }: Props) {
         <div className="text-xs uppercase tracking-wider text-stone mb-1">Start here</div>
         <h3 className="font-atlas text-lg text-ice mb-2">How to read every location in the atlas</h3>
         <ol className="text-sm text-frost leading-relaxed list-decimal pl-5 space-y-1.5">
-          <li>Go to <span className="text-ice font-medium">Explorer</span>, then open any place from the map or the card list.</li>
+          <li>Go to <span className="text-ice font-medium">Atlas</span>, then open any place from the map or the card list.</li>
           <li>In the profile, read top to bottom, or use <span className="text-ice font-medium">On this page</span> to jump — same content, less scrolling.</li>
-          <li>Use <span className="text-ice font-medium">Search</span> and <span className="text-ice font-medium">Rank by</span> in the <span className="text-ice font-medium">Filters</span> panel (desktop filter dock or mobile Filters button) to reorder or narrow the list; the map always shows the same filtered set.</li>
+          <li>Use <span className="text-ice font-medium">Search</span> and <span className="text-ice font-medium">Rank by</span> in the <span className="text-ice font-medium">Filters</span> panel (the side panel on desktop, the Filters button on a phone) to reorder or narrow the list; the map always shows the same filtered set.</li>
           <li>Come back to <span className="text-ice font-medium">Learn</span> for vocabulary (rain shadow, chinook, etc.) and example places linked under each term.</li>
         </ol>
       </div>
@@ -42,21 +42,21 @@ export function LearnMode({ onOpenPlace }: Props) {
         <div className="flex items-start gap-3">
           <BookOpen className="w-5 h-5 mt-1" style={{ color: "#f0d29c" }} />
           <div>
-            <div className="text-xs uppercase tracking-wider text-stone">Atlas learning mode</div>
+            <div className="text-xs uppercase tracking-wider text-stone">The idea</div>
             <h3 className="font-atlas text-xl text-ice mb-1.5">How terrain writes the weather</h3>
             <p className="text-sm text-frost leading-relaxed">
-              Terraclima is built on the simple idea that climate is not flat. Mountains block, shadow, shelter, and channel. Water moderates. Elevation cools. Aspect tilts the sun. Every place on this atlas carries the fingerprint of its local terrain and position — and reading those fingerprints lets you discover climates hiding in plain sight.
+              Climate is not uniform across a region. Mountains block rain, cast rain shadows, shelter valleys and channel wind. Water moderates temperature. Elevation cools. The direction a slope faces changes how much sun it gets. Every place in this atlas has a climate shaped by its terrain and position, and the terms below explain how.
             </p>
-            <p className="text-xs text-stone mt-2 italic">Click any example city below to open its full profile.</p>
+            <p className="text-xs text-stone mt-2 italic">Select any example place below to open its profile.</p>
           </div>
         </div>
       </div>
 
       <div className="panel p-4 border-[rgba(232,155,32,0.2)]">
-        <div className="text-xs uppercase tracking-wider text-stone mb-1">Classification frame</div>
-        <h3 className="font-atlas text-lg text-ice mb-2">Five families of physical drivers</h3>
+        <div className="text-xs uppercase tracking-wider text-stone mb-1">How places are grouped</div>
+        <h3 className="font-atlas text-lg text-ice mb-2">Five kinds of cause</h3>
         <p className="text-sm text-frost leading-relaxed mb-3">
-          Every stop in the atlas is tagged by the mechanisms that make local weather diverge from the regional average. Grouping drivers this way keeps comparisons honest when you move from, say, a rain-shadow desert to a fog belt or a tropical highland.
+          Each place is tagged with the causes that make its weather differ from the regional average. The same five groups apply everywhere, from a rain-shadow desert to a fog belt or a tropical highland.
         </p>
         <dl className="space-y-2.5 text-sm">
           <div className="border-l-2 border-[rgba(232,155,32,0.45)] pl-3">

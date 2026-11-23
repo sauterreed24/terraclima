@@ -30,10 +30,10 @@ export const FootprintPanel = memo(function FootprintPanel() {
         <StatBlock label="Index" value={PLACE_COUNTS.tierC} />
       </div>
       <p className="text-xs text-stone leading-relaxed">
-        Flagship stops are written like chapters — rich story, risks, and climate-change context. Spotlight stops are built to compare cleanly. Index entries keep the list honest as we add more towns without bloating the map.
+        Flagship places have the fullest profiles: history, risks and climate-change outlook. Spotlight places have a standard profile. Index places have a shorter entry.
       </p>
       <p className="text-[10px] text-stone/90 leading-relaxed border-t border-[rgba(200,160,120,0.2)] pt-2 mt-2">
-        Open any profile: cards, map, and the detail drawer rank that stop against the full {PLACE_COUNTS.total}-place corpus (wetter/drier, cooler summers, higher ground, diurnal, scores) using the same summary fields as the header numbers.
+        Every card and profile shows how the place compares with all {PLACE_COUNTS.total}: wetter or drier, cooler or hotter summers, higher or lower ground.
       </p>
     </div>
   );

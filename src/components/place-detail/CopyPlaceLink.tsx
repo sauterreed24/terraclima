@@ -72,15 +72,15 @@ export function CopyPlaceLink({ placeId, placeName }: { placeId: string; placeNa
   }, [placeId, placeName]);
 
   const label =
-    status === "shared" ? "Shared" : status === "copied" ? "Copied" : status === "failed" ? "Manual copy" : "Copy link";
+    status === "shared" ? "Shared" : status === "copied" ? "Copied" : status === "failed" ? "Copy by hand" : "Copy link";
   const buttonLabel =
     status === "shared"
       ? "Shared link to this place"
       : status === "copied"
         ? "Copied link to this place"
         : status === "failed"
-          ? "Retry copy or use the selected manual place URL"
-          : "Copy or share link to this place";
+          ? "Copy failed. Try again, or copy the link shown below"
+          : "Copy a link to this place";
 
   return (
     <>
@@ -96,14 +96,14 @@ export function CopyPlaceLink({ placeId, placeName }: { placeId: string; placeNa
       </button>
       {status === "failed" && fallbackUrl ? (
         <div className="tc-share-fallback copy-place-link__fallback" role="group" aria-label="Manual place share link">
-          <span className="tc-share-fallback__label">Shareable link</span>
+          <span className="tc-share-fallback__label">Link to this place</span>
           <input
             ref={fallbackInputRef}
             type="text"
             readOnly
             value={fallbackUrl}
             className="tc-share-fallback__input"
-            aria-label="Shareable place URL for manual copy"
+            aria-label="Link to this place. Select it and copy."
             onFocus={event => event.currentTarget.select()}
             onClick={event => event.currentTarget.select()}
           />

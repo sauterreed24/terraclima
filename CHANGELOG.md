@@ -4,6 +4,32 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Rankings that score what they name, a clearer map, plainer words
+
+- **Rankings:**
+  - **Mildest winters** and **driest air** are straight scales with no cap. 93 places used to tie at 100 for winters and 10 for dry air.
+  - **Best four-season** asks for a winter that freezes, a warm summer, and a spring and autumn between them. It scored only the summer-to-winter range, which put Apalachicola and Ocean Springs near the top. Ithaca, Syracuse and State College lead now.
+  - **Coolest nights for sleep** (was "Best diurnal / sleep climate") scores summer-night temperature, the drop from the afternoon, and muggy nights. The drop alone tied 46 places at 100.
+  - **Strongest summer monsoon** (was "Monsoon drama") scores how much of the year's rain falls July–September and how much rain that is. A dry winter alone used to hit the cap for 43 places.
+  - **Wet-forest refuges** count the driest month, so a place needs rain all year.
+  - **Mediterranean-like** needs a wet winter as well as a dry summer, and can reach 100 (it stopped at 90).
+  - **Best shoulder seasons** add spring and autumn rain. Flagstaff, Los Alamos, Taos and Santa Fe lead; 21 places used to tie.
+  - **Lowest fire risk** adds smoke and orders equal grades by warm-season rain. It had five possible scores.
+- **Map:**
+  - Country and sea names move to a clear spot or hide; they no longer sit half under pins. At the default zoom "United States" and "México" appear once you zoom in.
+  - Clusters are sized by how many places they hold, with a solid badge and a bright rim.
+  - More contrast between land and sea, a soft shelf line around the coast, and brighter lettering.
+  - The hover card no longer covers the pin's own label.
+- **Place writing:** 880 templated season, fit and tradeoff lines across 124 places are rewritten from each place's own data. "New Orleans autumn light means 26.7°C afternoons and 16.8°C after dark" now reads "Hurricane season peaks in late August and September. October brings the first dry front and the most reliable fine weather of the year, with afternoons near 27°C." Wrong details went with the templates (New Orleans was "a smaller Louisiana town").
+- **Interface wording:** about 900 labels and explanations say what a thing does.
+  - Fit Finder → Goals; Live Finder → Must-haves; Scout tools → Summary panels; Scout Brief → Top-picks summary; Decision matrix → Side by side.
+  - "Dossier" → "profile" everywhere, including exports. Sections: Field dossier → In depth; Comfort precision → Heat and humidity; Lived indicators → Cost and access.
+  - Filter limits read "Max summer high", "Min winter low", "Max fire risk".
+  - "RH" is "humidity"; Köppen classes carry a one-line explanation.
+  - The page heading is "226 places with unusual local climates".
+- **Sea-level places:** the last near-zero elevation line (Squamish) is rewritten.
+- **First-load size:** the JavaScript ceiling moves from 750 KB to 765 KB gzip (757 KB measured). The rewritten prose is smaller on disk but compresses less well than repeated templates.
+
 ### Steady scrolling on the main page, a math audit, and a data consistency pass
 
 - **Main-page scrolling:**

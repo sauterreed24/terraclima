@@ -718,7 +718,7 @@ describe("AtlasMap DOM controls", () => {
       expect(peek).toHaveTextContent("summers");
       expect(peek).not.toHaveTextContent("Climate snapshot");
       expect(peek).not.toHaveTextContent("Live fit");
-      expect(peek).not.toHaveTextContent("Current lens leader");
+      expect(peek).not.toHaveTextContent("Ranked by leader");
     } finally {
       vi.useRealTimers();
     }
@@ -757,7 +757,7 @@ describe("AtlasMap DOM controls", () => {
     const readout = screen.getByLabelText("Current map read");
 
     expect(screen.queryByRole("tooltip")).toBeNull();
-    expect(readout).toHaveTextContent("Atlas read");
+    expect(readout).toHaveTextContent("Top ranked");
     expect(readout).toHaveTextContent("Alpha Valley leads");
     expect(readout).toHaveTextContent("2 linked");
     expect(readout).toHaveTextContent("Live-here fit");
@@ -883,8 +883,8 @@ describe("AtlasMap DOM controls", () => {
     expect(ninetyPlaceCluster).toHaveAttribute("data-cluster-size", "mass");
     expect(twoPlaceCluster.querySelector("title")).toHaveTextContent("2 nearby microclimates");
     expect(ninetyPlaceCluster.querySelector("title")).toHaveTextContent("90 nearby microclimates");
-    expect(twoPlaceCluster.querySelector(".map-cluster__outer")).toHaveAttribute("r", "18");
-    expect(ninetyPlaceCluster.querySelector(".map-cluster__outer")).toHaveAttribute("r", "24");
+    expect(twoPlaceCluster.querySelector(".map-cluster__outer")).toHaveAttribute("r", "14.5");
+    expect(ninetyPlaceCluster.querySelector(".map-cluster__outer")).toHaveAttribute("r", "23.5");
     expect(twoPlaceCluster.querySelector(".map-cluster__hit-area")).toHaveAttribute("r", "30");
     expect(ninetyPlaceCluster.querySelector(".map-cluster__hit-area")).toHaveAttribute("r", "30");
   });

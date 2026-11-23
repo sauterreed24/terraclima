@@ -183,7 +183,7 @@ describe("buildClimateTwinTradeoffRead", () => {
     expect(read.summary).toContain("the main climate tradeoff");
     expect(read.shared.length).toBe(2);
     expect(read.tradeoff.length).toBeGreaterThan(0);
-    expect(read.nextAction).toContain("dossier to pressure-test");
+    expect(read.nextAction).toContain("profile and check that tradeoff");
     expect(read.nextAction).not.toContain("Compare");
   });
 });

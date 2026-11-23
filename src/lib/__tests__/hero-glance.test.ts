@@ -29,7 +29,7 @@ describe("hero glance", () => {
     expect(hasSourcedSkySeries(withSun)).toBe(true);
     expect(hasSourcedSkySeries(solarOnly)).toBe(true);
     expect(sunshineDisplayValue(withSun)).toBe("50%");
-    expect(sunshineDisplayValue(solarOnly)).toBe("not sourced");
+    expect(sunshineDisplayValue(solarOnly)).toBe("no data");
     expect(hasSourcedSkySeries(makePlace({ climate: makeClimate({ sunshinePct: undefined, solarEnergyMjM2Day: undefined }) }))).toBe(false);
   });
 

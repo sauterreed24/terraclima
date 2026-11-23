@@ -24,7 +24,7 @@ export function PlaceFeelRead({ place, anchorId }: { place: Place; anchorId: str
       <div className="place-score-details__body">
       <div className="grid lg:grid-cols-[13rem_1fr] gap-3">
         <div className="panel-thin p-4">
-          <div className="text-[10px] uppercase tracking-wider text-stone">Actual-place rating</div>
+          <div className="text-[10px] uppercase tracking-wider text-stone">Place-feel score</div>
           <div className="font-mono-num text-4xl text-ice mt-1">
             {feel.score}<span className="text-sm text-stone">/100</span>
           </div>
@@ -65,7 +65,7 @@ export function PlaceFeelRead({ place, anchorId }: { place: Place; anchorId: str
         <div className="panel-thin p-4 border-l-2" style={{ borderLeftColor: "#c6dcbd" }}>
           <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-stone mb-2">
             <Sparkles className="w-4 h-4" aria-hidden />
-            What carries the feel
+            What it does well
           </div>
           <ul className="space-y-1.5 text-sm text-frost">
             {feel.strengths.map(item => <li key={item}>{prose(item)}</li>)}
@@ -74,7 +74,7 @@ export function PlaceFeelRead({ place, anchorId }: { place: Place; anchorId: str
         <div className="panel-thin p-4 border-l-2" style={{ borderLeftColor: "#d37c5b" }}>
           <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-stone mb-2">
             <ShieldAlert className="w-4 h-4" aria-hidden />
-            Verify in person
+            Check in person
           </div>
           <ul className="space-y-1.5 text-sm text-frost">
             {feel.frictions.map(item => <li key={item}>{prose(item)}</li>)}
@@ -84,7 +84,7 @@ export function PlaceFeelRead({ place, anchorId }: { place: Place; anchorId: str
 
       <p className="text-[11px] text-stone italic mt-2 flex items-center gap-1.5">
         <MapPinned className="w-3.5 h-3.5" aria-hidden />
-        Derived from authored corpus texture, comfort signals, lived friction, risk load, and scouting anchors.
+        Combines the written description, comfort, cost and access, hazards, and nearby towns. An editorial score, not a measurement.
       </p>
       </div>
     </details>

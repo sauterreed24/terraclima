@@ -45,8 +45,12 @@ const BUDGETS = {
    * (~80 KB gzip), so the ceiling was raised to 780 KB. Dropping the templated
    * deep-section overlay (~46 KB gzip) brought it back to ~733 KB; the ceiling
    * now sits at 750 KB so that saving cannot quietly erode.
+   *
+   * Raised to 765 KB when 880 templated season and fit lines were rewritten
+   * by hand: the file got smaller, but varied prose compresses less well than
+   * repeated templates (~757 KB measured).
    */
-  totalInitialJsGzip: 750_000,
+  totalInitialJsGzip: 765_000,
   /** Total initial modulepreload count. Baseline 15 → 22. */
   maxModulePreloads: 22,
   /** Atlas topology cold chunk raw size ceiling (lazy). Baseline ~222 KB → 280 KB. */

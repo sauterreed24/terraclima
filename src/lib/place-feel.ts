@@ -49,7 +49,7 @@ const COMPONENT_LABEL: Record<PlaceFeelComponentKey, string> = {
   sensoryComfort: "Sensory comfort",
   dailyEase: "Daily ease",
   placeIdentity: "Place identity",
-  scoutingClarity: "Scouting clarity",
+  scoutingClarity: "How well documented",
 };
 
 function clamp(n: number, lo = 0, hi = 100): number {
@@ -251,7 +251,7 @@ export function scorePlaceFeel(place: Place): PlaceFeelResult {
   if (values.sensoryComfort < 55) pushLimited(frictions, "Sensory comfort is mixed: temperature, sky, storm, smoke, or dampness can change the mood fast.");
   if (values.dailyEase < 55) pushLimited(frictions, "Daily ease needs verification before shortlisting: access remoteness, housing pressure, or risk load can bite.");
   if (values.placeIdentity < 55) pushLimited(frictions, "The corpus still reads thin here; treat the feel score as a scouting prompt, not a finished portrait.");
-  if (values.scoutingClarity < 55) pushLimited(frictions, "Scouting clarity is limited; there are fewer authored anchors, activities, or contrasts than stronger entries.");
+  if (values.scoutingClarity < 55) pushLimited(frictions, "Documentation is limited; there are fewer authored anchors, activities, or contrasts than stronger entries.");
   if (frictions.length === 0) pushLimited(frictions, `${weak[0]!.label} is the first thing to verify in person.`);
 
   const headline = `${band} place feel (${score}/100)`;

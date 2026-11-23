@@ -266,7 +266,7 @@ export function PlaceEvidenceSummary({
           <div>
             <button type="button" className="btn-ghost !text-xs" onClick={exportDossierData}>
               <Download className="w-3 h-3" aria-hidden />
-              Export raw dossier data (JSON)
+              Download this profile's data (JSON)
             </button>
           </div>
         </div>

@@ -8,22 +8,22 @@ describe("buildShortlistReadiness", () => {
 
   it("nudges a one-place shortlist toward Compare readiness", () => {
     expect(buildShortlistReadiness(1)).toEqual({
-      label: "Scout setup ready",
-      detail: "Open Compare setup to plan the missing contrast; export already saves this dossier.",
+      label: "1 place pinned",
+      detail: "Pin a second place to compare. Export already works for this one.",
     });
   });
 
   it("describes Compare and export readiness for finalists within the Compare limit", () => {
     expect(buildShortlistReadiness(3)).toEqual({
-      label: "Scout packet ready",
-      detail: "Compare 3 finalists or export a Scout plan with visit windows and watch-first caveats.",
+      label: "Ready to compare",
+      detail: "Compare these 3 places, or export a visit plan with best months and cautions.",
     });
   });
 
   it("keeps over-limit shortlists honest about Compare truncation and full export order", () => {
     expect(buildShortlistReadiness(5, 4)).toEqual({
-      label: "Scout packet ready",
-      detail: "Compare the first 4; the Scout plan export keeps all 5 pinned places in order.",
+      label: "Ready to compare",
+      detail: "Compare the first 4. The visit plan export includes all 5 pinned places.",
     });
   });
 });

@@ -40,7 +40,7 @@ describe("ErrorBoundary", () => {
       </ErrorBoundary>,
     );
 
-    expect(screen.getByRole("alert")).toHaveTextContent("Atlas bundle failed to load");
+    expect(screen.getByRole("alert")).toHaveTextContent("Part of the atlas did not load");
     fireEvent.click(screen.getByRole("button", { name: "Retry download" }));
     expect(reloadPage).toHaveBeenCalledTimes(1);
   });

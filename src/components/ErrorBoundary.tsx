@@ -50,12 +50,12 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div role="alert" className="tc-error-boundary">
           <p className="font-atlas text-lg mb-2 text-ice">
-            {chunkError ? "Atlas bundle failed to load" : "Something went wrong"}
+            {chunkError ? "Part of the atlas did not load" : "Something went wrong"}
           </p>
           <p className="text-sm text-stone mb-4 max-w-md">
             {chunkError
-              ? "A Terraclima code bundle failed to download — common after a deploy or on a flaky connection. Retry the download or open a fresh atlas."
-              : "The atlas hit an unexpected error. Open a fresh atlas if this shared URL keeps failing, or retry the current view."}
+              ? "Part of the app failed to download. This usually happens just after an update or on a weak connection. Try the download again, or reload the atlas from the start."
+              : "The atlas ran into an error. Try this view again. If a shared link keeps failing, start again from the atlas home."}
           </p>
           <div className="tc-error-boundary__actions">
             <button

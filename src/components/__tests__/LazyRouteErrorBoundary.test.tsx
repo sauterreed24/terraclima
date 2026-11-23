@@ -39,6 +39,6 @@ describe("LazyRouteErrorBoundary", () => {
     );
 
     expect(screen.getByRole("alert")).toHaveTextContent("Something went wrong");
-    expect(screen.getByRole("alert")).toHaveTextContent("Learn hit an unexpected error");
+    expect(screen.getByRole("alert")).toHaveTextContent("Learn ran into an error");
   });
 });

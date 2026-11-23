@@ -144,38 +144,38 @@ describe("exportShortlistAsMarkdown", () => {
 
     expect(file.filename).toBe("terraclima-scout-plan-20260515120000.md");
     expect(file.mimeType).toBe("text/markdown");
-    expect(file.body).toContain("# Terraclima Scout Plan");
+    expect(file.body).toContain("# Terraclima visit plan");
     expect(file.body).toContain("Generated: 2026-05-15T12:00:00.000Z");
     expect(file.body).toContain("Source: https://example.test/terraclima/");
     expect(file.body).toContain("Places: 2");
-    expect(file.body).toContain("Screening-grade climate and livability intelligence only.");
+    expect(file.body).toContain("This plan is built from climate averages and editorial scores.");
     expect(file.body).toContain("### 1. Alpha Valley");
     expect(file.body).toContain("### 2. Beta \"Ridge\"");
     expect(file.body).toContain("- Best visit window:");
-    expect(file.body).toContain("- Why scout:");
-    expect(file.body).toContain("- Watch first:");
-    expect(file.body).toContain("- Score ingredients: live-here fit");
-    expect(file.body).toContain("- Dossier: https://example.test/terraclima/?p=alpha-valley");
-    expect(file.body).toContain("- Dossier: https://example.test/terraclima/?p=beta%2C%20ridge");
-    expect(file.body).toContain("## Evidence readiness");
-    expect(file.body).toContain("Weakest source reads first.");
-    expect(file.body).toContain("### Alpha Valley - Thin read - source first");
-    expect(file.body).toContain("- Evidence facts: high confidence; 0 HTTPS sources; 1 researched chapter; lived signals missing; humidity sourced; sunshine missing.");
-    expect(file.body).toContain("- Verify first: adding a second HTTPS source; expanding deep-dive context; filling lived-friction signals; sourcing sunshine normals.");
-    expect(file.body).toContain("- Planner action: Start with adding a second HTTPS source; do not treat this finalist as travel- or move-ready until that source gap is checked.");
+    expect(file.body).toContain("- Why visit:");
+    expect(file.body).toContain("- Check first:");
+    expect(file.body).toContain("- Scores: live-here fit");
+    expect(file.body).toContain("- Profile: https://example.test/terraclima/?p=alpha-valley");
+    expect(file.body).toContain("- Profile: https://example.test/terraclima/?p=beta%2C%20ridge");
+    expect(file.body).toContain("## How well sourced");
+    expect(file.body).toContain("Least well-sourced places first.");
+    expect(file.body).toContain("### Alpha Valley - Thinly sourced");
+    expect(file.body).toContain("- Sources: high confidence; 0 web sources; 1 researched chapter; no cost or access data; measured humidity; no measured sunshine.");
+    expect(file.body).toContain("- Gaps: finding a second web source; the thin in-depth text; missing cost and access data; missing measured sunshine.");
+    expect(file.body).toContain("- Next step: Start with finding a second web source. Check it before planning a trip or a move.");
     expect(file.body).toContain("## Compare next");
     expect(file.body).toContain("Compare URL: https://example.test/terraclima/?cmp=alpha-valley,beta%2C%20ridge");
-    expect(file.body).toContain("Decision read:");
-    expect(file.body).toContain("Next action:");
+    expect(file.body).toContain("Summary:");
+    expect(file.body).toContain("Next step:");
     expect(file.body).toContain("Caution:");
-    expect(file.body).toContain("Scout verification checklist:");
-    expect(file.body).toContain("- Scout window - ");
+    expect(file.body).toContain("Check before you go:");
+    expect(file.body).toContain("- When to visit - ");
     expect(file.body).toContain("- Hazard check - ");
-    expect(file.body).toContain("- Daily-life friction - ");
+    expect(file.body).toContain("- Daily life - ");
     expect(file.body).toContain("- Source gap - ");
     expect(file.body).toContain("Proof:");
     expect(file.body).toContain("before booking");
-    expect(file.body).toContain("| Role | Place | Score | Fit | Risk | Visit | Watch first |");
+    expect(file.body).toContain("| Role | Place | Score | Fit | Risk | Visit | Check first |");
     expect(file.body).toContain("| Start here |");
     expect(file.body).toContain("Beta \"Ridge\"");
   });
@@ -186,7 +186,7 @@ describe("exportShortlistAsMarkdown", () => {
     expect(file.body).toContain("Places: 0");
     expect(file.body).toContain("No pinned places yet.");
     expect(file.body).toContain("## Compare next");
-    expect(file.body).toContain("Pin at least two places to generate a Compare-ready finalist table.");
+    expect(file.body).toContain("Pin at least two places to get a side-by-side table.");
   });
 
   it("exports a Compare setup handoff for a one-place shortlist", () => {
@@ -197,12 +197,12 @@ describe("exportShortlistAsMarkdown", () => {
 
     expect(file.body).toContain("Places: 1");
     expect(file.body).toContain("### 1. Alpha Valley");
-    expect(file.body).toContain("Compare setup URL: https://example.test/terraclima/?cmp=alpha-valley");
-    expect(file.body).toContain("Alpha Valley is saved as the anchor finalist.");
-    expect(file.body).toContain("add a similar peer or a counterweight");
-    expect(file.body).toContain("Anchor read:");
-    expect(file.body).not.toContain("Pin at least two places to generate a Compare-ready finalist table.");
-    expect(file.body).not.toContain("| Role | Place | Score | Fit | Risk | Visit | Watch first |");
+    expect(file.body).toContain("Compare URL: https://example.test/terraclima/?cmp=alpha-valley");
+    expect(file.body).toContain("Alpha Valley is the only pinned place.");
+    expect(file.body).toContain("Add a second place in Compare");
+    expect(file.body).toContain("Check first:");
+    expect(file.body).not.toContain("Pin at least two places to get a side-by-side table.");
+    expect(file.body).not.toContain("| Role | Place | Score | Fit | Risk | Visit | Check first |");
   });
 
   it("keeps the Compare handoff inside the four-place app limit while preserving the full export", () => {
@@ -219,7 +219,7 @@ describe("exportShortlistAsMarkdown", () => {
 
     expect(file.body).toContain("Places: 5");
     expect(file.body).toContain("### 5. Place 5");
-    expect(file.body).toContain("Compare opens the first 4 pinned places; this export still keeps all 5 places");
+    expect(file.body).toContain("Compare opens the first 4 pinned places; all 5 pinned places are listed above.");
     expect(file.body).toContain("Compare URL: https://example.test/terraclima/?cmp=place-1,place-2,place-3,place-4");
     expect(file.body).not.toContain("cmp=place-1,place-2,place-3,place-4,place-5");
   });

@@ -81,7 +81,7 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
   };
 
   if (twins.length === 0 && !shift) {
-    return <div className="text-sm text-stone italic">No close climate analog sits in the atlas yet.</div>;
+    return <div className="text-sm text-stone italic">No other place in the atlas has a closely similar climate.</div>;
   }
 
   const [lead, ...rest] = twins;
@@ -93,11 +93,11 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
         {isPending ? "Updating climate twins." : ""}
       </span>
       <p className="tc-twins__intro">
-        Ranked by how the <em>whole year</em> lines up — overall warmth, the shape of the seasons, when the rain
-        falls, and the air — not just a shared label. Pick a nudge to find a twin that keeps the rhythm but shifts one thing.
+        Ranked by how closely the <em>whole year</em> matches: overall warmth, the shape of the seasons, when the rain
+        falls, and the humidity. Sharing a climate label is not enough. Pick one of the options below to find a similar place that differs in one way.
       </p>
 
-      <div className="tc-twins__shifts" role="group" aria-label="Find a twin, but shifted">
+      <div className="tc-twins__shifts" role="group" aria-label="Find a twin that differs in one way">
         <span className="tc-twins__shifts-label">Twin, but —</span>
         {CLIMATE_SHIFTS.map(s => (
           <button
@@ -142,7 +142,7 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
       >
         <div className="tc-twin-lead__head">
           <span className="tc-twin-lead__kicker">
-            <Sparkles className="w-3 h-3" aria-hidden /> {shift ? "Top shifted twin" : "Closest climate twin"}
+            <Sparkles className="w-3 h-3" aria-hidden /> {shift ? "Closest match with this change" : "Closest climate twin"}
           </span>
           <div className="tc-twin-lead__title">
             {/* min-w-0 lets a long twin name ellipsize instead of forcing the
@@ -200,14 +200,14 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
       ) : (
         <p className="tc-twins__empty" role="status">
           No close twin in the atlas {shift ? NO_SHIFTED_TWIN_PHRASE[shift] : "matches"} {place.name}.
-          Tap the nudge again to see the nearest twins.
+          Select the option again to go back to the closest twins.
         </p>
       )}
 
       <div className="tc-twins__foot">
-        Twin score blends thermal level, seasonal shape, swing, moisture, rain timing, water-balance aridity,
-        continentality, air, and shared terrain mechanism.
-        Editorial climate kinship for scouting — not a forecast, cost-of-living, or appraisal claim.
+        The match score combines average warmth, seasonal shape, day-to-night swing, moisture, rain timing, aridity,
+        how continental the climate is, humidity, and shared terrain.
+        It compares climate only. It says nothing about cost of living, and it is not a forecast.
       </div>
     </div>
   );

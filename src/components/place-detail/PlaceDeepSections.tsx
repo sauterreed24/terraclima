@@ -179,7 +179,7 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
         <div className="flex flex-wrap items-center gap-2 text-ice">
           <BookOpen className="w-4 h-4 shrink-0 text-stone opacity-80" aria-hidden />
           <h3 id="place-deep-sections-heading" className="font-atlas text-lg md:text-xl tracking-tight">
-            Field dossier
+            In depth
           </h3>
         </div>
         <p className="text-[13px] md:text-sm text-stone-readable leading-relaxed mt-2 max-w-[52rem]">
@@ -188,12 +188,12 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
             : "The long read: the place's history and deeper stories first, then how its rain year runs, how the terrain shapes the climate, what grows, and what living here involves."}
         </p>
         <p id="field-dossier-jump-scroll-hint" className="sr-only">
-          Swipe or scroll horizontally to browse more field dossier chapters.
+          Swipe or scroll sideways for more chapters.
         </p>
         <nav
           ref={jumpStripRef}
           className="mt-3 flex flex-wrap gap-1.5 overflow-x-auto max-w-full pb-0.5 [scrollbar-width:thin] scroll-smooth"
-          aria-label="Jump within field dossier"
+          aria-label="Jump to a chapter of In depth"
           aria-describedby="field-dossier-jump-scroll-hint"
         >
           {jumps.map(j => {

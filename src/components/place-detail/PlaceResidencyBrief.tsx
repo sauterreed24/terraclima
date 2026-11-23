@@ -21,13 +21,13 @@ import { BookmarkButton } from "../BookmarkButton";
 function describeSignatureVerification(signature: PlaceVisualSignature): string {
   switch (signature.verify.key) {
     case "sensoryComfort":
-      return "Thermal envelope, easy months, and sky or air cues are the first comfort check.";
+      return "Temperature range, comfortable months, and sky and air quality.";
     case "dailyEase":
-      return "Services, access, lived friction, and risk load set the daily-life verification floor.";
+      return "Services, travel times, housing cost and hazards: what daily life depends on.";
     case "placeIdentity":
-      return "Authored texture, distinctness, and hidden-gem signal determine how legible the place feels.";
+      return "How distinctive the place and its climate are.";
     case "scoutingClarity":
-      return "Sources, settlement anchors, nearby contrasts, and confidence determine how easy it is to verify.";
+      return "How well sourced the entry is and how easy the place is to check in person.";
   }
 }
 
@@ -61,11 +61,11 @@ function buildFitContextRead(
   if (!hasLiveFinderSignals) return null;
 
   const screenContext = context?.bundleLabel
-    ? `${context.bundleLabel} path${context.bundleCue ? ` (${context.bundleCue})` : ""} · ${context.rankingLabel}`
+    ? `${context.bundleLabel} goal${context.bundleCue ? ` (${context.bundleCue})` : ""} · ${context.rankingLabel}`
     : context?.rankingLabel
-      ? `${context.rankingLabel} lens`
+      ? `${context.rankingLabel} ranking`
       : null;
-  const lens = presetLabels.length > 0 ? presetLabels.join(" + ") : "manual Live Finder constraints";
+  const lens = presetLabels.length > 0 ? presetLabels.join(" + ") : "your must-have limits";
   const scoredContext = constraints.length > 0
     ? `Scored for ${lens}, with ${constraints.join(", ")}.`
     : `Scored for ${lens}.`;
@@ -115,24 +115,24 @@ export function PlaceResidencyBrief({
     livability.drags
       .map(key => livability.components.find(component => component.key === key))
       .find(Boolean)?.rationale ??
-    "No single hard warning dominates; still verify risk, services, and fit before shortlisting.";
-  const cautionLabel = liveFit.cautions.length > 0 ? "Verify on the ground" : `${visualSignature.verify.shortLabel} check`;
+    "No single warning stands out. Still check risk, services and fit before shortlisting.";
+  const cautionLabel = liveFit.cautions.length > 0 ? "Check in person" : `${visualSignature.verify.shortLabel} check`;
   const scoreBand =
-    liveFit.score >= 82 ? "Prime shortlist" :
-    liveFit.score >= 72 ? "Strong prospect" :
-    liveFit.score >= 60 ? "Specialist fit" :
-    "Needs scrutiny";
+    liveFit.score >= 82 ? "top candidate" :
+    liveFit.score >= 72 ? "strong candidate" :
+    liveFit.score >= 60 ? "niche fit" :
+    "weak fit";
   const goodReason = liveFit.reasons[0] ?? "Balanced climate, risk, and terrain scores make it worth a closer look.";
   const hasScoutActions = Boolean(onCompareToggle || onBookmarkToggle);
   const compareScoutLabel = inCompare
-    ? `Remove ${place.name} from Compare from residency brief`
-    : `Add ${place.name} to Compare from residency brief`;
+    ? `Remove ${place.name} from Compare from the fit summary`
+    : `Add ${place.name} to Compare from the fit summary`;
   const lanes = [
-    { label: "Live fit", value: liveFit.score, note: goodReason, tone: "glacier" },
+    { label: "Live-here fit", value: liveFit.score, note: goodReason, tone: "glacier" },
     {
       label: "Livability",
       value: livability.score,
-      note: leadDriver ? `${leadDriver.label} is the leading contributor.` : "Balanced blend.",
+      note: leadDriver ? `${leadDriver.label} is the leading contributor.` : "No single factor leads.",
       tone: "sage",
     },
     { label: "Place feel", value: visualSignature.feelScore, note: visualSignature.primaryLabel, tone: "aurora" },
@@ -154,10 +154,10 @@ export function PlaceResidencyBrief({
       <div className="residency-brief__head">
         <div className="min-w-0">
           <div id="residency-brief-title" className="residency-brief__eyebrow">
-            Residency brief
+            Living here
           </div>
           <p className="residency-brief__headline">
-            {place.name} reads as a <span>{scoreBand}</span> under the current living lens.
+            {place.name} rates as a <span>{scoreBand}</span> on live-here fit.
           </p>
         </div>
         <div
@@ -171,16 +171,16 @@ export function PlaceResidencyBrief({
       </div>
 
       {fitContextRead ? (
-        <div className="residency-brief__context" aria-label="Active fit context">
-          <p><span>Current screen</span> {prose(fitContextRead)}</p>
+        <div className="residency-brief__context" aria-label="What this score is based on">
+          <p><span>Based on</span> {prose(fitContextRead)}</p>
         </div>
       ) : null}
 
       {hasScoutActions ? (
-        <div className="residency-brief__actions" aria-label={`Residency actions for ${place.name}`}>
+        <div className="residency-brief__actions" aria-label={`Actions for ${place.name}`}>
           <div className="residency-brief__action-read">
-            <span>Scout handoff</span>
-            <p>Keep this candidate in your shortlist, then compare tradeoffs before planning a visit.</p>
+            <span>Next step</span>
+            <p>Pin it to your shortlist, then compare it with others before planning a visit.</p>
           </div>
           <div className="residency-brief__action-buttons">
             {onBookmarkToggle ? (
@@ -189,7 +189,7 @@ export function PlaceResidencyBrief({
                 placeName={place.name}
                 onToggle={() => onBookmarkToggle(place.id)}
                 size="header"
-                ariaContext="from residency brief"
+                ariaContext="from the fit summary"
                 className="residency-brief__action-button"
               />
             ) : null}
@@ -212,9 +212,9 @@ export function PlaceResidencyBrief({
 
       <div className="residency-brief__grid">
         <div className="residency-brief__primary">
-          <div className="residency-brief__primary-label">Why it belongs on the shortlist</div>
+          <div className="residency-brief__primary-label">Main reason to consider it</div>
           <p>{prose(goodReason)}</p>
-          <div className="residency-brief__chips" aria-label="Shortlist tags">
+          <div className="residency-brief__chips" aria-label="What it offers">
             {liveFit.badges.slice(0, 4).map(badge => (
               <span key={badge}>{badge}</span>
             ))}
@@ -224,20 +224,20 @@ export function PlaceResidencyBrief({
 
         <div className="residency-brief__fact">
           <Calendar className="w-4 h-4" aria-hidden />
-          <span>Best timing</span>
-          <strong>{bestWindow ? `${bestWindow.label} · ${bestWindow.range}` : "Read monthly rhythm"}</strong>
+          <span>Best season</span>
+          <strong>{bestWindow ? `${bestWindow.label} · ${bestWindow.range}` : "See Seasonal rhythm"}</strong>
           {cautionWindow ? <small>Watch {cautionWindow.range.toLowerCase()}</small> : null}
         </div>
 
         <div className="residency-brief__fact">
           <ShieldAlert className="w-4 h-4" aria-hidden />
-          <span>First caution</span>
+          <span>Check first</span>
           <strong>{cautionLabel}</strong>
           <small>{prose(mainDrag)}</small>
         </div>
       </div>
 
-      <div className="residency-brief__lanes" aria-label={`${place.name} decision signal lanes`}>
+      <div className="residency-brief__lanes" aria-label={`${place.name} scores by area`}>
         {lanes.map(lane => (
           <div key={lane.label} className="residency-brief__lane" data-tone={lane.tone} title={prose(lane.note)}>
             <div className="residency-brief__lane-top">

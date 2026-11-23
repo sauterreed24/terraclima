@@ -260,13 +260,13 @@ function vibeFor(place: Place): ClimateTourismProfile["vibe"] {
   }
   if (/wine|vineyard|orchard|fruit|grape|apple|citrus|coffee/.test(hay)) {
     return {
-      label: "Growing-zone scouting",
+      label: "Gardens and growing zones",
       description: "Crops and perennial plantings become field evidence for the climate niche.",
       tags: compact(["orchard clues", "growing zone", "soil read", ...place.travelFit], 5),
     };
   }
   return {
-    label: "Microclimate scouting",
+    label: "Exploring the microclimate",
     description: "A place starts to make sense when the terrain explains the weather.",
     tags: compact([ARCHETYPE_LABELS[place.archetypes[0]], ...place.travelFit], 5),
   };
@@ -277,9 +277,9 @@ function bestVisitWindow(place: Place): ClimateTourismProfile["bestVisitWindow"]
   const first = pickVisitWindow(windows) ?? windows[0];
   if (!first) {
     return {
-      label: "Scouting window",
+      label: "Visit window",
       range: "Check local seasonality",
-      reason: "The atlas has enough climate structure for a field read, but no single monthly window stands out cleanly.",
+      reason: "No single stretch of months stands out as best here.",
     };
   }
   const caution = windows.find(w => w.kind === "caution");
@@ -289,7 +289,7 @@ function bestVisitWindow(place: Place): ClimateTourismProfile["bestVisitWindow"]
     reason: sentence(
       first.note,
       caution
-        ? `${first.label} is the cleanest first read; also note ${caution.label.toLowerCase()} in ${caution.range}.`
+        ? `${first.label} is the best first choice; also note ${caution.label.toLowerCase()} in ${caution.range}.`
         : "This is the clearest deterministic travel window from the monthly climate profile.",
       210,
     ),
@@ -317,7 +317,7 @@ function habitatCues(place: Place): ClimateTourismProfile["wildlifeAndHabitat"] 
   return {
     headline: explicit.length > 0 ? "Wildlife and habitat" : "Habitat to look for",
     cues: cues.length > 0 ? cues : ["Habitat cue: compare shade, water, slope, and wind exposure in person."],
-    caveat: "Wildlife notes are habitat cues unless the atlas corpus explicitly names an activity or species. Verify access, closures, and local conservation guidance.",
+    caveat: "Wildlife notes are habitat cues unless the atlas names an activity or species. Verify access, closures, and local conservation guidance.",
   };
 }
 
@@ -354,7 +354,7 @@ function buildItinerary(place: Place, profileBits: {
   const secondContrast = nearby[1] ?? contrast;
   const drivers = listJoin(topDriverLabels(place).map(inlineDriverLabel)) || "the terrain";
   return {
-    title: `Three-day climate scouting loop from ${base}`,
+    title: `Three days around ${base}`,
     days: [
       {
         day: 1,
@@ -472,7 +472,7 @@ export function buildClimateTourismProfile(place: Place): ClimateTourismProfile 
     bestVisitWindow: window,
     growThere: {
       headline: "What grows well here",
-      bestFits: bestFits.length > 0 ? bestFits : ["Use the growability score as a climate screen."],
+      bestFits: bestFits.length > 0 ? bestFits : ["See the growability score."],
       tricky: tricky.length > 0 ? tricky : ["Verify water, frost pockets, soil depth, and local exposure."],
     },
     wildlifeAndHabitat: habitat,
@@ -481,9 +481,9 @@ export function buildClimateTourismProfile(place: Place): ClimateTourismProfile 
       bullets: soilBullets,
     },
     riskRead: {
-      headline: risks[0] ? `Lead screen: ${risks[0].label} (${risks[0].level})` : "Risk screen",
+      headline: risks[0] ? `Main risk: ${risks[0].label} (${risks[0].level})` : "Risks",
       topRisks: risks.map(r => `${r.label}: ${r.level}${r.note ? ` - ${sentence(r.note, "", 120)}` : ""}`),
-      caveat: "Hazards are screening-grade atlas signals. Local official maps, warnings, access rules, and site-scale conditions matter.",
+      caveat: "Hazard levels here are general ratings for the area. Check official local maps, warnings and access rules for the exact site.",
     },
     vibe,
     lodgingRead: lodging,
@@ -495,7 +495,7 @@ export function buildClimateTourismProfile(place: Place): ClimateTourismProfile 
       wouldLiveHere:
         "Climate only: comfort, hazards, resilience, growing conditions and tradeoffs. Schools, crime, politics, income and housing markets are not part of it.",
       climateLandOptionality:
-        "How well the climate and land hold up over time. A screening signal only: not financial advice, not a real estate valuation and not a recommendation to buy.",
+        "How well the climate and land hold up over time. A rough guide only: not financial advice, not a real estate valuation and not a recommendation to buy.",
     },
   };
 }

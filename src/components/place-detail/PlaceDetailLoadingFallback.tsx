@@ -49,7 +49,7 @@ export function PlaceDetailLoadingFallback({ placeName, onClose, occluded = fals
                 Opening profile
               </p>
               <h2 id={titleId} className="m-0 mt-1 font-atlas text-xl text-ice md:text-2xl">
-                {placeName} climate dossier
+                {placeName} climate profile
               </h2>
             </div>
             <button
@@ -70,10 +70,10 @@ export function PlaceDetailLoadingFallback({ placeName, onClose, occluded = fals
             <div role="status" aria-live="polite" aria-atomic="true" className="max-w-xl">
               <BookOpen className="h-8 w-8 text-ochre-700" aria-hidden />
               <p className="m-0 mt-4 font-atlas text-lg text-ice">
-                Opening {placeName} climate dossier
+                Opening {placeName} climate profile
               </p>
               <p className="m-0 mt-2 max-w-md text-sm leading-relaxed text-stone-readable">
-                Preparing the dossier surface.
+                Loading the text, charts and scores.
               </p>
             </div>
             <div className="mt-7 space-y-3" aria-hidden="true">

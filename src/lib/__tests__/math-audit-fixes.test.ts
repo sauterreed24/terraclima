@@ -38,13 +38,40 @@ describe("afternoon humidity for heat index", () => {
 });
 
 describe("saturated rankings", () => {
-  it("orders frost-free winters by the winter low itself", () => {
+  it("orders every winter by the winter low itself, with no plateau", () => {
     const ranked = rankPlaces("mildest-winters");
-    const tied = ranked.filter(r => r.score === 100);
-    expect(tied.length).toBeGreaterThan(10);
-    for (let i = 1; i < tied.length; i += 1) {
-      expect(meanJanLow(tied[i - 1]!.place)).toBeGreaterThanOrEqual(meanJanLow(tied[i]!.place));
+    for (let i = 1; i < ranked.length; i += 1) {
+      expect(meanJanLow(ranked[i - 1]!.place)).toBeGreaterThanOrEqual(meanJanLow(ranked[i]!.place));
     }
+    expect(ranked[0]!.place.id).toBe("key-west-fl");
+    expect(ranked.filter(r => r.score === 100).length).toBeLessThan(15);
+  });
+
+  it("keeps the leaders of each climate ranking from piling up on one score", () => {
+    for (const profile of [
+      "best-four-season", "best-diurnal-sleep", "monsoon-drama", "wet-forest-refuges",
+      "best-shoulder-seasons", "driest-air", "mediterranean-like",
+    ] as const) {
+      const ranked = rankPlaces(profile);
+      const top = ranked[0]!.score;
+      expect(ranked.filter(r => r.score === top).length, profile).toBeLessThanOrEqual(8);
+      for (const r of ranked) {
+        expect(r.score, profile).toBeGreaterThanOrEqual(0);
+        expect(r.score, profile).toBeLessThanOrEqual(100);
+      }
+    }
+  });
+
+  it("asks four seasons for a real winter and monsoon drama for real rain", () => {
+    const fourSeason = rankPlaces("best-four-season");
+    const rank = (list: typeof fourSeason, id: string) => list.findIndex(r => r.place.id === id);
+    // The Gulf coast has no winter; upstate New York has all four.
+    expect(rank(fourSeason, "ithaca-ny")).toBeLessThan(20);
+    expect(rank(fourSeason, "apalachicola-fl")).toBeGreaterThan(100);
+    const monsoon = rankPlaces("monsoon-drama");
+    // Death Valley's dry winter is not a monsoon.
+    expect(rank(monsoon, "death-valley-ca")).toBeGreaterThan(60);
+    expect(rank(monsoon, "alamos-mx")).toBeLessThan(10);
   });
 
   it("never returns a negative score", () => {

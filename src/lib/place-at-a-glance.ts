@@ -27,9 +27,9 @@ function titleCase(s: string): string {
 }
 
 const TIER: Record<Place["tier"], { line: string; hint: string; tone: AtGlanceTone }> = {
-  A: { line: "Flagship write-up", hint: "Deep profile with story, risks, sources, and outlook", tone: "ochre" },
-  B: { line: "Spotlight card", hint: "Enough structure to compare the place cleanly", tone: "ice" },
-  C: { line: "Index entry", hint: "Lean, searchable, and map-first", tone: "sage" },
+  A: { line: "Flagship", hint: "The fullest profile: history, risks, sources and outlook", tone: "ochre" },
+  B: { line: "Spotlight", hint: "A standard profile", tone: "ice" },
+  C: { line: "Index", hint: "A shorter entry", tone: "sage" },
 };
 
 export function buildAtAGlanceTiles(
@@ -43,7 +43,7 @@ export function buildAtAGlanceTiles(
   const geo = buildGeospatialAnalysis(place);
   const feel = scorePlaceFeel(place);
   const tr = TIER[place.tier];
-  out.push({ label: "Depth", value: tr.line, hint: tr.hint, tone: tr.tone });
+  out.push({ label: "Profile depth", value: tr.line, hint: tr.hint, tone: tr.tone });
 
   out.push({
     label: "Place feel",
@@ -61,17 +61,17 @@ export function buildAtAGlanceTiles(
   let climateHint = baseClimateHint;
   if (ka.computed) {
     climateHint = ka.level === "match"
-      ? `${baseClimateHint} · Köppen ${ka.computed.code} confirmed from normals`
+      ? `${baseClimateHint} · Köppen ${ka.computed.code} confirmed from the monthly averages`
       : ka.level === "boundary"
-        ? `${baseClimateHint} · normals sit on the ${ka.computed.code} boundary`
+        ? `${baseClimateHint} · the monthly averages sit on the ${ka.computed.code} boundary`
         : ka.level === "subclass"
-          ? `${baseClimateHint} · normals compute ${ka.computed.code}`
+          ? `${baseClimateHint} · the monthly averages give ${ka.computed.code}`
           : ka.level === "divergent"
-            ? `${baseClimateHint} · authored label diverges from normals (computed ${ka.computed.code})`
+            ? `${baseClimateHint} · the label differs from what the monthly averages give (${ka.computed.code})`
             : baseClimateHint;
   }
   out.push({
-    label: "Climate class",
+    label: "Köppen class",
     value: place.koppen,
     hint: climateHint,
     tone: ka.level === "match" ? "sage" : "ice",
@@ -87,16 +87,16 @@ export function buildAtAGlanceTiles(
   out.push({
     label: "Data confidence",
     value: titleCase(place.confidence),
-    hint: "How much weight to give the profile before checking primary sources",
+    hint: "How far to trust this profile before checking its sources",
     tone: "glacier",
   });
 
   const annual = PLACE_ANNUAL_PRECIP[place.id] ?? place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
   const w = Math.max(0, Math.min(100, Math.round(cr.wetterThanAtlasShare * 100)));
   out.push({
-    label: "Water year (mean)",
+    label: "Yearly precipitation",
     value: fmt(annual),
-    hint: `Among all ${PLACE_COUNTS.total} curated stops: wetter than ${w}% by annual mean`,
+    hint: `Wetter than ${w}% of the ${PLACE_COUNTS.total} atlas places`,
     tone: "glacier",
   });
 
@@ -109,16 +109,16 @@ export function buildAtAGlanceTiles(
       const gddTag = displayTemp === "F" ? "GDD base 50F" : "GDD base 10C";
       parts.push(`${gddTag} ~${Math.round(gddForUnit(g, displayTemp)).toLocaleString("en-US")}`);
     }
-    out.push({ label: "Growing season (est.)", value: parts.join(" / "), hint: "Rough agronomic read from the same table as the charts", tone: "sage" });
+    out.push({ label: "Growing season (est.)", value: parts.join(" / "), hint: "Estimated from the same monthly averages as the charts", tone: "sage" });
   }
 
   const dSum = place.climate.diurnalSummerC ?? place.climate.tempHighC[6] - place.climate.tempLowC[6];
   if (dSum > 0) {
     const ld = Math.max(0, Math.min(100, Math.round(cr.largerDiurnalThanAtlasShare * 100)));
     out.push({
-      label: "High-season diurnal",
+      label: "Summer day-to-night swing",
       value: fmtDiurnal(dSum),
-      hint: `Larger summer swing than ${ld}% of atlas stops in the same high-season window`,
+      hint: `A larger summer swing than ${ld}% of atlas places`,
       tone: "aurora",
     });
   }
@@ -128,14 +128,14 @@ export function buildAtAGlanceTiles(
   // Geospatial section below) only fill whatever room is left.
   const technical: AtGlanceTile[] = [];
   technical.push({
-    label: "Remote sensing",
-    value: "EO + relief texture",
-    hint: `${EARTH_OBSERVATION_SOURCES.map(s => `${s.label} (${s.nominalResolutionM} m)`).join(" / ")} / screening ${geo.eoObservabilityScore}/100 / relief proxy ${geo.structuralTextureScore}/100`,
+    label: "Satellite coverage",
+    value: "Sentinel-2 + Landsat",
+    hint: `${EARTH_OBSERVATION_SOURCES.map(s => `${s.label} (${s.nominalResolutionM} m)`).join(" / ")} / satellite visibility ${geo.eoObservabilityScore}/100 / fine-scale terrain ${geo.structuralTextureScore}/100`,
     tone: "ice",
   });
 
   technical.push({
-    label: "Geospatial signal",
+    label: "Terrain signal",
     value: `${geo.geospatialSignalScore}/100`,
     hint: `${geo.analysisConfidence} confidence / ${geo.sourceFits.map(s => `${s.sourceId} ${s.score}`).join(" / ")}`,
     tone: "aurora",

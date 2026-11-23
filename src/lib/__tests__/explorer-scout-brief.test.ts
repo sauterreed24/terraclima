@@ -36,15 +36,15 @@ describe("buildExplorerScoutBrief", () => {
       "Winter lows",
       "Easy months",
       "Place feel",
-      "Precip spread",
+      "Precip range",
       "Avg risk",
-      "Dominant family",
+      "Most common type",
     ]);
     expect(brief!.metrics.find(metric => metric.label === "Summer highs")!.value).toMatch(/°C$/);
     expect(brief!.decisionSignals.map(signal => signal.label)).toEqual([
       "Felt comfort",
       "Place feel",
-      "Low risk load",
+      "Lowest risk",
       "Garden / land",
       "Climate resilience",
       "Distinctive terrain",
@@ -57,25 +57,25 @@ describe("buildExplorerScoutBrief", () => {
     });
     expect(brief!.decisionRows[0].bestFor).toMatch(/; .+ is the edge\./);
     expect(brief!.decisionRows[0].watch.length).toBeGreaterThan(6);
-    expect(brief!.decisionLine).toContain("living signals");
+    expect(brief!.decisionLine).toContain("priorities");
     expect(brief!.cautionLine.length).toBeGreaterThan(20);
-    expect(brief!.advisorRead.verdict).toContain("first scout");
-    expect(brief!.advisorRead.verdict).toContain("not a moving recommendation");
+    expect(brief!.advisorRead.verdict).toContain("the place to look at first");
+    expect(brief!.advisorRead.verdict).toContain("not a recommendation to move");
     expect(brief!.advisorRead.why).toContain("fit");
-    expect(brief!.advisorRead.checkFirst).toContain("field check");
+    expect(brief!.advisorRead.checkFirst).toContain("in-person check");
     expect(brief!.advisorRead.checkFirst).toMatch(/^Verify /);
-    expect(brief!.advisorRead.nextAction).toContain(`Scout ${ranked[0].place.name}'s`);
-    expect(brief!.advisorRead.confidence).toContain("Screening confidence");
+    expect(brief!.advisorRead.nextAction).toContain(`Visit ${ranked[0].place.name} in its`);
+    expect(brief!.advisorRead.confidence).toContain("Confidence:");
     expect(brief!.audienceRead.love).toContain(ranked[0].place.name);
     expect(brief!.audienceRead.pause.length).toBeGreaterThan(20);
     expect(brief!.nextStep).toMatchObject({
-      label: "Scout next",
+      label: "Visit next",
       place: ranked[0].place,
     });
-    expect(brief!.nextStep.action).toContain(`Scout ${ranked[0].place.name}'s`);
+    expect(brief!.nextStep.action).toContain(`Visit ${ranked[0].place.name} in its`);
     expect(brief!.nextStep.action).toContain(":");
     expect(brief!.nextStep.detail).toContain("First caveat:");
-    expect(brief!.scoutPlan.map(step => step.label)).toEqual(["Start here", "Field check", "Second read"]);
+    expect(brief!.scoutPlan.map(step => step.label)).toEqual(["Start here", "Check in person", "Second read"]);
     expect(brief!.scoutPlan[0]).toMatchObject({
       place: ranked[0].place,
       kind: "leader",
@@ -87,7 +87,7 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.scoutPlan[2].place.id).toBe(ranked[1].place.id);
     expect(brief!.scoutPlan[2].detail).toContain("Compare against the leader");
     expect(brief!.fieldCheck).toMatchObject({
-      label: "Field check",
+      label: "Check in person",
       place: ranked[0].place,
     });
     expect(brief!.fieldCheck.action.length).toBeGreaterThan(20);
@@ -146,7 +146,7 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.decisionSignals.map(signal => [signal.label, signal.place.id])).toEqual([
       ["Felt comfort", "comfort-town"],
       ["Place feel", "garden-ridge"],
-      ["Low risk load", "risk-cove"],
+      ["Lowest risk", "risk-cove"],
       ["Garden / land", "garden-ridge"],
       ["Climate resilience", "garden-ridge"],
       ["Distinctive terrain", "garden-ridge"],
@@ -159,8 +159,8 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.nextStep.detail).toContain("Gardening window");
     expect(brief!.nextStep.detail).toContain("First caveat:");
     expect(brief!.nextStep.detail).toContain("Risk Cove");
-    expect(brief!.advisorRead.why).toContain("1 of 6 living signals");
-    expect(brief!.advisorRead.checkFirst).toContain("field check");
+    expect(brief!.advisorRead.why).toContain("1 of 6 priorities");
+    expect(brief!.advisorRead.checkFirst).toContain("in-person check");
     expect(brief!.scoutPlan.map(step => step.kind)).toEqual(["leader", "field-check", "tradeoff"]);
     expect(brief!.scoutPlan[2].place.id).toBe("risk-cove");
   });
@@ -189,15 +189,15 @@ describe("buildExplorerScoutBrief", () => {
     const brief = buildExplorerScoutBrief(ranked, "Test rank")!;
 
     expect(brief.fieldCheck).toMatchObject({
-      label: "Field check",
+      label: "Check in person",
       place: leader,
       target: "Lower basin",
       source: "nearby-contrast",
     });
     expect(brief.fieldCheck.action).toBe("Compare Contrast Leader with Lower basin.");
     expect(brief.fieldCheck.detail).toContain("Hotter and drier within a short drive.");
-    expect(brief.fieldCheck.detail).toContain("confirm the ranked climate signal");
-    expect(brief.scoutPlan.map(step => step.label)).toEqual(["Start here", "Field check"]);
+    expect(brief.fieldCheck.detail).toContain("confirm the difference in person");
+    expect(brief.scoutPlan.map(step => step.label)).toEqual(["Start here", "Check in person"]);
     expect(brief.scoutPlan[1].action).toBe("Compare Contrast Leader with Lower basin.");
   });
 
@@ -244,11 +244,11 @@ describe("buildExplorerScoutBrief", () => {
     )!;
 
     expect(brief.audienceRead.love).toContain("heat-sensitive movers");
-    expect(brief.audienceRead.love).toContain("gardeners and land scouts");
+    expect(brief.audienceRead.love).toContain("gardeners");
     expect(brief.audienceRead.love).toContain("summer highs at or below 26°C");
     expect(brief.audienceRead.love).toContain("Cool Garden");
-    expect(brief.audienceRead.pause).toContain("dossier");
-    expect(brief.advisorRead.confidence).toContain("thin shortlist");
+    expect(brief.audienceRead.pause).toContain("profile");
+    expect(brief.advisorRead.confidence).toContain("few places match");
     expect(brief.advisorRead.why).toMatch(/gardeners/i);
   });
 

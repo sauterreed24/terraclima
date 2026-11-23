@@ -341,7 +341,7 @@ export function buildHomeBaseComparison(home: Place, place: Place): HomeBaseComp
       place,
       isSame: true,
       signals: [],
-      headline: `${place.name} is your current home base — every other card and dossier reads as a delta against it.`,
+      headline: `${place.name} is your current home base — every other card and profile is compared against it.`,
     };
   }
 

@@ -92,22 +92,22 @@ function climateContrastDetail(place: Place, active: ActiveClimateAverages): str
   const signals = [
     {
       weight: Math.abs(summerDelta) * 4,
-      detail: `${Math.abs(summerDelta).toFixed(1)}°C ${summerDelta < 0 ? "cooler" : "warmer"} summer high than the active average.`,
+      detail: `${Math.abs(summerDelta).toFixed(1)}°C ${summerDelta < 0 ? "cooler" : "warmer"} summer high than the average of the places compared.`,
     },
     {
       weight: Math.abs(winterDelta) * 3,
-      detail: `${Math.abs(winterDelta).toFixed(1)}°C ${winterDelta > 0 ? "milder" : "colder"} winter low than the active average.`,
+      detail: `${Math.abs(winterDelta).toFixed(1)}°C ${winterDelta > 0 ? "milder" : "colder"} winter low than the average of the places compared.`,
     },
     {
       weight: Math.abs(precipDelta) / 22,
-      detail: `${Math.round(Math.abs(precipDelta))} mm ${precipDelta > 0 ? "wetter" : "drier"} annually than the active average.`,
+      detail: `${Math.round(Math.abs(precipDelta))} mm ${precipDelta > 0 ? "wetter" : "drier"} annually than the average of the places compared.`,
     },
     {
       weight: Math.abs(elevationDelta) / 85,
-      detail: `${Math.round(Math.abs(elevationDelta))} m ${elevationDelta > 0 ? "higher" : "lower"} than the active average.`,
+      detail: `${Math.round(Math.abs(elevationDelta))} m ${elevationDelta > 0 ? "higher" : "lower"} than the average of the places compared.`,
     },
   ].sort((a, b) => b.weight - a.weight);
-  return signals[0]?.detail ?? "Adds a different climate shape than the active set.";
+  return signals[0]?.detail ?? "Its climate differs from the places you are comparing.";
 }
 
 function evidenceScore(place: Place): number {
@@ -125,8 +125,8 @@ function evidenceScore(place: Place): number {
 
 function evidenceDetail(place: Place): string {
   const citations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
-  const sourceBacked = place.liveSignals ? "source-backed lived signals" : "limited lived signals";
-  return `${place.confidence} confidence, ${citations} HTTPS citation${citations === 1 ? "" : "s"}, ${chapterCountLabel(researchedChapterCount(place))}, ${sourceBacked}.`;
+  const sourceBacked = place.liveSignals ? "sourced cost and access data" : "little cost and access data";
+  return `${place.confidence} confidence, ${citations} web source${citations === 1 ? "" : "s"}, ${chapterCountLabel(researchedChapterCount(place))}, ${sourceBacked}.`;
 }
 
 /**
@@ -152,7 +152,7 @@ export function buildCompareCandidateSwapInsight({
   if (activeProfiles.length === 0) {
     return {
       label: "Start a comparison",
-      detail: `${candidateScore}/100 ${lensRead} read; add a peer to expose tradeoffs.`,
+      detail: `Scores ${candidateScore}/100 for ${lensRead}. Add a second place to see tradeoffs.`,
       tone: "steady",
       score: candidateScore,
     };
@@ -172,7 +172,7 @@ export function buildCompareCandidateSwapInsight({
   if (lensDelta >= 4) {
     return {
       label: `${lensLabel} upgrade`,
-      detail: `+${lensDelta} vs ${possessive(weakestLens.place.name)} active ${lensRead} read.`,
+      detail: `+${lensDelta} over ${possessive(weakestLens.place.name)} ${lensRead} score.`,
       tone: "upgrade",
       score: lensDelta,
     };
@@ -180,8 +180,8 @@ export function buildCompareCandidateSwapInsight({
 
   if (candidateProfile.riskLoad <= lowestRisk.riskLoad - 5) {
     return {
-      label: "Lower-risk anchor",
-      detail: `${lowestRisk.riskLoad - candidateProfile.riskLoad} points lower risk than the safest active slot.`,
+      label: "Lower risk",
+      detail: `${lowestRisk.riskLoad - candidateProfile.riskLoad} points lower risk than the safest place in the comparison.`,
       tone: "risk",
       score: lowestRisk.riskLoad - candidateProfile.riskLoad,
     };
@@ -189,8 +189,8 @@ export function buildCompareCandidateSwapInsight({
 
   if (candidateProfile.place.scores.growability >= bestGarden.place.scores.growability + 8) {
     return {
-      label: "Garden counterweight",
-      detail: `+${candidateProfile.place.scores.growability - bestGarden.place.scores.growability} growability vs the strongest active garden read.`,
+      label: "Better for gardening",
+      detail: `+${candidateProfile.place.scores.growability - bestGarden.place.scores.growability} growability over the best gardening place in the comparison.`,
       tone: "garden",
       score: candidateProfile.place.scores.growability - bestGarden.place.scores.growability,
     };
@@ -209,7 +209,7 @@ export function buildCompareCandidateSwapInsight({
 
   if (candidateEvidence >= minEvidence + 16) {
     return {
-      label: "Evidence anchor",
+      label: "Better sourced",
       detail: evidenceDetail(candidateProfile.place),
       tone: "evidence",
       score: candidateEvidence - minEvidence,
@@ -218,16 +218,16 @@ export function buildCompareCandidateSwapInsight({
 
   if (candidateScore >= strongestLensScore - 3) {
     return {
-      label: "Near leader",
-      detail: `Within ${Math.abs(strongestLensScore - candidateScore)} points of the strongest active ${lensRead} read.`,
+      label: "Close to the best",
+      detail: `Within ${Math.abs(strongestLensScore - candidateScore)} points of the best ${lensRead} score in the comparison.`,
       tone: "steady",
       score: candidateScore,
     };
   }
 
   return {
-    label: "Keep warm",
-    detail: "Similar enough to keep nearby; swap it in when region, access, or personal fit matters.",
+    label: "Similar option",
+    detail: "Close to what you already have. Swap it in if its region or access suits you better.",
     tone: "steady",
     score: candidateScore,
   };
@@ -266,8 +266,8 @@ export function buildCompareCoachRecommendations({
     place: bestLens.place,
     metric: `${compareLensScore(bestLens, lens)}/100`,
     detail: weakestActiveLens != null && compareLensScore(bestLens, lens) > weakestActiveLens
-      ? `Scores above the weakest active slot for the ${lensLabel.toLowerCase()} lens.`
-      : `Keeps the strongest inactive ${lensLabel.toLowerCase()} candidate within reach.`,
+      ? `Scores higher for ${lensLabel.toLowerCase()} than the weakest place in the comparison.`
+      : `The best ${lensLabel.toLowerCase()} score among places not yet in the comparison.`,
     score: compareLensScore(bestLens, lens),
   } : null, 3);
 
@@ -278,7 +278,7 @@ export function buildCompareCoachRecommendations({
     label: "Climate contrast",
     place: climateContrast.place,
     metric: `contrast ${climateContrastScore(climateContrast.place, climateAverages)}`,
-    detail: "Adds the strongest temperature, precipitation, or elevation contrast outside the active slots.",
+    detail: "The biggest difference in temperature, precipitation or elevation from the places you are comparing.",
     score: climateContrastScore(climateContrast.place, climateAverages),
   } : null, 3);
 
@@ -288,19 +288,19 @@ export function buildCompareCoachRecommendations({
     : null;
   pushUnique(rows, riskCounterweight ? {
     lane: "risk",
-    label: "Risk counterweight",
+    label: "Lower risk",
     place: riskCounterweight.place,
     metric: `${riskCounterweight.riskLoad}/100 risk`,
     detail: bestActiveRisk != null && riskCounterweight.riskLoad < bestActiveRisk
-      ? `Lower composite risk than every active slot; useful before a relocation decision.`
-      : "Keeps the lowest-risk inactive candidate ready for a caution pass.",
+      ? `Lower overall risk than every place in the comparison.`
+      : "The lowest overall risk among places not yet in the comparison.",
     score: 100 - riskCounterweight.riskLoad,
   } : null, 3);
 
   const evidenceAnchor = pickMax(inactive, profile => evidenceScore(profile.place));
   pushUnique(rows, evidenceAnchor ? {
     lane: "evidence",
-    label: "Evidence anchor",
+    label: "Better sourced",
     place: evidenceAnchor.place,
     metric: `${evidenceScore(evidenceAnchor.place)} evidence`,
     detail: evidenceDetail(evidenceAnchor.place),

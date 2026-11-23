@@ -23,7 +23,7 @@ const SCOPE_RULES: { test: (path: string) => boolean; label: string }[] = [
   { test: p => p.startsWith("risks."), label: "Climate risk" },
   { test: p => p.startsWith("liveSignals."), label: "Lived indicators" },
   { test: p => p.startsWith("scores."), label: "Scores" },
-  { test: p => p.startsWith("deepSections."), label: "Field dossier" },
+  { test: p => p.startsWith("deepSections."), label: "In depth" },
   {
     test: p =>
       p.startsWith("experience.") ||
@@ -47,7 +47,7 @@ const SCOPE_ORDER = [
   "Lived indicators",
   "Scores",
   "Narrative & fit",
-  "Field dossier",
+  "In depth",
   "Other",
 ];
 

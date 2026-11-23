@@ -6,6 +6,7 @@ import {
   meanSummerHumidityPct,
   monthlyUsabilityScores,
   scoringSunshinePct,
+  dewPointC,
 } from "./climate-metrics";
 import { computeKoppen } from "./koppen";
 
@@ -101,13 +102,7 @@ export function fToC(f: number): number {
   return (f - 32) * 5 / 9;
 }
 
-export function dewPointC(tempC: number, relativeHumidityPct: number): number {
-  const rh = clamp(relativeHumidityPct, 1, 100);
-  const a = 17.625;
-  const b = 243.04;
-  const gamma = Math.log(rh / 100) + (a * tempC) / (b + tempC);
-  return (b * gamma) / (a - gamma);
-}
+export { dewPointC };
 
 /**
  * Relative humidity at another temperature for the same air mass (dew point

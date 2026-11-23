@@ -9,18 +9,18 @@ export function buildShortlistReadiness(count: number, compareLimit = COMPARE_LI
   if (count <= 0) return null;
   if (count === 1) {
     return {
-      label: "Scout setup ready",
-      detail: "Open Compare setup to plan the missing contrast; export already saves this dossier.",
+      label: "1 place pinned",
+      detail: "Pin a second place to compare. Export already works for this one.",
     };
   }
   if (count > compareLimit) {
     return {
-      label: "Scout packet ready",
-      detail: `Compare the first ${compareLimit}; the Scout plan export keeps all ${count} pinned places in order.`,
+      label: "Ready to compare",
+      detail: `Compare the first ${compareLimit}. The visit plan export includes all ${count} pinned places.`,
     };
   }
   return {
-    label: "Scout packet ready",
-    detail: `Compare ${count} finalists or export a Scout plan with visit windows and watch-first caveats.`,
+    label: "Ready to compare",
+    detail: `Compare these ${count} places, or export a visit plan with best months and cautions.`,
   };
 }

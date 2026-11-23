@@ -48,7 +48,7 @@ export function PlaceReadingProgress({ panelRef }: { panelRef: { current: HTMLEl
       ref={trackRef}
       className="tc-detail-progress-track"
       role="progressbar"
-      aria-label="Dossier reading progress"
+      aria-label="Reading progress through this profile"
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={progressPercent}

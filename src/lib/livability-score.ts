@@ -284,8 +284,8 @@ const COMPONENT_LABEL: Record<ComponentKey, string> = {
   atmosphericEase: "Atmospheric ease",
   hazardCushion: "Hazard cushion",
   growability: "Growability",
-  precipModeration: "Precip moderation",
-  livedFriction: "Lived friction",
+  precipModeration: "Moderate rain and snow",
+  livedFriction: "Cost and access",
   placeFeel: "Place feel",
 };
 

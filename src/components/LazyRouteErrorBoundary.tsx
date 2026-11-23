@@ -52,8 +52,8 @@ export class LazyRouteErrorBoundary extends Component<Props, State> {
           <p className="font-atlas text-lg mb-2 text-ice">Something went wrong</p>
           <p className="text-sm text-stone mb-4 max-w-md">
             {this.props.routeLabel
-              ? `${this.props.routeLabel} hit an unexpected error. Retry the view or open a fresh atlas.`
-              : "The atlas hit an unexpected error. Open a fresh atlas if this shared URL keeps failing, or retry the current view."}
+              ? `${this.props.routeLabel} ran into an error. Try the view again, or start again from the atlas home.`
+              : "The atlas ran into an error. Try this view again. If a shared link keeps failing, start again from the atlas home."}
           </p>
           <div className="tc-error-boundary__actions">
             <button

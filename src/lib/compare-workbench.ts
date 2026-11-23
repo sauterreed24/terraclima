@@ -21,12 +21,12 @@ export interface CompareCandidate {
 export const DEFAULT_COMPARISON_LENS: ComparisonLensId = "balanced";
 
 export const COMPARISON_LENS_OPTIONS: readonly ComparisonLensOption[] = [
-  { id: "balanced", label: "Balanced", detail: "Fit, comfort, lived ease, garden, and risk in one read." },
-  { id: "travel", label: "Travel", detail: "Comfort windows, low hassle, and memorable climate contrast." },
-  { id: "move", label: "Move", detail: "Livability, daily friction, resilience, and underwriting risk." },
-  { id: "remote", label: "Remote", detail: "Low daily friction, fit, comfort, and service access." },
-  { id: "garden", label: "Garden", detail: "Growability, season runway, water stress, and climate resilience." },
-  { id: "risk", label: "Risk", detail: "Lower hazard load, resilience, and fewer lived-friction surprises." },
+  { id: "balanced", label: "Balanced", detail: "Fit, comfort, cost and access, gardening and risk, weighted evenly." },
+  { id: "travel", label: "Travel", detail: "Comfortable months, easy logistics and a climate unlike home." },
+  { id: "move", label: "Move", detail: "Livability, cost and access, climate resilience and hazard risk." },
+  { id: "remote", label: "Remote", detail: "Easy daily life, fit, comfort and access to services." },
+  { id: "garden", label: "Garden", detail: "Growability, length of growing season, water stress and climate resilience." },
+  { id: "risk", label: "Risk", detail: "Low hazard risk, climate resilience, and fewer cost or access problems." },
 ];
 
 const COMPARISON_LENS_IDS = new Set<ComparisonLensId>(
@@ -74,7 +74,7 @@ export function buildCompareCandidates({
     push(resolve(id), "Shortlist", "Pinned to your shortlist");
   }
   for (const id of recentIds) {
-    push(resolve(id), "Recent", "Recently opened dossier");
+    push(resolve(id), "Recent", "Recently opened profile");
   }
   for (const row of ranked.slice(0, 12)) {
     push(row.place, "Ranked", `${scenarioRankingLabel} leader`);

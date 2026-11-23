@@ -43,12 +43,12 @@ describe("BookmarkButton — header variant", () => {
         placeName="Eureka"
         onToggle={() => undefined}
         size="header"
-        ariaContext="from residency brief"
+        ariaContext="from the fit summary"
       />,
     );
-    const btn = screen.getByRole("button", { name: "Pin Eureka to your shortlist from residency brief" });
+    const btn = screen.getByRole("button", { name: "Pin Eureka to your shortlist from the fit summary" });
     expect(btn).toHaveTextContent("Pin");
-    expect(btn).toHaveAttribute("title", "Pin Eureka to your shortlist from residency brief");
+    expect(btn).toHaveAttribute("title", "Pin Eureka to your shortlist from the fit summary");
   });
 });
 

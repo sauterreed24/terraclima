@@ -41,7 +41,7 @@ export function buildExplorerRecoveryActions({
     recoveryActions.push({
       key: "search",
       label: "Clear search",
-      detail: `Remove “${searchTerm}” and keep the climate-fit filters intact.`,
+      detail: `Remove “${searchTerm}” and keep your filters.`,
       onClick: onClearSearch,
       primary: searchOnly,
     });
@@ -49,8 +49,8 @@ export function buildExplorerRecoveryActions({
   if (liveSignalCount > 0) {
     recoveryActions.push({
       key: "live",
-      label: "Relax Live Finder",
-      detail: `Drop ${liveSignalCount} comfort, risk, or growability limit${liveSignalCount === 1 ? "" : "s"} while keeping search and geography.`,
+      label: "Clear must-haves",
+      detail: `Remove ${liveSignalCount} must-have${liveSignalCount === 1 ? "" : "s"} or limit${liveSignalCount === 1 ? "" : "s"}. Search, country and climate type stay.`,
       onClick: onRelaxLiveFinder,
       primary: filtersOnly && geographyCount === 0,
     });
@@ -58,8 +58,8 @@ export function buildExplorerRecoveryActions({
   if (geographyCount > 0) {
     recoveryActions.push({
       key: "geography",
-      label: "Clear region / terrain",
-      detail: `Drop ${geographyCount} region or terrain filter${geographyCount === 1 ? "" : "s"} while keeping search and Live Finder signals.`,
+      label: "Clear country / climate type",
+      detail: `Remove ${geographyCount} country or climate-type filter${geographyCount === 1 ? "" : "s"}. Search and must-haves stay.`,
       onClick: onClearGeography,
       primary: filtersOnly && liveSignalCount === 0,
     });
@@ -67,7 +67,7 @@ export function buildExplorerRecoveryActions({
   recoveryActions.push({
     key: "all",
     label: "Reset Explorer",
-    detail: "Return to the full atlas and restart the fit search.",
+    detail: "Clear the search and every filter and show all places.",
     onClick: onClearAll,
     primary: !recoveryActions.some(action => action.primary),
   });

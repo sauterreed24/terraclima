@@ -450,7 +450,7 @@ export function buildClimateTwinTradeoffRead(
     summary: `${twin.place.name} is the first same-feel comparison${shiftClause}: it preserves ${sharedClause}; the main climate tradeoff is that it ${tradeoff}.`,
     shared,
     tradeoff,
-    nextAction: `Open ${possessive(twin.place.name)} dossier to pressure-test that tradeoff before shortlisting.`,
+    nextAction: `Open ${possessive(twin.place.name)} profile and check that tradeoff before you shortlist it.`,
   };
 }
 

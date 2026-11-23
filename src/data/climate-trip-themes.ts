@@ -17,9 +17,9 @@ export const CLIMATE_TRIP_THEMES: ClimateTripTheme[] = [
   {
     id: "places-that-feel-like-another-country",
     title: "Places That Feel Like Another Country",
-    subtitle: "Climate dissonance, not travel fantasy",
+    subtitle: "Climates that do not match the map",
     description:
-      "Stops where terrain, latitude, water, or elevation makes the local climate feel abruptly unlike the surrounding map. Use the contrast as the trip: dry Canadian desert edge, tropical highlands, limestone lagoons, volcanic coasts, and North Atlantic chill.",
+      "Stops where terrain, latitude, water, or elevation makes the local climate feel unlike the region around it. The contrast is the point of the trip: dry Canadian desert edge, tropical highlands, limestone lagoons, volcanic coasts, and North Atlantic chill.",
     tone: "aurora",
     placeIds: ["osoyoos-bc", "penticton-bc", "san-cristobal-mx", "xilitla-mx", "bacalar-mx", "cuatrocienegas-mx", "hilo-hi", "st-johns-nl"],
     bestFor: ["country-feel contrast", "first-time atlas readers", "photo and field notes"],
@@ -61,7 +61,7 @@ export const CLIMATE_TRIP_THEMES: ClimateTripTheme[] = [
     placeIds: ["sequim-wa", "port-townsend-wa", "victoria-bc", "osoyoos-bc", "bishop-ca", "hood-river-or", "ellensburg-wa", "wenatchee-wa"],
     archetypeFilters: ["rain-shadow-sanctuary"],
     bestFor: ["dry light", "barrier effects", "nearby weather contrasts"],
-    seasonHint: "Late spring through early fall usually exposes the dry-side signal with the least storm noise.",
+    seasonHint: "Late spring through early fall usually shows the dry side most clearly, with fewer storms passing through.",
   },
   {
     id: "high-desert-wine-and-orchards",
@@ -73,7 +73,7 @@ export const CLIMATE_TRIP_THEMES: ClimateTripTheme[] = [
     placeIds: ["valle-guadalupe-mx", "parras-de-la-fuente-mx", "osoyoos-bc", "penticton-bc", "summerland-bc", "wenatchee-wa", "hood-river-or", "napa-ca"],
     archetypeFilters: ["orchard-valley", "rain-shadow-sanctuary", "mediterranean-pocket", "high-desert-escape"],
     bestFor: ["orchard clues", "vineyard climates", "soil and water tradeoffs"],
-    seasonHint: "Harvest windows and shoulder seasons tend to show both comfort and the agricultural signal.",
+    seasonHint: "Harvest windows and shoulder seasons tend to be comfortable and show what is growing.",
   },
   {
     id: "appalachian-hollows-and-thermal-belts",
@@ -104,7 +104,7 @@ export const CLIMATE_TRIP_THEMES: ClimateTripTheme[] = [
     title: "Volcanic Soils and Growing Zones",
     subtitle: "Ground truth beneath the weather",
     description:
-      "Places where volcanic or young upland ground helps explain gardens, coffee, agave, forests, or high-country growing limits. The soil read stays screening-grade and must be verified locally.",
+      "Places where volcanic or young upland ground helps explain gardens, coffee, agave, forests, or high-country growing limits. Soil notes here are general; check the actual ground locally.",
     tone: "ember",
     placeIds: ["hilo-hi", "tequila-mx", "patzcuaro-mx", "xalapa-mx", "coatepec-mx", "orizaba-mx", "santa-fe-nm", "flagstaff-az"],
     archetypeFilters: ["volcanic-upland", "cloud-forest", "eternal-spring-highland"],
@@ -114,14 +114,14 @@ export const CLIMATE_TRIP_THEMES: ClimateTripTheme[] = [
   {
     id: "hidden-mountain-towns",
     title: "Hidden Mountain Towns",
-    subtitle: "Small bases with oversized climate signals",
+    subtitle: "Small towns with distinctive climates",
     description:
-      "Mountain towns and upland bases where the climate signal is bigger than the name recognition. Use them as compact scouting bases, then compare the surrounding exposures.",
+      "Little-known mountain towns with distinctive climates. Use each as a base and compare the slopes and valleys around it.",
     tone: "sage",
     placeIds: ["crested-butte-co", "joseph-or", "stanley-id", "real-catorce-mx", "cloudcroft-nm", "silver-city-nm", "winthrop-wa", "nelson-bc"],
     archetypeFilters: ["sky-island-refuge", "cold-air-pool", "rain-shadow-sanctuary", "alpine-tundra"],
     bestFor: ["hidden gems", "upland bases", "terrain-first scouting"],
-    seasonHint: "Shoulder seasons show access, comfort, and climate contrast without flattening everything into peak tourism mode.",
+    seasonHint: "Spring and fall show access, comfort and climate contrast without peak-season crowds.",
   },
   {
     id: "cold-air-pools-and-frost-hollows",
@@ -133,7 +133,7 @@ export const CLIMATE_TRIP_THEMES: ClimateTripTheme[] = [
     placeIds: ["gunnison-co", "logan-ut", "canaan-valley-wv", "burkes-garden-va", "stanley-id", "truckee-ca", "fairbanks-ak", "international-falls-mn"],
     archetypeFilters: ["cold-air-pool", "frost-hollow", "basin-inversion"],
     bestFor: ["frost pockets", "inversions", "garden risk scouting"],
-    seasonHint: "Clear mornings in winter, early spring, or fall make the cold-air structure easiest to prove.",
+    seasonHint: "Clear mornings in winter, early spring, or fall show the cold-air pooling most clearly.",
   },
 ];
 

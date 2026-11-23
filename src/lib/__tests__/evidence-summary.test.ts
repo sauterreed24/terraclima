@@ -75,7 +75,7 @@ describe("evidence-summary", () => {
     );
     expect(summary.classesPresent).toContain("observed-normal");
     expect(summary.classesPresent).toContain("screening-score");
-    expect(summary.howToRead.toLowerCase()).toContain("screening");
+    expect(summary.howToRead.toLowerCase()).toContain("editorial ratings");
     expect(summary.howToRead).not.toMatch(/guarantee|parcel|forecast accuracy/i);
   });
 

@@ -113,7 +113,7 @@ function topRiskLine(place: Place): string {
   if (RISK_VALUE[risk.level] >= 3) {
     return `Watch ${RISK_LABELS[key].toLowerCase()} exposure (${riskText}) before shortlisting.`;
   }
-  return "No dominant red flag in the leader; still read the risk section before deciding.";
+  return "No single major risk for the top place. Still read its risk section before deciding.";
 }
 
 function countryShort(country: Place["country"]): string {
@@ -145,7 +145,7 @@ function pickMaxSignal(
     label,
     place,
     value: `${value}${valueSuffix}`,
-    detail: `${place.name} leads the current shortlist on ${label.toLowerCase()} at ${value}${valueSuffix}.`,
+    detail: `${place.name} leads the top places on ${label.toLowerCase()} at ${value}${valueSuffix}.`,
   };
 }
 
@@ -153,10 +153,10 @@ function pickLowRiskSignal(places: Place[]): ExplorerScoutBrief["decisionSignals
   const place = [...places].sort((a, b) => avgRisk(a) - avgRisk(b) || a.name.localeCompare(b.name))[0]!;
   const value = Math.round(avgRisk(place) * 20);
   return {
-    label: "Low risk load",
+    label: "Lowest risk",
     place,
     value: `${value}/100`,
-    detail: `${place.name} has the lowest composite risk load among current leaders; lower is easier.`,
+    detail: `${place.name} has the lowest overall risk among the top places.`,
   };
 }
 
@@ -180,14 +180,14 @@ function decisionLine(signals: ExplorerScoutBrief["decisionSignals"]): string {
   }
   const winners = [...counts.values()].sort((a, b) => b.count - a.count || a.place.name.localeCompare(b.place.name));
   const top = winners[0];
-  if (!top) return "Decision signals are unavailable for this view.";
+  if (!top) return "No scores are available for this view.";
   if (winners.length === 1) {
-    return `${top.place.name} leads every living signal in this shortlist; still read risk and local access before deciding.`;
+    return `${top.place.name} leads on every priority in this list; still read risk and local access before deciding.`;
   }
   if (top.count >= 3) {
-    return `${top.place.name} is the consensus leader across ${top.count} of ${signals.length} living signals; use the remaining split to check tradeoffs.`;
+    return `${top.place.name} leads on ${top.count} of ${signals.length} priorities; use the remaining split to check tradeoffs.`;
   }
-  return `No single place dominates: ${top.place.name} leads ${top.count} living signals, while ${winners[1]!.place.name} keeps at least one priority in play.`;
+  return `No single place dominates: ${top.place.name} leads ${top.count} priorities, while ${winners[1]!.place.name} keeps at least one priority in play.`;
 }
 
 function signalWinCount(signals: ExplorerScoutBrief["decisionSignals"], place: Place): number {
@@ -212,12 +212,12 @@ const PRESET_AUDIENCE: Record<LiveFitPresetId, string> = {
   "mild-winters": "mild-winter seekers",
   "sunny-winters": "gray-winter escapees",
   "dry-air": "dry-air seekers",
-  "gardenable": "gardeners and land scouts",
+  "gardenable": "gardeners",
   "low-fire-smoke": "smoke-sensitive movers",
   "four-seasons": "four-season households",
   "snow-country": "snow-country people",
   "coastal-buffer": "coastal-buffer seekers",
-  "quiet-small-town": "quiet-town scouts",
+  "quiet-small-town": "people who want a quiet town",
 };
 
 function activePresetIds(filters: LiveFitFilters): LiveFitPresetId[] {
@@ -236,7 +236,7 @@ function joinReadable(values: readonly string[]): string {
 function audienceFromFilters(filters: LiveFitFilters, leader: Place): string {
   const presetAudiences = activePresetIds(filters).map(id => PRESET_AUDIENCE[id]);
   const thresholdAudiences: string[] = [];
-  if (filters.maxSummerHighC != null) thresholdAudiences.push("heat-escape scouts");
+  if (filters.maxSummerHighC != null) thresholdAudiences.push("people escaping heat");
   if (filters.minWinterLowC != null) thresholdAudiences.push("cold-avoidant movers");
   if (filters.minGrowability != null) thresholdAudiences.push("garden planners");
   if (filters.maxFireRisk || filters.maxOverallRisk) thresholdAudiences.push("risk-sensitive households");
@@ -266,23 +266,23 @@ function buildAudienceRead(
   const leaderRow = decisionRows.find(row => row.place.id === leader.place.id);
   const audience = audienceFromFilters(liveFitFilters, leader.place);
   const preference = preferencePhrase(liveFitFilters);
-  const bestFor = leaderRow?.bestFor.split(";")[0]?.trim() || leader.place.relocationFit[0]?.replace(/\s+/g, " ").trim() || "climate scouts";
+  const bestFor = leaderRow?.bestFor.split(";")[0]?.trim() || leader.place.relocationFit[0]?.replace(/\s+/g, " ").trim() || "people choosing by climate";
   const liveFit = leaderRow ? `fit ${leaderRow.liveFitScore}` : `score ${Math.round(leader.score)}`;
-  const love = `${audience} should start here${preference}: ${leader.place.name} leads the shortlist with ${liveFit}, and ${bestFor.toLowerCase()} is the clearest match.`;
+  const love = `${audience} should start here${preference}: ${leader.place.name} leads the list with ${liveFit}, and ${bestFor.toLowerCase()} is the clearest match.`;
 
   let pause: string;
   if (leaderRow?.watch) {
-    pause = `${lowerFirst(trimTerminalPunctuation(leaderRow.watch))} would be a deal-breaker; verify that in the dossier before shortlisting.`;
+    pause = `${lowerFirst(trimTerminalPunctuation(leaderRow.watch))} would be a deal-breaker; verify that in the profile before shortlisting.`;
   } else {
-    pause = "you need parcel-level certainty; this is a screening brief, not local due diligence.";
+    pause = "you need address-level certainty; this summary narrows a list; it does not replace checking the exact location.";
   }
 
   if (leaderRow && leaderRow.liveFitScore < 68) {
-    pause = `you need a clean all-around fit; ${leader.place.name} only reaches ${leaderRow.liveFitScore}/100 on the active Live Finder read, so read the dossier before shortlisting.`;
+    pause = `you need a clean all-around fit; ${leader.place.name} only reaches ${leaderRow.liveFitScore}/100 on your must-haves, so read the profile before shortlisting.`;
   } else if (avgRisk(leader.place) * 20 >= 45) {
-    pause = `risk tolerance is low; the leader's composite risk load is ${Math.round(avgRisk(leader.place) * 20)}/100, so read the dossier before shortlisting.`;
+    pause = `risk tolerance is low; the leader's overall risk is ${Math.round(avgRisk(leader.place) * 20)}/100, so read the profile before shortlisting.`;
   } else if (annualComfortMonthCount(leader.place) <= 4) {
-    pause = `you need year-round outdoor ease; only ${annualComfortMonthCount(leader.place)} months clear the easy-living screen, so read the dossier before shortlisting.`;
+    pause = `you need year-round outdoor ease; only ${annualComfortMonthCount(leader.place)} months clear the comfort threshold, so read the profile before shortlisting.`;
   }
 
   return { love, pause };
@@ -304,17 +304,17 @@ function buildScoutNextStep(
 
   if (firstWindow) {
     return {
-      label: "Scout next",
+      label: "Visit next",
       place: leader.place,
-      action: `Scout ${possessive(leader.place.name)} ${firstWindow.label.toLowerCase()}: ${firstWindow.range}.`,
-      detail: `${firstWindow.label}: ${trimTerminalPunctuation(firstWindow.note ?? "best initial window from monthly normals")}. ${watch} ${compare}`,
+      action: `Visit ${leader.place.name} in its ${firstWindow.label.toLowerCase()} months: ${firstWindow.range}.`,
+      detail: `${firstWindow.label}: ${trimTerminalPunctuation(firstWindow.note ?? "the best first window, from monthly averages")}. ${watch} ${compare}`,
     };
   }
 
   return {
-    label: "Scout next",
+    label: "Visit next",
     place: leader.place,
-    action: `Read ${possessive(leader.place.name)} dossier before treating it as a finalist.`,
+    action: `Read ${possessive(leader.place.name)} profile before shortlisting it.`,
     detail: `${watch} ${compare}`,
   };
 }
@@ -323,11 +323,11 @@ function buildFieldCheck(leader: Place): ExplorerScoutBrief["fieldCheck"] {
   const nearby = leader.nearbyContrasts?.find(contrast => contrast.note.trim());
   if (nearby) {
     return {
-      label: "Field check",
+      label: "Check in person",
       place: leader,
       target: nearby.label,
       action: `Compare ${leader.name} with ${nearby.label}.`,
-      detail: `${nearby.note.trim()} Use this side-by-side check to confirm the ranked climate signal before treating the place as a finalist.`,
+      detail: `${nearby.note.trim()} Visit both to confirm the difference in person.`,
       source: "nearby-contrast",
     };
   }
@@ -335,11 +335,11 @@ function buildFieldCheck(leader: Place): ExplorerScoutBrief["fieldCheck"] {
   const local = leader.localContrast?.find(contrast => contrast.note?.trim());
   if (local?.note) {
     return {
-      label: "Field check",
+      label: "Check in person",
       place: leader,
       target: `Within ${local.radiusKm} km`,
       action: `Drive or walk the ${local.radiusKm} km contrast around ${leader.name}.`,
-      detail: `${local.note.trim()} Use the gradient to separate the microclimate from the wider regional baseline.`,
+      detail: `${local.note.trim()} The change over that distance shows how local the climate is.`,
       source: "local-contrast",
     };
   }
@@ -347,21 +347,21 @@ function buildFieldCheck(leader: Place): ExplorerScoutBrief["fieldCheck"] {
   const anchor = leader.settlementsWithinZone?.find(settlement => settlement.name.trim());
   if (anchor) {
     return {
-      label: "Field check",
+      label: "Check in person",
       place: leader,
       target: anchor.name,
-      action: `Anchor the scout day in ${anchor.name}.`,
-      detail: `${anchor.note?.trim() || `${anchor.name} is a practical in-zone settlement anchor.`} Compare services, exposure, roads, shade, and drainage before widening the search.`,
+      action: `Base the visit in ${anchor.name}.`,
+      detail: `${anchor.note?.trim() || `${anchor.name} is a practical base inside the area.`} Compare services, exposure, roads, shade, and drainage before widening the search.`,
       source: "settlement-anchor",
     };
   }
 
   return {
-    label: "Field check",
+    label: "Check in person",
     place: leader,
-    target: "Immediate exposure gradient",
-    action: `Walk or drive ${possessive(leader.name)} immediate exposure gradient.`,
-    detail: "Compare sun, shade, slope, drainage, and wind over a short route; the atlas point is a screening coordinate, not a parcel survey.",
+    target: "Sun, shade and slope nearby",
+    action: `Walk or drive ${possessive(leader.name)} nearby sun, shade and slope.`,
+    detail: "Compare sun, shade, slope, drainage, and wind over a short route; the atlas describes the area, not a specific property.",
     source: "derived",
   };
 }
@@ -381,7 +381,7 @@ function buildScoutPlan(
       kind: "leader",
     },
     {
-      label: "Field check",
+      label: "Check in person",
       place: fieldCheck.place,
       action: fieldCheck.action,
       detail: fieldCheck.detail,
@@ -413,30 +413,30 @@ function buildAdvisorRead(
   const leaderRow = decisionRows.find(row => row.place.id === leader.place.id);
   const signalWins = signalWinCount(decisionSignals, leader.place);
   const signalLine = signalWins > 0
-    ? ` and leads ${signalWins} of ${decisionSignals.length} living signals`
+    ? ` and leads ${signalWins} of ${decisionSignals.length} priorities`
     : "";
   const rankingNote = leader.note?.replace(/\s+/g, " ").trim();
-  const bestFor = leaderRow?.bestFor.split(";")[0]?.trim() || leader.place.relocationFit[0] || "climate scouts";
+  const bestFor = leaderRow?.bestFor.split(";")[0]?.trim() || leader.place.relocationFit[0] || "people choosing by climate";
   const watch = leaderRow?.watch
     ? checkObject(leaderRow.watch)
-    : "the dossier risk and practical-read sections";
+    : "the risk and practical notes sections of the profile";
   const liveFitRead = leaderRow
     ? `fit ${leaderRow.liveFitScore}/100`
     : `ranking score ${Math.round(leader.score)}/100`;
 
-  let confidence = "Screening confidence: directional; compare at least one runner-up before shortlisting.";
+  let confidence = "Confidence: rough. Compare at least one other place before shortlisting.";
   if (leaderRow && decisionRows.length >= 3 && leaderRow.liveFitScore >= 78 && signalWins >= 2) {
-    confidence = "Screening confidence: strong for this lens, still not parcel-level due diligence.";
+    confidence = "Confidence: strong for this ranking. Still check the exact location yourself.";
   } else if (leaderRow && leaderRow.liveFitScore >= 68) {
-    confidence = "Screening confidence: useful, with one tradeoff to verify before shortlisting.";
+    confidence = "Confidence: fair, with one tradeoff to check before shortlisting.";
   } else if (decisionRows.length < 3) {
-    confidence = "Screening confidence: thin shortlist; widen the search or compare more places.";
+    confidence = "Confidence: low, because few places match. Widen the search or compare more places.";
   }
 
   return {
-    verdict: `${leader.place.name} is the first scout in this view, not a moving recommendation.`,
-    why: `${bestFor} is the clearest audience fit; ${liveFitRead}${signalLine}.${rankingNote ? ` ${rankingNote}` : ""}`,
-    checkFirst: `Verify ${watch} first, then run the ${fieldCheck.target} field check.`,
+    verdict: `${leader.place.name} is the place to look at first in this view. That is not a recommendation to move.`,
+    why: `Best suited to ${bestFor}; ${liveFitRead}${signalLine}.${rankingNote ? ` ${rankingNote}` : ""}`,
+    checkFirst: `Verify ${watch} first, then run the ${fieldCheck.target} in-person check.`,
     nextAction: nextStep.action,
     confidence,
   };
@@ -471,8 +471,8 @@ export function buildExplorerScoutBrief(
   return {
     leader,
     compareIds,
-    summary: `${leader.place.name} leads this view by ${rankingLabel}${scenarioClause}; the top ${shortlist.length} span ${countries.join(", ")} and ${archetypes.size} microclimate families.`,
-    fitLine: leaderNote ? leaderNote : `${leader.place.koppen} climate signal with ${Math.round(leader.score)} score.`,
+    summary: `${leader.place.name} leads this view by ${rankingLabel}${scenarioClause}; the top ${shortlist.length} span ${countries.join(", ")} and ${archetypes.size} climate types.`,
+    fitLine: leaderNote ? leaderNote : `${leader.place.koppen} climate, with a score of ${Math.round(leader.score)}.`,
     advisorRead,
     decisionLine: decisionLine(decisionSignals),
     cautionLine: topRiskLine(leader.place),
@@ -486,37 +486,37 @@ export function buildExplorerScoutBrief(
       {
         label: "Summer highs",
         value: formatRange(places.map(meanSummerHigh), "°C"),
-        detail: "Mean Jun-Aug high across the current leaders",
+        detail: "Average Jun–Aug high across the top places",
       },
       {
         label: "Winter lows",
         value: formatRange(places.map(meanJanLow), "°C"),
-        detail: "Mean Dec-Feb low across the current leaders",
+        detail: "Average Dec–Feb low across the top places",
       },
       {
         label: "Easy months",
         value: formatRange(places.map(annualComfortMonthCount), " mo"),
-        detail: "Months that clear the day/night/precip easy-living screen",
+        detail: "Months with comfortable days and nights and no heavy rain",
       },
       {
         label: "Place feel",
         value: formatRange(places.map(placeFeelScore), "/100"),
-        detail: "Derived feel rating across sensory comfort, daily ease, identity, and scouting clarity",
+        detail: "A combined score for comfort, ease of daily life, character and how well documented the place is",
       },
       {
-        label: "Precip spread",
+        label: "Precip range",
         value: formatRange(places.map(getAnnualPrecipMm), " mm"),
-        detail: "Annual precipitation range across the current leaders",
+        detail: "Lowest to highest annual precipitation among the top places",
       },
       {
         label: "Avg risk",
         value: formatRange(places.map(place => avgRisk(place) * 20), "/100"),
-        detail: "Composite risk load, lower is easier",
+        detail: "Average hazard risk; lower is safer",
       },
       {
-        label: "Dominant family",
+        label: "Most common type",
         value: topArchetypeLabel(places),
-        detail: "Most common leading archetype",
+        detail: "The climate type most of the top places share",
       },
     ],
   };
