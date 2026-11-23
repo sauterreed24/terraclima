@@ -38,7 +38,7 @@ describe("ExplorerFilterSheet", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Open Explorer filters and ranking" }));
+    fireEvent.click(screen.getByRole("button", { name: "Open filters and ranking" }));
 
     expect(screen.getByRole("dialog", { name: "Filters & ranking" })).toHaveAttribute("aria-modal", "true");
     expect(screen.getByPlaceholderText("Search places")).toBeInTheDocument();
@@ -64,10 +64,10 @@ describe("ExplorerFilterSheet", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Open Explorer filters and ranking" }));
+    fireEvent.click(screen.getByRole("button", { name: "Open filters and ranking" }));
 
     await waitFor(() => {
-      expect(screen.getByRole("textbox", { name: "Search places by name, region, or archetype" })).toHaveFocus();
+      expect(screen.getByRole("textbox", { name: "Search places by name, region, climate type or Köppen code" })).toHaveFocus();
     });
   }, 30000);
 
@@ -84,7 +84,7 @@ describe("ExplorerFilterSheet", () => {
       />,
     );
 
-    expect(screen.getByRole("button", { name: "Open Explorer filters and ranking (1 active filter)" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open filters and ranking (1 active filter)" })).toBeInTheDocument();
     expect(screen.getByText("1")).toBeInTheDocument();
   });
 
@@ -109,7 +109,7 @@ describe("ExplorerFilterSheet", () => {
       />,
     );
 
-    const trigger = screen.getByRole("button", { name: "Open Explorer filters and ranking (5 active filters)" });
+    const trigger = screen.getByRole("button", { name: "Open filters and ranking (5 active filters)" });
     const summary = `Active Explorer filters: search "sequim"; countries USA; Live Finder Cool; summer at or below 79${DEG}F; climate layer 2050 mid.`;
 
     expect(trigger).toHaveAccessibleDescription(summary);

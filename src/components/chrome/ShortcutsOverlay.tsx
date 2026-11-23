@@ -56,11 +56,11 @@ export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { on
           <Kbds keys={["/"]} />        <span className="text-frost">Atlas: focus search (on narrow screens also opens the filter sheet)</span>
           <Kbds keys={[CMD_KEY_LABEL, "K"]} /> <span className="text-frost">Atlas: focus search (also works from inside any text input)</span>
           <Kbds keys={["F"]} />        <span className="text-frost">Atlas: open filter sheet (narrow screens only)</span>
-          <Kbds keys={["R"]} />        <span className="text-frost">Surprise - random place in your current list</span>
-          <Kbds keys={["B"]} />        <span className="text-frost">Pin / unpin the currently open place to your shortlist</span>
-          <Kbds keys={["H"]} />        <span className="text-frost">Set / clear the open place as your home base — cards and profiles then show climate deltas against it</span>
-          <Kbds keys={["Esc"]} />      <span className="text-frost">Close shortcuts, compare, filter sheet, site menu, or place detail (or clear a non-empty search field)</span>
-          <Kbds keys={["?"]} />        <span className="text-frost">Toggle this help</span>
+          <Kbds keys={["R"]} />        <span className="text-frost">Surprise me: open a random place from the current list</span>
+          <Kbds keys={["B"]} />        <span className="text-frost">Pin or unpin the open place to your shortlist</span>
+          <Kbds keys={["H"]} />        <span className="text-frost">Set or clear the open place as your home base. Cards and profiles then show how each place differs from it</span>
+          <Kbds keys={["Esc"]} />      <span className="text-frost">Close the open panel: shortcuts, Compare, filters, menu or a place profile. In the search box, clear the text</span>
+          <Kbds keys={["?"]} />        <span className="text-frost">Show or hide this list</span>
         </div>
         <div className="divider-contour my-3" />
         <div className="space-y-2 text-xs text-stone leading-relaxed">
@@ -68,13 +68,13 @@ export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { on
             Phone map: one-finger drag pans the atlas and pinch zooms by default. Tap <strong className="text-frost font-normal">Scroll page</strong> when you want browser scrolling over the map, then tap <strong className="text-frost font-normal">Use map</strong> to return to direct map control.
           </p>
           <p>
-            Place profiles: tap any pin or card. Read the opening story, then use On this page to move through practical read, climate tourism, field profile, seasons, geospatial analysis, soils, risks, similar stops, and sources.
+            Place profiles: tap any pin or card. Read the overview, then use On this page to jump to seasons, fit scores, climate figures, risks and sources.
           </p>
           <p>
-            Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header. The URL encodes the place and view. Surprise uses the same filtered pool as the cards.
+            Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header. The link opens the same place for anyone you send it to.
           </p>
           <p>
-            Climate layer: use the <strong className="text-frost font-normal">Climate layer</strong> control below the map to flip the Atlas (and Compare) between present-day normals and illustrative 2050 SSP2-4.5 / SSP5-8.5 projections. Place profiles stay on present-day data.
+            Climate layer: use the <strong className="text-frost font-normal">Climate layer</strong> control below the map to switch the Atlas and Compare between recent averages and two illustrative 2050 projections (moderate and high emissions). Place profiles always show recent averages.
           </p>
         </div>
       </div>

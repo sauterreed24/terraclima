@@ -718,7 +718,7 @@ describe("AtlasMap DOM controls", () => {
       expect(peek).toHaveTextContent("summers");
       expect(peek).not.toHaveTextContent("Climate snapshot");
       expect(peek).not.toHaveTextContent("Live fit");
-      expect(peek).not.toHaveTextContent("Current lens leader");
+      expect(peek).not.toHaveTextContent("Ranked by leader");
     } finally {
       vi.useRealTimers();
     }

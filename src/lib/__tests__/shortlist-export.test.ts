@@ -144,7 +144,7 @@ describe("exportShortlistAsMarkdown", () => {
 
     expect(file.filename).toBe("terraclima-scout-plan-20260515120000.md");
     expect(file.mimeType).toBe("text/markdown");
-    expect(file.body).toContain("# Terraclima Scout Plan");
+    expect(file.body).toContain("# Terraclima visit plan");
     expect(file.body).toContain("Generated: 2026-05-15T12:00:00.000Z");
     expect(file.body).toContain("Source: https://example.test/terraclima/");
     expect(file.body).toContain("Places: 2");
@@ -157,25 +157,25 @@ describe("exportShortlistAsMarkdown", () => {
     expect(file.body).toContain("- Score ingredients: live-here fit");
     expect(file.body).toContain("- Dossier: https://example.test/terraclima/?p=alpha-valley");
     expect(file.body).toContain("- Dossier: https://example.test/terraclima/?p=beta%2C%20ridge");
-    expect(file.body).toContain("## Evidence readiness");
+    expect(file.body).toContain("## How well sourced");
     expect(file.body).toContain("Weakest source reads first.");
-    expect(file.body).toContain("### Alpha Valley - Thin read - source first");
+    expect(file.body).toContain("### Alpha Valley - Thinly sourced");
     expect(file.body).toContain("- Evidence facts: high confidence; 0 HTTPS sources; 1 researched chapter; lived signals missing; humidity sourced; sunshine missing.");
-    expect(file.body).toContain("- Verify first: adding a second HTTPS source; expanding deep-dive context; filling lived-friction signals; sourcing sunshine normals.");
-    expect(file.body).toContain("- Planner action: Start with adding a second HTTPS source; do not treat this finalist as travel- or move-ready until that source gap is checked.");
+    expect(file.body).toContain("- Verify first: finding a second web source; the thin in-depth text; missing cost and access data; missing measured sunshine.");
+    expect(file.body).toContain("- Planner action: Start with finding a second web source; do not treat this finalist as travel- or move-ready until that source gap is checked.");
     expect(file.body).toContain("## Compare next");
     expect(file.body).toContain("Compare URL: https://example.test/terraclima/?cmp=alpha-valley,beta%2C%20ridge");
-    expect(file.body).toContain("Decision read:");
-    expect(file.body).toContain("Next action:");
+    expect(file.body).toContain("Summary:");
+    expect(file.body).toContain("Next step:");
     expect(file.body).toContain("Caution:");
-    expect(file.body).toContain("Scout verification checklist:");
+    expect(file.body).toContain("Check before you go:");
     expect(file.body).toContain("- Scout window - ");
     expect(file.body).toContain("- Hazard check - ");
     expect(file.body).toContain("- Daily-life friction - ");
     expect(file.body).toContain("- Source gap - ");
     expect(file.body).toContain("Proof:");
     expect(file.body).toContain("before booking");
-    expect(file.body).toContain("| Role | Place | Score | Fit | Risk | Visit | Watch first |");
+    expect(file.body).toContain("| Role | Place | Score | Fit | Risk | Visit | Check first |");
     expect(file.body).toContain("| Start here |");
     expect(file.body).toContain("Beta \"Ridge\"");
   });
@@ -186,7 +186,7 @@ describe("exportShortlistAsMarkdown", () => {
     expect(file.body).toContain("Places: 0");
     expect(file.body).toContain("No pinned places yet.");
     expect(file.body).toContain("## Compare next");
-    expect(file.body).toContain("Pin at least two places to generate a Compare-ready finalist table.");
+    expect(file.body).toContain("Pin at least two places to get a side-by-side table.");
   });
 
   it("exports a Compare setup handoff for a one-place shortlist", () => {
@@ -201,8 +201,8 @@ describe("exportShortlistAsMarkdown", () => {
     expect(file.body).toContain("Alpha Valley is saved as the anchor finalist.");
     expect(file.body).toContain("add a similar peer or a counterweight");
     expect(file.body).toContain("Anchor read:");
-    expect(file.body).not.toContain("Pin at least two places to generate a Compare-ready finalist table.");
-    expect(file.body).not.toContain("| Role | Place | Score | Fit | Risk | Visit | Watch first |");
+    expect(file.body).not.toContain("Pin at least two places to get a side-by-side table.");
+    expect(file.body).not.toContain("| Role | Place | Score | Fit | Risk | Visit | Check first |");
   });
 
   it("keeps the Compare handoff inside the four-place app limit while preserving the full export", () => {

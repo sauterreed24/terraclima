@@ -19,12 +19,12 @@ afterEach(() => {
 describe("ShortlistExportMenu", () => {
   it("disables export when shortlist is empty", () => {
     render(<ShortlistExportMenu places={[]} />);
-    const trigger = screen.getByRole("button", { name: "Export shortlist unavailable until places are pinned" });
+    const trigger = screen.getByRole("button", { name: "Pin a place to export your shortlist" });
     expect(trigger).toBeDisabled();
     expect(trigger).toHaveAttribute("title", trigger.getAttribute("aria-label"));
   });
 
-  it("shows Scout plan first in the export menu", () => {
+  it("shows Visit plan first in the export menu", () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
     const trigger = screen.getByRole("button", { name: "Export shortlist" });
     expect(trigger).toHaveClass("tc-shortlist-export__trigger");
@@ -34,20 +34,20 @@ describe("ShortlistExportMenu", () => {
     const items = screen.getAllByRole("menuitem");
     expect(items[0]).toHaveFocus();
     expect(items.map(item => item.textContent)).toEqual([
-      "Scout planVisit windows, source gaps, and verification steps",
-      "JSONMinimal place rows for scripts",
-      "CSVSpreadsheet-friendly table",
-      "GeoJSONRFC 7946 map points",
-      "Calendar (.ics)Best-month scouting windows",
+      "Visit planBest months, data gaps and what to check, as text",
+      "JSONOne record per place, for scripts",
+      "CSVA table for spreadsheets",
+      "GeoJSONMap points for GIS and mapping tools",
+      "Calendar (.ics)Best months to visit, as calendar events",
     ]);
     expect(items.map(item => item.getAttribute("aria-label"))).toEqual([
-      "Scout plan: Visit windows, source gaps, and verification steps",
-      "JSON: Minimal place rows for scripts",
-      "CSV: Spreadsheet-friendly table",
-      "GeoJSON: RFC 7946 map points",
-      "Calendar (.ics): Best-month scouting windows",
+      "Visit plan: Best months, data gaps and what to check, as text",
+      "JSON: One record per place, for scripts",
+      "CSV: A table for spreadsheets",
+      "GeoJSON: Map points for GIS and mapping tools",
+      "Calendar (.ics): Best months to visit, as calendar events",
     ]);
-    expect(items[0]).toHaveAttribute("title", "Scout plan: Visit windows, source gaps, and verification steps");
+    expect(items[0]).toHaveAttribute("title", "Visit plan: Best months, data gaps and what to check, as text");
   });
 
   it("supports arrow, Home, and End keyboard navigation in the export menu", () => {
@@ -111,7 +111,7 @@ describe("ShortlistExportMenu", () => {
   it("downloads the Markdown scout plan when chosen", async () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
     fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
-    fireEvent.click(screen.getByRole("menuitem", { name: /^Scout plan/i }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /^Visit plan/i }));
 
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent("Preparing export...");
@@ -119,7 +119,7 @@ describe("ShortlistExportMenu", () => {
     await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledOnce(), { timeout: 5000 });
     expect(screen.getByRole("status")).toHaveTextContent("Download started.");
     const [body, filename, mimeType] = vi.mocked(downloadBlobFile).mock.calls[0]!;
-    expect(body).toContain("# Terraclima Scout Plan");
+    expect(body).toContain("# Terraclima visit plan");
     expect(body).toContain(PLACES[0]!.name);
     expect(filename).toMatch(/^terraclima-scout-plan-.*\.md$/);
     expect(mimeType).toBe("text/markdown");
@@ -167,11 +167,11 @@ describe("ShortlistExportMenu", () => {
 
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
     fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
-    fireEvent.click(screen.getByRole("menuitem", { name: /^Scout plan/i }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /^Visit plan/i }));
 
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledOnce(), { timeout: 5000 });
-    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Download blocked. Try another format or browser."));
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("The download did not start. Try another format or browser."));
   });
 
   it("downloads CSV, GeoJSON, and calendar exports", async () => {

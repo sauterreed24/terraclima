@@ -169,7 +169,7 @@ async function main() {
       }
 
       // Fit Finder / Most comfortable lens.
-      const more = page.getByRole("button", { name: /More atlas actions|Show scouting tools|Most comfortable/i }).first();
+      const more = page.getByRole("button", { name: /More actions|Show scouting tools|Most comfortable/i }).first();
       if (await more.count()) {
         // Prefer ranking control in filter dock when visible.
       }

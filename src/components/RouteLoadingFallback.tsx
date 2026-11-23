@@ -5,10 +5,10 @@ interface Props {
 export function RouteLoadingFallback({ label }: Props) {
   return (
     <div className="panel p-5 anim-fade-in" role="status" aria-live="polite" aria-atomic="true">
-      <p className="m-0 text-[10px] uppercase tracking-[0.16em] text-stone-readable">Loading view</p>
+      <p className="m-0 text-[10px] uppercase tracking-[0.16em] text-stone-readable">Loading</p>
       <h2 className="m-0 mt-1 font-atlas text-xl text-ice">{label}</h2>
       <p className="m-0 mt-3 text-sm leading-relaxed text-stone-readable">
-        Preparing {label.toLowerCase()}…
+        Loading {label.toLowerCase()}…
       </p>
       <div className="mt-6 grid gap-3" aria-hidden="true">
         <div className="h-3 w-3/4 rounded-full bg-white/10" />

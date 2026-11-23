@@ -63,7 +63,7 @@ function buildFitContextRead(
   const screenContext = context?.bundleLabel
     ? `${context.bundleLabel} path${context.bundleCue ? ` (${context.bundleCue})` : ""} · ${context.rankingLabel}`
     : context?.rankingLabel
-      ? `${context.rankingLabel} lens`
+      ? `the ${context.rankingLabel} ranking`
       : null;
   const lens = presetLabels.length > 0 ? presetLabels.join(" + ") : "your must-have limits";
   const scoredContext = constraints.length > 0

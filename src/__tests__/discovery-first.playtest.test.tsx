@@ -36,7 +36,7 @@ function renderApp() {
 }
 
 function openHeroMoreMenu() {
-  const more = screen.getByRole("button", { name: "More atlas actions" });
+  const more = screen.getByRole("button", { name: "More actions" });
   if (more.getAttribute("aria-expanded") !== "true") {
     fireEvent.click(more);
   }
@@ -59,11 +59,11 @@ describe("Discovery-first playtest", () => {
 
     expect(screen.getByRole("heading", { name: "Discover microclimates hiding in plain sight" })).toBeInTheDocument();
     expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent("Most unique · top 5");
-    expect(screen.getByRole("button", { name: "Open a unique microclimate from the current filtered list" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "More atlas actions" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open a random place from the current list (R)" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "More actions" })).toBeInTheDocument();
     openHeroMoreMenu();
     expect(screen.getByRole("button", { name: "Show scouting tools" })).toBeInTheDocument();
-    expect(screen.queryByLabelText("Desktop relocation workbench")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Top-picks summary")).not.toBeInTheDocument();
     expect(screen.queryByLabelText(/climate signal leaders/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Livability lens/)).not.toBeInTheDocument();
 
@@ -76,7 +76,7 @@ describe("Discovery-first playtest", () => {
     try {
       renderApp();
 
-      fireEvent.click(screen.getByRole("button", { name: "Open a unique microclimate from the current filtered list" }));
+      fireEvent.click(screen.getByRole("button", { name: "Open a random place from the current list (R)" }));
 
       await screen.findByRole("button", { name: "Close profile" }, { timeout: TIMEOUT });
       // Lazy PlaceDetail body: wait for mechanism heading before asserting guide.
@@ -101,7 +101,7 @@ describe("Discovery-first playtest", () => {
     try {
       renderApp();
 
-      fireEvent.click(screen.getByRole("button", { name: "Open a unique microclimate from the current filtered list" }));
+      fireEvent.click(screen.getByRole("button", { name: "Open a random place from the current list (R)" }));
       await screen.findByRole("button", { name: "Close profile" }, { timeout: TIMEOUT });
 
       await screen.findByRole("heading", { name: "What shapes the climate here" }, { timeout: TIMEOUT });
@@ -115,7 +115,7 @@ describe("Discovery-first playtest", () => {
       }, { timeout: TIMEOUT });
 
       expect(screen.getByRole("heading", { name: "Climate twins" })).toBeInTheDocument();
-      expect(screen.getByRole("group", { name: "Find a twin, but shifted" })).toBeInTheDocument();
+      expect(screen.getByRole("group", { name: "Find a twin that differs in one way" })).toBeInTheDocument();
     } finally {
       randomSpy.mockRestore();
     }
@@ -124,7 +124,7 @@ describe("Discovery-first playtest", () => {
   it("Hidden gems quick pick updates ranking without opening scout tools", async () => {
     renderApp();
 
-    const quickPicks = screen.getByRole("group", { name: "Discovery quick picks" });
+    const quickPicks = screen.getByRole("group", { name: "Quick starts" });
     fireEvent.click(within(quickPicks).getByRole("button", { name: /Hidden gems/ }));
 
     await waitFor(() => {
@@ -132,7 +132,7 @@ describe("Discovery-first playtest", () => {
     }, { timeout: TIMEOUT });
 
     expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent(/Hidden gems/i);
-    expect(screen.queryByLabelText("Desktop relocation workbench")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "More atlas actions" })).toBeInTheDocument();
+    expect(screen.queryByLabelText("Top-picks summary")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "More actions" })).toBeInTheDocument();
   }, TIMEOUT);
 });

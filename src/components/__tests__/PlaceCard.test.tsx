@@ -32,7 +32,7 @@ function renderPlaceCard({
 describe("PlaceCard overlay warmup", () => {
   it("surfaces the computed bioclimatic card signature", () => {
     renderPlaceCard();
-    const bioclim = screen.getByLabelText("Bioclimatic signature");
+    const bioclim = screen.getByLabelText("Aridity and continentality class");
 
     expect(bioclim.textContent).toMatch(/oceanic|continental/);
   });
@@ -54,10 +54,10 @@ describe("PlaceCard overlay warmup", () => {
       </UnitProvider>,
     );
 
-    const evidence = screen.getByLabelText("Why this place ranked here");
+    const evidence = screen.getByLabelText("Why this place ranks here");
     expect(evidence).toHaveTextContent("Why this rank");
     expect(evidence).toHaveTextContent(note);
-    expect(evidence).not.toHaveTextContent("First check");
+    expect(evidence).not.toHaveTextContent("Check first");
     expect(screen.queryByText("Livability")).not.toBeInTheDocument();
     expect(screen.queryByText("Live-here fit")).not.toBeInTheDocument();
     expect(screen.queryByLabelText(`${place.name} visual signature`)).not.toBeInTheDocument();
@@ -86,7 +86,7 @@ describe("PlaceCard overlay warmup", () => {
     expect(screen.getByText("Livability")).toBeInTheDocument();
     expect(screen.getByText("Live-here fit")).toBeInTheDocument();
     expect(screen.getByLabelText(`${place.name} visual signature`)).toBeInTheDocument();
-    expect(screen.getByLabelText("Why this place ranked here")).toHaveTextContent("First check");
+    expect(screen.getByLabelText("Why this place ranks here")).toHaveTextContent("Check first");
   });
 
   it("preloads the place detail chunk on hover, focus, and tap intent", () => {
@@ -214,7 +214,7 @@ describe("PlaceCard home-base delta strip", () => {
     );
 
     const strip = screen.getByLabelText(`${home.name} is your home base`);
-    expect(strip).toHaveTextContent("your climate baseline");
+    expect(strip).toHaveTextContent("your home base");
   });
 
   it("renders no delta strip without a home base", () => {

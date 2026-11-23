@@ -11,7 +11,7 @@ import { possessive } from "../../lib/place-name";
 import type { Place } from "../../types";
 import { CompareView } from "../CompareView";
 
-const CANDIDATE_SEARCH_LABEL = "Find Workbench candidates by name, region, source, or scouting note";
+const CANDIDATE_SEARCH_LABEL = "Find places to add, by name, region or source";
 
 vi.mock("framer-motion", () => ({
   AnimatePresence: ({ children }: { children: ReactNode }) => <>{children}</>,
@@ -121,13 +121,13 @@ describe("CompareView", () => {
       </UnitProvider>,
     );
 
-    const workbench = screen.getByLabelText("Compare workbench");
-    expect(workbench).toHaveTextContent("Priority lens");
+    const workbench = screen.getByLabelText("Add or swap places");
+    expect(workbench).toHaveTextContent("Compare for");
     expect(workbench).toHaveTextContent("Risk");
     expect(workbench).toHaveTextContent("4/4 active / 8 candidates");
     expect(screen.getByRole("button", { name: "Close comparison" })).toBeInTheDocument();
 
-    const lens = screen.getByRole("group", { name: "Comparison priority lens" });
+    const lens = screen.getByRole("group", { name: "What to compare for" });
     expect(within(lens).getByRole("button", { name: "Risk" })).toHaveAttribute("aria-pressed", "true");
     fireEvent.click(within(lens).getByRole("button", { name: "Garden" }));
     expect(onComparisonLensChange).toHaveBeenCalledWith("garden");
@@ -155,17 +155,17 @@ describe("CompareView", () => {
   it("offers direct shortcuts to decision, evidence, differences, and candidates", () => {
     renderCompare();
 
-    const shortcuts = screen.getByRole("navigation", { name: "Compare decision shortcuts" });
-    const workbench = screen.getByLabelText("Compare workbench");
+    const shortcuts = screen.getByRole("navigation", { name: "Jump to a section of Compare" });
+    const workbench = screen.getByLabelText("Add or swap places");
 
     expect(shortcuts.compareDocumentPosition(workbench) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(within(shortcuts).getByRole("link", { name: "Jump to Compare decision read" })).toHaveAttribute("href", "#compare-decision-read");
-    expect(within(shortcuts).getByRole("link", { name: "Jump to Compare evidence readiness" })).toHaveAttribute("href", "#compare-evidence-readiness");
-    expect(within(shortcuts).getByRole("link", { name: "Jump to Compare difference board" })).toHaveAttribute("href", "#compare-diff-board");
-    expect(within(shortcuts).getByRole("link", { name: "Jump to Compare candidate workbench" })).toHaveAttribute("href", "#compare-candidates");
+    expect(within(shortcuts).getByRole("link", { name: "Jump to the summary" })).toHaveAttribute("href", "#compare-decision-read");
+    expect(within(shortcuts).getByRole("link", { name: "Jump to how well each place is sourced" })).toHaveAttribute("href", "#compare-evidence-readiness");
+    expect(within(shortcuts).getByRole("link", { name: "Jump to the table of differences" })).toHaveAttribute("href", "#compare-diff-board");
+    expect(within(shortcuts).getByRole("link", { name: "Jump to add or swap places" })).toHaveAttribute("href", "#compare-candidates");
     expect(workbench).toHaveAttribute("id", "compare-candidates");
     expect(screen.getByLabelText("Comparison decision read")).toHaveAttribute("id", "compare-decision-read");
-    expect(screen.getByLabelText("Evidence readiness")).toHaveAttribute("id", "compare-evidence-readiness");
+    expect(screen.getByLabelText("How well sourced")).toHaveAttribute("id", "compare-evidence-readiness");
     expect(screen.getByLabelText("Grouped comparison rows")).toHaveAttribute("id", "compare-diff-board");
   });
 
@@ -205,7 +205,7 @@ describe("CompareView", () => {
       candidates: [{ place: contrast, source: "Ranked", note: "Leader" }],
     });
 
-    expect(screen.getByLabelText("Compare workbench")).toHaveTextContent("1/4 active / 2 candidates");
+    expect(screen.getByLabelText("Add or swap places")).toHaveTextContent("1/4 active / 2 candidates");
     const addCandidate = screen.getByRole("button", { name: `Add ${contrast.name} to active comparison` });
     expect(addCandidate).toHaveTextContent("Add");
     fireEvent.click(addCandidate);
@@ -226,11 +226,11 @@ describe("CompareView", () => {
       comparisonLens: "risk",
     });
 
-    const coach = screen.getByLabelText("Contrast coach");
-    expect(coach).toHaveTextContent("Best swaps to learn faster");
+    const coach = screen.getByLabelText("Suggested swaps");
+    expect(coach).toHaveTextContent("Places that would sharpen the comparison");
     expect(coach).toHaveTextContent(/upgrade|contrast|counterweight|anchor/i);
 
-    const recommendation = within(coach).getAllByRole("button", { name: /from Contrast coach/ })[0]!;
+    const recommendation = within(coach).getAllByRole("button", { name: /from Suggested swaps/ })[0]!;
     expect(recommendation).toHaveAttribute("title", recommendation.getAttribute("aria-label"));
     fireEvent.click(recommendation);
 
@@ -261,7 +261,7 @@ describe("CompareView", () => {
     expect(within(tray).getByRole("button", { name: `Swap ${PLACES[5]!.name} into active comparison` })).toBeInTheDocument();
     expect(within(tray).queryByRole("button", { name: `Swap ${PLACES[4]!.name} into active comparison` })).not.toBeInTheDocument();
     expect(tray).toHaveTextContent("4/4 active / 1/3 match");
-    expect(tray).toHaveTextContent("Active places stay pinned; finder matches appear after them.");
+    expect(tray).toHaveTextContent("Places already in the comparison come first, then search matches.");
 
     fireEvent.change(within(tray).getByRole("searchbox", { name: CANDIDATE_SEARCH_LABEL }), {
       target: { value: PLACES[5]!.region },
@@ -269,7 +269,7 @@ describe("CompareView", () => {
     expect(within(tray).getByRole("button", { name: `Swap ${PLACES[5]!.name} into active comparison` })).toBeInTheDocument();
     expect(tray).toHaveTextContent("4/4 active / 1/3 match");
 
-    fireEvent.click(within(tray).getByRole("button", { name: "Reset candidate finder to all sources" }));
+    fireEvent.click(within(tray).getByRole("button", { name: "Clear the search and show all places you can add" }));
     const resetSearch = within(tray).getByRole("searchbox", { name: CANDIDATE_SEARCH_LABEL });
     expect(resetSearch).toHaveValue("");
     expect(resetSearch).toHaveFocus();
@@ -295,7 +295,7 @@ describe("CompareView", () => {
 
     expect(tray).toHaveTextContent("4/4 active / 0/2 matches");
     expect(tray).toHaveTextContent("No finder matches outside the active set.");
-    expect(within(tray).getByRole("button", { name: "Reset candidate finder to all sources" })).toBeInTheDocument();
+    expect(within(tray).getByRole("button", { name: "Clear the search and show all places you can add" })).toBeInTheDocument();
     expect(within(tray).getAllByRole("button", { name: /active comparison/ })).toHaveLength(4);
     expect(within(tray).queryByRole("button", { name: /Swap .* into active comparison/ })).not.toBeInTheDocument();
   });
@@ -339,7 +339,7 @@ describe("CompareView", () => {
     });
 
     const tray = screen.getByLabelText("Candidate tray");
-    const select = within(tray).getByRole("combobox", { name: "Sort Workbench candidates" });
+    const select = within(tray).getByRole("combobox", { name: "Sort places you can add" });
     const sortedProfiles = buildCompareDecisionProfiles(candidates.map(candidate => candidate.place))
       .sort((a, b) => compareLensScore(b, "risk") - compareLensScore(a, "risk") || a.place.name.localeCompare(b.place.name));
     const topProfile = sortedProfiles[0]!;
@@ -360,7 +360,7 @@ describe("CompareView", () => {
   it("groups practical comparison rows and can hide matching signals", () => {
     renderCompare();
 
-    const table = screen.getByRole("table", { name: "Grouped comparison signals for active places" });
+    const table = screen.getByRole("table", { name: "Figures and scores for each compared place, grouped by topic" });
     expect(table).toHaveTextContent("Comfort");
     expect(table).toHaveTextContent("Seasonality");
     expect(table).toHaveTextContent("Hazards");
@@ -389,7 +389,7 @@ describe("CompareView", () => {
     expect(screen.getByText("Mildest winter")).toBeInTheDocument();
     expect(screen.getByText("Best live-here fit")).toBeInTheDocument();
     expect(screen.getByText("Top livability")).toBeInTheDocument();
-    expect(screen.getByText("Lowest risk load")).toBeInTheDocument();
+    expect(screen.getByText("Lowest overall risk")).toBeInTheDocument();
     expect(screen.getByText("Best growability")).toBeInTheDocument();
     expect(screen.getAllByText("Live-here fit").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Livability").length).toBeGreaterThan(0);
@@ -431,27 +431,27 @@ describe("CompareView", () => {
 
     const decisionRead = screen.getByLabelText("Comparison decision read");
     expect(decisionRead).toBeInTheDocument();
-    expect(within(decisionRead).getByText("Decision read")).toBeInTheDocument();
-    expect(screen.getByText("Next action")).toBeInTheDocument();
+    expect(within(decisionRead).getByText("Summary")).toBeInTheDocument();
+    expect(screen.getByText("Next step")).toBeInTheDocument();
     expect(screen.getByText("Broadest fit")).toBeInTheDocument();
     expect(within(screen.getByLabelText("Comparison decision read")).getByText("Lowest risk")).toBeInTheDocument();
     expect(screen.getByText("Comfort leader")).toBeInTheDocument();
     expect(screen.getByText("Garden edge")).toBeInTheDocument();
     expect(screen.getByLabelText("Finalist decision table")).toBeInTheDocument();
-    expect(screen.getByText("Finalist table")).toBeInTheDocument();
+    expect(screen.getByText("All places at a glance")).toBeInTheDocument();
     expect(screen.getByText("Role")).toBeInTheDocument();
     expect(screen.getByText("Score")).toBeInTheDocument();
     expect(screen.getByText("Visit")).toBeInTheDocument();
     expect(screen.getByText("Watch first")).toBeInTheDocument();
     expect(screen.getByText("Start here")).toBeInTheDocument();
-    expect(screen.getByLabelText("Evidence readiness")).toBeInTheDocument();
-    const scoutSequence = screen.getByLabelText("Scouting sequence");
+    expect(screen.getByLabelText("How well sourced")).toBeInTheDocument();
+    const scoutSequence = screen.getByLabelText("Visit order");
     expect(scoutSequence).toBeInTheDocument();
-    expect(screen.getByText("Scout sequence")).toBeInTheDocument();
+    expect(screen.getByText("Visit order")).toBeInTheDocument();
     expect(within(scoutSequence).getByText(/Start here/)).toBeInTheDocument();
     expect(within(scoutSequence).getByText(/Counterweight/)).toBeInTheDocument();
-    const checklist = screen.getByLabelText("Scout verification checklist");
-    expect(checklist).toHaveTextContent("Scout verification checklist");
+    const checklist = screen.getByLabelText("Check before you go");
+    expect(checklist).toHaveTextContent("Check before you go");
     expect(checklist).toHaveTextContent("Scout window");
     expect(checklist).toHaveTextContent("Tradeoff check");
     expect(checklist).toHaveTextContent("Hazard check");
@@ -459,7 +459,7 @@ describe("CompareView", () => {
     expect(checklist).toHaveTextContent("Source gap");
     expect(checklist).toHaveTextContent("What to prove before booking a visit");
 
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share comparison link" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy a link to this comparison" }));
     expect(onCopyView).toHaveBeenCalledTimes(1);
     const firstDossier = screen.getByRole("button", { name: /Open first dossier:/ });
     expect(firstDossier).toHaveAttribute("title", firstDossier.getAttribute("aria-label"));
@@ -482,7 +482,7 @@ describe("CompareView", () => {
   it("distinguishes native share success from clipboard copy feedback", () => {
     renderCompare({ onCopyView: vi.fn(), shareStatus: "shared" });
 
-    expect(screen.getByRole("button", { name: "Copy or share comparison link" })).toHaveTextContent("Shared");
+    expect(screen.getByRole("button", { name: "Copy a link to this comparison" })).toHaveTextContent("Shared");
     expect(screen.queryByText("Link copied")).not.toBeInTheDocument();
   });
 
@@ -491,12 +491,12 @@ describe("CompareView", () => {
 
     renderCompare({ onCopyView: vi.fn(), shareStatus: "failed", shareFallbackUrl: fallbackUrl });
 
-    expect(screen.getByRole("button", { name: "Retry copy or use the selected manual comparison URL" })).toHaveTextContent(
+    expect(screen.getByRole("button", { name: "Copy failed. Try again, or copy the link shown below" })).toHaveTextContent(
       "Manual copy",
     );
     const fallbackGroup = screen.getByRole("group", { name: "Manual comparison share link" });
     const fallbackInput = within(fallbackGroup).getByRole("textbox", {
-      name: "Shareable comparison URL for manual copy",
+      name: "Link to this comparison. Select it and copy.",
     });
 
     expect(fallbackInput).toHaveValue(fallbackUrl);
@@ -521,12 +521,12 @@ describe("CompareView", () => {
     };
     renderCompare({ places: [thinPlace, PLACES[1]!], onOpenPlace });
 
-    const readiness = screen.getByLabelText("Evidence readiness");
-    expect(readiness).toHaveTextContent("Thin Evidence Test: Thin read - source first");
+    const readiness = screen.getByLabelText("How well sourced");
+    expect(readiness).toHaveTextContent("Thin Evidence Test: Thinly sourced");
     expect(readiness).toHaveTextContent("0 HTTPS sources");
-    expect(readiness).toHaveTextContent("Low confidence profile");
-    expect(readiness).toHaveTextContent("Add a second HTTPS source");
-    expect(readiness).toHaveTextContent("Fill lived-friction signals");
+    expect(readiness).toHaveTextContent("Low-confidence entry");
+    expect(readiness).toHaveTextContent("Fewer than two web sources");
+    expect(readiness).toHaveTextContent("No cost or access data");
 
     const evidenceButton = within(readiness).getByRole("button", { name: "Open Thin Evidence Test dossier from evidence readiness" });
     expect(evidenceButton).toHaveAttribute("title", "Open Thin Evidence Test dossier from evidence readiness");
@@ -537,7 +537,7 @@ describe("CompareView", () => {
   it("renders one finalist decision table row per compared place", () => {
     renderCompare({ onOpenPlace: vi.fn() });
 
-    const table = screen.getByRole("table", { name: "Decision table for saved compare finalists" });
+    const table = screen.getByRole("table", { name: "Role, score, best season and first caution for each compared place" });
     const rows = within(table).getAllByRole("row");
     expect(rows).toHaveLength(PLACES.slice(0, 4).length + 1);
     for (const place of PLACES.slice(0, 4)) {
@@ -554,8 +554,8 @@ describe("CompareView", () => {
     renderCompare({ places: [anchor], onOpenPlace, onClose });
 
     expect(screen.getByRole("dialog", { name: "1 place saved to compare" })).toBeInTheDocument();
-    expect(screen.getByLabelText("Single finalist compare setup")).toBeInTheDocument();
-    expect(screen.getByText("Shortlist setup")).toBeInTheDocument();
+    expect(screen.getByLabelText("Getting started with one place")).toBeInTheDocument();
+    expect(screen.getByText("One place so far")).toBeInTheDocument();
     expect(screen.getByText(/is saved as the anchor finalist/)).toBeInTheDocument();
     expect(screen.getByText(/Add a peer or counterweight/)).toBeInTheDocument();
     expect(screen.getByText("Anchor signal")).toBeInTheDocument();
@@ -563,11 +563,11 @@ describe("CompareView", () => {
     expect(screen.getByText("Counterweight")).toBeInTheDocument();
     expect(screen.queryByLabelText("Comparison decision read")).not.toBeInTheDocument();
 
-    const reviewButton = screen.getByRole("button", { name: `Review anchor dossier: ${anchor.name}` });
-    expect(reviewButton).toHaveAttribute("title", `Review anchor dossier: ${anchor.name}`);
+    const reviewButton = screen.getByRole("button", { name: `Open profile dossier: ${anchor.name}` });
+    expect(reviewButton).toHaveAttribute("title", `Open profile dossier: ${anchor.name}`);
     fireEvent.click(reviewButton);
     expect(onOpenPlace).toHaveBeenCalledWith(anchor.id, { trigger: reviewButton });
-    fireEvent.click(screen.getByRole("button", { name: "Keep scouting" }));
+    fireEvent.click(screen.getByRole("button", { name: "Back to the atlas" }));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
@@ -576,7 +576,7 @@ describe("CompareView", () => {
     const yuma = PLACES_BY_ID["yuma-az"]!;
     renderCompare({ places: [sequim, yuma] });
 
-    const table = screen.getByRole("table", { name: "Grouped comparison signals for active places" });
+    const table = screen.getByRole("table", { name: "Figures and scores for each compared place, grouped by topic" });
     expect(table).toHaveTextContent("Sunshine");
     expect(table).toHaveTextContent("50%");
     expect(table).toHaveTextContent("92%");
@@ -588,7 +588,7 @@ describe("CompareView", () => {
   it("adds a compact mobile key for bioclimatic comparison rows", () => {
     renderCompare();
 
-    expect(screen.getByText("Bioclim key")).toBeInTheDocument();
+    expect(screen.getByText("What the index rows mean")).toBeInTheDocument();
     expect(screen.getByText("annual aridity")).toBeInTheDocument();
     expect(screen.getByText("continentality")).toBeInTheDocument();
     expect(screen.getByText("growing-season moisture")).toBeInTheDocument();
@@ -655,8 +655,8 @@ describe("CompareView", () => {
       },
     });
 
-    const lens = screen.getByLabelText("Comparison scoring lens");
-    expect(lens).toHaveTextContent("Score lens");
+    const lens = screen.getByLabelText("What the scores are based on");
+    expect(lens).toHaveTextContent("What the scores use");
     expect(lens).toHaveTextContent("Fit and finalist scores are being read through Cool summers and Dry air");
     expect(lens).toHaveTextContent("summer <= 72°F");
     expect(lens).toHaveTextContent("fire <= elevated");
@@ -667,7 +667,7 @@ describe("CompareView", () => {
   it("keeps default present-day Compare free of the scoring lens receipt", () => {
     renderCompare();
 
-    expect(screen.queryByLabelText("Comparison scoring lens")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("What the scores are based on")).not.toBeInTheDocument();
   });
 
   it("shows a scenario honesty banner when comparing under a future climate layer", () => {
@@ -684,7 +684,7 @@ describe("CompareView", () => {
     );
     expect(screen.getByRole("note")).toHaveTextContent(/SSP5-8.5/);
     expect(screen.getByRole("note")).toHaveTextContent(/Place dossiers still show recent observed normals/);
-    expect(screen.getByLabelText("Comparison scoring lens")).toHaveTextContent(/SSP5-8.5/);
+    expect(screen.getByLabelText("What the scores are based on")).toHaveTextContent(/SSP5-8.5/);
   });
 
   it("omits the scenario banner for present-day compare", () => {
@@ -725,6 +725,6 @@ describe("CompareView", () => {
   it("shows the SSP2-4.5 scenario banner and scoring lens receipt", () => {
     renderCompare({ scenario: "ssp245", places: PLACES.slice(0, 2) });
     expect(screen.getByRole("note")).toHaveTextContent(/SSP2-4.5/);
-    expect(screen.getByLabelText("Comparison scoring lens")).toHaveTextContent(/SSP2-4.5/);
+    expect(screen.getByLabelText("What the scores are based on")).toHaveTextContent(/SSP2-4.5/);
   });
 });

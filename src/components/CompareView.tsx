@@ -737,7 +737,7 @@ export function CompareView({
                     ) : null}
                   </div>
                 </div>
-                <div className="compare-decision-read__scout-sequence" aria-label="Scouting sequence">
+                <div className="compare-decision-read__scout-sequence" aria-label="Visit order">
                   <div className="compare-decision-read__scout-head">
                     <span className="compare-decision-read__scout-kicker">Visit order</span>
                     <span className="compare-decision-read__scout-copy">Where to go first, when, and what to check there.</span>
@@ -772,7 +772,7 @@ export function CompareView({
                     })}
                   </div>
                 </div>
-                <div className="compare-verification-checklist" aria-label="Scout verification checklist">
+                <div className="compare-verification-checklist" aria-label="Check before you go">
                   <div className="compare-verification-checklist__head">
                     <span className="compare-verification-checklist__kicker">Check before you go</span>
                     <span>What to confirm for each place before booking a visit or looking at housing.</span>
@@ -1300,7 +1300,7 @@ function HomeDeltaStrip({ place, home }: { place: Place; home: Place }) {
       <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Vs home · {home.name}</div>
       <div className="flex flex-wrap gap-1">
         {chips.length === 0 ? (
-          <span className="chip" data-tone="sage" title="Every major climate signal lands within a rounding error of home.">
+          <span className="chip" data-tone="sage" title="Every main climate figure is about the same as at your home base.">
             climate sibling
           </span>
         ) : (

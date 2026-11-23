@@ -24,7 +24,7 @@ describe("CopyPlaceLink", () => {
     vi.stubGlobal("navigator", { clipboard: { writeText } });
 
     render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy a link to this place" }));
 
     await waitFor(() => {
       expect(screen.getByText("Copied")).toBeInTheDocument();
@@ -44,7 +44,7 @@ describe("CopyPlaceLink", () => {
     );
 
     render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy a link to this place" }));
 
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);
@@ -60,15 +60,15 @@ describe("CopyPlaceLink", () => {
     document.execCommand = (() => false) as unknown as typeof document.execCommand;
 
     render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy a link to this place" }));
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Retry copy or use the selected manual place URL" })).toHaveTextContent(
+      expect(screen.getByRole("button", { name: "Copy failed. Try again, or copy the link shown below" })).toHaveTextContent(
         "Manual copy",
       );
     });
     const fallbackGroup = screen.getByRole("group", { name: "Manual place share link" });
-    const fallbackInput = screen.getByRole("textbox", { name: "Shareable place URL for manual copy" });
+    const fallbackInput = screen.getByRole("textbox", { name: "Link to this place. Select it and copy." });
     expect(fallbackGroup).toContainElement(fallbackInput);
     expect((fallbackInput as HTMLInputElement).value).toContain("p=sequim-wa");
     await waitFor(() => expect(fallbackInput).toHaveFocus());
@@ -80,7 +80,7 @@ describe("CopyPlaceLink", () => {
     document.execCommand = execCommand as unknown as typeof document.execCommand;
 
     render(<CopyPlaceLink placeId="port-townsend-wa" placeName="Port Townsend" />);
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy a link to this place" }));
 
     await waitFor(() => {
       expect(screen.getByText("Copied")).toBeInTheDocument();
@@ -95,14 +95,14 @@ describe("CopyPlaceLink", () => {
 
     render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy a link to this place" }));
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Retry copy or use the selected manual place URL" })).toHaveTextContent(
+      expect(screen.getByRole("button", { name: "Copy failed. Try again, or copy the link shown below" })).toHaveTextContent(
         "Manual copy",
       );
     });
-    expect((screen.getByRole("textbox", { name: "Shareable place URL for manual copy" }) as HTMLInputElement).value).toContain("p=sequim-wa");
+    expect((screen.getByRole("textbox", { name: "Link to this place. Select it and copy." }) as HTMLInputElement).value).toContain("p=sequim-wa");
   });
 
   it("shows Shared when the native share sheet completes", async () => {
@@ -110,7 +110,7 @@ describe("CopyPlaceLink", () => {
     vi.stubGlobal("navigator", { share });
 
     render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy a link to this place" }));
 
     await waitFor(() => {
       expect(screen.getByText("Shared")).toBeInTheDocument();
@@ -126,11 +126,11 @@ describe("CopyPlaceLink", () => {
     vi.stubGlobal("navigator", { share });
 
     render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy a link to this place" }));
 
     await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Copy or share link to this place" })).toHaveTextContent("Copy link");
+      expect(screen.getByRole("button", { name: "Copy a link to this place" })).toHaveTextContent("Copy link");
     });
     expect(screen.queryByText("Copied")).not.toBeInTheDocument();
     expect(screen.queryByText("Manual copy")).not.toBeInTheDocument();

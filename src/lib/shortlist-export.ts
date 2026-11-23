@@ -187,8 +187,8 @@ export function exportShortlistAsICS(
     lines.push(`DTSTART;VALUE=DATE:${formatIcsDate(start)}`);
     lines.push(`DTEND;VALUE=DATE:${formatIcsDate(end)}`);
     const summary = window
-      ? `Scout ${place.name} — ${window.label}`
-      : `Scout ${place.name}`;
+      ? `Visit ${place.name} — ${window.label}`
+      : `Visit ${place.name}`;
     lines.push(`SUMMARY:${icsEscape(summary)}`);
     const description = [
       window?.range,

@@ -78,46 +78,46 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
       <section className="panel panel-hero p-4 sm:p-5 anim-fade-in" aria-labelledby="climate-trips-title">
         <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-stone-readable">
           <Route className="w-3.5 h-3.5 text-ochre-500" aria-hidden />
-          Climate tourism
+          Travel
         </div>
         <h1 id="climate-trips-title" className="font-atlas text-3xl md:text-4xl text-ice text-depth-hero mt-1">
           Climate Trips
         </h1>
         <p className="text-lg md:text-xl text-frost mt-1 font-atlas tracking-tight">
-          Travel by microclimate, not by generic region.
+          Trips built around a kind of climate.
         </p>
         <p className="text-sm text-frost leading-relaxed mt-3 max-w-3xl">
-          Find fog belts, rain shadows, sky islands, orchard valleys, cold-air pools, volcanic soils, and places that feel like another country. Use this as a scouting itinerary, not a booking engine.
+          Fog belts, rain shadows, sky islands, orchard valleys, cold-air pools, volcanic soils, and places that feel like another country. Each trip lists its stops and the best months to go, from climate averages. Nothing here can be booked, and it is not a forecast.
         </p>
-        <div className="climate-trip-hero-actions" aria-label="Climate Trips section shortcuts">
+        <div className="climate-trip-hero-actions" aria-label="Jump to a section of Trips">
           <a
             href="#trip-styles-heading"
             className="btn-primary !text-xs"
             aria-label={`Jump to ${CLIMATE_TRIP_THEMES.length} climate trip styles`}
           >
             <Compass className="w-3.5 h-3.5" aria-hidden />
-            Choose style
+            Trip styles
           </a>
           <a
             href="#tourism-picks-heading"
             className="btn-ghost !text-xs"
-            aria-label={`Jump to ${tourismPicks.length} concrete climate tourism stops`}
+            aria-label={`Jump to ${tourismPicks.length} recommended stops`}
           >
             <MapIcon className="w-3.5 h-3.5" aria-hidden />
-            See concrete stops
+            Recommended stops
           </a>
           <a
             href="#seasonal-windows-heading"
             className="btn-ghost !text-xs"
-            aria-label="Jump to best seasonal windows"
+            aria-label="Jump to best months to visit"
           >
             <Telescope className="w-3.5 h-3.5" aria-hidden />
-            Best windows
+            Best months
           </a>
         </div>
-        <div className="climate-trip-hero-facts" aria-label="Climate Trips quick read">
+        <div className="climate-trip-hero-facts" aria-label="Trips in numbers">
           <span>{CLIMATE_TRIP_THEMES.length} trip styles</span>
-          <span>{tourismPicks.length} concrete stops</span>
+          <span>{tourismPicks.length} recommended stops</span>
           {topTourismPick ? (
             <span>Top pick: {topTourismPick.place.name} {topTourismPick.profile.scores.tourismAppeal}/100</span>
           ) : null}
@@ -134,7 +134,7 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
           {themeRows.map(({ theme, rows }) => {
             const active = theme.id === activeThemeId;
             const top = rows[0];
-            const filterLabel = active ? `Clear trip filter for ${theme.title}` : `Filter map to trip style: ${theme.title}`;
+            const filterLabel = active ? `Clear trip filter for ${theme.title}` : `Show only the stops of ${theme.title} in the atlas`;
             const compareLabel = `Compare top stops for ${theme.title}`;
             return (
               <article
@@ -155,8 +155,8 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
                   ) : null}
                 </div>
                 {top ? (
-                  <div className="climate-trip-card__lead-cue" aria-label={`Trip lead for ${theme.title}`}>
-                    <span>Trip lead</span>
+                  <div className="climate-trip-card__lead-cue" aria-label={`Top stop for ${theme.title}`}>
+                    <span>Top stop</span>
                     <strong>{top.place.name}</strong>
                     <small>{top.profile.bestVisitWindow.label}: {top.profile.bestVisitWindow.range}</small>
                   </div>
@@ -171,7 +171,7 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
                     title={filterLabel}
                   >
                     <MapIcon className="w-3.5 h-3.5" aria-hidden />
-                    {active ? "Clear trip filter" : "Filter map to this trip"}
+                    {active ? "Clear trip filter" : "Show on map"}
                   </button>
                   <button
                     type="button"
@@ -194,7 +194,7 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
                   ))}
                 </div>
                 <div className="panel-thin p-3 mb-3">
-                  <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Season read</div>
+                  <div className="text-[10px] uppercase tracking-wider text-stone mb-1">When to go</div>
                   <p className="text-[12px] text-frost leading-snug">{prose(theme.seasonHint)}</p>
                 </div>
               </article>
@@ -206,7 +206,7 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
       <section aria-labelledby="tourism-picks-heading" className="space-y-3">
         <div className="tc-section-heading pt-1">
           <div className="tc-section-heading__line opacity-80" aria-hidden />
-          <span id="tourism-picks-heading" className="tc-section-heading__label">Climate tourism picks</span>
+          <span id="tourism-picks-heading" className="tc-section-heading__label">Recommended stops</span>
           <div className="tc-section-heading__line opacity-80" aria-hidden />
         </div>
         <div className="grid xl:grid-cols-3 md:grid-cols-2 gap-3">
@@ -224,12 +224,12 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
       <section className="panel-thin p-4" aria-labelledby="seasonal-windows-heading">
         <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-stone mb-2">
           <Telescope className="w-3.5 h-3.5" aria-hidden />
-          Deterministic windows
+          From monthly averages
         </div>
-        <h2 id="seasonal-windows-heading" className="font-atlas text-lg text-ice">Best seasonal windows</h2>
+        <h2 id="seasonal-windows-heading" className="font-atlas text-lg text-ice">Best months to visit</h2>
         <div className="grid md:grid-cols-3 gap-2 mt-3">
           {tourismPicks.slice(0, 6).map(({ place, profile }) => {
-            const openProfileLabel = `Open ${place.name} climate tourism profile from seasonal windows`;
+            const openProfileLabel = `Open the ${place.name} profile`;
             return (
               <button
                 key={place.id}
@@ -265,7 +265,7 @@ function TourismPickCard({
   const prose = useProse();
   const { place, profile } = row;
   const firstDay = profile.itinerary.days[0];
-  const openProfileLabel = `Open ${place.name} climate tourism profile from tourism picks`;
+  const openProfileLabel = `Open the ${place.name} profile`;
   return (
     <article className="panel climate-trip-card climate-trip-pick-card p-4 anim-fade-in space-y-3">
       <div className="flex items-start justify-between gap-3">
@@ -281,15 +281,15 @@ function TourismPickCard({
       <p className="text-sm text-frost leading-relaxed">{prose(profile.climateStory)}</p>
 
       <div className="grid grid-cols-3 gap-2">
-        <ScoreMini label="Tourism" value={profile.scores.tourismAppeal} />
+        <ScoreMini label="Tourism appeal" value={profile.scores.tourismAppeal} />
         <ScoreMini label="Live here" value={profile.scores.wouldLiveHere} />
-        <ScoreMini label="Land signal" value={profile.scores.climateLandOptionality} />
+        <ScoreMini label="Climate & land" value={profile.scores.climateLandOptionality} />
       </div>
 
       <div className="grid gap-2 text-[12px] text-stone-readable">
         <InfoLine icon={<Compass className="w-3.5 h-3.5" aria-hidden />} label={profile.bestVisitWindow.label} value={profile.bestVisitWindow.range} />
         <InfoLine icon={<Sprout className="w-3.5 h-3.5" aria-hidden />} label="Grow there" value={profile.growThere.bestFits.slice(0, 3).join(", ")} />
-        <InfoLine icon={<Leaf className="w-3.5 h-3.5" aria-hidden />} label="Habitat cue" value={profile.wildlifeAndHabitat.cues[0]} />
+        <InfoLine icon={<Leaf className="w-3.5 h-3.5" aria-hidden />} label="Wildlife" value={profile.wildlifeAndHabitat.cues[0]} />
         <InfoLine icon={<ShieldAlert className="w-3.5 h-3.5" aria-hidden />} label="Top risk" value={profile.riskRead.topRisks[0]} />
       </div>
 
@@ -301,15 +301,15 @@ function TourismPickCard({
 
       <div className="grid gap-2">
         <div className="text-[12px] text-stone-readable">
-          <span className="text-stone uppercase tracking-wide text-[10px]">Soil cue</span>
+          <span className="text-stone uppercase tracking-wide text-[10px]">Soil</span>
           <div>{prose(profile.soilRead.bullets[0])}</div>
         </div>
         <div className="text-[12px] text-stone-readable">
-          <span className="text-stone uppercase tracking-wide text-[10px]">Lodging search cue</span>
+          <span className="text-stone uppercase tracking-wide text-[10px]">Where to look for lodging</span>
           <div>{prose(profile.lodgingRead.searchCues[0])}</div>
         </div>
         <div className="text-[12px] text-stone-readable">
-          <span className="text-stone uppercase tracking-wide text-[10px]">3-day teaser</span>
+          <span className="text-stone uppercase tracking-wide text-[10px]">Three days, in brief</span>
           <div>{firstDay.title}: {prose(firstDay.climateLens)}</div>
         </div>
       </div>
@@ -348,7 +348,7 @@ function InfoLine({ icon, label, value }: { icon: ReactNode; label: string; valu
       <span className="text-ochre-500 mt-0.5 shrink-0">{icon}</span>
       <div className="min-w-0">
         <span className="text-stone uppercase tracking-wide text-[10px]">{label}</span>
-        <div className="text-frost leading-snug">{value ?? "Screen locally."}</div>
+        <div className="text-frost leading-snug">{value ?? "No data; check locally."}</div>
       </div>
     </div>
   );

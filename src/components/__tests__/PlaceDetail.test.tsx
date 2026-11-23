@@ -195,7 +195,7 @@ describe("PlaceDetail residency fit context", () => {
       </UnitProvider>,
     );
 
-    const context = screen.getByLabelText("Active fit context");
+    const context = screen.getByLabelText("What this score is based on");
     expect(context).toHaveTextContent("Current screen");
     expect(context).toHaveTextContent("Mexico / Southwest path (Dry highland options)");
     expect(context).toHaveTextContent("Best shoulder seasons");
@@ -204,7 +204,7 @@ describe("PlaceDetail residency fit context", () => {
     expect(context).toHaveTextContent("winter >= 23°F");
   });
 
-  it("names the active ranking lens for manual Live Finder constraints", () => {
+  it("names the active ranking lens for your must-have limits", () => {
     const place = PLACES_BY_ID["yuma-az"];
     expect(place).toBeTruthy();
 
@@ -219,9 +219,9 @@ describe("PlaceDetail residency fit context", () => {
       </UnitProvider>,
     );
 
-    const context = screen.getByLabelText("Active fit context");
+    const context = screen.getByLabelText("What this score is based on");
     expect(context).toHaveTextContent("Live-here fit lens");
-    expect(context).toHaveTextContent("Scored for manual Live Finder constraints");
+    expect(context).toHaveTextContent("Scored for your must-have limits");
     expect(context).toHaveTextContent("overall risk <= Moderate");
   });
 
@@ -239,7 +239,7 @@ describe("PlaceDetail residency fit context", () => {
       </UnitProvider>,
     );
 
-    expect(screen.queryByLabelText("Active fit context")).toBeNull();
+    expect(screen.queryByLabelText("What this score is based on")).toBeNull();
   });
 });
 
@@ -300,17 +300,17 @@ describe("PlaceDetail header accessibility", () => {
       </UnitProvider>,
     );
 
-    expect(document.querySelector("#pd-residency-brief")).toHaveTextContent("Residency brief");
+    expect(document.querySelector("#pd-residency-brief")).toHaveTextContent("Living here");
 
     // Only the five chapter links show initially; nested section links
-    // (like "Decision lens") stay collapsed until their chapter is active.
-    expect(screen.queryAllByRole("link", { name: "Decision lens" })).toHaveLength(0);
+    // (like "Fit summary") stay collapsed until their chapter is active.
+    expect(screen.queryAllByRole("link", { name: "Fit summary" })).toHaveLength(0);
 
     const chapterLinks = screen.getAllByRole("link", { name: "Live or Visit" });
     expect(chapterLinks.length).toBeGreaterThanOrEqual(1);
     fireEvent.click(chapterLinks[0]);
 
-    expect(screen.getAllByRole("link", { name: "Decision lens" })).toHaveLength(2);
+    expect(screen.getAllByRole("link", { name: "Fit summary" })).toHaveLength(2);
     expect(document.querySelector(".tc-reading-nav-mobile a[href='#pd-residency-brief']")).toBeInTheDocument();
     expect(document.querySelector(".tc-reading-nav-desktop a[href='#pd-residency-brief']")).toBeInTheDocument();
   });
@@ -500,16 +500,16 @@ describe("PlaceDetail header accessibility", () => {
       </UnitProvider>,
     );
 
-    expect(screen.getByLabelText(`Residency actions for ${place.name}`)).toHaveTextContent("Scout handoff");
+    expect(screen.getByLabelText(`Residency actions for ${place.name}`)).toHaveTextContent("Next step");
 
-    const pinBtn = screen.getByRole("button", { name: `Pin ${place.name} to your shortlist from residency brief` });
-    expect(pinBtn).toHaveAttribute("title", `Pin ${place.name} to your shortlist from residency brief`);
+    const pinBtn = screen.getByRole("button", { name: `Pin ${place.name} to your shortlist from the fit summary` });
+    expect(pinBtn).toHaveAttribute("title", `Pin ${place.name} to your shortlist from the fit summary`);
     fireEvent.click(pinBtn);
     expect(onBookmarkToggle).toHaveBeenCalledWith(place.id);
 
-    const compareBtn = screen.getByRole("button", { name: `Add ${place.name} to Compare from residency brief` });
+    const compareBtn = screen.getByRole("button", { name: `Add ${place.name} to Compare from the fit summary` });
     expect(compareBtn).toHaveAttribute("aria-pressed", "false");
-    expect(compareBtn).toHaveAttribute("title", `Add ${place.name} to Compare from residency brief`);
+    expect(compareBtn).toHaveAttribute("title", `Add ${place.name} to Compare from the fit summary`);
     fireEvent.click(compareBtn);
     expect(onCompareToggle).toHaveBeenCalledWith(place.id);
 
@@ -525,8 +525,8 @@ describe("PlaceDetail header accessibility", () => {
         />
       </UnitProvider>,
     );
-    const activeCompareBtn = screen.getByRole("button", { name: `Remove ${place.name} from Compare from residency brief` });
-    expect(activeCompareBtn).toHaveAttribute("title", `Remove ${place.name} from Compare from residency brief`);
+    const activeCompareBtn = screen.getByRole("button", { name: `Remove ${place.name} from Compare from the fit summary` });
+    expect(activeCompareBtn).toHaveAttribute("title", `Remove ${place.name} from Compare from the fit summary`);
     expect(activeCompareBtn).toHaveClass("compare-toggle--active");
   });
 
@@ -555,7 +555,7 @@ describe("PlaceDetail bioclimatic edge reads", () => {
       </UnitProvider>,
     );
 
-    const edgeNote = screen.getByText("Undefined bioclimatic edge").closest(".tc-accent-panel");
+    const edgeNote = screen.getByText("Not defined here").closest(".tc-accent-panel");
     expect(edgeNote).not.toBeNull();
     expect(edgeNote!).toHaveTextContent("Selianinov HTC is undefined");
     expect(edgeNote!).toHaveTextContent("annual water-balance");
@@ -613,9 +613,9 @@ describe("PlaceDetail glossary driver chip a11y", () => {
     fireEvent.click(chip!);
 
     expect(chip!).toHaveAttribute("aria-expanded", "true");
-    const closeGlossary = screen.getByRole("button", { name: "Close glossary explanation" });
+    const closeGlossary = screen.getByRole("button", { name: "Close explanation" });
     expect(closeGlossary).toHaveClass("tc-driver-glossary-close");
-    expect(closeGlossary).toHaveAttribute("title", "Close glossary explanation");
+    expect(closeGlossary).toHaveAttribute("title", "Close explanation");
   });
 
   it("closes only the driver glossary on Escape and returns focus to the chip", () => {
@@ -638,14 +638,14 @@ describe("PlaceDetail glossary driver chip a11y", () => {
 
     fireEvent.click(chip!);
     expect(chip!).toHaveAttribute("aria-expanded", "true");
-    expect(screen.getByRole("button", { name: "Close glossary explanation" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Close explanation" })).toBeInTheDocument();
 
     expect(fireEvent.keyDown(chip!, { key: "Escape" })).toBe(false);
     vi.runOnlyPendingTimers();
 
     expect(onClose).not.toHaveBeenCalled();
     expect(screen.getByRole("dialog", { name: `${place!.name} climate dossier` })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Close glossary explanation" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Close explanation" })).not.toBeInTheDocument();
     expect(chip!).toHaveAttribute("aria-expanded", "false");
     expect(chip!).toHaveFocus();
   });
@@ -883,7 +883,7 @@ describe("PlaceDetail evidence hierarchy", () => {
     expect(evidence).toHaveTextContent(/Confidence vs completeness/);
     expect(evidence).toHaveTextContent(/Sources by type/);
 
-    expect(screen.getAllByText("Screening score").length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText("Editorial score").length).toBeGreaterThanOrEqual(2);
     expect(screen.getAllByText("Derived").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText("Regional projection").length).toBeGreaterThanOrEqual(1);
   });

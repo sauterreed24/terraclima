@@ -23,7 +23,7 @@ export function hasSourcedSkySeries(place: Place): boolean {
 /** First-page / Compare sunshine cell — percent of possible, never solar MJ. */
 export function sunshineDisplayValue(place: Place): string {
   const pct = observedSunshinePct(place);
-  return pct == null ? "not sourced" : `${pct}%`;
+  return pct == null ? "no data" : `${pct}%`;
 }
 
 export function precipHeroLabel(place: Place): string {
@@ -48,7 +48,7 @@ function humidityStat(humidity: number): HeroFourthStat {
     kind: "humidity",
     label: "Humidity",
     value: `${rounded}%`,
-    hint: `Mean relative humidity across the year (${feel} air).`,
+    hint: `Average relative humidity over the year (${feel} air).`,
   };
 }
 
@@ -57,7 +57,7 @@ function growingSeasonStat(days: number): HeroFourthStat {
     kind: "frost-free",
     label: "Growing season",
     value: `${Math.round(days)} days`,
-    hint: "Approximate frost-free days in a typical year — the outdoor growing window.",
+    hint: "Approximate frost-free days in a typical year: the season for growing outdoors.",
   };
 }
 
@@ -69,7 +69,7 @@ export function fourthHeroStat(place: Place): HeroFourthStat {
       kind: "sunshine",
       label: "Sunshine",
       value: `${sunshinePct}%`,
-      hint: "Percent of possible sunshine across the year — how often the sky actually opens up, not a count of cloudless calendar days.",
+      hint: "Share of daylight hours with sun, over the year. It is not a count of cloudless days.",
     };
   }
 
@@ -100,6 +100,6 @@ export function fourthHeroStat(place: Place): HeroFourthStat {
     kind: "biome",
     label: "Biome",
     value: place.biome.split(" / ")[0] ?? place.biome,
-    hint: "Plant community that this climate actually supports.",
+    hint: "The natural vegetation this climate supports.",
   };
 }

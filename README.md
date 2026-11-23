@@ -20,10 +20,10 @@ It is free and public. Claims stay screening-grade and source-aware: citations a
 
 ## Quick start
 
-1. Open the [live atlas](https://sauterreed24.github.io/terraclima/). First sessions land on **Most unique** so you see distinctive microclimates right away — or try **Most comfortable**, a Live Finder preset, or **Surprise me** / **R**.
+1. Open the [live atlas](https://sauterreed24.github.io/terraclima/). First sessions land on **Most unique** so you see distinctive microclimates right away — or try **Most comfortable**, a goal under **Goals**, or **Surprise me** / **R**.
 2. Tap or hover a map pin for a compact peek (name, archetype, one climate line). Open the place for the full field-guide profile: archetype, **Why this climate is different here**, seasons, risks, and practical scouting cards.
-3. When you get serious, set a **home base** (**H** or the dossier control) so cards and Compare read as deltas against *your* climate. Pin keepers with the bookmark (**B**).
-4. Narrow with Live Finder / Fit Finder filters, Collections, or Climate Trips. Use **Compare** and the scout brief when you need a decision pass.
+3. When you get serious, set a **home base** (**H** or the **Set home** button in a profile) so cards and Compare show how each place differs from *your* climate. Pin keepers with the bookmark (**B**).
+4. Narrow with **Goals** and **Must-haves** in the filter panel, Collections, or Climate Trips. Use **Compare** and the **Top-picks summary** (More → Summary panels) when you are deciding.
 5. Press **?** for keyboard shortcuts. On phones, the map pans with one finger; tap **Scroll page** when you want the page to scroll normally again.
 
 Mobile gets a hamburger menu and bottom filter sheet; from about 1024px up, filters sit in a sticky dock beside the explorer. Accessibility, reduced motion, and touch targets are built in — not bolted on.
@@ -50,9 +50,9 @@ It is also an engineering portfolio piece: typed data, transparent scoring, dete
 
 ### Find places that match how you want to live
 
-The **Live Finder** explorer is an Albers-projected North America atlas with tiered pins, climate previews, country and archetype filters, ranking lenses, a scout brief for the current shortlist, and shareable URL state. Start from discovery (**Most unique**), then branch into live-here fit, hidden gems, **Most comfortable**, or specialty lenses.
+The explorer is an Albers-projected North America atlas with tiered pins, climate previews, country and archetype filters, rankings, a top-picks summary for the current list, and shareable URL state. Start from discovery (**Most unique**), then branch into live-here fit, hidden gems, **Most comfortable**, or specialty rankings.
 
-Presets cover cool summers, mild winters, dry air, gardenability, low fire/smoke, four seasons, snow country, coastal buffering, quiet small-town scouting, and a Mexico / Southwest dry-highland path. Hard constraints let you cap summer highs, winter lows, growability, fire risk, and overall risk. The scout brief names the leading match, climate/risk spread, main caution, where contenders win, a scout-day order, and a decision matrix (fit, comfort, easy months, risk, land/garden, first caveat).
+Presets cover cool summers, mild winters, dry air, gardenability, low fire/smoke, four seasons, snow country, coastal buffering, quiet small towns, and a Mexico / Southwest dry-highland goal. Hard constraints let you cap summer highs, winter lows, growability, fire risk, and overall risk. The top-picks summary names the leading match, climate/risk spread, main caution, where contenders win, a scout-day order, and a decision matrix (fit, comfort, easy months, risk, land/garden, first caveat).
 
 On a phone, navigation folds into a hamburger and filters into a bottom sheet; on a wide screen the filter dock stays beside the map.
 
@@ -288,7 +288,7 @@ CI cannot fully exercise touch or real-device GPUs. After layout, map, nav, or o
 |-------|----------------|----------------|
 | **Nav** | Hamburger (under ~560px); closes cleanly | Explorer / Trips / Collections / Learn in the header |
 | **Filters** | Bottom “Filters & rank” sheet; **`F`** | Sticky dock (≥1024px) |
-| **Scout brief** | Stacks; Compare leaders opens without clipping | Readable between rank strip and livability lens |
+| **Top-picks summary** | Stacks; Compare leaders opens without clipping | Readable between rank strip and livability lens |
 | **Climate Trips** | Cards fit; Compare top stops works | Pinning returns to Explorer; profiles open |
 | **Map gestures** | One-finger pan/pinch; **Scroll page** / **Use map** | Wheel zooms while room remains; at limits unused wheel scrolls the page; pan stays bounded |
 | **Map framing** | Fit/selection clear of chrome; rotate width↔height without losing the landmass | Dock-aware frame; tooltip/picker stay on the pin |

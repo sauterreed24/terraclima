@@ -16,7 +16,7 @@ describe("PlaceReadingProgress", () => {
 
     render(<PlaceReadingProgress panelRef={panelRef} />);
 
-    const bar = screen.getByRole("progressbar", { name: "Dossier reading progress" });
+    const bar = screen.getByRole("progressbar", { name: "Reading progress through this profile" });
     expect(bar).toHaveAttribute("aria-valuemin", "0");
     expect(bar).toHaveAttribute("aria-valuemax", "100");
     expect(bar.getAttribute("aria-valuenow")).toBe("50");

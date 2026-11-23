@@ -492,7 +492,7 @@ function RankByControl({
         </span>
       </label>
       <p id={`${rankingSelectId}-hint`} className="rank-menu__hint">
-        Orders the list and picks the top places on the map.
+        The list and map are ordered by {rankingLabel}.
       </p>
     </div>
   );

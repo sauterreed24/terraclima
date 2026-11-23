@@ -66,7 +66,7 @@ export function buildExplorerRecoveryActions({
   }
   recoveryActions.push({
     key: "all",
-    label: "Reset everything",
+    label: "Reset Explorer",
     detail: "Clear the search and every filter and show all places.",
     onClick: onClearAll,
     primary: !recoveryActions.some(action => action.primary),

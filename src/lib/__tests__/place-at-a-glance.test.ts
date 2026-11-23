@@ -19,14 +19,14 @@ describe("buildAtAGlanceTiles", () => {
     for (const tiles of [a, b, c]) {
       const labels = tiles.map(t => t.label);
       expect(labels).toContain("Place feel");
-      expect(labels).toContain("Climate class");
+      expect(labels).toContain("Köppen class");
       expect(labels).toContain("Climate drivers");
       expect(labels).toContain("Data confidence");
       // Reader-facing tiles outrank the screening ones: these two used to be
       // cut off by the eight-tile cap on every place.
-      expect(labels).toContain("Water year (mean)");
+      expect(labels).toContain("Yearly precipitation");
       expect(labels).toContain("Growing season (est.)");
-      expect(labels).toContain("High-season diurnal");
+      expect(labels).toContain("Summer day-to-night swing");
     }
   });
 
@@ -34,7 +34,7 @@ describe("buildAtAGlanceTiles", () => {
     const sparse = makePlace({ id: "sparse", climate: makeClimate({ frostFreeDays: undefined, gdd10: undefined }) });
     const labels = buildAtAGlanceTiles(sparse, fmtPrecip, fmtDiurnal, "F").map(t => t.label);
     expect(labels).not.toContain("Growing season (est.)");
-    expect(labels).toContain("Remote sensing");
+    expect(labels).toContain("Satellite coverage");
   });
 
   it("returns at most 8 tiles (avoids overrunning the grid)", () => {

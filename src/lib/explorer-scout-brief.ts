@@ -113,7 +113,7 @@ function topRiskLine(place: Place): string {
   if (RISK_VALUE[risk.level] >= 3) {
     return `Watch ${RISK_LABELS[key].toLowerCase()} exposure (${riskText}) before shortlisting.`;
   }
-  return "No dominant red flag in the leader; still read the risk section before deciding.";
+  return "No single major risk for the top place. Still read its risk section before deciding.";
 }
 
 function countryShort(country: Place["country"]): string {
@@ -182,10 +182,10 @@ function decisionLine(signals: ExplorerScoutBrief["decisionSignals"]): string {
   const top = winners[0];
   if (!top) return "No scores are available for this view.";
   if (winners.length === 1) {
-    return `${top.place.name} leads every priority in this shortlist; still read risk and local access before deciding.`;
+    return `${top.place.name} leads on every priority in this list; still read risk and local access before deciding.`;
   }
   if (top.count >= 3) {
-    return `${top.place.name} is the consensus leader across ${top.count} of ${signals.length} priorities; use the remaining split to check tradeoffs.`;
+    return `${top.place.name} leads on ${top.count} of ${signals.length} priorities; use the remaining split to check tradeoffs.`;
   }
   return `No single place dominates: ${top.place.name} leads ${top.count} priorities, while ${winners[1]!.place.name} keeps at least one priority in play.`;
 }
@@ -306,8 +306,8 @@ function buildScoutNextStep(
     return {
       label: "Visit next",
       place: leader.place,
-      action: `Scout ${possessive(leader.place.name)} ${firstWindow.label.toLowerCase()}: ${firstWindow.range}.`,
-      detail: `${firstWindow.label}: ${trimTerminalPunctuation(firstWindow.note ?? "best initial window from monthly normals")}. ${watch} ${compare}`,
+      action: `Visit ${leader.place.name} in its ${firstWindow.label.toLowerCase()} months: ${firstWindow.range}.`,
+      detail: `${firstWindow.label}: ${trimTerminalPunctuation(firstWindow.note ?? "the best first window, from monthly averages")}. ${watch} ${compare}`,
     };
   }
 

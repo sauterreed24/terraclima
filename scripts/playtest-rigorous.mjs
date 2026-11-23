@@ -159,13 +159,13 @@ async function main() {
     if (params.get("r")) findings.push({ label: "cold-discovery", kind: "ranking-leaked", r: params.get("r") });
     if (!(await page.getByRole("button", { name: /Show scouting tools/i }).count())) {
       // Desktop may hide behind More menu
-      const more = page.getByRole("button", { name: /More atlas actions/i });
+      const more = page.getByRole("button", { name: /More actions/i });
       if (await more.count()) await more.click();
     }
     const scout = page.getByRole("button", { name: /Show scouting tools/i });
     if (await scout.count()) {
       // Scout tools should be deferred (not already open panels)
-      if (await page.getByLabel(/Desktop relocation workbench/i).count()) {
+      if (await page.getByLabel(/Top-picks summary/i).count()) {
         findings.push({ label: "cold-discovery", kind: "scout-board-premature" });
       }
     }
@@ -187,7 +187,7 @@ async function main() {
       const evidence = page.getByRole("region", { name: /Evidence and how to read this profile/i });
       await evidence.waitFor({ timeout: 10000 });
       // Screening labels present near scores
-      const screening = await page.getByText("Screening score", { exact: true }).count();
+      const screening = await page.getByText("Editorial score", { exact: true }).count();
       if (screening < 1) findings.push({ label: `theme-${theme}`, kind: "missing-screening-label" });
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
       if (overflow) findings.push({ label: `theme-${theme}`, kind: "page-h-overflow" });

@@ -33,8 +33,8 @@ describe("ClimateTripsView", () => {
 
     expect(screen.getByRole("link", { name: `Jump to ${CLIMATE_TRIP_THEMES.length} climate trip styles` })).toHaveAttribute("href", "#trip-styles-heading");
     expect(screen.getByRole("link", { name: "Jump to 9 concrete climate tourism stops" })).toHaveAttribute("href", "#tourism-picks-heading");
-    expect(screen.getByRole("link", { name: "Jump to best seasonal windows" })).toHaveAttribute("href", "#seasonal-windows-heading");
-    const quickRead = screen.getByLabelText("Climate Trips quick read");
+    expect(screen.getByRole("link", { name: "Jump to best months to visit" })).toHaveAttribute("href", "#seasonal-windows-heading");
+    const quickRead = screen.getByLabelText("Trips in numbers");
     expect(quickRead).toHaveTextContent(`${CLIMATE_TRIP_THEMES.length} trip styles`);
     expect(quickRead).toHaveTextContent("9 concrete stops");
     expect(quickRead).toHaveTextContent(/Top pick: .+ \d+\/100/);

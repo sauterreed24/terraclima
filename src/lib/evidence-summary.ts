@@ -35,25 +35,25 @@ export const EVIDENCE_CLASS_META: Record<
     shortLabel: "Editorial context",
     plainLabel: "Source-backed editorial interpretation",
     description:
-      "Field-guide prose and mechanism explanation grounded in structured fields and citations. Not a live measurement.",
+      "Written explanation of the place and its climate, based on the cited sources and the data. Not a measurement.",
   },
   "deterministic-derived": {
     shortLabel: "Derived",
     plainLabel: "Deterministic calculation",
     description:
-      "Reproducible values computed from authored structured fields (indices, analogs, deltas). Not independently measured.",
+      "Values calculated from the climate data (indices, climate twins, differences from home). Not measured separately.",
   },
   "regional-projection": {
     shortLabel: "Regional projection",
     plainLabel: "Illustrative regional projection",
     description:
-      "Coarse mid-century scenario anomalies for Explorer and Compare. Not a local forecast or downscaled site model.",
+      "Broad regional projections for mid-century, used in the Atlas and Compare. Not a local forecast.",
   },
   "screening-score": {
-    shortLabel: "Screening score",
-    plainLabel: "Screening-grade signal",
+    shortLabel: "Editorial score",
+    plainLabel: "Editorial score for comparison",
     description:
-      "Ranking, fit, livability, tourism, or geospatial screens used as decision aids. Not objective truth, appraisal, or insurance advice.",
+      "Ranking, fit, livability, tourism and terrain scores, used to compare places. They are not measurements, appraisals or insurance advice.",
   },
   "field-observation": {
     shortLabel: "Field note",
@@ -222,35 +222,35 @@ export function listMissingStructuredFields(place: Place): MissingEvidenceField[
     missing.push({
       id: "humidity",
       label: "Monthly humidity",
-      note: "Optional humidity normals are absent; comfort math uses conservative analogs where needed.",
+      note: "No measured humidity for this place. Comfort figures use a cautious estimate from similar climates.",
     });
   }
   if (!climate.solarEnergyMjM2Day && !climate.sunshinePct) {
     missing.push({
       id: "solar",
       label: "Solar resource",
-      note: "Optional monthly solar-resource normals (kWh/m² per day) are absent.",
+      note: "No monthly solar energy data (kWh/m² per day).",
     });
   }
   if (!climate.snowCm) {
     missing.push({
       id: "snow",
       label: "Monthly snowfall",
-      note: "Optional snowfall normals are absent (common for snow-free climates).",
+      note: "No snowfall data, which is usual where it rarely snows.",
     });
   }
   if (!place.liveSignals) {
     missing.push({
       id: "live-signals",
-      label: "Lived housing / access indicators",
-      note: "No dated lived indicators; livability uses a conservative screening baseline for housing pressure and access remoteness.",
+      label: "Housing and access data",
+      note: "No housing-cost or travel-time data. Livability uses a cautious default for both.",
     });
   }
   if (!place.projection) {
     missing.push({
       id: "projection-override",
       label: "Place-specific projection override",
-      note: "Explorer scenarios use the coarse regional anomaly table, not a cited local override.",
+      note: "The 2050 layers use the broad regional projection for this place, not a local study.",
     });
   }
   return missing;
@@ -302,13 +302,13 @@ export function buildPlaceEvidenceSummary(place: Place): PlaceEvidenceSummary {
   }
 
   const classNotes: Partial<Record<EvidenceClass, string>> = {
-    "observed-normal": `${urlCitationCount} URL-backed citation${urlCitationCount === 1 ? "" : "s"}; climate charts use Daymet-derived ${CLIMATE_NORMALS_PERIOD} rolling climatology (not a WMO standard normal).`,
-    "authored-context": "Why-it-differs, field story, and fit prose are editorial interpretation over structured data.",
-    "deterministic-derived": "Bioclimatic indices, climate twins, and vs-home deltas are calculated from structured climate fields.",
+    "observed-normal": `${urlCitationCount} URL-backed citation${urlCitationCount === 1 ? "" : "s"}; climate charts use Daymet-derived ${CLIMATE_NORMALS_PERIOD} averages (a recent 30-year period, not the official WMO normal).`,
+    "authored-context": "The explanation of why the climate differs, the on-the-ground notes and the fit text are editorial writing based on the data.",
+    "deterministic-derived": "Bioclimatic indices, climate twins and differences from home are calculated from the climate data.",
     "regional-projection": place.projection
-      ? "This place carries an authored projection override; Explorer still labels scenarios as ensemble illustrations for screening."
-      : "Future layers use NEX-GDDP-CMIP6 ensemble deltas when available (research/screening only), not a site engineering forecast.",
-    "screening-score": "Livability, live-fit, geospatial, tourism, and score pills are screening aids for comparison.",
+      ? "This place has its own cited projection. The 2050 layers are still illustrations, not forecasts."
+      : "The 2050 layers use NEX-GDDP-CMIP6 model averages where available. They are illustrations, not a forecast for a specific site.",
+    "screening-score": "Livability, live-here fit, terrain and tourism scores are editorial ratings for comparing places.",
   };
   if (classesPresent.has("field-observation")) {
     classNotes["field-observation"] = "At least one citation is labeled field observation.";
@@ -317,10 +317,10 @@ export function buildPlaceEvidenceSummary(place: Place): PlaceEvidenceSummary {
   const completenessLabel = completenessFromGaps(place, missingFields);
   const completenessNote =
     completenessLabel === "strong"
-      ? "Optional structured fields for this profile are largely present."
+      ? "Nearly all optional data is present for this place."
       : completenessLabel === "solid"
-        ? "Core normals are present; a few optional fields are thin or absent."
-        : "Several optional fields are absent; treat derived comfort reads with extra caution.";
+        ? "The core climate data is present. A few optional figures are missing."
+        : "Several optional figures are missing, so treat the comfort scores with extra caution.";
 
   return {
     placeId: place.id,
@@ -336,7 +336,7 @@ export function buildPlaceEvidenceSummary(place: Place): PlaceEvidenceSummary {
     sourceGroups,
     missingFields,
     howToRead:
-      "Read measured normals and mechanism first. Treat scores as screening signals, derived indices as calculations, and 2050 layers as coarse regional illustrations.",
+      "Start with the measured climate and the explanation of what causes it. Scores are editorial ratings, indices are calculations, and the 2050 layers are broad regional illustrations.",
   };
 }
 
