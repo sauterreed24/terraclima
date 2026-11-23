@@ -33,6 +33,13 @@ export interface RankBadgeLayoutOptions {
   minSpacingPx?: number;
   /** Neighbor search radius; pins farther apart keep the default NE badge. */
   proximityPx?: number;
+  /**
+   * Other badges already on the map (cluster counts), in screen pixels. A
+   * rank badge whose default seat would land on one fans to a free seat.
+   */
+  obstacles?: readonly { x: number; y: number; r: number }[];
+  /** Radius of the rank badge itself, used against `obstacles`. */
+  badgeRadiusPx?: number;
 }
 
 const DEFAULT_MIN_SPACING_PX = 20;
@@ -77,6 +84,16 @@ export function layoutRankBadges(
 
   const minSpacing = opts.minSpacingPx ?? DEFAULT_MIN_SPACING_PX;
   const proximity = opts.proximityPx ?? DEFAULT_PROXIMITY_PX;
+  const obstacles = opts.obstacles ?? [];
+  const badgeRadius = opts.badgeRadiusPx ?? 10;
+  /** Clearance to the nearest obstacle edge; negative when overlapping. */
+  const obstacleClearance = (bx: number, by: number): number => {
+    let min = Infinity;
+    for (const o of obstacles) {
+      min = Math.min(min, Math.hypot(bx - o.x, by - o.y) - o.r - badgeRadius);
+    }
+    return min;
+  };
   const ordered = [...pins].sort((a, b) => {
     if (a.rank !== b.rank) return a.rank - b.rank;
     return a.id.localeCompare(b.id);
@@ -98,6 +115,14 @@ export function layoutRankBadges(
   // slightly so the badge clears the dense glyph cloud.
   for (const pin of ordered) {
     if (pin.crowded) needsFan.add(pin.id);
+  }
+  // Default seat would sit on a cluster count: fan to a free seat instead.
+  if (obstacles.length > 0) {
+    for (const pin of ordered) {
+      if (needsFan.has(pin.id)) continue;
+      const seat = defaultRankBadgeOffset(pin.pinRadiusPx);
+      if (obstacleClearance(pin.screenX + seat.dx, pin.screenY + seat.dy) < 0) needsFan.add(pin.id);
+    }
   }
 
   const placed: { id: string; x: number; y: number; dx: number; dy: number; fanned: boolean }[] = [];
@@ -136,11 +161,14 @@ export function layoutRankBadges(
       }
       // Prefer seats that clear spacing; break ties toward the classic NE seat.
       const neBias = -Math.hypot(offset.dx - fallback.dx, offset.dy - fallback.dy) * 0.02;
-      const score = (minDist === Infinity ? minSpacing * 4 : minDist) + neBias;
+      const clearance = obstacleClearance(bx, by);
+      // Landing on a cluster count is worse than grazing another rank badge.
+      const obstaclePenalty = clearance < 0 ? clearance * 4 - minSpacing : 0;
+      const score = Math.min(minDist === Infinity ? minSpacing * 4 : minDist, minSpacing * 4) + neBias + obstaclePenalty;
       if (score > best.score) {
         best = { dx: offset.dx, dy: offset.dy, score };
       }
-      if (minDist >= minSpacing) break;
+      if (minDist >= minSpacing && clearance >= 0) break;
     }
 
     placed.push({
