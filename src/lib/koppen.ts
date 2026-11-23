@@ -132,11 +132,11 @@ export function classifyKoppen(
   const first = tcold >= 0 ? "C" : "D";
 
   // Precip sub-letter. When both dry-summer and dry-winter qualify, the
-  // drier half wins.
+  // wetter half-year decides (Beck et al. 2018): more summer rain means "w".
   const sQ = sPmin < 30 && sPmin < wPmax / 3;
   const wQ = wPmin < sPmax / 10;
   let second: string;
-  if (sQ && wQ) second = sPmin <= wPmin ? "s" : "w";
+  if (sQ && wQ) second = sumP > winP ? "w" : "s";
   else if (sQ) second = "s";
   else if (wQ) second = "w";
   else second = "f";

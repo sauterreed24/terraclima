@@ -96,7 +96,7 @@ function climateContrastDetail(place: Place, active: ActiveClimateAverages): str
     },
     {
       weight: Math.abs(winterDelta) * 3,
-      detail: `${Math.abs(winterDelta).toFixed(1)}°C ${winterDelta > 0 ? "milder" : "colder"} January low than the active average.`,
+      detail: `${Math.abs(winterDelta).toFixed(1)}°C ${winterDelta > 0 ? "milder" : "colder"} winter low than the active average.`,
     },
     {
       weight: Math.abs(precipDelta) / 22,

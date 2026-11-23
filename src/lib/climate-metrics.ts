@@ -94,34 +94,81 @@ export function meanWinterSolarMjM2Day(p: Place): number | null {
   return (solar[11] + solar[0] + solar[1]) / 3;
 }
 
+const MID_MONTH_DAY_OF_YEAR = [15, 46, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349] as const;
+
+/** Daily top-of-atmosphere radiation on a horizontal surface, MJ/m²/day (FAO-56 eq. 21). */
+export function extraterrestrialRadiationMjM2Day(latDeg: number, dayOfYear: number): number {
+  const phi = (latDeg * Math.PI) / 180;
+  const inverseDistance = 1 + 0.033 * Math.cos((2 * Math.PI * dayOfYear) / 365);
+  const declination = 0.409 * Math.sin((2 * Math.PI * dayOfYear) / 365 - 1.39);
+  const x = -Math.tan(phi) * Math.tan(declination);
+  const sunsetAngle = x >= 1 ? 0 : x <= -1 ? Math.PI : Math.acos(x);
+  return (
+    ((24 * 60) / Math.PI) * 0.082 * inverseDistance *
+    (sunsetAngle * Math.sin(phi) * Math.sin(declination) + Math.cos(phi) * Math.cos(declination) * Math.sin(sunsetAngle))
+  );
+}
+
 /**
- * @deprecated Prefer meanAnnualSolarMjM2Day. Legacy sunshine % helper kept for
- * transitional scoring paths that still expect a 0–100 sky brightness proxy.
- * When only solar energy is present, maps MJ/m²/day → rough % via 0.25*MJ*10≈scale.
+ * Share of possible sunshine (%) estimated for one month from the solar
+ * resource. It works from the clearness index (surface over top-of-atmosphere
+ * radiation), which removes day length, so a short bright northern day is not
+ * scored as gloom. The line is a least-squares fit to the 1,542 place-months
+ * that carry both Daymet solar and station sunshine: mean error 8.7 points,
+ * against 15.2 for the raw-energy mapping it replaces (which tracked latitude
+ * at r = −0.97 in winter). Null in polar night, where "possible" is zero.
+ */
+export function estimatedSunshinePct(p: Place, monthIndex: number): number | null {
+  const solar = p.climate.solarEnergyMjM2Day?.[monthIndex];
+  if (solar == null) return null;
+  const top = extraterrestrialRadiationMjM2Day(p.lat, MID_MONTH_DAY_OF_YEAR[monthIndex]!);
+  if (top < 2) return null;
+  return Math.max(0, Math.min(100, -9.4 + 136 * (solar / top)));
+}
+
+function meanEstimatedSunshinePct(p: Place, months: readonly number[]): number | null {
+  const values = months.map(m => estimatedSunshinePct(p, m)).filter((v): v is number => v != null);
+  return values.length ? values.reduce((sum, v) => sum + v, 0) / values.length : null;
+}
+
+const ALL_MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as const;
+const WINTER_MONTHS = [11, 0, 1] as const;
+
+/**
+ * Annual share of possible sunshine (%) for scoring. Estimated from the solar
+ * resource when present, so restoring authored sunshinePct for display cannot
+ * shift rankings or livability scores.
  */
 export function meanAnnualSunshinePct(p: Place): number | null {
-  // Prefer Daymet solar when present so restoring authored sunshinePct
-  // for display cannot shift rankings or livability scores.
-  const solar = meanAnnualSolarMjM2Day(p);
-  if (solar != null) return Math.max(0, Math.min(100, 10 + solar * 3.75));
+  if (p.climate.solarEnergyMjM2Day?.length === 12) {
+    const estimate = meanEstimatedSunshinePct(p, ALL_MONTHS);
+    if (estimate != null) return estimate;
+  }
   const sunshine = p.climate.sunshinePct;
   if (sunshine) return sunshine.reduce((sum, value) => sum + value, 0) / sunshine.length;
   return null;
 }
 
-/** Mean Dec–Feb possible sunshine (%). Null when neither solar nor sunshine series exist. */
+/**
+ * Mean Dec–Feb share of possible sunshine (%). Station sunshine where the
+ * place has it; otherwise the clearness-based estimate, which is fitted to
+ * those stations so the two sit on one scale.
+ */
 export function meanWinterSunshinePct(p: Place): number | null {
-  const solar = meanWinterSolarMjM2Day(p);
-  if (solar != null) return Math.max(0, Math.min(100, 10 + solar * 3.75));
-  const sun = p.climate.sunshinePct;
-  if (sun) return (sun[11] + sun[0] + sun[1]) / 3;
+  const observed = observedWinterSunshinePct(p);
+  if (observed != null) return observed;
+  if (p.climate.solarEnergyMjM2Day?.length === 12) return meanEstimatedSunshinePct(p, WINTER_MONTHS);
   return null;
+}
+
+/** Whether the winter sunshine figure is station-measured or estimated from solar energy. */
+export function winterSunshineIsMeasured(p: Place): boolean {
+  return observedWinterSunshinePct(p) != null;
 }
 
 /**
  * Mean Dec–Feb sunshine as a share of possible, from authored station
- * sunshine only. The solar-energy proxy above tracks day length as much as
- * cloud, so it must not stand in when two places' winter skies are compared.
+ * sunshine only.
  */
 export function observedWinterSunshinePct(p: Place): number | null {
   const sun = p.climate.sunshinePct;

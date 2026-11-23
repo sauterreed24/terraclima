@@ -226,29 +226,33 @@ export function getCorpusSynthesisLines(place: Place, displayTemp: TempUnit = "F
   const n = c.n;
   if (n < 2) return [];
 
+  // "Cooler than X" is a strict share; its complement would count the place
+  // itself, so Death Valley read "hotter than 100%" of a set it belongs to.
+  const rest = (share: number) => Math.max(0, 1 - share - 1 / n);
+  const pct99 = (share: number) => pct(Math.min(share, 0.99));
   const out: { label: string; value: string }[] = [
     {
       label: "Wetness vs full atlas (annual mean)",
-      value: `Wetter than ${pct(r.wetterThanAtlasShare)} of stops · drier than ${pct(r.drierThanAtlasShare)} of stops (ties possible)`,
+      value: `Wetter than ${pct99(r.wetterThanAtlasShare)} of stops · drier than ${pct99(r.drierThanAtlasShare)} of stops (ties possible)`,
     },
     {
       label: "Summer mean high vs full atlas (Jun–Aug blend)",
-      value: `Cooler than ${pct(r.coolerSummersThanAtlasShare)} of stops; hotter than ${pct(1 - r.coolerSummersThanAtlasShare)}`,
+      value: `Cooler than ${pct99(r.coolerSummersThanAtlasShare)} of stops; hotter than ${pct99(rest(r.coolerSummersThanAtlasShare))}`,
     },
     {
       label: "Winter mean low vs full atlas (Dec–Feb blend)",
-      value: `Milder than ${pct(r.milderWintersThanAtlasShare)} of stops; colder than ${pct(1 - r.milderWintersThanAtlasShare)}`,
+      value: `Milder than ${pct99(r.milderWintersThanAtlasShare)} of stops; colder than ${pct99(rest(r.milderWintersThanAtlasShare))}`,
     },
     {
       label: "Elevation & diurnal (same atlas set)",
-      value: `Higher ground than ${pct(r.higherElevationThanAtlasShare)} · larger summer diurnal than ${pct(r.largerDiurnalThanAtlasShare)} of stops`,
+      value: `Higher ground than ${pct99(r.higherElevationThanAtlasShare)} · larger summer diurnal than ${pct99(r.largerDiurnalThanAtlasShare)} of stops`,
     },
   ];
   if (r.gddAboveShare != null) {
     const gddLabel = displayTemp === "F" ? "Growing-degree signal (GDD, base 50°F)" : "Growing-degree signal (GDD, base 10°C)";
     out.push({
       label: gddLabel,
-      value: `More degree-days than ${pct(r.gddAboveShare)} of stops with GDD filled`,
+      value: `More degree-days than ${pct99(r.gddAboveShare)} of stops with GDD filled`,
     });
   }
   return out;
@@ -271,7 +275,7 @@ export function getCorpusContextPanelRows(
   const di = summerDiurnalC(place);
   const rows: CorpusPanelRow[] = [
     { metric: "Mean Jun–Aug high (normal)", you: fmtT(jh), context: `Cooler summers than ${pct(r.coolerSummersThanAtlasShare)} of atlas stops` },
-    { metric: "Mean Jan low (normal)", you: fmtT(jl), context: `Milder mid-winter than ${pct(r.milderWintersThanAtlasShare)} of atlas stops` },
+    { metric: "Mean winter low (Dec–Feb)", you: fmtT(jl), context: `Milder mid-winter than ${pct(r.milderWintersThanAtlasShare)} of atlas stops` },
     { metric: "Annual precip (atlas field)", you: fmtP(pr), context: `Wetter than ${pct(r.wetterThanAtlasShare)} of atlas stops` },
     { metric: "Site elevation", you: fmtE(place.elevationM), context: `Higher than ${pct(r.higherElevationThanAtlasShare)} of stops` },
     { metric: "High-season diurnal (July proxy)", you: fmtD(di), context: `Larger swing than ${pct(r.largerDiurnalThanAtlasShare)} of stops` },

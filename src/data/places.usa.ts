@@ -2651,7 +2651,7 @@ export const PLACES_USA: Place[] = [
     biome: "Coastal prairie / Bishop pine / Douglas-fir", koppen: "Csb (cool oceanic)",
     archetypes: ["fog-belt-coast", "cool-summer-maritime", "coastal-upwelling", "mediterranean-pocket"],
     drivers: ["upwelling", "marine-layer", "aspect-slope"],
-    summaryShort: "The foggiest point on the US West Coast — summer upwelling keeps coastal ridges at 12–15°C in August.",
+    summaryShort: "The foggiest point on the US West Coast — summer upwelling holds the outer headland near 13–15°C in August, while Point Reyes Station, 20 km inland in the lee of Inverness Ridge, reaches the mid 20s.",
     summaryImmersive: "Point Reyes juts 15 km into the Pacific at the Bay Area's north edge and catches the full force of California Current upwelling. The outer lighthouse recorded the highest fog frequency in the continental US. Step inland 8 km and you gain 8°C on a typical summer afternoon. The dairy ranches thriving here for 150 years are the direct consequence of the unchanging cool.",
     whyDistinct: "Peninsula geometry maximizes exposure to cold-water upwelling and marine stratus; San Andreas-fault origins give steep aspect variability.",
     experience: {
@@ -2659,7 +2659,7 @@ export const PLACES_USA: Place[] = [
       seasons: {
         winter: "Cool and wet — highs near 14°C, nights near 5°C, and Pacific fronts that keep grass green when inland California browns.",
         spring: "Fog and wildflowers — coastal prairie erupts in color, elephant seals depart, and marine layer still dominates afternoon highs in the low teens.",
-        summer: "The fog season — outer lighthouse highs barely reach 17°C under stratus, inland ridges warm into the high teens, and upwelling keeps the ocean painfully cold.",
+        summer: "The fog season — outer lighthouse highs barely reach 17°C under stratus, the village of Point Reyes Station in the lee warms to about 25°C, and upwelling keeps the ocean painfully cold.",
         autumn: "Clear windows — September and October bring the year's best sun, tule elk rut on the pastures, and the first storms that close Highway 1.",
       },
       travelerFit: "Visitors come for elk, wildflower hikes, and the shock of cool fog 50 km from San Francisco heat.",
@@ -2740,10 +2740,10 @@ export const PLACES_USA: Place[] = [
     archetypes: ["alpine-tundra", "rain-shadow-sanctuary", "high-desert-escape", "volcanic-upland"],
     drivers: ["elevation-lapse-rate", "rain-shadow", "orographic-lift"],
     summaryShort: "Highest major ski town in California — subalpine Sierra with deep snow, big sun, and volcanic geology.",
-    summaryImmersive: "Mammoth sits at 2424 m on the east side of the Sierra crest where storms deposit their snow before descending to the Owens Valley rain shadow. The climate is subalpine — 30 inches of water equivalent in an average winter, 300+ sunny days, intense UV, and summer afternoons that rarely exceed 25°C. The volcanic geology (still an active caldera) adds geothermal features that shape local micro-microclimates.",
+    summaryImmersive: "Mammoth sits at 2424 m on the east side of the Sierra crest where storms deposit their snow before descending to the Owens Valley rain shadow. The climate is subalpine — 30 inches of water equivalent in an average winter, 300+ sunny days, intense UV, and summer afternoons that average 25–26°C. The volcanic geology (still an active caldera) adds geothermal features that shape local micro-microclimates.",
     whyDistinct: "East-Sierra position captures snow but sits in the partial rain shadow of higher peaks immediately to the west; extreme elevation dominates.",
     experience: {
-      feel: "Mammoth feels like California's highest major ski town — 2424 m on the east Sierra flank where storms dump deep snow, 300+ sunny days burn intense UV, and summer afternoons rarely exceed 25°C above a still-active volcanic caldera.",
+      feel: "Mammoth feels like California's highest major ski town — 2424 m on the east Sierra flank where storms dump deep snow, 300+ sunny days burn intense UV, and summer afternoons average 25–26°C above a still-active volcanic caldera.",
       seasons: {
         winter: "The reason the town exists — metres of snow, afternoons near 3°C, nights near −11°C, and a resort economy built around one of the deepest snowpacks in the Sierra.",
         spring: "Corn-snow season — snowpack retreating slowly, the first bare-ground days in June, and geothermal features steaming in the partial rain shadow.",
@@ -2831,7 +2831,7 @@ export const PLACES_USA: Place[] = [
     biome: "Madrean pine-oak / juniper-oak savanna", koppen: "BSk",
     archetypes: ["sky-island-refuge", "high-desert-escape", "monsoon-edge", "volcanic-upland"],
     drivers: ["elevation-lapse-rate", "monsoon-lift", "rain-shadow"],
-    summaryShort: "West Texas's cool island in the sky — a volcanic range with oak forest, McDonald Observatory, and 30°C summers at 1500 m.",
+    summaryShort: "West Texas's cool island in the sky — a volcanic range with oak forest, McDonald Observatory, and summer afternoons near 32°C at 1500 m.",
     summaryImmersive: "Fort Davis sits in a volcanic massif that rises 800 m above the Chihuahuan Desert floor, carrying pine-oak forest and genuine winter into a region where 43°C days are the lowland norm. McDonald Observatory, perched on nearby Mount Locke, chose the site for exceptional dark skies — among the darkest in the continental US. Summer afternoon highs stay near 30°C rather than the desert's 40°C; nights drop to 12°C. The North American monsoon reaches here reliably, producing dramatic August thunderstorms.",
     whyDistinct: "Volcanic uplift lifts the Davis Mountains into a cooler, moister microclimate; the range is effectively a Madrean archipelago island; exceptional atmospheric transparency enables world-class astronomy.",
     experience: {
@@ -3276,10 +3276,10 @@ export const PLACES_USA: Place[] = [
     biome: "Subalpine / alpine transition", koppen: "Dfc (alpine edge)",
     archetypes: ["alpine-tundra", "cold-air-pool"], drivers: ["elevation-lapse-rate", "cold-air-drainage"],
     summaryShort: "The highest incorporated city in North America — thin air, long winter, brilliant UV, summer frost any month.",
-    summaryImmersive: "Leadville perches at 3094 m in the upper Arkansas Valley between the Sawatch and Mosquito Ranges. The air carries only 70% of sea-level oxygen. Summer highs of 21°C are exceptional; nights fall to 2°C even in July, and frost is possible any month. Winters are long and deep; skiing conditions around the town are among the most reliable in the Rockies. The old mining downtown exists because silver was worth living this cold for.",
+    summaryImmersive: "Leadville perches at 3094 m in the upper Arkansas Valley between the Sawatch and Mosquito Ranges. The air carries only 70% of sea-level oxygen. Summer highs average only about 21°C; nights fall to 2°C even in July, and frost is possible any month. Winters are long and deep; skiing conditions around the town are among the most reliable in the Rockies. The old mining downtown exists because silver was worth living this cold for.",
     whyDistinct: "Extreme elevation dominates every climate variable; basin geometry adds secondary cold-pool effect.",
     experience: {
-      feel: "Leadville feels like altitude made municipal — North America's highest incorporated city at 3094 m where the air carries 70% of sea-level oxygen, summer highs of 21°C are exceptional, frost is possible any month, and the old mining downtown exists because silver was worth living this cold for.",
+      feel: "Leadville feels like altitude made municipal — North America's highest incorporated city at 3094 m where the air carries 70% of sea-level oxygen, summer highs average only about 21°C, frost is possible any month, and the old mining downtown exists because silver was worth living this cold for.",
       seasons: {
         winter: "Long and deep — highs near 0°C, nights near −15°C, reliable valley snow around town, and skiing conditions among the most dependable in the Rockies.",
         spring: "Slow thaw — snow lingers on north faces, afternoons climb through the single digits, and the first warm day feels like a festival.",
@@ -3322,7 +3322,7 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "Durango sits at 1988 m in the Animas Valley, sheltered between the San Juan peaks to the north and the Mesa Verde country to the south. The valley orientation moderates extremes; winters are mild by Rocky Mountain standards (January mean high around 5°C) and summers stay in the high 20s. Monsoon season brings dramatic afternoon thunderstorms against the peaks.",
     whyDistinct: "River-valley moderation plus southern-Rockies latitude produces warmer winters than altitude implies; reliable monsoon moisture.",
     experience: {
-      feel: "Durango feels like a Rocky Mountain sweet spot — 1988 m in the Animas Valley where river orientation moderates extremes, winters stay mild by mountain standards, summers peak in the high 20s, and monsoon thunderstorms build against the San Juan peaks every afternoon in July.",
+      feel: "Durango feels like a Rocky Mountain sweet spot — 1988 m in the Animas Valley where river orientation moderates extremes, winters stay mild by mountain standards, summer afternoons reach about 30°C, and monsoon thunderstorms build against the San Juan peaks every afternoon in July.",
       seasons: {
         winter: "Mild for the Rockies — afternoons near 5°C, nights near −10°C, enough snow for Mesa Verde and Purgatory access, and less bite than higher San Juan towns.",
         spring: "Runoff and green-up — the Animas swelling with snowmelt, afternoons climbing through the teens, and the first mountain-biking days on dry trails.",
@@ -3841,7 +3841,7 @@ export const PLACES_USA: Place[] = [
     reliefContext: "High Blue Ridge Escarpment at 1000 m — a climate transect into near-New England character at Southern latitude.",
     biome: "Northern hardwoods in a Southern setting", koppen: "Cfb / Dfb transition",
     archetypes: ["mild-winter-foothills", "thermal-belt", "cloud-forest"], drivers: ["elevation-lapse-rate", "orographic-lift"],
-    summaryShort: "A 1000-meter ridge town where summer afternoons stay below 25°C and winter brings real snow — New England climate at 36° latitude.",
+    summaryShort: "A 1000-meter ridge town where summer afternoons average 25–26°C and winter brings real snow — New England climate at 36° latitude.",
     summaryImmersive: "Boone perches at 995 m on the Blue Ridge Escarpment, high enough that its climate resembles New Hampshire more than the Carolina Piedmont below. Summer afternoons stay in the low-to-mid 20s °C; winters bring snow and real cold; cloudy-windy days are common. The Appalachian Trail passes through; the landscape carries an ecological character more northern than its latitude suggests.",
     whyDistinct: "Extreme elevation for the latitude produces a northern-feeling climate within the Southeast.",
     climate: { tempHighC: [4.1, 5.6, 10.1, 14.8, 19.4, 22.6, 24.6, 23.9, 20.4, 15.4, 9.8, 5.2], tempLowC: [-6.1, -5.2, -1.8, 2.4, 7.4, 12.1, 14.4, 13.6, 10.1, 4.4, -0.4, -4.9], precipMm: [108, 98, 122, 110, 128, 128, 138, 122, 108, 84, 92, 104], snowCm: [40, 36, 25, 6, 0, 0, 0, 0, 0, 0, 8, 26], humidity: [67, 64, 67, 67, 72, 75, 78, 78, 75, 72, 70, 70], sunshinePct: [53, 52, 55, 62, 61, 66, 64, 63, 57, 57, 60, 53], annualPrecipMm: 1342, frostFreeDays: 150, hardinessZone: "6a" },
@@ -4374,7 +4374,7 @@ export const PLACES_USA: Place[] = [
     growability: { score: 74, growsWell: ["Winter vegetables (leafy greens, brassicas, carrots)", "Citrus", "Dates", "Cotton", "Melons (summer)"], tricky: ["Any non-irrigated crop", "Cool-season crops in summer"], orchard: "Date palms are the emblematic Yuma crop; Medjool and Deglet Noor are both commercially significant." },
     climateChange: { outlook2050: "Higher extreme heat (48°C+ possible); Colorado River flows reduced, threatening irrigation; cooling demand rising.", outlook2100: "Water scarcity is the defining issue — climate itself remains viable but agriculture depends on imported water that is becoming more contested.", keyShifts: [{ variable: "Summer heat extremes", direction: "up" }, { variable: "Colorado River flow", direction: "down" }, { variable: "Winter mildness", direction: "up" }, { variable: "Monsoon intensity", direction: "mixed" }], resilienceNote: "Sunshine and mild winters are robust; water supply is the vulnerability." },
     risks: { wildfire: { level: "very-low", trend: "stable" }, flood: { level: "low", trend: "worsening", note: "Flash flooding during monsoon." }, drought: { level: "very-high", trend: "worsening", note: "Colorado River Basin megadrought." }, extremeHeat: { level: "very-high", trend: "worsening" }, extremeCold: { level: "very-low", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "low", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
-    nearbyContrasts: [{ placeId: "flagstaff-az", label: "Flagstaff, AZ", note: "About five hours' drive north-east and 2,100 m higher — 20°C cooler in summer, surrounded by ponderosa pine forest." }],
+    nearbyContrasts: [{ placeId: "flagstaff-az", label: "Flagstaff, AZ", note: "About five hours' drive north-east and 2,100 m higher — about 14°C cooler in summer, surrounded by ponderosa pine forest." }],
     scores: { hiddenGem: 42, microclimateUniqueness: 84, comfort: 58, resilience: 38, growability: 74, tradeoff: 62 },
     relocationFit: ["winter-escape retirees (snowbirds)", "agricultural workers", "sun-obsessed"], travelFit: ["winter dark-sky", "date-palm heritage", "Sonoran Desert access"],
     whoWouldLove: "Anyone whose body heals in sun. Winter snowbirds. Desert-crop agronomists.", whoMightNot: "Summer residents; water-conservation idealists; humidity-lovers.",
@@ -5178,7 +5178,7 @@ export const PLACES_USA: Place[] = [
   {
     id: "medford-or", tier: "C", country: "USA", region: "Oregon", municipality: "Medford", name: "Medford (Rogue Valley)",
     lat: 42.3265, lon: -122.8756, elevationM: 430,
-    reliefContext: "Floor of the Rogue Valley south of the Klamath Mountains; rain-shadowed from Pacific onshore flow.",
+    reliefContext: "Floor of the Rogue Valley, between the Klamath-Siskiyou ranges to the west and south and the Cascades to the east; rain-shadowed from Pacific onshore flow.",
     biome: "Oak savanna and irrigated orchard mosaic",
     koppen: "Csa",
     archetypes: ["rain-shadow-sanctuary", "orchard-valley", "thermal-belt"],

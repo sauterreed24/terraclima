@@ -24,7 +24,7 @@ export const PLACES_MEXICO: Place[] = [
     archetypes: ["eternal-spring-highland", "monsoon-edge", "volcanic-upland"],
     drivers: ["elevation-lapse-rate", "monsoon-lift", "aspect-slope"],
 
-    summaryShort: "A cultural capital where elevation produces almost year-round spring — highs in the low-to-mid 20s month after month.",
+    summaryShort: "A cultural capital where elevation produces almost year-round spring — highs in the high 20s to low 30s month after month.",
     summaryImmersive: "At 1555 m in the central valleys of Oaxaca, the city sits at exactly the elevation where subtropical heat yields to temperate comfort. Afternoons hover near 28–32 °C for most of the year; summer nights often sit near 14–15 °C, while winter nights can dip near 3–8 °C. The dry season stretches from November through May — golden light, crisp mornings, brilliant skies. The wet season arrives in June with afternoon thunderstorms that build over the surrounding sierras and roll across the valleys, usually dissipating by evening. In ten months of the year you can reasonably plan to eat outdoors. The valleys run east-west, funneling moisture from the Isthmus of Tehuantepec, and the encircling sierras rise over 3000 m, producing pronounced orographic enhancement of summer rainfall. It's a climate shaped by altitude, monsoon geometry, and the sheltering mass of Mexico's great southern ranges.",
     whyDistinct: "Tropical latitude (17°N) combined with 1555 m elevation produces a climate that is effectively 'perpetual spring.' The surrounding sierras both protect the valleys from Gulf/Pacific moisture extremes and enhance convective rainfall in the wet season.",
 
@@ -1151,7 +1151,7 @@ export const PLACES_MEXICO: Place[] = [
     biome: "Semi-arid highland / mesquite-acacia steppe", koppen: "BSk",
     archetypes: ["eternal-spring-highland", "high-desert-escape", "volcanic-upland"],
     drivers: ["elevation-lapse-rate", "continentality"],
-    summaryShort: "Mexico's 'cool' colonial city — at 2440 m, summers cap at 25°C and winter frosts are routine.",
+    summaryShort: "Mexico's 'cool' colonial city — at 2440 m, afternoons peak near 27°C before the rains and winter frosts are routine.",
     summaryImmersive: "Zacatecas perches at 2440 m — 500 m higher than Morelia and in a more continental interior position. The result is a colder, drier eternal-spring climate: summer highs in the low 20s, winter lows that can reach −4°C, and annual precipitation under 500 mm. It's Mexico's most genuinely cool major historic city. The rose-pink stone, silver-mining history, and cultural intensity are all at altitude.",
     whyDistinct: "Higher interior-highland position produces colder eternal-spring than the Bajío; real frost and dry cold distinguish it.",
     climate: { tempHighC: [18.6, 20.4, 23.1, 25.2, 26.2, 24.8, 22.4, 22.1, 21.6, 21.4, 20.6, 18.4], tempLowC: [2.4, 3.8, 6.2, 9.4, 11.6, 12.4, 11.6, 11.1, 10.4, 7.6, 4.8, 3.1], precipMm: [10, 6, 4, 8, 18, 62, 86, 78, 64, 22, 8, 10], annualPrecipMm: 376, frostFreeDays: 260, hardinessZone: "8b equiv." },
@@ -1570,7 +1570,7 @@ export const PLACES_MEXICO: Place[] = [
     koppen: "Aw",
     archetypes: ["gap-wind-corridor", "tropical-dry", "hurricane-coast"],
     drivers: ["gap-winds", "trade-wind", "continentality", "hurricane-track"],
-    summaryShort: "The windiest place in the Americas — a narrow mountain gap where Caribbean pressure forces air through to the Pacific at sustained 40–70 km/h for months at a time.",
+    summaryShort: "The windiest place in the Americas — a narrow mountain gap where Gulf of Mexico high pressure forces air through to the Pacific at sustained 40–70 km/h for months at a time.",
     summaryImmersive: "La Ventosa sits in the Isthmus of Tehuantepec, the one spot where the continental mountain chain flattens to a pass only 250 m high. Whenever the Caribbean's pressure rises above the Pacific's — which is most of the time from October through February — air accelerates through this gap in a fierce northerly wind called the Tehuano. Sustained winds regularly reach 60 km/h with gusts over 100 km/h; at peak events truck traffic is shut down. The wind is so reliable that this region hosts the densest concentration of wind farms in Latin America (over 2,000 MW installed). The gap-wind corridor also strips moisture and sun from the land; La Ventosa is tropical-dry where the rest of Oaxaca is tropical-wet.",
     whyDistinct: "Tehuano gap wind is one of only four major gap-wind regimes on Earth (the others being the Papagayo Gulf, the Panama Gulf, and the Columbia Gorge). Cross-isthmus pressure differences combined with the constrictive gap geometry create some of the most intense sustained winds on the continent.",
     climate: {
@@ -1676,7 +1676,7 @@ export const PLACES_MEXICO: Place[] = [
   },
 
   {
-    id: "ensenada-mx", tier: "C", country: "Mexico", region: "Baja California", municipality: "Ensenada", name: "Ensenada (Valle de Guadalupe)",
+    id: "ensenada-mx", tier: "C", country: "Mexico", region: "Baja California", municipality: "Ensenada", name: "Ensenada",
     lat: 31.8714, lon: -116.6016, elevationM: 15,
     reliefContext: "Pacific coast of northern Baja California; Valle de Guadalupe inland 30 km at 350 m elevation.",
     biome: "Mediterranean chaparral / coastal sage",
@@ -1734,7 +1734,7 @@ export const PLACES_MEXICO: Place[] = [
     koppen: "Cfb",
     archetypes: ["cloud-forest", "eternal-spring-highland", "fog-belt-coast"],
     drivers: ["orographic-lift", "marine-layer", "elevation-lapse-rate"],
-    summaryShort: "The 'Athens of Veracruz' — a cloud-forest highland where eternal mist, 1,500 mm of rain, and mild 22°C afternoons create one of Mexico's greenest and most literary climates.",
+    summaryShort: "The 'Athens of Veracruz' — a cloud-forest highland where eternal mist, 1,500 mm of rain, and mild 22–28°C afternoons create one of Mexico's greenest and most literary climates.",
     summaryImmersive: "Xalapa sits at 1,427 m on the eastern slope of Mexico's continental divide, the spot where warm Gulf air is forced upslope and condensed into near-permanent mist. The result is a cloud-forest climate — called bosque mesófilo de montaña — one of the rarest and most biodiverse ecosystems in the Americas. Days average 22°C year-round; nights drop to 12–15°C; humidity rarely falls below 70%. Rainfall is heavy and persistent (1,500 mm annually) with drizzle possible in any month. The city's mossy walls, mist-filled mornings, and coffee plantations that creep up from the lowlands give Xalapa its reputation as a cultural and climatic refuge.",
     whyDistinct: "Eastern escarpment of the Sierra Madre Oriental + Gulf moisture + cloud-forest elevation band. A precise combination of latitude, distance from the coast, and elevation puts Xalapa in the global 'cloud-forest isohypse' — a thin belt where persistent cloud contact defines the ecosystem.",
     experience: {

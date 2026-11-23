@@ -13,15 +13,15 @@ import { climateDataSnapshotLabel } from "../../lib/climate-v2/periods";
 export const Footer = memo(function Footer() {
   return (
     <footer className="mt-10 tc-footer">
-      <div className="max-w-[1600px] mx-auto px-6 py-6 text-xs text-stone flex flex-wrap gap-4 items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Layers className="w-3.5 h-3.5" />
+      <div className="tc-footer__inner max-w-[1600px] mx-auto px-6 py-6 text-xs text-stone flex flex-wrap gap-4 items-start justify-between">
+        <div className="flex items-start gap-3 max-w-[78ch] leading-relaxed">
+          <Layers className="w-3.5 h-3.5 shrink-0 mt-[0.2rem]" aria-hidden />
           <span>
             Terraclima is a curated atlas, not a live weather, appraisal, or parcel feed. Current climate uses Daymet V4 R1 rolling normals ({CLIMATE_NORMALS_PERIOD}; not a WMO standard normal), with {CLIMATE_WMO_NORMALS_PERIOD} as the official comparison period. NOAA, ECCC, and SMN station products validate the grid. Geospatial screening uses consistent terrain-climate logic, Sentinel-2 and Landsat reference families, and a relief-texture proxy; every score points back to place notes, sources, and confidence.
           </span>
         </div>
-        <div className="flex items-center gap-3">
-          <Search className="w-3.5 h-3.5" />
+        <div className="flex items-start gap-3 leading-relaxed">
+          <Search className="w-3.5 h-3.5 shrink-0 mt-[0.2rem]" aria-hidden />
           <span>
             {PLACE_COUNTS.total} hand-picked places — {climateDataSnapshotLabel()}
           </span>

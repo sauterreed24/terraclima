@@ -432,7 +432,7 @@ async function main() {
       if (!stats.some(t => /Summer high/i.test(t))) {
         findings.push({ label, kind: "missing-summer-high", joined });
       }
-      if (!stats.some(t => /January low/i.test(t))) {
+      if (!stats.some(t => /Winter low/i.test(t))) {
         findings.push({ label, kind: "missing-january-low", joined });
       }
       if (stats.some(t => /Solar resource|JJA high|Sunny days/i.test(t))) {

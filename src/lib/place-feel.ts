@@ -7,7 +7,7 @@ import {
   meanSummerHigh,
   RISK_VALUE,
   seasonalUsabilityScore,
-  scoringSunshinePct,
+  meanAnnualSunshinePct,
   summerDiurnalC,
 } from "./climate-metrics";
 import { researchedChapterCount } from "./research-chapters";
@@ -132,11 +132,8 @@ function livedAxisEase(place: Place): number {
 
 function skyAirCue(place: Place): number {
   let score = 68;
-  const sunshine = scoringSunshinePct(place);
-  if (sunshine) {
-    const annualSun = sunshine.reduce((a, b) => a + b, 0) / 12;
-    score += (annualSun - 58) * 0.55;
-  }
+  const annualSun = meanAnnualSunshinePct(place);
+  if (annualSun != null) score += (annualSun - 58) * 0.55;
   if (place.climate.humidity) {
     const summerHumidity = (place.climate.humidity[5] + place.climate.humidity[6] + place.climate.humidity[7]) / 3;
     if (summerHumidity > 74 && summerDiurnalC(place) < 11 && coolSummer(place)) score -= (summerHumidity - 74) * 0.7;
