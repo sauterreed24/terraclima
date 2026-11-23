@@ -2757,7 +2757,7 @@ export const AtlasMap = memo(function AtlasMap({
           style={{ ["--map-readout-rgb" as string]: atlasMapReadout.accentRgb }}
         >
           <div className="map-atlas-readout__head">
-            <span>Atlas read</span>
+            <span>Top ranked</span>
             <strong title={atlasMapReadout.headline}>
               {coarsePointer
                 ? compactAtlasReadHeadline(atlasMapReadout.headline)

@@ -13,10 +13,10 @@ describe("PlaceDetailLoadingFallback", () => {
 
     render(<PlaceDetailLoadingFallback placeName="Sequim" onClose={onClose} />);
 
-    const dialog = screen.getByRole("dialog", { name: "Sequim climate dossier" });
+    const dialog = screen.getByRole("dialog", { name: "Sequim climate profile" });
     expect(dialog).toHaveAttribute("data-place-detail-loading");
     expect(dialog).toHaveClass("place-detail-drawer");
-    expect(screen.getByRole("status")).toHaveTextContent("Opening Sequim climate dossier");
+    expect(screen.getByRole("status")).toHaveTextContent("Opening Sequim climate profile");
 
     const close = screen.getByRole("button", { name: "Close profile" });
     expect(close).toHaveAttribute("data-place-detail-close");
@@ -71,7 +71,7 @@ describe("PlaceDetailLoadingFallback", () => {
 
     const drawer = container.querySelector("[data-place-detail-loading]");
     expect(drawer).toHaveAttribute("aria-hidden", "true");
-    expect(screen.queryByRole("dialog", { name: "Sequim climate dossier" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("dialog", { name: "Sequim climate profile" })).not.toBeInTheDocument();
     await waitFor(() => expect(document.activeElement).toBe(opener));
   });
 

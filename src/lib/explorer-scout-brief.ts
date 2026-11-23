@@ -435,7 +435,7 @@ function buildAdvisorRead(
 
   return {
     verdict: `${leader.place.name} is the place to look at first in this view. That is not a recommendation to move.`,
-    why: `${bestFor} is who it suits best; ${liveFitRead}${signalLine}.${rankingNote ? ` ${rankingNote}` : ""}`,
+    why: `Best suited to ${bestFor}; ${liveFitRead}${signalLine}.${rankingNote ? ` ${rankingNote}` : ""}`,
     checkFirst: `Verify ${watch} first, then run the ${fieldCheck.target} in-person check.`,
     nextAction: nextStep.action,
     confidence,

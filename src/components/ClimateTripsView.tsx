@@ -229,7 +229,7 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
         <h2 id="seasonal-windows-heading" className="font-atlas text-lg text-ice">Best months to visit</h2>
         <div className="grid md:grid-cols-3 gap-2 mt-3">
           {tourismPicks.slice(0, 6).map(({ place, profile }) => {
-            const openProfileLabel = `Open the ${place.name} profile`;
+            const openProfileLabel = `Open the ${place.name} profile (best months)`;
             return (
               <button
                 key={place.id}
@@ -265,7 +265,7 @@ function TourismPickCard({
   const prose = useProse();
   const { place, profile } = row;
   const firstDay = profile.itinerary.days[0];
-  const openProfileLabel = `Open the ${place.name} profile`;
+  const openProfileLabel = `Open the ${place.name} profile (recommended stops)`;
   return (
     <article className="panel climate-trip-card climate-trip-pick-card p-4 anim-fade-in space-y-3">
       <div className="flex items-start justify-between gap-3">

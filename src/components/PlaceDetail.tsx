@@ -1104,7 +1104,7 @@ function DetailBody({
         <Section anchorId={PD.livedSignals} title="Cost and access" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
           <div className="panel-thin p-4">
             <div className="text-[11px] text-stone-readable leading-snug mb-3 max-w-2xl">
-              Factual housing and access reads that climate normals cannot capture. 0 = no friction, 100 = severe. Screening indicators anchored to public sources — not appraisals or insurance underwriting.
+              Housing cost and travel times, which climate figures do not show. Each is scored from 0 (easy) to 100 (severe) from public sources. These are not appraisals or insurance assessments.
             </div>
             <ul className="tc-livability-signal-grid">
               {([
@@ -1512,7 +1512,7 @@ function DetailBody({
 
       <Section anchorId={PD.soil} title="Agriculture & soil" icon={<Leaf className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
-          The growing read pairs the soil profile with what the climate envelope rewards or fights. Hardiness, frost-free runway, and chill hours sit in the climate signature above; here the focus is dirt, drainage, and what actually thrives.
+          Soil, drainage and what grows well here. Hardiness zone, frost-free days and chill hours are under Climate basics above.
         </p>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="panel-thin p-4">

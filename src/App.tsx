@@ -3001,7 +3001,7 @@ const HeroCard = memo(function HeroCard({
           ) : null}
           {!compact ? (
             <div className="hero-metrics flex items-center gap-4 shrink-0 text-right justify-end flex-wrap">
-              <Metric label="In this list" value={count} animated />
+              <Metric label="In list" value={count} animated />
               <Metric label="All places" value={PLACE_COUNTS.total} />
               <Metric label="Flagships" value={PLACE_COUNTS.tierA} />
             </div>
@@ -3298,8 +3298,8 @@ const LivabilityTopTenRail = memo(function LivabilityTopTenRail({
               <span className="livability-weight-pill" title="Nine hazards, scored as 60% their average and 40% the worst one, so a single severe hazard still counts.">Hazard cushion {Math.round(LIVABILITY_WEIGHTS.hazardCushion * 100)}%</span>
               <span className="livability-weight-pill">Resilience {Math.round(LIVABILITY_WEIGHTS.resilience * 100)}%</span>
               <span className="livability-weight-pill">Growability {Math.round(LIVABILITY_WEIGHTS.growability * 100)}%</span>
-              <span className="livability-weight-pill" title={prose("Full marks at 700–1,500 mm of rain and snow a year. Very dry (under 300 mm) and very wet (over 2,500 mm) both score lower.")}>Moderate rainfall {Math.round(LIVABILITY_WEIGHTS.precipModeration * 100)}%</span>
-              <span className="livability-weight-pill" title="Editorial ratings for housing cost, distance to services and everyday hassle.">Cost & access {Math.round(LIVABILITY_WEIGHTS.livedFriction * 100)}%</span>
+              <span className="livability-weight-pill" title={prose("Full marks at 700–1,500 mm of rain and snow a year. Very dry (under 300 mm) and very wet (over 2,500 mm) both score lower.")}>Precip moderation {Math.round(LIVABILITY_WEIGHTS.precipModeration * 100)}%</span>
+              <span className="livability-weight-pill" title="Editorial ratings for housing cost, distance to services and everyday hassle.">Lived friction {Math.round(LIVABILITY_WEIGHTS.livedFriction * 100)}%</span>
               <span className="livability-weight-pill" title="A combined score for how the place feels: comfort, ease of daily life, character, and how well it is documented.">Place feel {Math.round(LIVABILITY_WEIGHTS.placeFeel * 100)}%</span>
             </div>
             <p className="hidden min-[1400px]:block mt-1.5 text-[10px] text-stone-readable/85 italic">
@@ -3984,7 +3984,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
   const prose = useProse();
   const canSaveFinalists = brief.compareIds.length >= 2;
   const openLeaderLabel = `Open the top pick, ${brief.leader.place.name}`;
-  const compareLeadersLabel = `Compare the top ${brief.compareIds.length} places`;
+  const compareLeadersLabel = `Compare the top ${brief.compareIds.length} places from the summary`;
   const saveFinalistsLabel = `Save the top ${brief.compareIds.length} places to your shortlist`;
   return (
     <section id="explorer-scout-brief" tabIndex={-1} className="scout-brief" aria-labelledby="explorer-scout-brief-title">
@@ -4210,7 +4210,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
   const canSaveFinalists = brief.compareIds.length >= 2;
   const leaderOpenLabel = `Open the top pick, ${brief.leader.place.name}`;
   const dossierLabel = `Open the profile for ${brief.leader.place.name}`;
-  const compareLabel = `Compare the top ${brief.compareIds.length} places`;
+  const compareLabel = `Compare the top ${brief.compareIds.length} places from the summary`;
   const saveFinalistsLabel = `Save the top ${brief.compareIds.length} places to your shortlist`;
   const pinLabel = leaderPinned
     ? `Unpin ${brief.leader.place.name} from your shortlist`
@@ -4235,7 +4235,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             <span className="desktop-scout-board__place">{brief.leader.place.name}</span>
             <span className="desktop-scout-board__note">{prose(brief.fitLine)}</span>
           </button>
-          <div className="desktop-scout-board__actions" aria-label={`Actions for ${brief.leader.place.name}`}>
+          <div className="desktop-scout-board__actions" aria-label={`Summary actions for ${brief.leader.place.name}`}>
             <button
               type="button"
               className="desktop-scout-board__action"

@@ -51,8 +51,8 @@ function renderFilterBar(
       />
     </UnitContext.Provider>,
   );
-  if (opts.openFitFinder) openFilterAccordion(/^Fit Finder/);
-  if (opts.openLiveFinder) openFilterAccordion(/^Live Finder$/);
+  if (opts.openFitFinder) openFilterAccordion(/^Goals/);
+  if (opts.openLiveFinder) openFilterAccordion(/^Must-haves$/);
   return view;
 }
 
@@ -104,13 +104,13 @@ describe("FilterBar Live Finder temperature constraints", () => {
 
     const lens = screen.getByRole("region", { name: "Current ranking and filters" });
     expect(lens).toHaveTextContent("Hidden gems");
-    expect(lens).toHaveTextContent("2 living signals active");
-    expect(screen.getByText("1 Live Finder preset")).toBeInTheDocument();
+    expect(lens).toHaveTextContent("2 must-haves set");
+    expect(screen.getByText("1 must-have")).toBeInTheDocument();
     expect(within(lens).getByText("Garden 65+")).toBeInTheDocument();
     expect(within(lens).getByRole("button", { name: "Clear all filters" })).toHaveAttribute("title", "Clear all filters");
-    expect(within(lens).getByRole("button", { name: "Remove filter: 1 Live Finder preset" })).toHaveAttribute(
+    expect(within(lens).getByRole("button", { name: "Remove filter: 1 must-have" })).toHaveAttribute(
       "title",
-      "Remove filter: 1 Live Finder preset",
+      "Remove filter: 1 must-have",
     );
     expect(within(lens).getByRole("button", { name: "Remove filter: Garden 65+" })).toHaveAttribute(
       "title",
@@ -162,7 +162,7 @@ describe("FilterBar ranking menu", () => {
     const rankMenu = screen.getByRole("combobox", { name: "Rank by" });
 
     expect(rankMenu).toHaveValue("hidden-gems");
-    expect(screen.getByText("Current list and map: Hidden gems")).toBeInTheDocument();
+    expect(screen.getByText("The list and map are ordered by Hidden gems.")).toBeInTheDocument();
 
     fireEvent.change(rankMenu, { target: { value: "most-comfortable" } });
 
@@ -173,7 +173,7 @@ describe("FilterBar ranking menu", () => {
     renderFilterBar("F");
 
     const rankMenu = screen.getByRole("combobox", { name: "Rank by" });
-    const fitSummary = screen.getByText(/^Fit Finder$/, { selector: "summary" });
+    const fitSummary = screen.getByText(/^Goals$/, { selector: "summary" });
     expect(rankMenu.compareDocumentPosition(fitSummary) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });
@@ -182,10 +182,10 @@ describe("FilterBar lifestyle bundles", () => {
   it("renders guided Fit Finder paths before manual Must-haves", () => {
     renderFilterBar("F", { openFitFinder: true, openLiveFinder: true });
 
-    expect(screen.getByText("Fit Finder", { selector: "summary" })).toBeInTheDocument();
-    expect(screen.getByText(/Start with what you are escaping or seeking/)).toBeInTheDocument();
-    const fitSummary = screen.getByText("Fit Finder", { selector: "summary" });
-    const liveSummary = screen.getByText("Live Finder", { selector: "summary" });
+    expect(screen.getByText("Goals", { selector: "summary" })).toBeInTheDocument();
+    expect(screen.getByText(/Pick what you want from a climate/)).toBeInTheDocument();
+    const fitSummary = screen.getByText("Goals", { selector: "summary" });
+    const liveSummary = screen.getByText("Must-haves", { selector: "summary" });
     expect(fitSummary.compareDocumentPosition(liveSummary) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     const escapeLane = screen.getByRole("group", { name: "Get away from" });
     const dailyLane = screen.getByRole("group", { name: "Daily life" });
@@ -197,13 +197,13 @@ describe("FilterBar lifestyle bundles", () => {
     expect(screen.getByRole("button", { name: /Winter Sun/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Mexico \/ Southwest/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Low Fire \/ Smoke/ })).toBeInTheDocument();
-    expect(within(escapeLane).getByRole("button", { name: "Apply Cool Summer Refuge Fit Finder path" })).toHaveAttribute(
+    expect(within(escapeLane).getByRole("button", { name: "Apply the Cool Summer Refuge goal" })).toHaveAttribute(
       "title",
-      "Apply Cool Summer Refuge Fit Finder path",
+      "Apply the Cool Summer Refuge goal",
     );
     expect(within(dailyLane).getByRole("button", { name: /Remote Work/ })).toBeInTheDocument();
     expect(within(terrainLane).getByRole("button", { name: /Mexico \/ Southwest/ })).toBeInTheDocument();
-    expect(screen.getByText("Live Finder")).toBeInTheDocument();
+    expect(screen.getByText("Turn on what you need")).toBeInTheDocument();
     expect(screen.getByText("Must-haves")).toBeInTheDocument();
   });
 
@@ -213,14 +213,14 @@ describe("FilterBar lifestyle bundles", () => {
     const coolPath = screen.getByRole("button", { name: /Cool Summer Refuge/ });
     expect(coolPath).toHaveAttribute("aria-describedby", expect.stringContaining("-applies"));
     expect(within(coolPath).getByText("Rank")).toBeInTheDocument();
-    expect(within(coolPath).getByText("Signals")).toBeInTheDocument();
+    expect(within(coolPath).getByText("Filters")).toBeInTheDocument();
     expect(coolPath).toHaveTextContent("Coolest summers");
     expect(coolPath).toHaveTextContent(`Cool · summer <= 79${DEG}F`);
     const coolAppliesId = coolPath.getAttribute("aria-describedby")?.split(" ").find(id => id.endsWith("-applies"));
     expect(coolAppliesId).toBeTruthy();
     expect(document.getElementById(coolAppliesId!)).toHaveAttribute(
       "aria-label",
-      `Cool Summer Refuge applied settings: Rank: Coolest summers · Fit: Cool · Summer <= 79${DEG}F`,
+      `Cool Summer Refuge sets: Rank: Coolest summers · Fit: Cool · Summer <= 79${DEG}F`,
     );
 
     const winterSunPath = screen.getByRole("button", { name: /Winter Sun/ });
@@ -229,7 +229,7 @@ describe("FilterBar lifestyle bundles", () => {
     const winterSunAppliesId = winterSunPath.getAttribute("aria-describedby")?.split(" ").find(id => id.endsWith("-applies"));
     expect(document.getElementById(winterSunAppliesId!)).toHaveAttribute(
       "aria-label",
-      `Winter Sun applied settings: Rank: Sunniest winters · Fit: Sun · Fit: Mild · Winter >= 23${DEG}F`,
+      `Winter Sun sets: Rank: Sunniest winters · Fit: Sun · Fit: Mild · Winter >= 23${DEG}F`,
     );
 
     const mexicoPath = screen.getByRole("button", { name: /Mexico \/ Southwest/ });
@@ -241,7 +241,7 @@ describe("FilterBar lifestyle bundles", () => {
     const mexicoAppliesId = mexicoPath.getAttribute("aria-describedby")?.split(" ").find(id => id.endsWith("-applies"));
     expect(document.getElementById(mexicoAppliesId!)).toHaveAttribute(
       "aria-label",
-      `Mexico / Southwest applied settings: Rank: Best shoulder seasons · Fit: Dry · Fit: Mild · Region: U.S. + Mexico · Terrain: Eternal-Spring Highland + Volcanic Upland + Sky-Island Refuge + High-Desert Escape + Monsoon-Edge Zone + Mild-Winter Foothills · Summer <= 79${DEG}F · Winter >= 23${DEG}F`,
+      `Mexico / Southwest sets: Rank: Best shoulder seasons · Fit: Dry · Fit: Mild · Region: U.S. + Mexico · Terrain: Eternal-Spring Highland + Volcanic Upland + Sky-Island Refuge + High-Desert Escape + Monsoon-Edge Zone + Mild-Winter Foothills · Summer <= 79${DEG}F · Winter >= 23${DEG}F`,
     );
 
     cleanup();
@@ -253,7 +253,7 @@ describe("FilterBar lifestyle bundles", () => {
     const remoteAppliesId = remotePath.getAttribute("aria-describedby")?.split(" ").find(id => id.endsWith("-applies"));
     expect(document.getElementById(remoteAppliesId!)).toHaveAttribute(
       "aria-label",
-      `Remote Work applied settings: Rank: Remote-work ready · Fit: Cool · Fit: Low fire · Summer <= 79${DEG}F`,
+      `Remote Work sets: Rank: Remote-work ready · Fit: Cool · Fit: Low fire · Summer <= 79${DEG}F`,
     );
   });
 
@@ -278,8 +278,8 @@ describe("FilterBar lifestyle bundles", () => {
 
     const lens = screen.getByRole("region", { name: "Current ranking and filters" });
     expect(lens).toHaveTextContent("Most comfortable");
-    expect(lens).toHaveTextContent("felt temperature, atmospheric ease, usable months, hazard cushion, and lived friction");
-    expect(lens).not.toHaveTextContent("Broad atlas scan with ranking only");
+    expect(lens).toHaveTextContent("felt temperature, humidity and sky, usable months, hazards, and cost and access");
+    expect(lens).not.toHaveTextContent("All places, no filters");
   });
 
   it("only marks a lifestyle bundle active when all bundle-owned live filters match", () => {
@@ -292,7 +292,7 @@ describe("FilterBar lifestyle bundles", () => {
       ranking: "best-for-remote-work",
     });
 
-    expect(screen.getByRole("button", { name: "Remote Work Fit Finder path is active" })).toHaveAttribute("data-active", "true");
+    expect(screen.getByRole("button", { name: "Remote Work goal is applied" })).toHaveAttribute("data-active", "true");
 
     cleanup();
 
@@ -306,7 +306,7 @@ describe("FilterBar lifestyle bundles", () => {
       openFitFinder: true,
     });
 
-    expect(screen.getByRole("button", { name: "Apply Remote Work Fit Finder path" })).toHaveAttribute("data-active", "false");
+    expect(screen.getByRole("button", { name: "Apply the Remote Work goal" })).toHaveAttribute("data-active", "false");
   });
 
   it("marks a geography-scoped path active only when region and terrain filters match", () => {
@@ -329,7 +329,7 @@ describe("FilterBar lifestyle bundles", () => {
       ranking: "best-shoulder-seasons",
     });
 
-    expect(screen.getByRole("button", { name: "Mexico / Southwest Fit Finder path is active" })).toHaveAttribute("data-active", "true");
+    expect(screen.getByRole("button", { name: "Mexico / Southwest goal is applied" })).toHaveAttribute("data-active", "true");
 
     cleanup();
 
@@ -346,7 +346,7 @@ describe("FilterBar lifestyle bundles", () => {
       openFitFinder: true,
     });
 
-    expect(screen.getByRole("button", { name: "Apply Mexico / Southwest Fit Finder path" })).toHaveAttribute("data-active", "false");
+    expect(screen.getByRole("button", { name: "Apply the Mexico / Southwest goal" })).toHaveAttribute("data-active", "false");
   });
 
   it("clears stale Live Finder constraints when applying a lifestyle bundle", () => {
@@ -438,7 +438,7 @@ describe("FilterBar lifestyle bundles", () => {
       openFitFinder: true,
     });
 
-    expect(screen.getByRole("button", { name: "Apply Cool Summer Refuge Fit Finder path" })).toHaveAttribute("data-active", "false");
+    expect(screen.getByRole("button", { name: "Apply the Cool Summer Refuge goal" })).toHaveAttribute("data-active", "false");
   });
 
   it("applies the Mexico / Southwest path as a scoped regional dry-highland screen", () => {
@@ -571,7 +571,7 @@ describe("FilterBar clear all filters", () => {
 
     const clearPresets = screen.getByRole("button", { name: "Clear the must-have chips" });
     expect(clearPresets).toHaveTextContent("Clear chips");
-    expect(clearPresets).toHaveAttribute("title", "Clear the must-have chips");
+    expect(clearPresets).toHaveAttribute("title", "Clear the must-have chips (limits below stay)");
 
     const clearArchetypes = screen.getByRole("button", { name: "Clear 2 archetype filters" });
     expect(clearArchetypes).toHaveTextContent("clear · 2");
@@ -646,10 +646,10 @@ describe("FilterBar accordion groups", () => {
   it("collapses Fit Finder, Live Finder, Country, and Archetype by default until opened or active", () => {
     renderFilterBar("F");
 
-    const liveSummary = screen.getByText("Live Finder", { selector: "summary" });
+    const liveSummary = screen.getByText("Must-haves", { selector: "summary" });
     const countrySummary = screen.getByText("Country", { selector: "summary" });
     const archetypeSummary = screen.getByText("Archetype", { selector: "summary, summary *" }).closest("summary");
-    const fitSummary = screen.getByText(/^Fit Finder$/, { selector: "summary" });
+    const fitSummary = screen.getByText(/^Goals$/, { selector: "summary" });
     expect(fitSummary.closest("details")?.open).toBe(false);
     expect(liveSummary.closest("details")?.open).toBe(false);
     expect(countrySummary.closest("details")?.open).toBe(false);
@@ -670,7 +670,7 @@ describe("FilterBar accordion groups", () => {
 
     expect(screen.getByText("Country · 1", { selector: "summary" }).closest("details")?.open).toBe(true);
     expect(screen.getByText("Archetype · 1").closest("details")?.open).toBe(true);
-    expect(screen.getByText("Live Finder · 1 signal", { selector: "summary" }).closest("details")?.open).toBe(true);
+    expect(screen.getByText("Must-haves · 1 set", { selector: "summary" }).closest("details")?.open).toBe(true);
     expect(screen.getByRole("button", { name: "Remove Mexico country filter" })).toBeInTheDocument();
   });
 
@@ -709,7 +709,7 @@ describe("FilterBar climate scenario chip", () => {
 
     const lens = screen.getByRole("region", { name: "Current ranking and filters" });
     expect(lens).toHaveTextContent("SSP5-8.5");
-    expect(lens).toHaveTextContent(/projection/i);
+    expect(lens).toHaveTextContent(/projected climate/i);
     const scenarioChip = screen.getByRole("button", { name: "Remove filter: 2050 high" });
     expect(scenarioChip).toHaveAttribute("title", "Remove filter: 2050 high");
     fireEvent.click(scenarioChip);

@@ -757,7 +757,7 @@ describe("AtlasMap DOM controls", () => {
     const readout = screen.getByLabelText("Current map read");
 
     expect(screen.queryByRole("tooltip")).toBeNull();
-    expect(readout).toHaveTextContent("Atlas read");
+    expect(readout).toHaveTextContent("Top ranked");
     expect(readout).toHaveTextContent("Alpha Valley leads");
     expect(readout).toHaveTextContent("2 linked");
     expect(readout).toHaveTextContent("Live-here fit");

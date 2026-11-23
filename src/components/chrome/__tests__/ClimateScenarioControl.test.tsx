@@ -31,6 +31,6 @@ describe("ClimateScenarioControl", () => {
     expect(screen.getByRole("group", { name: "Climate scenario layer" })).toHaveAttribute("aria-busy", "true");
     expect(screen.getByText(/Projecting…/)).toBeInTheDocument();
     expect(screen.getByText(/2050 high \(2041–2060\)/)).toBeInTheDocument();
-    expect(screen.getByText(/dossier still shows recent observed normals/)).toBeInTheDocument();
+    expect(screen.getByText(/Place profiles still show recent averages/)).toBeInTheDocument();
   });
 });

@@ -580,7 +580,7 @@ function FitFinderPanel({
                           <span className="fit-finder-panel__applies-copy">{appliedRead.rank}</span>
                         </span>
                         <span className="fit-finder-panel__applies-row">
-                          <span className="fit-finder-panel__applies-kicker">Signals</span>
+                          <span className="fit-finder-panel__applies-kicker">Filters</span>
                           <span className="fit-finder-panel__applies-copy">{appliedRead.signals}</span>
                         </span>
                         {appliedRead.scope ? (
@@ -623,7 +623,7 @@ function LiveFinderPanel({
     <div className="tc-accent-panel p-2.5 space-y-2">
       <div className="flex items-center justify-between gap-2">
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-stone-readable">Must-haves</div>
+          <div className="text-[10px] uppercase tracking-wider text-stone-readable">Turn on what you need</div>
           <div className="text-[11px] text-stone-readable leading-snug">Keep only places that meet every item you turn on. Cards then show a live-here fit score.</div>
         </div>
         {(filters.fitPresets?.size ?? 0) > 0 ? (

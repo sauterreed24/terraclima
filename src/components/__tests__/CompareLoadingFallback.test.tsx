@@ -16,7 +16,7 @@ describe("CompareLoadingFallback", () => {
 
     const dialog = screen.getByRole("dialog", { name: "Loading compare for 2 places" });
     expect(dialog).toHaveAttribute("data-compare-loading");
-    expect(screen.getByRole("status")).toHaveTextContent("Preparing Sequim, Portal & the Chiricahua Sky Island.");
+    expect(screen.getByRole("status")).toHaveTextContent("Loading Sequim, Portal & the Chiricahua Sky Island.");
 
     const close = screen.getByRole("button", { name: "Close comparison" });
     expect(close).toHaveAttribute("data-compare-loading-close");

@@ -243,7 +243,7 @@ export function buildContextStressRows({
     id: "current",
     label: "Current setup",
     shortLabel: "Now",
-    description: "Your active search, filters, ranking, and Live Finder settings.",
+    description: "Your active search, filters, ranking, and must-haves.",
     ranking: currentRanking,
     rankingLabel: currentRankingLabel,
     ranked: [...currentRanked],

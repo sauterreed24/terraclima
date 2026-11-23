@@ -56,7 +56,7 @@ afterEach(() => {
 });
 
 describe("PlaceDetail growability rationale", () => {
-  it("names the loaded drawer as a climate dossier for assistive technology", () => {
+  it("names the loaded drawer as a climate profile for assistive technology", () => {
     const place = PLACES_BY_ID["sequim-wa"];
     expect(place).toBeTruthy();
 
@@ -66,7 +66,7 @@ describe("PlaceDetail growability rationale", () => {
       </UnitProvider>,
     );
 
-    expect(screen.getByRole("dialog", { name: "Sequim climate dossier" })).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Sequim climate profile" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Sequim", level: 2 })).toBeInTheDocument();
     expect(document.querySelector("figure")).toBeTruthy();
     expect(document.querySelector("figure img")).toBeTruthy();
@@ -88,7 +88,7 @@ describe("PlaceDetail growability rationale", () => {
     fireEvent.error(img!);
     expect(document.querySelector("figure .tc-hero-fallback")).toBeTruthy();
     expect(
-      screen.getByRole("img", { name: /photo unavailable; showing its January-to-December temperature palette/i }),
+      screen.getByRole("img", { name: /no photo available/i }),
     ).toBeInTheDocument();
   });
 
@@ -196,8 +196,8 @@ describe("PlaceDetail residency fit context", () => {
     );
 
     const context = screen.getByLabelText("What this score is based on");
-    expect(context).toHaveTextContent("Current screen");
-    expect(context).toHaveTextContent("Mexico / Southwest path (Dry highland options)");
+    expect(context).toHaveTextContent("Based on");
+    expect(context).toHaveTextContent("Mexico / Southwest goal (Dry highland options)");
     expect(context).toHaveTextContent("Best shoulder seasons");
     expect(context).toHaveTextContent("Scored for Mild winters + Dry air");
     expect(context).toHaveTextContent("summer <= 79°F");
@@ -220,7 +220,7 @@ describe("PlaceDetail residency fit context", () => {
     );
 
     const context = screen.getByLabelText("What this score is based on");
-    expect(context).toHaveTextContent("Live-here fit lens");
+    expect(context).toHaveTextContent("Live-here fit ranking");
     expect(context).toHaveTextContent("Scored for your must-have limits");
     expect(context).toHaveTextContent("overall risk <= Moderate");
   });
@@ -254,7 +254,7 @@ describe("PlaceDetail header accessibility", () => {
       </UnitProvider>,
     );
 
-    expect(screen.getByRole("heading", { level: 1, name: `${place.name} climate dossier` })).toHaveClass("sr-only");
+    expect(screen.getByRole("heading", { level: 1, name: `${place.name} climate profile` })).toHaveClass("sr-only");
     expect(screen.getByRole("heading", { level: 2, name: place.name })).toBeInTheDocument();
   });
 
@@ -284,9 +284,9 @@ describe("PlaceDetail header accessibility", () => {
     );
 
     const mobileReadingNav = document.querySelector(".tc-reading-nav-mobile");
-    expect(mobileReadingNav).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more dossier chapters.");
-    expect(screen.getByLabelText("Jump within field dossier")).toHaveAccessibleDescription(
-      "Swipe or scroll horizontally to browse more field dossier chapters.",
+    expect(mobileReadingNav).toHaveAccessibleDescription("Swipe or scroll sideways for more sections.");
+    expect(screen.getByLabelText("Jump to a chapter of In depth")).toHaveAccessibleDescription(
+      "Swipe or scroll sideways for more chapters.",
     );
   });
 
@@ -352,7 +352,7 @@ describe("PlaceDetail header accessibility", () => {
     expect(window.location.hash).toBe("");
 
     scrollTo.mockClear();
-    fireEvent.click(screen.getByRole("link", { name: "Jump to Sequim residency brief" }));
+    fireEvent.click(screen.getByRole("link", { name: "Jump to the fit summary for Sequim" }));
 
     expect(scrollTo).toHaveBeenCalledWith({ top: 418, behavior: "auto" });
   });
@@ -500,7 +500,7 @@ describe("PlaceDetail header accessibility", () => {
       </UnitProvider>,
     );
 
-    expect(screen.getByLabelText(`Residency actions for ${place.name}`)).toHaveTextContent("Next step");
+    expect(screen.getByLabelText(`Actions for ${place.name}`)).toHaveTextContent("Next step");
 
     const pinBtn = screen.getByRole("button", { name: `Pin ${place.name} to your shortlist from the fit summary` });
     expect(pinBtn).toHaveAttribute("title", `Pin ${place.name} to your shortlist from the fit summary`);
@@ -540,7 +540,7 @@ describe("PlaceDetail header accessibility", () => {
       </UnitProvider>,
     );
 
-    expect(screen.queryByLabelText(`Residency actions for ${place.name}`)).toBeNull();
+    expect(screen.queryByLabelText(`Actions for ${place.name}`)).toBeNull();
   });
 });
 
@@ -557,8 +557,8 @@ describe("PlaceDetail bioclimatic edge reads", () => {
 
     const edgeNote = screen.getByText("Not defined here").closest(".tc-accent-panel");
     expect(edgeNote).not.toBeNull();
-    expect(edgeNote!).toHaveTextContent("Selianinov HTC is undefined");
-    expect(edgeNote!).toHaveTextContent("annual water-balance");
+    expect(edgeNote!).toHaveTextContent("Selianinov HTC cannot be calculated here");
+    expect(edgeNote!).toHaveTextContent("The other indices still apply");
     expect(screen.getByText("Conrad")).toBeInTheDocument();
     expect(screen.getByText("UNEP aridity")).toBeInTheDocument();
   });
@@ -644,7 +644,7 @@ describe("PlaceDetail glossary driver chip a11y", () => {
     vi.runOnlyPendingTimers();
 
     expect(onClose).not.toHaveBeenCalled();
-    expect(screen.getByRole("dialog", { name: `${place!.name} climate dossier` })).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: `${place!.name} climate profile` })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Close explanation" })).not.toBeInTheDocument();
     expect(chip!).toHaveAttribute("aria-expanded", "false");
     expect(chip!).toHaveFocus();
@@ -689,7 +689,7 @@ describe("PlaceDetail scenario honesty banner", () => {
     );
 
     expect(screen.getByRole("note")).toHaveTextContent("SSP5-8.5");
-    expect(screen.getByRole("note")).toHaveTextContent(/recent observed normals/i);
+    expect(screen.getByRole("note")).toHaveTextContent(/always shows recent averages/i);
   });
 
   it("hides the banner when scenario is present-day", () => {
@@ -729,9 +729,9 @@ describe("PlaceDetail home-base anchor", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/Compared with Sequim/)).toBeInTheDocument();
 
-    const toggle = screen.getByRole("button", { name: `Set ${place.name} as your home base for climate deltas` });
+    const toggle = screen.getByRole("button", { name: `Set ${place.name} as your home base, to compare other places against it` });
     expect(toggle).toHaveAttribute("aria-pressed", "false");
-    expect(toggle).toHaveAttribute("title", `Set ${place.name} as your home base for climate deltas`);
+    expect(toggle).toHaveAttribute("title", `Set ${place.name} as your home base, to compare other places against it`);
   });
 
   it("flips into the baseline explainer when the open dossier IS the home base", () => {
@@ -776,10 +776,10 @@ describe("PlaceDetail home-base anchor", () => {
     expect(screen.queryByRole("complementary", { name: "First-session climate journey" })).toBeNull();
     expect(screen.getByRole("heading", { name: "Climate twins" })).toBeInTheDocument();
     expect(
-      screen.getAllByRole("button", { name: `Set ${place.name} as your home base for climate deltas` }).length,
+      screen.getAllByRole("button", { name: `Set ${place.name} as your home base, to compare other places against it` }).length,
     ).toBeGreaterThanOrEqual(1);
     const sectionAction = screen
-      .getAllByRole("button", { name: `Set ${place.name} as your home base for climate deltas` })
+      .getAllByRole("button", { name: `Set ${place.name} as your home base, to compare other places against it` })
       .find(button => button.closest("#pd-vs-home"));
     expect(sectionAction).toHaveClass("min-w-0", "max-w-full", "whitespace-normal");
     expect(sectionAction).not.toHaveClass("shrink-0");
@@ -796,7 +796,7 @@ describe("PlaceDetail home-base anchor", () => {
     );
 
     const why = screen.getByRole("heading", { name: "What shapes the climate here" });
-    const dossier = screen.getByRole("heading", { name: "Field dossier" });
+    const dossier = screen.getByRole("heading", { name: "In depth" });
     const vsHome = screen.getByRole("heading", { name: "Versus your home base" });
     const twins = screen.getByRole("heading", { name: "Climate twins" });
     const residency = document.getElementById("pd-residency-brief");
@@ -851,7 +851,7 @@ describe("PlaceDetail archetype field guide", () => {
     const primaryChip = screen.getByRole("button", { name: /Eternal-Spring Highland:/i });
     fireEvent.click(primaryChip);
 
-    const guide = screen.getByRole("region", { name: /Eternal-Spring Highland field guide/i });
+    const guide = screen.getByRole("region", { name: /Eternal-Spring Highland climates/i });
     expect(guide).toHaveTextContent(/4,900 and 8,200 ft/);
     expect(guide).toHaveTextContent(/72–79°F/);
     expect(guide).toHaveTextContent(/46–57°F/);
@@ -874,7 +874,7 @@ describe("PlaceDetail evidence hierarchy", () => {
     const evidence = screen.getByRole("region", { name: "Evidence and how to read this profile" });
     expect(evidence).toBeInTheDocument();
     expect(evidence).toHaveTextContent(/How to read this profile/);
-    expect(evidence).toHaveTextContent(/screening/i);
+    expect(evidence).toHaveTextContent(/editorial/i);
 
     const toggle = screen.getByRole("button", { name: /How to read this profile/i });
     expect(toggle).toHaveAttribute("aria-expanded", "false");

@@ -261,7 +261,7 @@ export function exportShortlistAsMarkdown(
         `- Scores: live-here fit ${row.liveFitScore}/100; felt comfort ${row.comfortScore}/100; ` +
         `overall risk ${row.riskLoad}/100; growability ${row.growability}/100; cost and access ${row.livedEase}/100.`,
       );
-      lines.push(`- Dossier: ${ctx.appUrl}?p=${encodeURIComponent(place.id)}`);
+      lines.push(`- Profile: ${ctx.appUrl}?p=${encodeURIComponent(place.id)}`);
       lines.push("");
     }
 

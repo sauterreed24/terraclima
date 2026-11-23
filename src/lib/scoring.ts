@@ -13,6 +13,7 @@ import {
   meanJanLow,
   getAnnualPrecipMm,
   meanAnnualSunshinePct,
+  dewPointC,
   winterSunshineIsMeasured,
   coolSummer,
 } from "./climate-metrics";
@@ -31,7 +32,6 @@ import { placeFeelScore } from "./place-feel";
 import { computeKoppen, parseAuthoredKoppen } from "./koppen";
 import { computeBioclim } from "./bioclim";
 import { toFixedClean } from "./units";
-import { dewPointC } from "./comfort-precision";
 
 // Re-exported so the public surface of scoring.ts stays unchanged for callers
 // (components, charts, tests) that previously imported these from here.

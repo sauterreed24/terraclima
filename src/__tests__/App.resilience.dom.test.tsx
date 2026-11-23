@@ -139,7 +139,7 @@ describe("App resilience integration", () => {
 
     const status = await screen.findByRole("status");
     expect(status).toHaveTextContent("Climate Trips");
-    expect(status).toHaveTextContent("Preparing climate trips");
+    expect(status).toHaveTextContent("Loading climate trips");
 
     expect(await screen.findByTestId("climate-trips-view", {}, { timeout: APP_RESILIENCE_TIMEOUT_MS }))
       .toHaveTextContent("Climate Trips loaded");
@@ -188,7 +188,7 @@ describe("App resilience integration", () => {
     fireEvent.click(screen.getByRole("button", { name: "2050 mid" }));
 
     expect(screen.getAllByText(/2050 mid/i).length).toBeGreaterThan(0);
-    expect(screen.getByText(/2050 mid remap/i)).toBeInTheDocument();
+    expect(screen.getByText(/2050 mid ranking/i)).toBeInTheDocument();
 
     await waitFor(
       () => {

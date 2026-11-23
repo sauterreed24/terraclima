@@ -152,17 +152,17 @@ async function main() {
     await page.goto(`${BASE}/`, { waitUntil: "domcontentloaded", timeout: 30000 });
     await page.waitForSelector("h1", { timeout: 15000 });
     const h1 = await page.locator("h1").first().textContent();
-    if (!/Discover microclimates/i.test(h1 ?? "")) {
+    if (!/places with unusual local climates/i.test(h1 ?? "")) {
       findings.push({ label: "cold-discovery", kind: "hero-heading", h1 });
     }
     const params = new URL(page.url()).searchParams;
     if (params.get("r")) findings.push({ label: "cold-discovery", kind: "ranking-leaked", r: params.get("r") });
-    if (!(await page.getByRole("button", { name: /Show scouting tools/i }).count())) {
+    if (!(await page.getByRole("button", { name: /Show a summary of the top places/i }).count())) {
       // Desktop may hide behind More menu
       const more = page.getByRole("button", { name: /More actions/i });
       if (await more.count()) await more.click();
     }
-    const scout = page.getByRole("button", { name: /Show scouting tools/i });
+    const scout = page.getByRole("button", { name: /Show a summary of the top places/i });
     if (await scout.count()) {
       // Scout tools should be deferred (not already open panels)
       if (await page.getByLabel(/Top-picks summary/i).count()) {
@@ -203,7 +203,7 @@ async function main() {
   }, "back-to-close", async (page) => {
     await page.goto(`${BASE}/`, { waitUntil: "domcontentloaded", timeout: 30000 });
     await page.waitForSelector("h1", { timeout: 15000 });
-    const surprise = page.getByRole("button", { name: /Open a unique microclimate|Surprise/i }).first();
+    const surprise = page.getByRole("button", { name: /Open a random place|Surprise/i }).first();
     if (!(await surprise.count())) {
       findings.push({ label: "back-to-close", kind: "no-surprise" });
       return;
@@ -214,7 +214,7 @@ async function main() {
     await page.goBack();
     await page.waitForTimeout(500);
     const openDialog = await page.locator("[data-place-detail]:not([aria-hidden='true'])").count();
-    const dialogVisible = await page.getByRole("dialog", { name: /climate dossier/i }).isVisible().catch(() => false);
+    const dialogVisible = await page.getByRole("dialog", { name: /climate profile/i }).isVisible().catch(() => false);
     if (openDialog > 0 && dialogVisible) {
       findings.push({ label: "back-to-close", kind: "back-did-not-close-dossier" });
     }
@@ -235,7 +235,7 @@ async function main() {
       findings.push({ label: "evidence-home-compare", kind: "evidence-not-expanded" });
     }
     const body = await page.locator(".tc-evidence-summary").innerText();
-    if (!/screening/i.test(body) || !/Measured normals|Observed climate/i.test(body)) {
+    if (!/editorial (score|rating)/i.test(body) || !/Measured normals|Observed climate/i.test(body)) {
       findings.push({ label: "evidence-home-compare", kind: "evidence-copy-thin", body: body.slice(0, 200) });
     }
     const home = page.getByRole("button", { name: /Set .* as your home base|Set home|Home base/i }).first();
@@ -289,7 +289,7 @@ async function main() {
       timeout: 30000,
     });
     await page.waitForSelector("[role='dialog']", { timeout: 20000 });
-    const table = page.getByRole("table", { name: /Grouped comparison signals/i });
+    const table = page.getByRole("table", { name: /Figures and scores for each compared place/i });
     await table.waitFor({ timeout: 10000 });
     const text = await table.innerText();
     if (/Solar resource/i.test(text)) {
@@ -317,7 +317,7 @@ async function main() {
   }, "mobile-empty-recovery", async (page) => {
     await page.goto(`${BASE}/`, { waitUntil: "domcontentloaded", timeout: 30000 });
     await page.waitForSelector(".map-shell, svg.atlas-svg", { timeout: 20000 });
-    const openFilters = page.getByRole("button", { name: /Open Explorer filters/i }).first();
+    const openFilters = page.getByRole("button", { name: /Open filters and ranking/i }).first();
     await openFilters.click();
     await page.waitForTimeout(250);
     const search = page.locator("#terraclima-place-search");
@@ -351,7 +351,7 @@ async function main() {
     await page.waitForSelector("h1", { timeout: 15000 });
     await page.waitForTimeout(400);
     const text = await page.locator("body").innerText();
-    if (!/Live Finder|cool summer|Fit|signal/i.test(text)) {
+    if (!/Must-haves|cool summer|Fit|signal/i.test(text)) {
       findings.push({ label: "fit-finder", kind: "fit-signals-not-surfaced" });
     }
     // Map should still be present

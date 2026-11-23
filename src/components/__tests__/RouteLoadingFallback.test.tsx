@@ -11,7 +11,7 @@ describe("RouteLoadingFallback", () => {
     render(<RouteLoadingFallback label="Climate Trips" />);
     const status = screen.getByRole("status");
     expect(status).toHaveTextContent("Climate Trips");
-    expect(status).toHaveTextContent("Preparing climate trips");
+    expect(status).toHaveTextContent("Loading climate trips");
     expect(document.querySelectorAll(".tc-detail-progress-fill, .rounded-full, .rounded-lg").length).toBeGreaterThan(0);
   });
 });

@@ -32,11 +32,11 @@ describe("ClimateTripsView", () => {
     renderClimateTripsView();
 
     expect(screen.getByRole("link", { name: `Jump to ${CLIMATE_TRIP_THEMES.length} climate trip styles` })).toHaveAttribute("href", "#trip-styles-heading");
-    expect(screen.getByRole("link", { name: "Jump to 9 concrete climate tourism stops" })).toHaveAttribute("href", "#tourism-picks-heading");
+    expect(screen.getByRole("link", { name: "Jump to 9 recommended stops" })).toHaveAttribute("href", "#tourism-picks-heading");
     expect(screen.getByRole("link", { name: "Jump to best months to visit" })).toHaveAttribute("href", "#seasonal-windows-heading");
     const quickRead = screen.getByLabelText("Trips in numbers");
     expect(quickRead).toHaveTextContent(`${CLIMATE_TRIP_THEMES.length} trip styles`);
-    expect(quickRead).toHaveTextContent("9 concrete stops");
+    expect(quickRead).toHaveTextContent("9 recommended stops");
     expect(quickRead).toHaveTextContent(/Top pick: .+ \d+\/100/);
   });
 
@@ -47,7 +47,7 @@ describe("ClimateTripsView", () => {
 
     expect(firstCard).not.toBeNull();
     const filterButton = within(firstCard as HTMLElement).getByRole("button", {
-      name: `Filter map to trip style: ${firstTheme.title}`,
+      name: `Show only the stops of ${firstTheme.title} in the atlas`,
     });
     expect(filterButton).toHaveAttribute("title", filterButton.getAttribute("aria-label"));
     fireEvent.click(filterButton);
@@ -89,8 +89,8 @@ describe("ClimateTripsView", () => {
 
     expect(firstCard).not.toBeNull();
     expect(lead).toBeDefined();
-    const cue = within(firstCard as HTMLElement).getByLabelText(`Trip lead for ${firstTheme.title}`);
-    expect(cue).toHaveTextContent("Trip lead");
+    const cue = within(firstCard as HTMLElement).getByLabelText(`Top stop for ${firstTheme.title}`);
+    expect(cue).toHaveTextContent("Top stop");
     expect(cue).toHaveTextContent(lead!.place.name);
     expect(cue).toHaveTextContent(`${lead!.profile.bestVisitWindow.label}: ${lead!.profile.bestVisitWindow.range}`);
     expect(actionBlock).not.toBeNull();
@@ -115,9 +115,9 @@ describe("ClimateTripsView", () => {
 
   it("names tourism pick profile buttons by place", () => {
     const { container, onOpenPlace } = renderClimateTripsView();
-    const pickCard = screen.getAllByText("Tourism")[0].closest(".climate-trip-pick-card");
+    const pickCard = screen.getAllByText("Tourism appeal")[0].closest(".climate-trip-pick-card");
     const profileButtons = Array.from(
-      container.querySelectorAll<HTMLButtonElement>("button[aria-label*='climate tourism profile']"),
+      container.querySelectorAll<HTMLButtonElement>("button[aria-label*=' profile (']"),
     );
     const labels = profileButtons.map(button => button.getAttribute("aria-label"));
 
@@ -126,7 +126,7 @@ describe("ClimateTripsView", () => {
     expect(new Set(labels).size).toBe(labels.length);
     expect(profileButtons.every(button => button.getAttribute("title") === button.getAttribute("aria-label"))).toBe(true);
     const profileButton = within(pickCard as HTMLElement).getByRole("button", {
-      name: /^Open .+ climate tourism profile from tourism picks$/,
+      name: /^Open the .+ profile \(recommended stops\)$/,
     });
     expect(profileButton).toHaveAttribute("title", profileButton.getAttribute("aria-label"));
     fireEvent.click(profileButton);

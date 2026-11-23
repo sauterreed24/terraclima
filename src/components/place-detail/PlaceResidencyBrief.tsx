@@ -61,9 +61,9 @@ function buildFitContextRead(
   if (!hasLiveFinderSignals) return null;
 
   const screenContext = context?.bundleLabel
-    ? `${context.bundleLabel} path${context.bundleCue ? ` (${context.bundleCue})` : ""} · ${context.rankingLabel}`
+    ? `${context.bundleLabel} goal${context.bundleCue ? ` (${context.bundleCue})` : ""} · ${context.rankingLabel}`
     : context?.rankingLabel
-      ? `the ${context.rankingLabel} ranking`
+      ? `${context.rankingLabel} ranking`
       : null;
   const lens = presetLabels.length > 0 ? presetLabels.join(" + ") : "your must-have limits";
   const scoredContext = constraints.length > 0
@@ -125,8 +125,8 @@ export function PlaceResidencyBrief({
   const goodReason = liveFit.reasons[0] ?? "Balanced climate, risk, and terrain scores make it worth a closer look.";
   const hasScoutActions = Boolean(onCompareToggle || onBookmarkToggle);
   const compareScoutLabel = inCompare
-    ? `Remove ${place.name} from Compare`
-    : `Add ${place.name} to Compare`;
+    ? `Remove ${place.name} from Compare from the fit summary`
+    : `Add ${place.name} to Compare from the fit summary`;
   const lanes = [
     { label: "Live-here fit", value: liveFit.score, note: goodReason, tone: "glacier" },
     {

@@ -141,7 +141,7 @@ describe("app-url state", () => {
     })).toMatch(/[?&]r=live-fit/);
   });
 
-  it("round-trips the sunny-winter Live Finder preset through shared URLs", () => {
+  it("round-trips the sunny-winter must-have through shared URLs", () => {
     const parsed = parseAppSearch("?r=sunniest-winters&fit=sunny-winters,mild-winters&wl=-5&temp=C&dist=metric");
     expect(parsed.ranking).toBe("sunniest-winters");
     expect(parsed.fitPresets).toEqual(["sunny-winters", "mild-winters"]);

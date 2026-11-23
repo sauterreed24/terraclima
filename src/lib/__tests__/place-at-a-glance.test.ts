@@ -12,9 +12,9 @@ describe("buildAtAGlanceTiles", () => {
     const a = buildAtAGlanceTiles(makePlace({ id: "tier-a", tier: "A", climate: agro() }), fmtPrecip, fmtDiurnal, "F");
     const b = buildAtAGlanceTiles(makePlace({ id: "tier-b", tier: "B", climate: agro() }), fmtPrecip, fmtDiurnal, "F");
     const c = buildAtAGlanceTiles(makePlace({ id: "tier-c", tier: "C", climate: agro() }), fmtPrecip, fmtDiurnal, "F");
-    expect(a[0].value).toBe("Flagship write-up");
-    expect(b[0].value).toBe("Spotlight card");
-    expect(c[0].value).toBe("Index entry");
+    expect(a[0].value).toBe("Flagship");
+    expect(b[0].value).toBe("Spotlight");
+    expect(c[0].value).toBe("Index");
 
     for (const tiles of [a, b, c]) {
       const labels = tiles.map(t => t.label);

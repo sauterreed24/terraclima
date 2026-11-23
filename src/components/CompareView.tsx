@@ -259,7 +259,7 @@ export function CompareView({
   const candidateMatchWord = filteredInactiveCandidateTray.length === 1 ? "match" : "matches";
   const candidateCountRead = candidateFinderActive
     ? `${filteredInactiveCandidateTray.length}/${inactiveCandidateTray.length} ${candidateMatchWord}`
-    : `${candidateTray.length} candidates`;
+    : `${candidateTray.length} to choose from`;
   const candidateTrayHelper = candidateFinderActive
     ? "Places already in the comparison come first, then search matches."
     : "From your shortlist, recently opened places and the current top of the ranking.";
@@ -481,8 +481,8 @@ export function CompareView({
               <div className="compare-workbench__tray" aria-label="Candidate tray">
                 <div className="compare-workbench__tray-head">
                   <div>
-                    <span className="compare-workbench__eyebrow">Candidates</span>
-                    <strong>{places.length}/{COMPARE_LIMIT} active / {candidateCountRead}</strong>
+                    <span className="compare-workbench__eyebrow">Add or swap places</span>
+                    <strong>{places.length}/{COMPARE_LIMIT} compared / {candidateCountRead}</strong>
                   </div>
                   <span>{candidateTrayHelper}</span>
                   {candidateFinderActive ? (
@@ -497,7 +497,7 @@ export function CompareView({
                     </button>
                   ) : null}
                 </div>
-                <div className="compare-workbench__candidate-tools" aria-label="Candidate finder">
+                <div className="compare-workbench__candidate-tools" aria-label="Find a place to add">
                   <label className="compare-workbench__candidate-search" htmlFor={candidateSearchId}>
                     <span className="sr-only">{candidateSearchLabel}</span>
                     <input
@@ -613,7 +613,7 @@ export function CompareView({
                               <em>{activeComparisonLensLabel}</em>
                             </span>
                             <span>{candidateProfile.easyMonths}/12 easy months</span>
-                            <span>{candidateProfile.riskLoad}/100 risk load</span>
+                            <span>{candidateProfile.riskLoad}/100 overall risk</span>
                           </span>
                         ) : null}
                         {candidateInsight ? (
@@ -642,7 +642,7 @@ export function CompareView({
               </div>
 
               {coachRecommendations.length > 0 ? (
-                <div className="compare-workbench__coach" aria-label="Contrast coach">
+                <div className="compare-workbench__coach" aria-label="Suggested swaps">
                   <div className="compare-workbench__coach-head">
                     <div>
                       <span className="compare-workbench__eyebrow">Suggested swaps</span>
@@ -698,7 +698,7 @@ export function CompareView({
             ) : null}
 
             {decisionRead ? (
-              <section id="compare-decision-read" className="compare-decision-read" aria-label="Comparison decision read">
+              <section id="compare-decision-read" className="compare-decision-read" aria-label="Comparison summary">
                 <div className="compare-decision-read__summary">
                   <span className="compare-decision-read__eyebrow">Summary</span>
                   <p>{decisionRead.summary}</p>
@@ -817,7 +817,7 @@ export function CompareView({
                     </div>
                   ))}
                 </div>
-                <div className="compare-finalist-table" aria-label="Finalist decision table">
+                <div className="compare-finalist-table" aria-label="All places at a glance">
                   <div className="compare-finalist-table__head">
                     <span className="compare-finalist-table__kicker">All places at a glance</span>
                     <span className="compare-finalist-table__copy">Role, score, best season and first caution for each place.</span>
@@ -833,7 +833,7 @@ export function CompareView({
                           <th scope="col">Fit</th>
                           <th scope="col">Risk</th>
                           <th scope="col">Visit</th>
-                          <th scope="col">Watch first</th>
+                          <th scope="col">Check first</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -845,8 +845,8 @@ export function CompareView({
                                 <button
                                   type="button"
                                   className="compare-finalist-table__place"
-                                  aria-label={`Open ${row.place.name}`}
-                                  title={`Open ${row.place.name}`}
+                                  aria-label={`Open ${row.place.name} from the at-a-glance table`}
+                                  title={`Open ${row.place.name} from the at-a-glance table`}
                                   onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
                                 >
                                   {row.place.name}
@@ -870,7 +870,7 @@ export function CompareView({
             ) : null}
 
             {evidenceReadiness.length > 0 ? (
-              <section id="compare-evidence-readiness" className="compare-evidence-readiness" aria-label="Evidence readiness">
+              <section id="compare-evidence-readiness" className="compare-evidence-readiness" aria-label="How well sourced">
                 <div className="compare-evidence-readiness__head">
                   <div>
                     <span className="compare-evidence-readiness__eyebrow">How well sourced</span>
@@ -951,7 +951,7 @@ export function CompareView({
               </section>
             ) : null}
 
-            <section id="compare-diff-board" className="compare-diff-board" aria-label="Grouped comparison rows">
+            <section id="compare-diff-board" className="compare-diff-board" aria-label="Differences">
               <div className="compare-diff-board__head">
                 <div>
                   <span className="compare-diff-board__eyebrow">Differences</span>

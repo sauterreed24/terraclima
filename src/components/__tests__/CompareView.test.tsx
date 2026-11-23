@@ -124,7 +124,7 @@ describe("CompareView", () => {
     const workbench = screen.getByLabelText("Add or swap places");
     expect(workbench).toHaveTextContent("Compare for");
     expect(workbench).toHaveTextContent("Risk");
-    expect(workbench).toHaveTextContent("4/4 active / 8 candidates");
+    expect(workbench).toHaveTextContent("4/4 compared / 8 to choose from");
     expect(screen.getByRole("button", { name: "Close comparison" })).toBeInTheDocument();
 
     const lens = screen.getByRole("group", { name: "What to compare for" });
@@ -132,8 +132,8 @@ describe("CompareView", () => {
     fireEvent.click(within(lens).getByRole("button", { name: "Garden" }));
     expect(onComparisonLensChange).toHaveBeenCalledWith("garden");
 
-    expect(within(screen.getByLabelText("Candidate tray")).getAllByRole("button", { name: /active comparison/ })).toHaveLength(8);
-    const activeCandidate = screen.getByRole("button", { name: `Remove ${PLACES[0].name} from active comparison` });
+    expect(within(screen.getByLabelText("Candidate tray")).getAllByRole("button", { name: /the comparison/ })).toHaveLength(8);
+    const activeCandidate = screen.getByRole("button", { name: `Remove ${PLACES[0].name} from the comparison` });
     expect(activeCandidate).toHaveAttribute("aria-pressed", "true");
     expect(activeCandidate).toHaveTextContent("Remove");
     fireEvent.click(activeCandidate);
@@ -141,13 +141,13 @@ describe("CompareView", () => {
 
     // A full set swaps out the place the card measures against: the weakest
     // read for the active lens (here Portal on Risk), not the oldest slot.
-    const swapCandidate = screen.getByRole("button", { name: `Swap ${PLACES[4].name} into active comparison` });
+    const swapCandidate = screen.getByRole("button", { name: `Swap ${PLACES[4].name} into the comparison` });
     expect(swapCandidate).toHaveTextContent("Swap");
-    expect(swapCandidate).toHaveTextContent(`vs ${possessive(PLACES[1].name)} active risk read`);
+    expect(swapCandidate).toHaveTextContent(`over ${possessive(PLACES[1].name)} risk score`);
     expect(swapCandidate).toHaveTextContent(`Replaces ${PLACES[1].name}`);
-    expect(swapCandidate).toHaveAttribute("title", expect.stringContaining(`Replaces the weakest active risk read: ${PLACES[1].name}.`));
+    expect(swapCandidate).toHaveAttribute("title", expect.stringContaining(`Replaces ${PLACES[1].name}, which scores lowest for risk.`));
     onRemove.mockClear();
-    fireEvent.click(screen.getByRole("button", { name: `Swap ${PLACES[4].name} into active comparison` }));
+    fireEvent.click(screen.getByRole("button", { name: `Swap ${PLACES[4].name} into the comparison` }));
     expect(onRemove).not.toHaveBeenCalled();
     expect(onAddPlace).toHaveBeenCalledWith(PLACES[4].id, PLACES[1].id);
   });
@@ -164,9 +164,9 @@ describe("CompareView", () => {
     expect(within(shortcuts).getByRole("link", { name: "Jump to the table of differences" })).toHaveAttribute("href", "#compare-diff-board");
     expect(within(shortcuts).getByRole("link", { name: "Jump to add or swap places" })).toHaveAttribute("href", "#compare-candidates");
     expect(workbench).toHaveAttribute("id", "compare-candidates");
-    expect(screen.getByLabelText("Comparison decision read")).toHaveAttribute("id", "compare-decision-read");
+    expect(screen.getByLabelText("Comparison summary")).toHaveAttribute("id", "compare-decision-read");
     expect(screen.getByLabelText("How well sourced")).toHaveAttribute("id", "compare-evidence-readiness");
-    expect(screen.getByLabelText("Grouped comparison rows")).toHaveAttribute("id", "compare-diff-board");
+    expect(screen.getByLabelText("Differences")).toHaveAttribute("id", "compare-diff-board");
   });
 
   it("keeps empty dialog padding pass-through while the visible close action owns focus", () => {
@@ -205,8 +205,8 @@ describe("CompareView", () => {
       candidates: [{ place: contrast, source: "Ranked", note: "Leader" }],
     });
 
-    expect(screen.getByLabelText("Add or swap places")).toHaveTextContent("1/4 active / 2 candidates");
-    const addCandidate = screen.getByRole("button", { name: `Add ${contrast.name} to active comparison` });
+    expect(screen.getByLabelText("Add or swap places")).toHaveTextContent("1/4 compared / 2 to choose from");
+    const addCandidate = screen.getByRole("button", { name: `Add ${contrast.name} to the comparison` });
     expect(addCandidate).toHaveTextContent("Add");
     fireEvent.click(addCandidate);
     expect(onAddPlace).toHaveBeenCalledWith(contrast.id);
@@ -228,9 +228,9 @@ describe("CompareView", () => {
 
     const coach = screen.getByLabelText("Suggested swaps");
     expect(coach).toHaveTextContent("Places that would sharpen the comparison");
-    expect(coach).toHaveTextContent(/upgrade|contrast|counterweight|anchor/i);
+    expect(coach).toHaveTextContent(/upgrade|contrast|risk|sourced/i);
 
-    const recommendation = within(coach).getAllByRole("button", { name: /from Suggested swaps/ })[0]!;
+    const recommendation = within(coach).getAllByRole("button", { name: /Suggested because:/ })[0]!;
     expect(recommendation).toHaveAttribute("title", recommendation.getAttribute("aria-label"));
     fireEvent.click(recommendation);
 
@@ -252,30 +252,30 @@ describe("CompareView", () => {
     });
 
     const tray = screen.getByLabelText("Candidate tray");
-    expect(within(tray).getAllByRole("button", { name: /active comparison/ })).toHaveLength(7);
+    expect(within(tray).getAllByRole("button", { name: /the comparison/ })).toHaveLength(7);
 
-    expect(within(tray).getByRole("button", { name: "All" })).toHaveAttribute("title", "Show all compare candidates");
-    expect(within(tray).getByRole("button", { name: "Recent" })).toHaveAttribute("title", "Show recent compare candidates");
+    expect(within(tray).getByRole("button", { name: "All" })).toHaveAttribute("title", "Show places from: all");
+    expect(within(tray).getByRole("button", { name: "Recent" })).toHaveAttribute("title", "Show places from: recent");
     fireEvent.click(within(tray).getByRole("button", { name: "Recent" }));
-    expect(within(tray).getAllByRole("button", { name: /active comparison/ })).toHaveLength(5);
-    expect(within(tray).getByRole("button", { name: `Swap ${PLACES[5]!.name} into active comparison` })).toBeInTheDocument();
-    expect(within(tray).queryByRole("button", { name: `Swap ${PLACES[4]!.name} into active comparison` })).not.toBeInTheDocument();
-    expect(tray).toHaveTextContent("4/4 active / 1/3 match");
+    expect(within(tray).getAllByRole("button", { name: /the comparison/ })).toHaveLength(5);
+    expect(within(tray).getByRole("button", { name: `Swap ${PLACES[5]!.name} into the comparison` })).toBeInTheDocument();
+    expect(within(tray).queryByRole("button", { name: `Swap ${PLACES[4]!.name} into the comparison` })).not.toBeInTheDocument();
+    expect(tray).toHaveTextContent("4/4 compared / 1/3 match");
     expect(tray).toHaveTextContent("Places already in the comparison come first, then search matches.");
 
     fireEvent.change(within(tray).getByRole("searchbox", { name: CANDIDATE_SEARCH_LABEL }), {
       target: { value: PLACES[5]!.region },
     });
-    expect(within(tray).getByRole("button", { name: `Swap ${PLACES[5]!.name} into active comparison` })).toBeInTheDocument();
-    expect(tray).toHaveTextContent("4/4 active / 1/3 match");
+    expect(within(tray).getByRole("button", { name: `Swap ${PLACES[5]!.name} into the comparison` })).toBeInTheDocument();
+    expect(tray).toHaveTextContent("4/4 compared / 1/3 match");
 
     fireEvent.click(within(tray).getByRole("button", { name: "Clear the search and show all places you can add" }));
     const resetSearch = within(tray).getByRole("searchbox", { name: CANDIDATE_SEARCH_LABEL });
     expect(resetSearch).toHaveValue("");
     expect(resetSearch).toHaveFocus();
     expect(within(tray).getByRole("button", { name: "All" })).toHaveAttribute("aria-pressed", "true");
-    expect(within(tray).getAllByRole("button", { name: /active comparison/ })).toHaveLength(7);
-    expect(tray).toHaveTextContent("7 candidates");
+    expect(within(tray).getAllByRole("button", { name: /the comparison/ })).toHaveLength(7);
+    expect(tray).toHaveTextContent("7 to choose from");
   });
 
   it("explains zero candidate-finder matches without hiding active compare slots", () => {
@@ -293,11 +293,11 @@ describe("CompareView", () => {
       target: { value: "zzznomatches" },
     });
 
-    expect(tray).toHaveTextContent("4/4 active / 0/2 matches");
-    expect(tray).toHaveTextContent("No finder matches outside the active set.");
+    expect(tray).toHaveTextContent("4/4 compared / 0/2 matches");
+    expect(tray).toHaveTextContent("Nothing else matches.");
     expect(within(tray).getByRole("button", { name: "Clear the search and show all places you can add" })).toBeInTheDocument();
-    expect(within(tray).getAllByRole("button", { name: /active comparison/ })).toHaveLength(4);
-    expect(within(tray).queryByRole("button", { name: /Swap .* into active comparison/ })).not.toBeInTheDocument();
+    expect(within(tray).getAllByRole("button", { name: /the comparison/ })).toHaveLength(4);
+    expect(within(tray).queryByRole("button", { name: /Swap .* into the comparison/ })).not.toBeInTheDocument();
   });
 
   it("clears the candidate search on Escape before closing the comparison", () => {
@@ -346,14 +346,14 @@ describe("CompareView", () => {
 
     fireEvent.change(select, { target: { value: "lens" } });
 
-    const inactiveButtons = within(tray).getAllByRole("button", { name: /Swap .* into active comparison/ });
-    expect(inactiveButtons[0]).toHaveAttribute("aria-label", `Swap ${topProfile.place.name} into active comparison`);
+    const inactiveButtons = within(tray).getAllByRole("button", { name: /Swap .* into the comparison/ });
+    expect(inactiveButtons[0]).toHaveAttribute("aria-label", `Swap ${topProfile.place.name} into the comparison`);
     expect(inactiveButtons[0]).toHaveTextContent(`${compareLensScore(topProfile, "risk")}/100`);
     expect(inactiveButtons[0]).toHaveTextContent("Risk");
     expect(inactiveButtons[0]).toHaveTextContent(`${topProfile.easyMonths}/12 easy months`);
-    expect(inactiveButtons[0]).toHaveTextContent(`${topProfile.riskLoad}/100 risk load`);
-    const insight = within(inactiveButtons[0]).getByLabelText(`${topProfile.place.name} swap insight`);
-    expect(insight).toHaveTextContent(/upgrade|contrast|anchor|counterweight|near leader|keep warm/i);
+    expect(inactiveButtons[0]).toHaveTextContent(`${topProfile.riskLoad}/100 overall risk`);
+    const insight = within(inactiveButtons[0]).getByLabelText(`What adding ${topProfile.place.name} would change`);
+    expect(insight).toHaveTextContent(/upgrade|contrast|sourced|risk|gardening|close to the best|similar option/i);
     expect(insight.textContent?.length ?? 0).toBeGreaterThan(24);
   });
 
@@ -364,11 +364,11 @@ describe("CompareView", () => {
     expect(table).toHaveTextContent("Comfort");
     expect(table).toHaveTextContent("Seasonality");
     expect(table).toHaveTextContent("Hazards");
-    expect(table).toHaveTextContent("Lived friction");
+    expect(table).toHaveTextContent("Living there");
     expect(table).toHaveTextContent("Access/cost");
     expect(table).toHaveTextContent("Garden/land");
     expect(table).toHaveTextContent("Evidence");
-    expect(table).toHaveTextContent("HTTPS citations");
+    expect(table).toHaveTextContent("Web sources");
     expect(table).toHaveTextContent("Sunshine");
     expect(table).not.toHaveTextContent("Solar resource");
     expect(table).not.toHaveTextContent(" MJ");
@@ -403,7 +403,7 @@ describe("CompareView", () => {
     expect(highlightButtons.length).toBeGreaterThan(1);
     expect(new Set(labels).size).toBe(labels.length);
     for (const button of highlightButtons) {
-      expect(button).toHaveAttribute("aria-label", expect.stringMatching(/^Open .+ profile from comparison highlight: .+/));
+      expect(button).toHaveAttribute("aria-label", expect.stringMatching(/^Open the .+ profile\. .+/));
       expect(button).toHaveAttribute("title", button.getAttribute("aria-label"));
     }
   });
@@ -429,20 +429,20 @@ describe("CompareView", () => {
     const onOpenPlace = vi.fn();
     renderCompare({ onCopyView, onOpenPlace });
 
-    const decisionRead = screen.getByLabelText("Comparison decision read");
+    const decisionRead = screen.getByLabelText("Comparison summary");
     expect(decisionRead).toBeInTheDocument();
     expect(within(decisionRead).getByText("Summary")).toBeInTheDocument();
     expect(screen.getByText("Next step")).toBeInTheDocument();
     expect(screen.getByText("Broadest fit")).toBeInTheDocument();
-    expect(within(screen.getByLabelText("Comparison decision read")).getByText("Lowest risk")).toBeInTheDocument();
-    expect(screen.getByText("Comfort leader")).toBeInTheDocument();
-    expect(screen.getByText("Garden edge")).toBeInTheDocument();
-    expect(screen.getByLabelText("Finalist decision table")).toBeInTheDocument();
+    expect(within(screen.getByLabelText("Comparison summary")).getByText("Lowest risk")).toBeInTheDocument();
+    expect(screen.getByText("Most comfortable")).toBeInTheDocument();
+    expect(screen.getByText("Best for gardening")).toBeInTheDocument();
+    expect(screen.getByLabelText("All places at a glance")).toBeInTheDocument();
     expect(screen.getByText("All places at a glance")).toBeInTheDocument();
     expect(screen.getByText("Role")).toBeInTheDocument();
     expect(screen.getByText("Score")).toBeInTheDocument();
     expect(screen.getByText("Visit")).toBeInTheDocument();
-    expect(screen.getByText("Watch first")).toBeInTheDocument();
+    expect(screen.getByText("Check first")).toBeInTheDocument();
     expect(screen.getByText("Start here")).toBeInTheDocument();
     expect(screen.getByLabelText("How well sourced")).toBeInTheDocument();
     const scoutSequence = screen.getByLabelText("Visit order");
@@ -452,28 +452,28 @@ describe("CompareView", () => {
     expect(within(scoutSequence).getByText(/Counterweight/)).toBeInTheDocument();
     const checklist = screen.getByLabelText("Check before you go");
     expect(checklist).toHaveTextContent("Check before you go");
-    expect(checklist).toHaveTextContent("Scout window");
+    expect(checklist).toHaveTextContent("When to visit");
     expect(checklist).toHaveTextContent("Tradeoff check");
     expect(checklist).toHaveTextContent("Hazard check");
-    expect(checklist).toHaveTextContent("Daily-life friction");
+    expect(checklist).toHaveTextContent("Daily life");
     expect(checklist).toHaveTextContent("Source gap");
-    expect(checklist).toHaveTextContent("What to prove before booking a visit");
+    expect(checklist).toHaveTextContent("What to confirm for each place before booking a visit");
 
     fireEvent.click(screen.getByRole("button", { name: "Copy a link to this comparison" }));
     expect(onCopyView).toHaveBeenCalledTimes(1);
-    const firstDossier = screen.getByRole("button", { name: /Open first dossier:/ });
+    const firstDossier = screen.getByRole("button", { name: /Open first profile:/ });
     expect(firstDossier).toHaveAttribute("title", firstDossier.getAttribute("aria-label"));
     fireEvent.click(firstDossier);
     expect(onOpenPlace).toHaveBeenCalledTimes(1);
-    const scoutStep = screen.getByRole("button", { name: /from scouting sequence: Start here/ });
+    const scoutStep = screen.getByRole("button", { name: /^Open .+\. Start here\./ });
     expect(scoutStep).toHaveAttribute("title", scoutStep.getAttribute("aria-label"));
     fireEvent.click(scoutStep);
     expect(onOpenPlace).toHaveBeenCalledTimes(2);
-    const checklistItem = within(checklist).getAllByRole("button", { name: /from scout verification checklist/ })[0]!;
+    const checklistItem = within(checklist).getAllByRole("button", { name: /^Open .+ to check: / })[0]!;
     expect(checklistItem).toHaveAttribute("title", checklistItem.getAttribute("aria-label"));
     fireEvent.click(checklistItem);
     expect(onOpenPlace).toHaveBeenCalledTimes(3);
-    const finalist = screen.getAllByRole("button", { name: /from finalist decision table/ })[0]!;
+    const finalist = screen.getAllByRole("button", { name: /from the at-a-glance table/ })[0]!;
     expect(finalist).toHaveAttribute("title", finalist.getAttribute("aria-label"));
     fireEvent.click(finalist);
     expect(onOpenPlace).toHaveBeenCalledTimes(4);
@@ -492,7 +492,7 @@ describe("CompareView", () => {
     renderCompare({ onCopyView: vi.fn(), shareStatus: "failed", shareFallbackUrl: fallbackUrl });
 
     expect(screen.getByRole("button", { name: "Copy failed. Try again, or copy the link shown below" })).toHaveTextContent(
-      "Manual copy",
+      "Copy by hand",
     );
     const fallbackGroup = screen.getByRole("group", { name: "Manual comparison share link" });
     const fallbackInput = within(fallbackGroup).getByRole("textbox", {
@@ -523,13 +523,13 @@ describe("CompareView", () => {
 
     const readiness = screen.getByLabelText("How well sourced");
     expect(readiness).toHaveTextContent("Thin Evidence Test: Thinly sourced");
-    expect(readiness).toHaveTextContent("0 HTTPS sources");
+    expect(readiness).toHaveTextContent("0 web sources");
     expect(readiness).toHaveTextContent("Low-confidence entry");
     expect(readiness).toHaveTextContent("Fewer than two web sources");
     expect(readiness).toHaveTextContent("No cost or access data");
 
-    const evidenceButton = within(readiness).getByRole("button", { name: "Open Thin Evidence Test dossier from evidence readiness" });
-    expect(evidenceButton).toHaveAttribute("title", "Open Thin Evidence Test dossier from evidence readiness");
+    const evidenceButton = within(readiness).getByRole("button", { name: "Open the Thin Evidence Test profile" });
+    expect(evidenceButton).toHaveAttribute("title", "Open the Thin Evidence Test profile");
     fireEvent.click(evidenceButton);
     expect(onOpenPlace).toHaveBeenCalledWith("thin-evidence-test", { trigger: evidenceButton });
   });
@@ -541,7 +541,7 @@ describe("CompareView", () => {
     const rows = within(table).getAllByRole("row");
     expect(rows).toHaveLength(PLACES.slice(0, 4).length + 1);
     for (const place of PLACES.slice(0, 4)) {
-      expect(within(table).getByRole("button", { name: `Open ${place.name} from finalist decision table` })).toBeInTheDocument();
+      expect(within(table).getByRole("button", { name: `Open ${place.name} from the at-a-glance table` })).toBeInTheDocument();
     }
     expect(within(table).getAllByText(/\/100 fit/)).toHaveLength(4);
     expect(within(table).getAllByText(/\/100 risk/)).toHaveLength(4);
@@ -556,15 +556,15 @@ describe("CompareView", () => {
     expect(screen.getByRole("dialog", { name: "1 place saved to compare" })).toBeInTheDocument();
     expect(screen.getByLabelText("Getting started with one place")).toBeInTheDocument();
     expect(screen.getByText("One place so far")).toBeInTheDocument();
-    expect(screen.getByText(/is saved as the anchor finalist/)).toBeInTheDocument();
-    expect(screen.getByText(/Add a peer or counterweight/)).toBeInTheDocument();
-    expect(screen.getByText("Anchor signal")).toBeInTheDocument();
-    expect(screen.getByText("First contrast")).toBeInTheDocument();
-    expect(screen.getByText("Counterweight")).toBeInTheDocument();
-    expect(screen.queryByLabelText("Comparison decision read")).not.toBeInTheDocument();
+    expect(screen.getByText(/is the only place here so far/)).toBeInTheDocument();
+    expect(screen.getByText(/Add a second place to see tradeoffs/)).toBeInTheDocument();
+    expect(screen.getByText("This place")).toBeInTheDocument();
+    expect(screen.getByText("Add next")).toBeInTheDocument();
+    expect(screen.getByText("Then add")).toBeInTheDocument();
+    expect(screen.queryByLabelText("Comparison summary")).not.toBeInTheDocument();
 
-    const reviewButton = screen.getByRole("button", { name: `Open profile dossier: ${anchor.name}` });
-    expect(reviewButton).toHaveAttribute("title", `Open profile dossier: ${anchor.name}`);
+    const reviewButton = screen.getByRole("button", { name: `Open the profile for ${anchor.name}` });
+    expect(reviewButton).toHaveAttribute("title", `Open the profile for ${anchor.name}`);
     fireEvent.click(reviewButton);
     expect(onOpenPlace).toHaveBeenCalledWith(anchor.id, { trigger: reviewButton });
     fireEvent.click(screen.getByRole("button", { name: "Back to the atlas" }));
@@ -646,7 +646,7 @@ describe("CompareView", () => {
     expect(within(liveFitHighlight as HTMLElement).getByText(/\d+\/100/)).toBeInTheDocument();
   });
 
-  it("explains the active comparison scoring lens when Live Finder filters shape Compare", () => {
+  it("explains the comparison scoring lens when Live Finder filters shape Compare", () => {
     renderCompare({
       liveFitFilters: {
         fitPresets: new Set<LiveFitPresetId>(["cool-summers", "dry-air"]),
@@ -657,11 +657,11 @@ describe("CompareView", () => {
 
     const lens = screen.getByLabelText("What the scores are based on");
     expect(lens).toHaveTextContent("What the scores use");
-    expect(lens).toHaveTextContent("Fit and finalist scores are being read through Cool summers and Dry air");
+    expect(lens).toHaveTextContent("Fit scores here use Cool summers and Dry air");
     expect(lens).toHaveTextContent("summer <= 72°F");
     expect(lens).toHaveTextContent("fire <= elevated");
     expect(lens).toHaveTextContent(/present-day normals/i);
-    expect(lens).toHaveTextContent("screening lens");
+    expect(lens).toHaveTextContent("for narrowing a list");
   });
 
   it("keeps default present-day Compare free of the scoring lens receipt", () => {
@@ -683,7 +683,7 @@ describe("CompareView", () => {
       </UnitProvider>,
     );
     expect(screen.getByRole("note")).toHaveTextContent(/SSP5-8.5/);
-    expect(screen.getByRole("note")).toHaveTextContent(/Place dossiers still show recent observed normals/);
+    expect(screen.getByRole("note")).toHaveTextContent(/Place profiles always show recent averages/);
     expect(screen.getByLabelText("What the scores are based on")).toHaveTextContent(/SSP5-8.5/);
   });
 

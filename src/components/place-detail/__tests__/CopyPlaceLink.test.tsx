@@ -64,7 +64,7 @@ describe("CopyPlaceLink", () => {
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Copy failed. Try again, or copy the link shown below" })).toHaveTextContent(
-        "Manual copy",
+        "Copy by hand",
       );
     });
     const fallbackGroup = screen.getByRole("group", { name: "Manual place share link" });
@@ -99,7 +99,7 @@ describe("CopyPlaceLink", () => {
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Copy failed. Try again, or copy the link shown below" })).toHaveTextContent(
-        "Manual copy",
+        "Copy by hand",
       );
     });
     expect((screen.getByRole("textbox", { name: "Link to this place. Select it and copy." }) as HTMLInputElement).value).toContain("p=sequim-wa");

@@ -110,7 +110,7 @@ describe("ExplorerFilterSheet", () => {
     );
 
     const trigger = screen.getByRole("button", { name: "Open filters and ranking (5 active filters)" });
-    const summary = `Active Explorer filters: search "sequim"; countries USA; Live Finder Cool; summer at or below 79${DEG}F; climate layer 2050 mid.`;
+    const summary = `Active filters: search "sequim"; countries USA; must-haves Cool; summer at or below 79${DEG}F; climate layer 2050 mid.`;
 
     expect(trigger).toHaveAccessibleDescription(summary);
     expect(trigger).toHaveAttribute("title", summary);

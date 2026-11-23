@@ -315,7 +315,7 @@ async function main() {
       if (!root) return null;
       const rank = root.querySelector(".rank-menu__select");
       const fit = [...root.querySelectorAll("details")].find(d =>
-        (d.querySelector("summary")?.textContent ?? "").trim().startsWith("Fit Finder"),
+        (d.querySelector("summary")?.textContent ?? "").trim().startsWith("Goals"),
       );
       if (!rank || !fit) return { missing: true };
       return {

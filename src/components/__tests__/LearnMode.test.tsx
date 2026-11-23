@@ -45,7 +45,7 @@ describe("LearnMode", () => {
 
   it("describes Explorer filters without the legacy sidebar label", () => {
     const { container } = renderLearnMode();
-    expect(container.textContent).toMatch(/Filters panel \(desktop filter dock or mobile Filters button\)/);
+    expect(container.textContent).toMatch(/Filters panel \(the side panel on desktop, the Filters button on a phone\)/);
     expect(container.textContent).not.toMatch(/in the sidebar to reorder/i);
   });
 });

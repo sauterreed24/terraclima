@@ -60,7 +60,7 @@ describe("PlaceCard overlay warmup", () => {
     expect(evidence).not.toHaveTextContent("Check first");
     expect(screen.queryByText("Livability")).not.toBeInTheDocument();
     expect(screen.queryByText("Live-here fit")).not.toBeInTheDocument();
-    expect(screen.queryByLabelText(`${place.name} visual signature`)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(`${place.name} place feel`)).not.toBeInTheDocument();
 
     const openTarget = container.querySelector<HTMLButtonElement>(".place-card__open-target");
     expect(openTarget).not.toBeNull();
@@ -85,7 +85,7 @@ describe("PlaceCard overlay warmup", () => {
 
     expect(screen.getByText("Livability")).toBeInTheDocument();
     expect(screen.getByText("Live-here fit")).toBeInTheDocument();
-    expect(screen.getByLabelText(`${place.name} visual signature`)).toBeInTheDocument();
+    expect(screen.getByLabelText(`${place.name} place feel`)).toBeInTheDocument();
     expect(screen.getByLabelText("Why this place ranks here")).toHaveTextContent("Check first");
   });
 

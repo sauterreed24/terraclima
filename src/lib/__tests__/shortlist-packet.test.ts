@@ -25,7 +25,7 @@ describe("buildShortlistPacketCue", () => {
     expect(cue?.compareIds).toEqual(["sequim-wa", "port-townsend-wa", "portal-az"]);
     expect(cue?.primary.name.length).toBeGreaterThan(0);
     expect(cue?.primaryScore).toBeGreaterThan(0);
-    expect(cue?.summary).toContain("first finalist");
+    expect(cue?.summary).toContain("place to read first");
     expect(cue?.watch.length).toBeGreaterThan(12);
   });
 
