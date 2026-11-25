@@ -18,4 +18,12 @@ describe("site-history registry when a file fails to load", () => {
     await expect(registry.loadSiteHistory("sequim-wa")).resolves.toBeNull();
     expect(registry.siteHistoryThenable("sequim-wa")).not.toBe(first);
   });
+
+  it("a profile's one retry reports failure again instead of looping", async () => {
+    const registry = await import("../../data/site-history/registry");
+    await registry.siteHistoryThenable("portal-az");
+    await expect(registry.retryFailedSiteHistory("portal-az")).resolves.toBe(false);
+    // A place with no failed download has nothing to retry.
+    await expect(registry.retryFailedSiteHistory("halifax-ns")).resolves.toBe(false);
+  });
 });

@@ -28,6 +28,7 @@ import { PLACES } from "../src/data/places";
 import { runScenarioRanking } from "../src/lib/climate-processor";
 import RECORDS from "../src/data/generated/climate-v2/records.json" with { type: "json" };
 import { assessLiveFit } from "../src/lib/live-fit";
+import { SITE_HISTORY } from "../src/data/places.site-history";
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const args = process.argv.slice(2);
@@ -463,6 +464,18 @@ async function sectionRecover(browser: Browser) {
     await page.waitForTimeout(2500);
     const prof = await page.locator("body").innerText().catch(() => "");
     results["offline after a new deploy's file list: list and a viewed profile still open"] = listOk && /Climate normals/i.test(prof);
+    await ctx.close();
+  }
+  {
+    // The history file fails once (a dropped connection), then works: the profile gets its history.
+    const ctx = await newCtx(browser);
+    let first = true;
+    await ctx.route(/site-history-usa-1-.*\.js$/, r => { if (first) { first = false; return r.abort(); } return r.continue(); });
+    const page = await open(ctx, "/?p=sequim-wa", /Failed to fetch dynamically imported module/);
+    await page.waitForTimeout(4000);
+    const body = await page.getByRole("dialog").first().innerText().catch(() => "");
+    const line = SITE_HISTORY["sequim-wa"]!.history[0]!.slice(0, 50);
+    results["history file fails once, then loads → profile shows its history"] = body.replace(/\s+/g, " ").includes(line.replace(/\s+/g, " "));
     await ctx.close();
   }
   const passed = Object.values(results).filter(Boolean).length;

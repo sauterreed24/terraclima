@@ -119,3 +119,13 @@ export function siteHistoryThenable(id: string): Promise<SiteHistoryEntry | null
   thenables.set(id, t);
   return t;
 }
+
+/**
+ * For a profile that rendered without its history because the download failed:
+ * try once more. Resolves true when the entry has now arrived (the caller
+ * re-renders); false when there was nothing to retry or it failed again.
+ */
+export async function retryFailedSiteHistory(id: string): Promise<boolean> {
+  if (!failed.has(id)) return false;
+  return (await loadSiteHistory(id)) != null;
+}

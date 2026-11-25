@@ -27,7 +27,7 @@ import { externalMapLinks, getPlaceHeroMedia } from "../lib/place-hero-media";
 import { composePlaceExperience } from "../lib/place-overview";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { withSiteHistoryDeepSections } from "../data/site-history/apply";
-import { siteHistoryThenable } from "../data/site-history/registry";
+import { retryFailedSiteHistory, siteHistoryThenable } from "../data/site-history/registry";
 import { climateDataBasis } from "../lib/climate-data-basis";
 import { clearDossierHash } from "../lib/dossier-url-hash";
 import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
@@ -759,6 +759,19 @@ function DetailBody({
   // Waits (inside the profile's Suspense fallback) for this place's site
   // history file; already-loaded files do not suspend.
   const siteHistory = use(siteHistoryThenable(placeRaw.id));
+  // Rendered without history because its download failed: retry once, and
+  // re-render when it arrives (a reopen, Back or Forward retries again).
+  const [, setHistoryRetried] = useState(0);
+  useEffect(() => {
+    if (siteHistory !== null) return;
+    let live = true;
+    void retryFailedSiteHistory(placeRaw.id).then(arrived => {
+      if (live && arrived) setHistoryRetried(n => n + 1);
+    });
+    return () => {
+      live = false;
+    };
+  }, [placeRaw.id, siteHistory]);
   const place = useMemo(
     () => withSiteHistoryDeepSections(placeRaw, siteHistory ?? undefined),
     [placeRaw, siteHistory],
