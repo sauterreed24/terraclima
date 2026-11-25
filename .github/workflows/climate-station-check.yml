@@ -16,11 +16,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "diagnose (temperature/precipitation), humidity (dew points), or apply (regenerate with the reviewed corrections)"
+        description: "diagnose (temperature/precipitation), humidity (dew points), apply (regenerate with the reviewed corrections), or normals (station monthly means incl. snowfall; needs ids)"
         required: true
         default: diagnose
         type: choice
-        options: [diagnose, humidity, apply]
+        options: [diagnose, humidity, apply, normals]
       ids:
         description: "Comma-separated place ids to diagnose (blank = all)"
         required: false
@@ -76,10 +76,14 @@ jobs:
           path: .cache/isd
           key: isd-${{ github.run_id }}
           restore-keys: isd-
+      - name: Station normals
+        if: inputs.mode == 'normals'
+        run: npx tsx scripts/climate-data/station-normals.ts --ids "$IDS" --radius-km "$RADIUS"
       - name: Fetch Daymet (resume-safe)
+        if: inputs.mode != 'normals'
         run: npm run climate:data:fetch -- --through=2025 --concurrency=4
       - name: Compare with stations
-        if: inputs.mode != 'apply' && inputs.mode != 'humidity'
+        if: inputs.mode != 'apply' && inputs.mode != 'humidity' && inputs.mode != 'normals'
         run: |
           npx tsx scripts/climate-data/station-bias.ts --ids "$IDS" --radius-km "$RADIUS"
           gzip -9 -c data/climate-v2/stations/station-bias-diagnostics.json | base64 -w 0 | fold -w 6000 | sed 's/^/DIAG /'
