@@ -75,11 +75,13 @@ self.addEventListener("message", event => {
 });
 
 /**
- * Drop cached build files that the current deploy no longer ships. Hashed
- * names change with every deploy, so without this the cache grows with each
- * visit after an update; under storage pressure a browser may then clear the
- * whole site, saved places included. Needs the network (the manifest is
- * fetched fresh); offline, nothing is removed.
+ * Drop cached build files that neither the current deploy nor the one before
+ * it ships, and never one the cached page (the offline shell) still loads.
+ * Hashed names change with every deploy, so without this the cache grows with
+ * each update; under storage pressure a browser may then clear the whole site,
+ * saved places included. Keeping one deploy back covers a tab still open on the
+ * old version and an offline open of the old shell. Needs the network (the
+ * file list is fetched fresh); offline, nothing is removed.
  */
 async function pruneOldBuilds() {
   let manifest;
@@ -90,16 +92,52 @@ async function pruneOldBuilds() {
   } catch {
     return;
   }
-  const current = new Set();
-  for (const file of Array.isArray(manifest && manifest.files) ? manifest.files : []) {
-    if (typeof file === "string") current.add(new URL(file, self.registration.scope).pathname);
+  const toPaths = list => (Array.isArray(list) ? list : [])
+    .filter(file => typeof file === "string")
+    .map(file => new URL(file, self.registration.scope).pathname);
+  const current = toPaths(manifest && manifest.files);
+  // A list without the build's own files is not trusted to prune with.
+  if (current.length < 5) return;
+
+  const shell = await caches.open(SHELL_CACHE);
+  const readList = async key => {
+    try {
+      const hit = await shell.match(key);
+      return hit ? toPaths(await hit.json()) : [];
+    } catch {
+      return [];
+    }
+  };
+  const storeList = (key, paths) => shell.put(key, new Response(JSON.stringify(paths), { headers: { "content-type": "application/json" } }));
+  const CURRENT_KEY = "./build-files-current.json";
+  const PREVIOUS_KEY = "./build-files-previous.json";
+  let stored = await readList(CURRENT_KEY);
+  let previous = await readList(PREVIOUS_KEY);
+  const same = stored.length === current.length && stored.every((path, k) => path === current[k]);
+  if (!same) {
+    // A new deploy: the one we knew becomes "previous".
+    if (stored.length > 0) {
+      previous = stored;
+      await storeList(PREVIOUS_KEY, previous);
+    }
+    stored = current;
+    await storeList(CURRENT_KEY, current);
   }
-  // A manifest without the build's own files is not trusted to prune with.
-  if (current.size < 5) return;
+  const keep = new Set([...current, ...previous]);
+  // Files the cached page itself loads (scripts, styles, preloads).
+  try {
+    const page = (await shell.match("./index.html")) || (await shell.match("./"));
+    const html = page ? await page.text() : "";
+    for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
+      keep.add(new URL(match[1], self.registration.scope).pathname);
+    }
+  } catch {
+    return;
+  }
   const cache = await caches.open(RUNTIME_CACHE);
   for (const request of await cache.keys()) {
     const path = new URL(request.url).pathname;
-    if (path.includes("/assets/") && !current.has(path)) await cache.delete(request);
+    if (path.includes("/assets/") && !keep.has(path)) await cache.delete(request);
   }
 }
 

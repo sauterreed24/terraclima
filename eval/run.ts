@@ -435,6 +435,36 @@ async function sectionRecover(browser: Browser) {
     if (hits > 3) console.log(`        site-history requests while failing: ${hits}`);
     await ctx.close();
   }
+  {
+    // A new deploy lands while this browser still holds the previous page: the offline copy must
+    // keep what that page needs (pruning compares against the new build's file list).
+    const ctx = await newCtx(browser);
+    const page = await open(ctx); await firstCard(page);
+    const waitCached = () => page.evaluate(async () => {
+      await navigator.serviceWorker?.ready;
+      const entry = (document.querySelector('script[type="module"][src]') as HTMLScriptElement | null)?.src;
+      for (let i = 0; i < 60 && entry; i++) {
+        if (await caches.match(entry, { ignoreVary: true })) return;
+        await new Promise(r => setTimeout(r, 250));
+      }
+    });
+    await waitCached();
+    await page.locator(CARD).first().click();
+    await page.getByRole("dialog").first().waitFor({ timeout: 8000 }).catch(() => {});
+    const viewed = new URL(page.url()).searchParams.get("p");
+    await ctx.route(/asset-manifest\.json/, r => r.fulfill({ contentType: "application/json", body: JSON.stringify({ files: Array.from({ length: 12 }, (_, i) => `assets/next-deploy-${i}.js`) }) }));
+    await page.goto(BASE + "/"); await firstCard(page);
+    await page.waitForTimeout(7000); // idle hand-off + prune
+    await ctx.setOffline(true);
+    await page.goto(BASE + "/").catch(() => {});
+    await firstCard(page, 10000).catch(() => {});
+    const listOk = await page.locator(CARD).count() > 0;
+    await page.goto(`${BASE}/?p=${viewed}`).catch(() => {});
+    await page.waitForTimeout(2500);
+    const prof = await page.locator("body").innerText().catch(() => "");
+    results["offline after a new deploy's file list: list and a viewed profile still open"] = listOk && /Climate normals/i.test(prof);
+    await ctx.close();
+  }
   const passed = Object.values(results).filter(Boolean).length;
   record("S4a", "failure scenarios where the app stays usable", `${passed}/${Object.keys(results).length}`, "all", passed === Object.keys(results).length, results);
   for (const [k, v] of Object.entries(results)) if (!v) console.log(`        fails: ${k}`);
