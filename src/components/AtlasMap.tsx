@@ -212,13 +212,19 @@ const COUNTRY_LABEL_MAX_COVER = 0.3;
  * leave no room on the land itself: a small name set clear beside its
  * coast, the way an atlas letters a crowded country, beats no name at all.
  */
-const COUNTRY_LABEL_OFFSHORE_SEATS: Record<string, readonly (readonly [number, number])[]> = {
-  usa: [[-73.5, 32.5], [-72, 30.5], [-71, 34.5], [-70, 37]],
-  mexico: [[-93, 24], [-93.5, 22.5], [-112, 19.5], [-113.5, 17.5]],
+const COUNTRY_LABEL_OFFSHORE_SEATS: Record<string, readonly (readonly [number, number, number, number])[]> = {
+  // [lon, lat, push x, push y]: the name backs away from the coast along the
+  // push direction until it clears the badges.
+  usa: [[-73.5, 32.5, 1, 0], [-71, 36, 1, 0]],
+  mexico: [[-93, 23.5, 0, 0], [-112, 19.5, -0.8, 0.6], [-116, 23.5, -1, 0]],
 };
-const COUNTRY_LABEL_OFFSHORE_NUDGES: readonly (readonly [number, number])[] = [
-  [0, 0], [8, 0], [-8, 0], [0, 8], [0, -8], [8, 8], [8, -8], [-8, 8], [-8, -8], [16, 0], [0, 16], [0, -16], [16, 8], [16, -8],
-];
+const COUNTRY_LABEL_OFFSHORE_NUDGES: readonly (readonly [number, number])[] = (() => {
+  const out: [number, number][] = [];
+  for (let t = 0; t <= 64; t += 8) {
+    for (const d of [0, 8, -8, 16, -16]) out.push([t, d]);
+  }
+  return out;
+})();
 const OCEAN_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0], [0, -22], [0, 22], [-48, 0], [48, 0]];
 const SEA_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0], [0, -13], [0, 13]];
 const STATIC_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0]];
@@ -1004,7 +1010,7 @@ export const AtlasMap = memo(function AtlasMap({
       id: string; label: string; x: number; y: number; slide: number; wideSlides: boolean;
       altSeats: { dx: number; dy: number }[];
       gridSeats: { dx: number; dy: number }[];
-      offshoreSeats: { dx: number; dy: number }[];
+      offshoreSeats: { dx: number; dy: number; ux: number; uy: number }[];
     }[] = [];
     for (const a of COUNTRY_LABEL_SEATS) {
       const xy = projection(a.seats[0] as [number, number]);
@@ -1025,10 +1031,10 @@ export const AtlasMap = memo(function AtlasMap({
         }
       }
       gridSeats.sort((p, q) => Math.hypot(p.dx, p.dy) - Math.hypot(q.dx, q.dy));
-      const offshoreSeats: { dx: number; dy: number }[] = [];
-      for (const seat of COUNTRY_LABEL_OFFSHORE_SEATS[a.id] ?? []) {
-        const o = projection(seat as [number, number]);
-        if (o) offshoreSeats.push({ dx: o[0] - xy[0], dy: o[1] - xy[1] });
+      const offshoreSeats: { dx: number; dy: number; ux: number; uy: number }[] = [];
+      for (const [lon, lat, ux, uy] of COUNTRY_LABEL_OFFSHORE_SEATS[a.id] ?? []) {
+        const o = projection([lon, lat]);
+        if (o) offshoreSeats.push({ dx: o[0] - xy[0], dy: o[1] - xy[1], ux, uy });
       }
       out.push({ id: a.id, label: a.label, x: xy[0], y: xy[1], slide: a.slide, wideSlides: a.wideSlides, altSeats, gridSeats, offshoreSeats });
     }
@@ -1450,9 +1456,17 @@ export const AtlasMap = memo(function AtlasMap({
       const tightSettings = countryLabelFallbacks(
         cl.label, tightW, roomPx, COUNTRY_LABEL_FONT_PX * letterScale * COUNTRY_LABEL_TIGHT_SCALE,
       );
+      // Offshore seats must also stay on screen and clear of the map chrome
+      // (caption above, readout and scale below) to be worth drawing.
+      const tightHalfW = Math.max(0, ...tightSettings.slice(-1).map(f => f.halfW)) + 6;
       const offshoreCandidates = cl.offshoreSeats.flatMap(seat => COUNTRY_LABEL_OFFSHORE_NUDGES.map(
-        ([dx, dy]) => [seat.dx * k + dx, seat.dy * k + dy] as const,
-      ));
+        // `t` px along the push direction, `d` px across it.
+        ([t, d]) => [seat.dx * k + t * seat.ux - d * seat.uy, seat.dy * k + t * seat.uy + d * (seat.ux || 1)] as const,
+      )).filter(([dx, dy]) => {
+        const sx = cl.x * k + dx + settledView.x;
+        const sy = cl.y * k + dy + settledView.y;
+        return sx >= tightHalfW && sx <= width - tightHalfW && sy >= 76 && sy <= height - (smallMapLettering ? 150 : 64);
+      });
       const tightCandidates = candidates.concat(cl.gridSeats.map(seat => [seat.dx * k, seat.dy * k] as const));
       requests.push({
         id: `country:${cl.id}`,
@@ -1490,7 +1504,7 @@ export const AtlasMap = memo(function AtlasMap({
     }
     (globalThis as any).__lbl = { requests, obstacles, k, landSpanPx, reach, res: Array.from(placeMapLabels(requests, obstacles, k)) }; // TEMPDEBUG
     return placeMapLabels(requests, obstacles, k);
-  }, [settledView.k, clusterItems, markerRenderOrder, featuredRankById, countryLabels, physicalLabels, projection, smallMapLettering]);
+  }, [settledView, width, height, clusterItems, markerRenderOrder, featuredRankById, countryLabels, physicalLabels, projection, smallMapLettering]);
 
   const rankTrailTone =
     clusterEnabled || settledView.k < 1.35
