@@ -90,7 +90,7 @@
     "friday-harbor-wa": "a65ab60286b792678a586ad58b97a8896f07ca97303371781d66eaf58e52439f",
     "winthrop-wa": "09a1e6496c8072d3ac2df8648ea7cf8c77c55ca15ce465049ce2e89b4054ecdc",
     "leavenworth-wa": "f07f1d21496f95408bf56febe001d8c41223a575b9df2990bc750b0633c69c7e",
-    "lone-pine-ca": "f875bd2b4be66da68a9e39005ca5cc937521bddd9a4610f081e4643ad3606996",
+    "lone-pine-ca": "51eaae5c7f2405e3b43ee45b478ffc10cd73f76eb0348f5f19ea5d668132d4ba",
     "page-az": "f34a00666d33875d941317a7c0690b54d0c56a415db2d150abe3254192562683",
     "international-falls-mn": "b3c3b2ab85b6ed44b85532dee8b794aa5a11c7fd82acebc2b25036c3f0592ce5",
     "duluth-mn": "f86e90f6402fd2929bf04576bdbc21a50abd3584f60e0e21b1e456f0ec8eef12",
@@ -488,5 +488,5 @@
     "Daymet SWE is exposed as snowpack/SWE metrics only — never as snowfall cm.",
     "Humidity is estimated from vapor pressure."
   ],
-  "manifestHash": "4bb767f223376c2441cb08aea05977c311e41db3ddfe6cfbfe855e1eda0aa810"
+  "manifestHash": "8e6a9932db6c8ce127c2214e0bb4cb01a331bfdf6600c842b1dee32730fbccbf"
 }

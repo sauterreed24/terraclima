@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T18:58:47.483Z",
+  "generatedAt": "2026-11-25T19:15:41.685Z",
   "placeCount": 226,
   "generatedCount": 226,
   "missing": [],
@@ -278,7 +278,7 @@
       "daymetHigh": 35.7,
       "authoredLow": -2.33,
       "daymetLow": 0.97,
-      "validation": "validated"
+      "validation": "reviewed-exception"
     },
     {
       "id": "gatlinburg-tn",
@@ -945,8 +945,8 @@
   "exactSolarArrayDupGroups": 0,
   "unexplained": [],
   "validationCounts": {
-    "validated": 56,
+    "validated": 55,
     "gridOnly": 126,
-    "reviewedException": 44
+    "reviewedException": 45
   }
 }
