@@ -503,9 +503,9 @@ describe("exportShortlistAsMarkdown", () => {
     const file = exportShortlistAsMarkdown([], { generatedAt: FIXED });
 
     expect(file.body).toContain("Places: 0");
-    expect(file.body).toContain("No pinned places yet.");
+    expect(file.body).toContain("No saved places yet.");
     expect(file.body).toContain("## Compare next");
-    expect(file.body).toContain("Pin at least two places to get a side-by-side table.");
+    expect(file.body).toContain("Save at least two places to get a side-by-side table.");
   });
 
   it("exports a Compare setup handoff for a one-place shortlist", () => {
@@ -517,10 +517,10 @@ describe("exportShortlistAsMarkdown", () => {
     expect(file.body).toContain("Places: 1");
     expect(file.body).toContain("### 1. Alpha Valley");
     expect(file.body).toContain("Compare URL: https://example.test/terraclima/?cmp=alpha-valley");
-    expect(file.body).toContain("Alpha Valley is the only pinned place.");
+    expect(file.body).toContain("Alpha Valley is the only saved place.");
     expect(file.body).toContain("Add a second place in Compare");
     expect(file.body).toContain("Check first:");
-    expect(file.body).not.toContain("Pin at least two places to get a side-by-side table.");
+    expect(file.body).not.toContain("Save at least two places to get a side-by-side table.");
     expect(file.body).not.toContain("| Role | Place | Score | Fit | Risk | Visit | Check first |");
   });
 
@@ -538,7 +538,7 @@ describe("exportShortlistAsMarkdown", () => {
 
     expect(file.body).toContain("Places: 5");
     expect(file.body).toContain("### 5. Place 5");
-    expect(file.body).toContain("Compare opens the first 4 pinned places; all 5 pinned places are listed above.");
+    expect(file.body).toContain("Compare opens the first 4 saved places; all 5 saved places are listed above.");
     expect(file.body).toContain("Compare URL: https://example.test/terraclima/?cmp=place-1,place-2,place-3,place-4");
     expect(file.body).not.toContain("cmp=place-1,place-2,place-3,place-4,place-5");
   });

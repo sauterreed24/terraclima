@@ -8,8 +8,8 @@ describe("buildShortlistReadiness", () => {
 
   it("nudges a one-place shortlist toward Compare readiness", () => {
     expect(buildShortlistReadiness(1)).toEqual({
-      label: "1 place pinned",
-      detail: "Pin a second place to compare. Export already works for this one.",
+      label: "1 place saved",
+      detail: "Save a second place to compare. Export already works for this one.",
     });
   });
 
@@ -23,7 +23,7 @@ describe("buildShortlistReadiness", () => {
   it("keeps over-limit shortlists honest about Compare truncation and full export order", () => {
     expect(buildShortlistReadiness(5, 4)).toEqual({
       label: "Ready to compare",
-      detail: "Compare the first 4. The visit plan export includes all 5 pinned places.",
+      detail: "Compare the first 4. The visit plan export includes all 5 saved places.",
     });
   });
 });

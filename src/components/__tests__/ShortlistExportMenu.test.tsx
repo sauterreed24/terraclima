@@ -20,14 +20,14 @@ afterEach(() => {
 describe("ShortlistExportMenu", () => {
   it("disables export when shortlist is empty", () => {
     render(<ShortlistExportMenu places={[]} />);
-    const trigger = screen.getByRole("button", { name: "Pin a place to export your shortlist" });
+    const trigger = screen.getByRole("button", { name: "Save a place to export it" });
     expect(trigger).toBeDisabled();
     expect(trigger).toHaveAttribute("title", trigger.getAttribute("aria-label"));
   });
 
   it("shows Visit plan first in the export menu", () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
-    const trigger = screen.getByRole("button", { name: "Export shortlist" });
+    const trigger = screen.getByRole("button", { name: "Export saved places" });
     expect(trigger).toHaveClass("tc-shortlist-export__trigger");
     expect(trigger).toHaveAttribute("title", trigger.getAttribute("aria-label"));
     fireEvent.click(trigger);
@@ -53,7 +53,7 @@ describe("ShortlistExportMenu", () => {
 
   it("supports arrow, Home, and End keyboard navigation in the export menu", () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
-    fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
+    fireEvent.click(screen.getByRole("button", { name: "Export saved places" }));
 
     const items = screen.getAllByRole("menuitem");
     expect(items[0]).toHaveFocus();
@@ -74,7 +74,7 @@ describe("ShortlistExportMenu", () => {
 
   it("opens upward when the trigger is near the bottom of the viewport", () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
-    const trigger = screen.getByRole("button", { name: "Export shortlist" });
+    const trigger = screen.getByRole("button", { name: "Export saved places" });
     vi.spyOn(trigger, "getBoundingClientRect").mockReturnValue({
       bottom: 720,
       height: 44,
@@ -90,28 +90,28 @@ describe("ShortlistExportMenu", () => {
 
     fireEvent.click(trigger);
 
-    expect(screen.getByRole("menu", { name: "Export shortlist format" })).toHaveClass("tc-shortlist-export__panel--up");
+    expect(screen.getByRole("menu", { name: "Export format for saved places" })).toHaveClass("tc-shortlist-export__panel--up");
   });
 
   it("dismisses the export menu on outside pointer down and restores trigger focus", async () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
-    const trigger = screen.getByRole("button", { name: "Export shortlist" });
+    const trigger = screen.getByRole("button", { name: "Export saved places" });
     trigger.focus();
     fireEvent.click(trigger);
 
-    expect(screen.getByRole("menu", { name: "Export shortlist format" })).toBeInTheDocument();
+    expect(screen.getByRole("menu", { name: "Export format for saved places" })).toBeInTheDocument();
     expect(screen.getAllByRole("menuitem")[0]).toHaveFocus();
 
     fireEvent.pointerDown(document.body);
 
-    expect(screen.queryByRole("menu", { name: "Export shortlist format" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("menu", { name: "Export format for saved places" })).not.toBeInTheDocument();
     await waitFor(() => expect(trigger).toHaveFocus());
     expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
   it("downloads the Markdown visit plan when chosen", async () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
-    fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
+    fireEvent.click(screen.getByRole("button", { name: "Export saved places" }));
     fireEvent.click(screen.getByRole("menuitem", { name: /^Visit plan/i }));
 
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
@@ -132,7 +132,7 @@ describe("ShortlistExportMenu", () => {
     window.history.replaceState(null, "", "?r=coolest-summers");
     try {
       render(<ShortlistExportMenu places={[PLACES[0]!]} />);
-      fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
+      fireEvent.click(screen.getByRole("button", { name: "Export saved places" }));
       fireEvent.click(screen.getByRole("menuitem", { name: /^CSV/i }));
       await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledOnce(), { timeout: 5000 });
       const [body] = vi.mocked(downloadBlobFile).mock.calls[0]!;
@@ -150,7 +150,7 @@ describe("ShortlistExportMenu", () => {
 
   it("starts the JSON export from pointer down on a format item", async () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
-    const trigger = screen.getByRole("button", { name: "Export shortlist" });
+    const trigger = screen.getByRole("button", { name: "Export saved places" });
     fireEvent.click(trigger);
 
     fireEvent.pointerDown(screen.getByRole("menuitem", { name: /^JSON/i }), { button: 0 });
@@ -167,7 +167,7 @@ describe("ShortlistExportMenu", () => {
 
   it("activates a focused export format with Enter", async () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
-    const trigger = screen.getByRole("button", { name: "Export shortlist" });
+    const trigger = screen.getByRole("button", { name: "Export saved places" });
     fireEvent.click(trigger);
     const jsonItem = screen.getByRole("menuitem", { name: /^JSON/i });
     jsonItem.focus();
@@ -189,7 +189,7 @@ describe("ShortlistExportMenu", () => {
     });
 
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
-    fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
+    fireEvent.click(screen.getByRole("button", { name: "Export saved places" }));
     fireEvent.click(screen.getByRole("menuitem", { name: /^Visit plan/i }));
 
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
@@ -199,18 +199,18 @@ describe("ShortlistExportMenu", () => {
 
   it("downloads CSV, GeoJSON, and calendar exports", async () => {
     render(<ShortlistExportMenu places={[PLACES[0]!, PLACES[1]!]} />);
-    fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
+    fireEvent.click(screen.getByRole("button", { name: "Export saved places" }));
 
     fireEvent.click(screen.getByRole("menuitem", { name: /^CSV/i }));
     await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledTimes(1), { timeout: 5000 });
     expect(vi.mocked(downloadBlobFile).mock.calls[0]![2]).toBe("text/csv;charset=utf-8");
 
-    fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
+    fireEvent.click(screen.getByRole("button", { name: "Export saved places" }));
     fireEvent.click(screen.getByRole("menuitem", { name: /^GeoJSON/i }));
     await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledTimes(2), { timeout: 5000 });
     expect(vi.mocked(downloadBlobFile).mock.calls[1]![2]).toBe("application/geo+json");
 
-    fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
+    fireEvent.click(screen.getByRole("button", { name: "Export saved places" }));
     fireEvent.click(screen.getByRole("menuitem", { name: /^Calendar/i }));
     await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledTimes(3), { timeout: 5000 });
     expect(vi.mocked(downloadBlobFile).mock.calls[2]![2]).toBe("text/calendar");
@@ -218,11 +218,11 @@ describe("ShortlistExportMenu", () => {
 
   it("closes the export menu on Escape", async () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
-    const trigger = screen.getByRole("button", { name: "Export shortlist" });
+    const trigger = screen.getByRole("button", { name: "Export saved places" });
     fireEvent.click(trigger);
-    const menu = screen.getByRole("menu", { name: "Export shortlist format" });
+    const menu = screen.getByRole("menu", { name: "Export format for saved places" });
     fireEvent.keyDown(menu, { key: "Escape" });
-    expect(screen.queryByRole("menu", { name: "Export shortlist format" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("menu", { name: "Export format for saved places" })).not.toBeInTheDocument();
     await waitFor(() => expect(trigger).toHaveFocus());
   });
 });

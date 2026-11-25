@@ -32,7 +32,7 @@ describe("CollectionsView", () => {
     expect((firstCard as HTMLElement).querySelectorAll(".collection-spectrum__bar").length).toBeGreaterThan(3);
     expect(container.querySelector(".collection-place-chip__dot")).not.toBeNull();
 
-    const pinButton = within(firstCard as HTMLElement).getByRole("button", { name: "Pin Rain-Shadow Sanctuaries collection" });
+    const pinButton = within(firstCard as HTMLElement).getByRole("button", { name: "Show only the Rain-Shadow Sanctuaries collection" });
     expect(pinButton).toHaveClass("collection-pin-button");
     expect(pinButton).toHaveAttribute("title", "Filter the Explorer to Rain-Shadow Sanctuaries");
     fireEvent.click(pinButton);

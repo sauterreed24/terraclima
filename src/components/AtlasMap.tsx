@@ -180,8 +180,13 @@ const COUNTRY_LABEL_SEATS: readonly {
 /** Tighter fallback setting for a country name: less tracking, one size down. */
 const COUNTRY_LABEL_COMPACT_SCALE = 0.92;
 const COUNTRY_LABEL_COMPACT_TRACKING_EM = 0.16;
+/** Smallest setting, for maps where even the compact name finds no seat. */
+const COUNTRY_LABEL_TIGHT_SCALE = 0.84;
+const COUNTRY_LABEL_TIGHT_TRACKING_EM = 0.08;
 /** A country name may sit partly behind pins only up to this share of its length. */
 const COUNTRY_LABEL_MAX_COVER = 0.3;
+/** Last resort on crowded small maps: a faint name the pins sit on. */
+const COUNTRY_LABEL_UNDERLAY_MAX_COVER = 0.62;
 const OCEAN_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0], [0, -22], [0, 22], [-48, 0], [48, 0]];
 const SEA_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0], [0, -13], [0, 13]];
 const STATIC_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0]];
@@ -1374,6 +1379,12 @@ export const AtlasMap = memo(function AtlasMap({
         COUNTRY_LABEL_COMPACT_TRACKING_EM,
         0.7,
       );
+      const tightW = estimateMapLabelWidth(
+        cl.label,
+        COUNTRY_LABEL_FONT_PX * letterScale * COUNTRY_LABEL_TIGHT_SCALE,
+        COUNTRY_LABEL_TIGHT_TRACKING_EM,
+        0.7,
+      );
       // A name wider than its country has no honest seat — leave it out.
       const roomPx = landSpanPx * (cl.id === "mexico" ? 0.5 : 0.95);
       // Classic seat and its slides first, then the quieter alternate seats
@@ -1393,7 +1404,9 @@ export const AtlasMap = memo(function AtlasMap({
         y: cl.y,
         halfW: labelW <= roomPx ? labelW / 2 : Number.POSITIVE_INFINITY,
         compactHalfW: compactW <= roomPx ? compactW / 2 : undefined,
+        tightHalfW: tightW <= roomPx ? tightW / 2 : undefined,
         maxCover: COUNTRY_LABEL_MAX_COVER,
+        underlayMaxCover: COUNTRY_LABEL_UNDERLAY_MAX_COVER,
         halfH: 8,
         candidates,
       });
@@ -1416,6 +1429,7 @@ export const AtlasMap = memo(function AtlasMap({
           : label.kind === "ocean" ? OCEAN_LABEL_CANDIDATES : SEA_LABEL_CANDIDATES,
       });
     }
+    (globalThis as any).__lbl = { requests, obstacles, k, landSpanPx, reach, res: Array.from(placeMapLabels(requests, obstacles, k)) }; // TEMPDEBUG
     return placeMapLabels(requests, obstacles, k);
   }, [settledView.k, clusterItems, markerRenderOrder, featuredRankById, countryLabels, physicalLabels, projection, smallMapLettering]);
 
@@ -2625,9 +2639,13 @@ export const AtlasMap = memo(function AtlasMap({
               const seat = backgroundLabelPlacement.get(`country:${cl.id}`);
               // Clear seat: full strength. Partly behind pins (within the
               // cover budget): dimmed so the pins read first. Otherwise hidden.
-              const seatOpacity = !seat || seat.clear ? 1 : seat.cover != null ? 0.72 : 0;
+              // Past the budget (underlay): fainter still, a watermark under them.
+              const seatOpacity = !seat || seat.clear ? 1 : seat.underlay ? 0.58 : seat.cover != null ? 0.72 : 0;
               const fontPx = (smallMapLettering ? COUNTRY_LABEL_FONT_PX * 0.88 : COUNTRY_LABEL_FONT_PX)
-                * (seat?.compact ? COUNTRY_LABEL_COMPACT_SCALE : 1);
+                * (seat?.tight ? COUNTRY_LABEL_TIGHT_SCALE : seat?.compact ? COUNTRY_LABEL_COMPACT_SCALE : 1);
+              const trackingEm = seat?.tight
+                ? COUNTRY_LABEL_TIGHT_TRACKING_EM
+                : seat?.compact ? COUNTRY_LABEL_COMPACT_TRACKING_EM : COUNTRY_LABEL_TRACKING_EM;
               return (
               <g
                 key={cl.id}
@@ -2635,7 +2653,7 @@ export const AtlasMap = memo(function AtlasMap({
                 data-atlas-inv-scale-host=""
                 data-country-label={cl.id}
                 className="map-country-label"
-                data-label-seat={seatOpacity === 0 ? "hidden" : seat && !seat.clear ? "partial" : "clear"}
+                data-label-seat={seatOpacity === 0 ? "hidden" : seat?.underlay ? "underlay" : seat && !seat.clear ? "partial" : "clear"}
                 style={{ opacity: seatOpacity }}
               >
                 <g data-atlas-inv-scale="" transform={`scale(${1 / view.k})`}>
@@ -2645,7 +2663,7 @@ export const AtlasMap = memo(function AtlasMap({
                   textAnchor="middle"
                   dominantBaseline="middle"
                   fontSize={fontPx}
-                  letterSpacing={`${seat?.compact ? COUNTRY_LABEL_COMPACT_TRACKING_EM : COUNTRY_LABEL_TRACKING_EM}em`}
+                  letterSpacing={`${trackingEm}em`}
                   fontWeight={600}
                   fill="rgba(236,244,252,0.8)"
                   fontFamily="var(--font-sans), system-ui, sans-serif"

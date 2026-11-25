@@ -68,6 +68,7 @@ import { LogoMark } from "./components/chrome/LogoMark";
 import { Footer } from "./components/chrome/Footer";
 import { ShortcutsOverlay } from "./components/chrome/ShortcutsOverlay";
 import { ShortlistExportMenu } from "./components/chrome/ShortlistExportMenu";
+import { SearchSuggestions } from "./components/SearchSuggestions";
 import { PlaceDetailLoadingFallback } from "./components/place-detail/PlaceDetailLoadingFallback";
 import {
   DEFAULT_RANKING,
@@ -1626,6 +1627,19 @@ export default function App() {
   const clearSearch = useCallback(() => {
     setFilters(f => (f.search ? { ...f, search: "" } : f));
   }, []);
+  const searchSuggestions = (
+    <SearchSuggestions
+      query={deferredFilters.search ?? ""}
+      pool={pool}
+      resultCount={ranked.length}
+      className="w-full"
+      onPick={text => {
+        setFilters(f => ({ ...f, search: text }));
+        // The picked button goes away, so keep focus on the search field.
+        document.getElementById(explorerDockLg ? SEARCH_INPUT_ID : QUICK_SEARCH_INPUT_ID)?.focus({ preventScroll: true });
+      }}
+    />
+  );
 
   const mapEmptyRecovery = useMemo(() => {
     const hasSearch = (filters.search ?? "").trim().length > 0;
@@ -1886,6 +1900,7 @@ export default function App() {
                     ) : null}
                   </label>
                 ) : null}
+                {explorerDockLg ? null : searchSuggestions}
 
                 <div
                   ref={mapStageRef}
@@ -2011,15 +2026,13 @@ export default function App() {
                   aria-busy={resultsPending || undefined}
                   data-pending={resultsPending || undefined}
                 >
-                  {/* Visual count is animated via raf-driven textContent mutation,
-                      which would spam any enclosing aria-live region. The
-                      authoritative announcement lives in the sr-only sibling
-                      below so screen readers hear only the final value. */}
+                  {/* The count is plain text so it is never a stale in-between
+                      number. Screen readers get the sr-only sibling below. */}
                   <div className="text-xs text-stone-readable" aria-hidden="true">
                     {ranked.length === PLACE_COUNTS.total ? (
-                      <>All <span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} paused={resultsPending} /></span> places</>
+                      <>All <span className="font-mono-num text-frost tabular-nums">{ranked.length}</span> places</>
                     ) : (
-                      <><span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} paused={resultsPending} /></span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places match</>
+                      <><span className="font-mono-num text-frost tabular-nums">{ranked.length}</span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places match</>
                     )} · ranked by <span className="text-frost">{scenarioRankingLabel}</span>
                     {resultsPending ? <span className="tc-results-pending-inline"> · Updating…</span> : null}
                   </div>
@@ -2065,6 +2078,7 @@ export default function App() {
                   >
                     <HelpCircle className="w-3.5 h-3.5" aria-hidden /> Tips
                   </button>
+                  {explorerDockLg ? searchSuggestions : null}
                 </div>
 
                 {transientFeedback ? (
@@ -3298,7 +3312,7 @@ const HeroCard = memo(function HeroCard({
           ) : null}
           {!compact ? (
             <div className="hero-metrics flex items-center gap-4 shrink-0 text-right justify-end flex-wrap">
-              <Metric label="In list" value={count} animated />
+              <Metric label="In list" value={count} />
               <Metric label="All places" value={PLACE_COUNTS.total} />
               <Metric label="Flagships" value={PLACE_COUNTS.tierA} />
             </div>
@@ -4683,46 +4697,14 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
   );
 });
 
-const Metric = memo(function Metric({ label, value, animated }: { label: string; value: number; animated?: boolean }) {
+const Metric = memo(function Metric({ label, value }: { label: string; value: number }) {
   return (
     <div className="flex flex-col items-end">
       <span className="text-[10px] uppercase tracking-wider text-stone-readable">{label}</span>
       <span className="font-mono-num text-xl text-ice tabular-nums">
-        {animated ? <AnimatedNumber value={value} /> : value}
+        {value}
       </span>
     </div>
   );
 });
-
-function AnimatedNumber({ value, durationMs = 520, paused = false }: { value: number; durationMs?: number; paused?: boolean }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const displayedRef = useRef(value);
-  const rafRef = useRef(0);
-
-  useEffect(() => {
-    if (paused) return;
-    const from = displayedRef.current;
-    const to = value;
-    if (from === to) return;
-    if (prefersReducedMotion()) {
-      if (ref.current) ref.current.textContent = to.toString();
-      displayedRef.current = to;
-      return;
-    }
-    let start = 0;
-    const step = (ts: number) => {
-      if (!start) start = ts;
-      const t = Math.min(1, (ts - start) / durationMs);
-      const eased = 1 - Math.pow(1 - t, 3);
-      const v = Math.round(from + (to - from) * eased);
-      if (ref.current) ref.current.textContent = v.toString();
-      displayedRef.current = v;
-      if (t < 1) rafRef.current = requestAnimationFrame(step);
-    };
-    rafRef.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [value, durationMs, paused]);
-
-  return <span ref={ref}>{displayedRef.current}</span>;
-}
 
