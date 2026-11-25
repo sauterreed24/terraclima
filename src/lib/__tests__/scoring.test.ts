@@ -310,7 +310,7 @@ describe("rankPlaces — bioclim ranking presets", () => {
 
     const ranked = rankPlaces("most-continental", [maritime, continental]);
     expect(ranked[0]!.place.id).toBe("continental");
-    expect(ranked[0]!.note).toContain("Conrad K");
+    expect(ranked[0]!.note).toContain("Conrad index");
   });
 
   it("ranks lower Selianinov HTC as the drier growing season", () => {
@@ -329,7 +329,7 @@ describe("rankPlaces — bioclim ranking presets", () => {
 
     const ranked = rankPlaces("driest-growing-season", [wet, dry]);
     expect(ranked[0]!.place.id).toBe("dry-grow");
-    expect(ranked[0]!.note).toContain("Selianinov HTC");
+    expect(ranked[0]!.note).toContain("Selianinov index");
   });
 
   it("ranks lower Thornthwaite PET as lower evaporative demand", () => {
@@ -354,7 +354,7 @@ describe("rankPlaces — bioclim ranking presets", () => {
 
     const ranked = rankPlaces("lowest-evaporative-demand", [highDemand, lowDemand]);
     expect(ranked[0]!.place.id).toBe("low-demand");
-    expect(ranked[0]!.note).toContain("Thornthwaite PET");
+    expect(ranked[0]!.note).toContain("Thornthwaite estimate");
   });
 
   it("keeps the most-continental corpus leaders in the interior-north pool", () => {

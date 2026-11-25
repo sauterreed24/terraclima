@@ -12,7 +12,6 @@ import { PLACES_MEXICO } from "./places.mexico";
 import { TIER_C_POLISH, TIER_C_POLISH_SOURCES } from "./places.tier-c-polish";
 import { TIER_C_INDICATORS } from "./places.tier-c-indicators";
 import { EXPERIENCE_AUTHORED } from "./places.experience-authored";
-import { SUMMARY_IMMERSIVE_POLISH } from "./places.summary-polish";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "./generated/climate-v2";
 import housingPressureJson from "./generated/research/housing-pressure-by-id.json";
 import citationsOverlayJson from "./generated/research/citations-overlay.json";
@@ -166,20 +165,6 @@ function applyExperienceAuthored(p: Place): Place {
   };
 }
 
-/**
- * Expand a short summaryImmersive (under the ~80-150 word target band) with
- * additional place-grounded sentences. Only applies when the authored
- * summaryImmersive still matches the text this expansion was written
- * against, so a later hand-edit of the base copy is never silently
- * clobbered by a stale generated expansion.
- */
-function applySummaryPolish(p: Place): Place {
-  const polish = SUMMARY_IMMERSIVE_POLISH[p.id];
-  if (!polish) return p;
-  if (p.summaryImmersive !== polish.original) return p;
-  return { ...p, summaryImmersive: polish.expanded };
-}
-
 export const PLACES: Place[] = [
   ...POLISHED_USA,
   ...POLISHED_CANADA,
@@ -187,7 +172,7 @@ export const PLACES: Place[] = [
 ].map(p =>
   applyResearch(
     applyLivedIndicators(
-      applyClimateV2(applySummaryPolish(applyExperienceAuthored(p))),
+      applyClimateV2(applyExperienceAuthored(p)),
     ),
   ),
 );

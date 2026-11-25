@@ -22,7 +22,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["chinook-corridor", "river-valley-moderation", "piedmont-transition"],
     drivers: ["chinook-foehn", "river-moderation", "continentality"],
     summaryShort: "Inland Northwest hub where Cascade rain shadow meets occasional warm downslope winds — four sharp seasons and dry summer afternoons.",
-    summaryImmersive: "Spokane sits where the plateau opens east of the Cascades: roughly half Seattle’s annual precipitation but real winter cold and reliable summer sun. Pacific moisture arrives in modified form; Arctic outbreaks still punch through. The river corridor organizes urban heat island and nocturnal cold drainage in the older valley neighborhoods.",
+    summaryImmersive: "Spokane lies at about 560 m on the Spokane River in eastern Washington, where the dry Columbia Basin meets the pine-covered foothills of the Rockies. The Cascades take most of the Pacific rain, and the city gets about 440 mm of precipitation a year, roughly half of Seattle's. Summer is dry and sunny, with afternoons near 29°C and cool nights near 12°C. Winter is cold and often grey, with afternoons near 4°C, nights near −3°C and about 135 cm of snow. Most of the year's moisture arrives between November and January. Wildfire smoke in August and September is the main drawback.",
     whyDistinct: "Mid-latitude interior position + rain-shadow dryness + episodic chinook warming produces larger winter temperature swings than coastal Washington at the same latitude.",
     climate: {
       tempHighC: [1, 4, 9, 15, 20, 25, 30, 29, 24, 15, 6, 0],
@@ -60,7 +60,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["mediterranean-pocket", "orchard-valley", "thermal-belt"],
     drivers: ["gap-winds", "marine-layer", "aspect-slope"],
     summaryShort: "World-famous wine valley where gap flow and fog delay ripening — Cabernet country built on nightly cooling.",
-    summaryImmersive: "The valley floor heats by day; cool air drains from the Petaluma Gap and marine layer spills east, wrapping benchlands in fog until mid-morning. Bench elevation differences of only tens of meters reorder frost risk and hang time — the entire AVA system is a map of microclimate.",
+    summaryImmersive: "The city of Napa lies at the southern end of the Napa Valley, between the Mayacamas Mountains and the Vaca Range. Summer days are hot and dry, with afternoons near 30°C. In the evening cool air and fog move up the valley from San Pablo Bay, nights fall to about 13°C, and the fog often lasts until mid-morning. That daily swing is what the vineyards depend on. Almost no rain falls from June to September. Winter is mild and wet, with afternoons near 15°C, and brings most of the year's 700 mm. Wildfire is the serious risk: fires in 2017 and 2020 burned into the hills on both sides of the valley.",
     whyDistinct: "Complex terrain channels + fog penetration + inland heat produce one of the steepest wine mesoclimates in the New World in a narrow corridor.",
     climate: {
       tempHighC: [14, 16, 18, 21, 24, 28, 30, 30, 28, 24, 18, 14],
@@ -97,7 +97,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["high-desert-escape", "gap-wind-corridor", "desert-oasis"],
     drivers: ["gap-winds", "rain-shadow", "elevation-lapse-rate"],
     summaryShort: "Desert resort climate famous for winter sun — summer heat moderated slightly by elevation vs the Imperial Valley floor.",
-    summaryImmersive: "Palm Springs sits in the venturi of the San Gorgonio Pass where pressure gradients translate into strong winds; winter attracts snowbirds for reliable warmth; summer pushes human activity into pools and evenings. Palm oases exploit groundwater; the surrounding desert is hyperarid.",
+    summaryImmersive: "Palm Springs sits at the foot of Mount San Jacinto, which rises nearly 3200 m above the desert floor and blocks almost all rain from the coast. About 150 mm falls in a year. Winter is the season to be here, with sunny afternoons near 22°C and nights near 9°C. Summer afternoons average about 41°C, July reaches about 43°C, and nights stay near 25°C. Wind pours through San Gorgonio Pass just to the north, where thousands of turbines stand. An aerial tramway climbs from the desert floor to cool pine forest near the top. The palm oases and the golf courses both draw on groundwater. Extreme heat and drought are the main risks.",
     whyDistinct: "Pass wind regime + mountain backdrop + irrigation oasis — a recreational microclimate layered on extreme desert.",
     climate: {
       tempHighC: [22, 24, 28, 32, 37, 42, 44, 43, 40, 33, 27, 21],
@@ -134,7 +134,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["river-valley-moderation", "monsoon-edge", "urban-heat-contrast"],
     drivers: ["river-moderation", "monsoon-lift", "continentality"],
     summaryShort: "Central Texas heat island wrapped around a river corridor — humid subtropical with violent convective peaks and increasingly long warm seasons.",
-    summaryImmersive: "Austin’s climate is a blend of Gulf moisture, plateau dry lines, and urban expansion that strengthens nocturnal heat. Hill-country storms fire on boundaries between air masses; flash flooding along the Colorado is a recurring story.",
+    summaryImmersive: "Austin lies on the Balcones Escarpment, where the limestone Hill Country meets the coastal plain and humid Gulf air meets dry air from the west. Summer is long and hot: afternoons average about 36°C from June to August and nights stay near 23°C. Winter is brief and mild, with afternoons near 18°C, broken every few weeks by a sharp cold front. About 880 mm of rain falls in a year, with peaks in May and October, and it often comes in bursts. Creeks along the escarpment can flood within hours, and multi-year droughts draw down the Highland Lakes. The spring-fed pool at Barton Springs stays cool all summer.",
     whyDistinct: "Escarpment proximity + river + fast-growing UHI — meteorologically busy summers and warming nights.",
     climate: {
       tempHighC: [16, 18, 22, 26, 30, 34, 36, 36, 33, 28, 22, 17],
@@ -171,7 +171,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["hurricane-coast", "tropical-isothermal"],
     drivers: ["sea-breeze", "hurricane-track", "marine-layer"],
     summaryShort: "Gulf-side luxury microclimate — warm wet summers, mild dry winters, and sea-breeze caps on peak heat.",
-    summaryImmersive: "Naples trades Atlantic surf for Gulf shallows: water temperatures seasonally warm, supporting humid tropical-feeling nights. Cold fronts are brief; sea breezes organize summer convection inland.",
+    summaryImmersive: "Naples lies on the Gulf coast of southwest Florida, on low sandy ground between the beach and the mangrove estuaries at the edge of the Everglades. Winter is the season people come for: dry and sunny, with afternoons near 25°C and nights near 14°C. Summer is hot and humid, with afternoons near 33°C, nights near 24°C and a thunderstorm on most afternoons. About 1480 mm of rain falls in a year, nearly all of it from June to September. The city stands only a metre or two above the sea, and hurricane storm surge is the major risk. Hurricane Ian flooded much of it in 2022.",
     whyDistinct: "Gulf bathymetry and low latitude yield narrow annual range relative to interior Florida.",
     climate: {
       tempHighC: [24, 25, 27, 28, 31, 32, 33, 33, 32, 30, 27, 25],
@@ -208,7 +208,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["lake-effect-snowbelt", "lake-moderated", "urban-heat-contrast"],
     drivers: ["lake-effect", "polar-jet-exposure", "continentality"],
     summaryShort: "Lake-effect capital of the eastern lakes — summer lake breezes, winter streamers measured in feet.",
-    summaryImmersive: "Buffalo’s reputation is snow, but the mechanism is physics: cold air over warm open water, convection, and shoreline convergence. Summer benefits from lake cooling and convection along the breeze front.",
+    summaryImmersive: "Buffalo sits at the eastern end of Lake Erie, at the downwind end of the lake's long axis. In late autumn and early winter, cold west winds cross the open water and pile snow onto the city and the towns just south of it in narrow, intense bands. About 270 cm falls in an average year, and one storm can bring a metre. The snow eases once the shallow lake freezes. Winter afternoons average about 2°C and nights about −6°C. The same lake cools summer, with afternoons near 26°C, and delays the first frost in autumn. About 1080 mm of precipitation falls through the year.",
     whyDistinct: "Erie’s east-basin geometry maximizes banding events on westerly flow.",
     climate: {
       tempHighC: [0, 1, 5, 12, 19, 24, 27, 26, 22, 15, 9, 3],
@@ -246,7 +246,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["high-desert-escape", "river-valley-moderation", "chinook-corridor"],
     drivers: ["continentality", "chinook-foehn", "river-moderation"],
     summaryShort: "High Plains river town — windy, sunny, and prone to rapid winter warm-ups when downslope flow replaces Arctic air.",
-    summaryImmersive: "Scottsbluff sits where irrigation from the North Platte meets semi-arid steppe. Summer brings dryline thunderstorms; winter alternates between bitter cold and chinook relief.",
+    summaryImmersive: "Scottsbluff lies at about 1190 m in the North Platte valley of western Nebraska, below the sandstone bluff that guided travellers on the Oregon Trail. This is the dry High Plains. Only about 380 mm of precipitation falls in a year, most of it from April to July, and crops such as sugar beets and beans depend on irrigation from the river. Summer afternoons average about 31°C, but the dry air lets nights cool to about 14°C. Winter swings between Arctic cold and mild, windy spells when air comes down off the Rockies; afternoons average about 6°C and nights about −9°C. Hail and drought are the main risks.",
     whyDistinct: "Elevation and escarpment proximity add mesoscale wind and temperature volatility rare on the flat Plains.",
     climate: {
       tempHighC: [2, 5, 11, 17, 22, 28, 32, 31, 25, 17, 9, 3],
@@ -285,7 +285,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["hurricane-coast", "river-valley-moderation", "humidity-refuge"],
     drivers: ["sea-breeze", "hurricane-track", "river-moderation"],
     summaryShort: "America’s rainiest major coastal city — Gulf moisture on tap, summer thunderstorms, and tropical cyclone risk.",
-    summaryImmersive: "Mobile receives abundant rainfall from Gulf of Mexico moisture streams; sea breezes clash with interior heat to build summer convection. Tropical systems can deliver extreme multi-day rains.",
+    summaryImmersive: "Mobile sits at the head of Mobile Bay on the Gulf of Mexico, and it is one of the rainiest cities in the United States, with about 1720 mm a year. In summer the sea breeze meets hot inland air nearly every afternoon and thunderstorms follow; June and July are the wettest months. Summer afternoons average about 32°C and nights about 22°C, with very humid air. Winter is mild, with afternoons near 18°C and a few frosts. Tropical storms and hurricanes can bring days of rain and a storm surge up the bay. Flooding and hurricanes are the main risks, and summer humidity is the everyday cost.",
     whyDistinct: "Estuary + Gulf fetch + low latitude = among the highest annual precipitation totals for a US city.",
     climate: {
       tempHighC: [16, 18, 22, 25, 29, 32, 33, 33, 31, 26, 21, 17],
@@ -322,7 +322,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["hurricane-coast", "river-valley-moderation", "humidity-refuge"],
     drivers: ["sea-breeze", "hurricane-track", "river-moderation"],
     summaryShort: "Historic port with long warm seasons — summer humidity and sea-breeze moderation competing for comfort.",
-    summaryImmersive: "Savannah’s live-oak canopy and river–ocean geometry soften peak heat compared to inland Georgia; tropical cyclones and spring severe weather still define hazard calendars.",
+    summaryImmersive: "Savannah sits on a low bluff above the Savannah River, about 30 km inland from the Atlantic, laid out around shaded squares under live oaks. Summer is long, hot and humid, with afternoons near 33°C, nights near 23°C and a thunderstorm on many afternoons. July and August are the wettest months of a year that totals about 1270 mm. Winter is mild, with afternoons near 18°C and a few frosts. Spring comes early, with azaleas in March. The marshes and tidal creeks around the city are barely above sea level. Storm surge and flooding from hurricanes are the main risks, and high tides already reach some roads.",
     whyDistinct: "Estuary + Atlantic fetch + urban canopy creates a distinct thermal and humidity regime vs Atlanta.",
     climate: {
       tempHighC: [16, 18, 21, 25, 29, 32, 33, 32, 30, 26, 21, 17],
@@ -359,7 +359,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["piedmont-transition", "river-valley-moderation", "urban-heat-contrast"],
     drivers: ["river-moderation", "continentality", "aspect-slope"],
     summaryShort: "Corporate capital on a humid-subtropical margin — hotter summers than Philadelphia shore, cooler than DC on some synoptic days.",
-    summaryImmersive: "Wilmington sits in the transition band between maritime Mid-Atlantic and interior heat-pool air; the Brandywine gorge organizes local breezes and cold pools on clear nights.",
+    summaryImmersive: "Wilmington lies where Brandywine Creek and the Christina River meet the Delaware, on the line between the rolling Piedmont and the flat coastal plain. Summer is warm and humid, with afternoons near 29°C and nights near 19°C. Winter is cool, with afternoons near 7°C and nights near −2°C, and storms often bring a mix of rain and snow. About 1250 mm of precipitation falls evenly through the year. On clear nights the Brandywine valley north of the city runs colder than the built-up riverfront. Flooding is the main risk. The remains of Hurricane Ida pushed the Brandywine to a record height in 2021 and flooded the city's low-lying neighbourhoods.",
     whyDistinct: "Small elevation changes and urban fabric interact with Chesapeake–Delaware moisture sources.",
     climate: {
       tempHighC: [5, 7, 12, 18, 24, 29, 31, 30, 26, 20, 13, 8],
@@ -396,7 +396,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["cool-summer-maritime", "hurricane-coast"],
     drivers: ["marine-layer", "sea-breeze", "hurricane-track"],
     summaryShort: "Classic New England shore — delayed spring, milder peaks than Hartford, nor’easter surf in winter.",
-    summaryImmersive: "Mystic’s climate is paced by water: fog, drizzle, and moderate summer heat. Tropical systems occasionally brush the coast with surge and wind.",
+    summaryImmersive: "Mystic sits on a tidal river that opens onto Fishers Island Sound, on the eastern Connecticut coast. The water sets the pace of the seasons. Spring is cool and often foggy, summer afternoons average about 26°C with a sea breeze, and autumn stays mild into October. Winter is milder than inland Connecticut, with afternoons near 5°C and nights near −4°C, and storms often bring rain or a wet mix where the hills get snow. About 1200 mm of precipitation falls evenly through the year. The village is close to sea level, and storm surge from hurricanes and nor'easters is the main risk; the 1938 hurricane is still the benchmark.",
     whyDistinct: "Dual-sound exposure tightens maritime influence vs inland Connecticut.",
     climate: {
       tempHighC: [3, 4, 7, 12, 17, 22, 26, 26, 22, 16, 11, 6],
@@ -443,7 +443,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["cold-air-pool", "piedmont-transition", "frost-hollow"],
     drivers: ["cold-air-drainage", "aspect-slope", "lake-effect"],
     summaryShort: "Central PA university town where valley geometry sharpens frost and lake-enhanced snow reaches west of the main Allegheny crest.",
-    summaryImmersive: "State College sits in a valley between long parallel ridges; radiative nights run cold; spring green-up can lag neighboring ridges. Winter storms pick up moisture from the Great Lakes in northwesterly flow.",
+    summaryImmersive: "State College lies at about 360 m in the Nittany Valley of central Pennsylvania, between long parallel ridges. On clear nights cold air settles on the valley floor, so the valley runs colder than its elevation suggests and spring arrives a little late. Summer is warm and humid, with afternoons near 27°C and nights near 16°C. Winter afternoons average about 3°C and nights about −5°C. Northwest winds bring snow showers from the Great Lakes, though most of that snow falls on the higher plateau to the west. About 1100 mm of precipitation falls evenly through the year. The valley has four clear seasons and few extremes.",
     whyDistinct: "Ridge-and-valley terrain at latitude where lake-effect and synoptic snow overlap.",
     climate: {
       tempHighC: [1, 3, 8, 15, 21, 25, 28, 27, 23, 16, 10, 4],
@@ -480,7 +480,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["river-valley-moderation", "urban-heat-contrast", "hurricane-coast"],
     drivers: ["river-moderation", "hurricane-track", "continentality"],
     summaryShort: "State capital in the humid subtropical belt — summer heat indices among the South’s more oppressive without ocean breeze.",
-    summaryImmersive: "Columbia sits just below the fall line: hotter summers than Charleston, colder winter snaps than the coast. The Congaree moderates some frost near the floodplain; urban expansion strengthens nocturnal heat.",
+    summaryImmersive: "Columbia sits on the fall line of South Carolina, where the Piedmont drops to the sandy coastal plain and the Congaree River begins. It is too far inland for the sea breeze, so summer is hotter than on the coast: afternoons average about 33°C and nights about 21°C. Winter is mild, with afternoons near 15°C, but cold snaps are sharper than in Charleston and nights average about 2°C. About 1260 mm of rain falls in a year, most heavily in June and July. Heat and humidity from June to September are the main things to weigh, along with river flooding and the inland effects of hurricanes.",
     whyDistinct: "Inland position at low elevation in the Southeast heat-pool regime.",
     climate: {
       tempHighC: [13, 15, 20, 25, 29, 33, 35, 34, 31, 25, 19, 14],
@@ -517,7 +517,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["river-valley-moderation", "urban-heat-contrast", "piedmont-transition"],
     drivers: ["river-moderation", "polar-jet-exposure", "continentality"],
     summaryShort: "Continental humid climate with warm muggy summers, cold winters, and mesoscale convective systems along moisture tongues.",
-    summaryImmersive: "Des Moines sits in America’s most productive corn belt — summer dew points and CAPE build ahead of fronts; winter brings Arctic outbreaks and occasional ice storms.",
+    summaryImmersive: "Des Moines sits where the Raccoon River joins the Des Moines River, on rolling farmland in the middle of the corn belt. No mountain or large lake moderates it, so the seasons are far apart. Summer is hot and humid, with afternoons near 29°C and nights near 17°C, and Gulf moisture feeds strong thunderstorms from May to July, the wettest part of a year that totals about 920 mm. Winter is cold, with afternoons just above freezing and nights near −9°C, and Arctic air and the odd ice storm arrive several times a season. River flooding and severe storms, including tornadoes and straight-line winds, are the main risks.",
     whyDistinct: "Central US latitude without Great Lakes moderation — sharp seasonality.",
     climate: {
       tempHighC: [-1, 2, 8, 16, 22, 27, 29, 28, 24, 17, 9, 2],
@@ -554,7 +554,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["monsoon-edge", "high-desert-escape", "urban-heat-contrast"],
     drivers: ["monsoon-lift", "elevation-lapse-rate", "aspect-slope"],
     summaryShort: "Lower-elevation desert city with dramatic monsoon storms and winter snow visible on the Catalina crest above town.",
-    summaryImmersive: "Tucson’s summer rhythm is convection: moisture imported from the Gulf of California meets orographic and urban triggers. Winter brings cool days and brilliant air; hard freezes are rare in the basin floor.",
+    summaryImmersive: "Tucson lies at about 730 m in a desert basin ringed by mountain ranges. Summer is very hot, with afternoons near 39°C from June to August. June is the hottest and driest month. In July the monsoon arrives, and afternoon thunderstorms bring about half of the year's 270 mm of rain by the end of September, along with humidity, dust storms and flash floods in the washes. Winter is sunny and mild, with afternoons near 20°C and nights near 4°C. The road up Mount Lemmon climbs from saguaro desert to fir forest in about an hour, into air about 15°C cooler. Extreme heat and a water supply that depends on the Colorado River are the main risks.",
     whyDistinct: "Basin geometry + monsoon + 900 m+ mountains within minutes’ drive equals extreme vertical climate diversity.",
     climate: {
       tempHighC: [18, 20, 24, 28, 33, 38, 38, 37, 35, 30, 24, 18],
@@ -591,7 +591,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["subarctic-continental", "fjord-inlet", "cool-summer-maritime"],
     drivers: ["marine-layer", "orographic-lift", "polar-jet-exposure"],
     summaryShort: "Alaska’s largest city — colder than Juneau in winter but milder than Fairbanks; mountain–inlet geometry organizes wind and snow.",
-    summaryImmersive: "Cook Inlet’s tides and sea ice modulate winter temperatures; Chugach orographics enhance snowfall on the east side. Summer days are long and mild; smoke from interior fires occasionally pools.",
+    summaryImmersive: "Anchorage stands at the head of Cook Inlet with the Chugach Mountains directly behind it. The inlet keeps winter milder than interior Alaska, with afternoons near −4°C and nights near −11°C, and the mountains catch much of the Gulf of Alaska's rain, so the city gets only about 430 mm of precipitation a year. Snow totals about 200 cm, more on the hillside neighbourhoods to the east. Summer is long-lit and cool, with afternoons near 19°C, and August and September are the wettest months. Winter darkness is a bigger adjustment than the cold for most newcomers, and smoke from interior wildfires drifts in during dry summers.",
     whyDistinct: "Maritime subarctic at population scale — rare globally.",
     climate: {
       tempHighC: [-5, -2, 2, 8, 14, 18, 20, 19, 14, 6, -1, -4],
@@ -671,7 +671,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["tropical-isothermal", "urban-heat-contrast", "rain-shadow-sanctuary"],
     drivers: ["trade-wind", "orographic-lift", "sea-breeze", "rain-shadow"],
     summaryShort: "Trade-wind lee city — drier than windward Kaneʻohe, warmer nights downtown, hurricane rarity but tsunami vigilance.",
-    summaryImmersive: "Honolulu sits where trades split around topography; Waianae range shadows produce west-side dryness while Hilo-like rainfall stays windward. Urban heat island elevates minima in the core.",
+    summaryImmersive: "Honolulu lies on the south shore of Oʻahu, in the lee of the Koʻolau Range. Trade winds from the northeast drop their rain on the windward side of the mountains, and the city gets only about 510 mm a year while the valleys behind it get several times as much. Temperature barely changes: afternoons run from about 27°C in winter to 30°C in late summer, and nights from 19°C to 23°C. The trades keep the humidity bearable on most days. Most rain comes between November and March, when storms from the south interrupt the trades. Flash floods, high surf and rising seas along a low shore are the main risks.",
     whyDistinct: "Island chain windward/leeward asymmetry at trade latitude with strong UHI.",
     climate: {
       tempHighC: [26, 26, 27, 28, 29, 30, 31, 31, 31, 30, 28, 27],
@@ -708,7 +708,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["monsoon-edge", "high-desert-escape", "badland-steppe"],
     drivers: ["monsoon-lift", "continentality", "river-moderation"],
     summaryShort: "High-plains city famous for skies — summer thunderstorms, hail, and huge diurnal swings.",
-    summaryImmersive: "Roswell sits in a wide valley where dryline and monsoon moisture meet; spring wind and dust are notorious. Irrigation from the Pecos supports pockets of agriculture.",
+    summaryImmersive: "Roswell lies at 1087 m in the broad valley of the Pecos River, on the dry plains of southeastern New Mexico. Summer is hot and sunny, with afternoons near 35°C and nights near 18°C. From July to September, scattered thunderstorms bring much of the year's 310 mm of rain. Winter days are mild and bright, near 15°C, and nights fall to about −3°C. Spring is the hard season: strong west winds blow dust across the valley for days. Farms here grow alfalfa and pecans on water from an artesian aquifer that has been pumped for more than a century. Drought and the state of that aquifer are the long-term concerns.",
     whyDistinct: "Classic southern High Plains synoptic environment with monsoon overlay.",
     climate: {
       tempHighC: [12, 15, 20, 25, 30, 35, 35, 34, 30, 24, 17, 12],
@@ -747,7 +747,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["chinook-corridor", "piedmont-transition", "high-desert-escape"],
     drivers: ["chinook-foehn", "polar-jet-exposure", "continentality"],
     summaryShort: "Gateway city where chinook warmings and summer thunderstorms both make headlines — quick transitions at the Hills’ edge.",
-    summaryImmersive: "Rapid City sits where Great Plains simplicity meets orographic complexity; winter can flip from arctic to spring-like in hours when downslope winds arrive.",
+    summaryImmersive: "Rapid City lies at about 970 m where the Great Plains meet the eastern edge of the Black Hills. Weather changes quickly here. In winter, air coming down off the hills can lift the temperature from deep cold to well above freezing in an hour or two, and the area is known locally as the banana belt of South Dakota. Winter afternoons average about 4°C and nights about −9°C. Summer afternoons average about 28°C, with cool nights. About 490 mm of precipitation falls in a year, with the most in May and June, often in thunderstorms with hail. A flash flood on Rapid Creek killed 238 people in 1972, and the floodplain is now parkland.",
     whyDistinct: "Black Hills frontal position amplifies mesoscale wind and temperature volatility.",
     climate: {
       tempHighC: [2, 4, 9, 15, 21, 27, 31, 30, 25, 16, 8, 3],
@@ -784,7 +784,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["cold-air-pool", "basin-inversion", "alpine-tundra"],
     drivers: ["cold-air-drainage", "orographic-lift", "inversion", "elevation-lapse-rate"],
     summaryShort: "World-famous ski basin — deep snow, strong inversions, and summer perfection at altitude.",
-    summaryImmersive: "Jackson Hole traps cold air and captures Pacific moisture lifted by the Tetons; snowpack feeds the Snake River system that defines the ecosystem.",
+    summaryImmersive: "Jackson sits at about 1900 m at the south end of Jackson Hole, a flat-floored valley between the Teton and Gros Ventre ranges. Pacific storms are lifted by the Tetons and leave deep snow on the mountains. Cold air collects on the valley floor in winter, when afternoons average about −1°C and nights about −13°C. Summer days are warm, near 26°C, but nights drop to about 6°C and frost can come in any month; the frost-free season is under three months. The valley floor gets only about 470 mm of precipitation a year. Late-summer wildfire smoke and winter cold are the main things to weigh, along with very high housing costs.",
     whyDistinct: "High-elevation enclosed basin with extreme vertical relief nearby — a textbook mountain meteorology classroom.",
     climate: {
       tempHighC: [-2, 0, 5, 11, 17, 22, 27, 26, 21, 13, 4, -2],
@@ -821,7 +821,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     archetypes: ["urban-heat-contrast", "river-valley-moderation", "hurricane-coast"],
     drivers: ["continentality", "river-moderation", "hurricane-track"],
     summaryShort: "Mid-Atlantic humid subtropical capital — sultry summers, irregular Arctic outbreaks, and remnant tropical moisture.",
-    summaryImmersive: "D.C.’s climate mixes continental and maritime air; the Potomac moderates some edges while concrete elevates nocturnal heat. Summer dew points routinely support heat indices above advisory thresholds.",
+    summaryImmersive: "Washington lies on the Potomac River where the Piedmont meets the coastal plain. Summer is hot and humid, with afternoons near 30°C and nights near 19°C, and the built-up centre stays several degrees warmer after dark than the suburbs. Humidity often makes it feel hotter than the thermometer reads. Winter is cool and changeable, with afternoons near 8°C and nights just below freezing, and snow varies greatly from year to year. About 1190 mm of precipitation falls evenly through the year. Spring and autumn are the comfortable seasons, and the cherry trees bloom around the end of March. Summer heat, severe thunderstorms and flooding along the rivers are the main risks.",
     whyDistinct: "Urban core on a humidity-rich latitude with Chesapeake–Atlantic moisture pathways.",
     climate: {
       tempHighC: [6, 8, 13, 19, 24, 29, 32, 31, 27, 21, 14, 9],

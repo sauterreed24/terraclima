@@ -370,23 +370,23 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
       case "most-continental": {
         const bio = computeBioclim(p);
         if (!bio || bio.conrad.value == null) return { place: p, score: 0, note: "Bioclim unavailable" };
-        return { place: p, score: Math.max(0, bio.conrad.value), note: `Conrad K ${bio.conrad.value.toFixed(1)} · ${bio.conrad.classLabel}` };
+        return { place: p, score: Math.max(0, bio.conrad.value), note: `Seasonal swing: ${bio.conrad.classLabel.toLowerCase()} (Conrad index ${bio.conrad.value.toFixed(0)})` };
       }
       case "driest-growing-season": {
         const bio = computeBioclim(p);
         if (!bio) return { place: p, score: 0, note: "Bioclim unavailable" };
         if (bio.selianinov.value == null) {
-          return { place: p, score: 0, note: "No growing season; Selianinov HTC undefined." };
+          return { place: p, score: 0, note: "No growing season, so there is no growing-season moisture figure." };
         }
         const s = Math.max(0, 100 - bio.selianinov.value * 40);
-        return { place: p, score: s, note: `Selianinov HTC ${bio.selianinov.value.toFixed(2)} · ${bio.selianinov.classLabel}` };
+        return { place: p, score: s, note: `Growing season: ${bio.selianinov.classLabel.toLowerCase()} (Selianinov index ${bio.selianinov.value.toFixed(2)})` };
       }
       case "lowest-evaporative-demand": {
         const bio = computeBioclim(p);
         if (!bio) return { place: p, score: 0, note: "Bioclim unavailable" };
         const pet = bio.thornthwaitePet.value;
         const s = Math.max(0, 100 - pet / 20);
-        return { place: p, score: s, note: `Thornthwaite PET ${Math.round(pet)} mm/yr` };
+        return { place: p, score: s, note: `Evaporative demand ${Math.round(pet)} mm/yr (Thornthwaite estimate)` };
       }
       case "mediterranean-like": {
         // Csb (warm-summer Mediterranean — coastal CA, Pacific NW pockets) is the
@@ -495,7 +495,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const costPenalty = cost != null ? Math.max(0, (cost - 50)) * 0.18 : 0;
         const accessPenalty = access != null ? Math.max(0, (access - 45)) * 0.24 : 0;
         const s = Math.max(0, Math.min(100, winterScore + summerScore + riskScore + growScore + sunBonus + livedBonus + feelBonus - costPenalty - accessPenalty));
-        return { place: p, score: s, note: `Mild all-year · grow ${p.scores.growability}/100 · avg risk ${avgRisk(p).toFixed(1)}` };
+        return { place: p, score: s, note: `Mild all-year · grow ${p.scores.growability}/100 · overall risk ${Math.round(avgRisk(p) * 20)}/100` };
       }
     }
   });
