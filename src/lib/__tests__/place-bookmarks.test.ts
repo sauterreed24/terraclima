@@ -190,4 +190,13 @@ describe("place-bookmarks", () => {
     expect(bad.ids).toEqual(["bishop-ca", "sequim-wa"]);
     expect(bad.message).toMatch(/^Nothing imported: saved.json is not a saved-places file/);
   });
+
+  it("counts a place saved under an older id as already saved", () => {
+    setBookmarks(["san-miguel-mx"]);
+    const resolve = (id: string) => (id === "san-miguel-mx" ? "san-miguel-de-allende-mx" : id);
+    const result = importBookmarks(["san-miguel-de-allende-mx", "bishop-ca"], resolve);
+    expect(result.added).toEqual(["bishop-ca"]);
+    expect(result.alreadySaved).toBe(1);
+    expect(loadBookmarks()).toEqual(["san-miguel-mx", "bishop-ca"]);
+  });
 });

@@ -12,10 +12,14 @@ import { BOOKMARK_LIMIT, loadBookmarks, readRaw, safeStorage, writeRaw } from ".
  * file's order. Never removes or reorders an existing save; at the cap the
  * rest are left out (`capped`).
  */
-export function importBookmarks(ids: readonly string[]): { ids: string[]; added: string[]; alreadySaved: number; capped: boolean } {
+export function importBookmarks(
+  ids: readonly string[],
+  /** Maps a stored id (possibly an older alias) to its current id, so an alias counts as already saved. */
+  resolve: (id: string) => string | null = id => id,
+): { ids: string[]; added: string[]; alreadySaved: number; capped: boolean } {
   const storage = safeStorage();
   const current = readRaw(storage);
-  const saved = new Set(current);
+  const saved = new Set(current.map(id => resolve(id) ?? id));
   const fresh: string[] = [];
   const seen = new Set<string>();
   let alreadySaved = 0;
@@ -87,12 +91,13 @@ export function parseSavedPlacesFile(
  * happened in one sentence for the status line. `ids` is the saved list after.
  */
 export async function importSavedPlacesFile(
-  file: Pick<File, "name" | "text">,
+  file: Pick<File, "name" | "text"> & { size?: number },
   resolve: (id: string) => string | null,
 ): Promise<{ ids: string[]; message: string }> {
   let text = "";
   try {
-    text = await file.text();
+    // Check the size before reading: a huge file is not read into memory at all.
+    text = (file.size ?? 0) > SAVED_PLACES_IMPORT_MAX_CHARS * 4 ? "" : await file.text();
   } catch {
     text = "";
   }
@@ -103,7 +108,7 @@ export async function importSavedPlacesFile(
       message: `Nothing imported: ${file.name} is not a saved-places file. Use a JSON or GeoJSON file made with Export saved places.`,
     };
   }
-  const result = importBookmarks(parsed.ids);
+  const result = importBookmarks(parsed.ids, resolve);
   const n = result.added.length;
   const parts = [n === 0 ? "No new places to add" : `Added ${n} saved place${n === 1 ? "" : "s"}`];
   if (result.alreadySaved > 0) parts.push(`${result.alreadySaved} ${result.alreadySaved === 1 ? "was" : "were"} already saved`);
