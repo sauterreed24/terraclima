@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { PLACES, PLACES_BY_ID } from "../../data/places";
 import { composePlaceExperience } from "../place-overview";
+// The app loads site history per profile; prime every entry, as an open profile would.
+import "../../data/places.site-history";
 
 describe("composePlaceExperience", () => {
   it("returns four seasons in calendar order for every place", () => {

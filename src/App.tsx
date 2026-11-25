@@ -1130,6 +1130,10 @@ export default function App() {
 
   const openPlace = useCallback((id: string, opts?: { trigger?: HTMLElement | null; entryIntent?: "surprise" | null }) => {
     preloadPlaceDetail();
+    // The profile waits for this place's site-history file; fetch it alongside
+    // the profile code (the registry is a small chunk of its own).
+    const historyId = resolvePlaceId(id) ?? id;
+    void import("./data/site-history/registry").then(m => m.loadSiteHistory(historyId)).catch(() => {});
     // A hop from inside an open profile keeps the original launcher, so closing
     // the chain still returns focus to the card that started it.
     const hopping = liveOverlayStateRef.current.selectedId != null;

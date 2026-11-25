@@ -137,7 +137,13 @@ export default defineConfig({
           if (id.includes("/data/places.usa")) return "places-usa";
           if (id.includes("/data/places.canada")) return "places-canada";
           if (id.includes("/data/places.mexico")) return "places-mexico";
-          if (id.includes("/data/places.site-history") || id.includes("/data/site-history/")) return "site-history";
+          // Site history: one chunk per file, so a profile downloads only the
+          // file holding its place (src/data/site-history/registry.ts).
+          const siteHistoryFile = /\/data\/site-history\/((?:usa|canada|mexico)-\d+)\.ts$/.exec(id)?.[1];
+          if (siteHistoryFile) return `site-history-${siteHistoryFile}`;
+          // Its id → file index: a few KB, fetched when a profile opens, never on first load.
+          if (/\/data\/site-history\/(?:registry|group-index)\.ts$/.test(id)) return "site-history-index";
+          if (id.includes("/data/places.site-history")) return "site-history";
           // Hero photo table — only the place page reads it; ships beside it.
           if (id.includes("/data/place-hero-photos")) return "hero-photos";
           // Natural Earth rivers + lakes for the atlas map — decorative, lazy.

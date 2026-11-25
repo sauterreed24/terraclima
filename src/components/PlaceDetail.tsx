@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { drawerPanelTransition, scrimFadeTransition } from "../lib/device-profile";
-import { useState, useEffect, useMemo, useRef, useId, useCallback, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { use, useState, useEffect, useMemo, useRef, useId, useCallback, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
 import type { Place, MicroclimateArchetype, TopographicDriver, ScenarioId } from "../types";
@@ -26,7 +26,8 @@ import { composeFieldStory } from "../lib/place-story";
 import { externalMapLinks, getPlaceHeroMedia } from "../lib/place-hero-media";
 import { composePlaceExperience } from "../lib/place-overview";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
-import { SITE_HISTORY, withSiteHistoryDeepSections } from "../data/places.site-history";
+import { withSiteHistoryDeepSections } from "../data/site-history/apply";
+import { siteHistoryThenable } from "../data/site-history/registry";
 import { clearDossierHash } from "../lib/dossier-url-hash";
 import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
@@ -751,9 +752,12 @@ function DetailBody({
   onHomeBaseToggle?: (id: string) => void;
   scenario?: ScenarioId;
 }) {
+  // Waits (inside the profile's Suspense fallback) for this place's site
+  // history file; already-loaded files do not suspend.
+  const siteHistory = use(siteHistoryThenable(placeRaw.id));
   const place = useMemo(
-    () => withSiteHistoryDeepSections(placeRaw, SITE_HISTORY[placeRaw.id]),
-    [placeRaw],
+    () => withSiteHistoryDeepSections(placeRaw, siteHistory ?? undefined),
+    [placeRaw, siteHistory],
   );
   const { temp, dist } = useUnits();
   const prose = useProse();
