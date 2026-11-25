@@ -1275,7 +1275,9 @@ export default function App() {
     const saved = addBookmarksToFront(finalists);
     setBookmarkIds(new Set(saved.ids));
     const savedCount = finalists.filter(id => saved.ids.includes(id)).length;
-    if (saved.added.length === 0) {
+    if (saved.added.length === 0 && saved.capped) {
+      setTransientFeedback(`Nothing saved: this browser keeps up to ${BOOKMARK_LIMIT} saved places. Remove some to make room.`);
+    } else if (saved.added.length === 0) {
       setTransientFeedback(`These ${savedCount} top picks are already in your saved places.`);
     } else if (saved.capped) {
       setTransientFeedback(
