@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from "vitest";
 import {
+  loadedAssetUrls,
   markServiceWorkerUpdateAccepted,
   resolveServiceWorkerUrl,
   shouldRegisterServiceWorker,
@@ -56,5 +57,27 @@ describe("service worker reload gating", () => {
     expect(shouldReloadOnServiceWorkerControllerChange()).toBe(false);
     markServiceWorkerUpdateAccepted();
     expect(shouldReloadOnServiceWorkerControllerChange()).toBe(true);
+  });
+});
+
+describe("loadedAssetUrls", () => {
+  it("keeps same-origin build files, drops everything else, and dedupes", () => {
+    const origin = "https://example.github.io";
+    const entries = [
+      { name: `${origin}/terraclima/assets/index-abc.js` },
+      { name: `${origin}/terraclima/assets/index-abc.js?v=1` },
+      { name: `${origin}/terraclima/assets/style-def.css` },
+      { name: `${origin}/terraclima/assets/climate-processor.worker-x.js` },
+      { name: `${origin}/terraclima/icon-192.png` },
+      { name: `${origin}/terraclima/` },
+      { name: "https://upload.wikimedia.org/photo.jpg" },
+      { name: "not a url" },
+    ];
+    expect(loadedAssetUrls(entries, origin, [`${origin}/terraclima/assets/react-1.js`])).toEqual([
+      `${origin}/terraclima/assets/index-abc.js`,
+      `${origin}/terraclima/assets/style-def.css`,
+      `${origin}/terraclima/assets/climate-processor.worker-x.js`,
+      `${origin}/terraclima/assets/react-1.js`,
+    ]);
   });
 });

@@ -5,6 +5,7 @@
  *   npm run eval -- --no-build   # reuse dist/
  *   npm run eval -- --full       # also run the Vitest suite (≈2.5 min)
  *   npm run eval -- --runs=7     # load-time samples (default 5)
+ *   npm run eval -- --only=search,speed   # sections: search jobs data recover speed
  *
  * Sections (scorecard rows in IMPROVE.md):
  *   S1 search    realistic queries → intended place on top (tuning + held-out sets)
@@ -32,6 +33,8 @@ const opt = (n: string, d: number) => {
   return a ? Number(a.split("=")[1]) : d;
 };
 const RUNS = opt("--runs", 5);
+const ONLY = args.find(a => a.startsWith("--only="))?.split("=")[1]?.split(",") ?? null;
+const want = (section: string) => !ONLY || ONLY.includes(section);
 const PORT = opt("--port", 4199);
 const BASE = `http://127.0.0.1:${PORT}`;
 const NOW = Date.UTC(2026, 5, 15, 12); // fixed clock for ranking-dependent checks
@@ -332,12 +335,27 @@ async function sectionRecover(browser: Browser) {
   }
   {
     const ctx = await newCtx(browser); const page = await open(ctx); await firstCard(page);
-    await page.evaluate(async () => { await navigator.serviceWorker?.ready; });
-    await page.waitForTimeout(1500);
+    // A first visit of ~10 s: wait (up to 15 s) until the worker holds the entry script.
+    await page.evaluate(async () => {
+      await navigator.serviceWorker?.ready;
+      const entry = (document.querySelector('script[type="module"][src]') as HTMLScriptElement | null)?.src;
+      for (let i = 0; i < 60 && entry; i++) {
+        if (await caches.match(entry, { ignoreVary: true })) return;
+        await new Promise(r => setTimeout(r, 250));
+      }
+    });
+    await page.locator(CARD).first().click();
+    await page.getByRole("dialog").first().waitFor({ timeout: 8000 }).catch(() => {});
+    const viewed = new URL(page.url()).searchParams.get("p");
     await ctx.setOffline(true);
-    await page.reload().catch(() => {});
+    await page.goto(BASE + "/").catch(() => {});
     await firstCard(page, 10000).catch(() => {});
     results["offline reload after one visit"] = await page.locator(CARD).count() > 0;
+    await page.goto(`${BASE}/?p=${viewed}`).catch(() => {});
+    await page.waitForTimeout(2500);
+    const prof = await page.locator("body").innerText().catch(() => "");
+    const name = PLACES.find(p => p.id === viewed)?.name ?? "§";
+    results["offline: reopen a profile viewed online"] = !!viewed && prof.includes(name) && /Climate normals/i.test(prof);
     await ctx.close();
   }
   {
@@ -399,15 +417,15 @@ async function sectionSpeed(browser: Browser) {
 // ---------------------------------------------------------------- main
 async function main() {
   const started = Date.now();
-  sectionSearch();
+  if (want("search")) sectionSearch();
   let browser: Browser | null = null;
   try {
     await startServer();
     browser = await chromium.launch({ executablePath: chromePath() });
-    await sectionJobs(browser);
-    await sectionData(browser);
-    await sectionRecover(browser);
-    await sectionSpeed(browser);
+    if (want("jobs")) await sectionJobs(browser);
+    if (want("data")) await sectionData(browser);
+    if (want("recover")) await sectionRecover(browser);
+    if (want("speed")) await sectionSpeed(browser);
   } finally {
     await browser?.close();
     stopServer();

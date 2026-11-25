@@ -7,7 +7,9 @@
  *     install on a flaky connection still succeeds). On install we activate
  *     ourselves so updates roll out without waiting for all tabs to close.
  *   - Runtime cache: stale-while-revalidate for hashed JS/CSS produced by
- *     Vite (long-cache, content-addressed names). Same strategy for the
+ *     Vite (long-cache, content-addressed names). Files of the very first
+ *     visit load before this worker exists; the page posts their URLs
+ *     (`CACHE_URLS`) once the worker is ready, so a second open works offline. Same strategy for the
  *     manifest, icon PNGs, and og-image so a cold offline open still shows
  *     metadata + a favicon. Range requests pass through untouched.
  *   - The atlas data files are large and content-hashed; we let the browser
@@ -65,7 +67,31 @@ self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     void self.skipWaiting();
   }
+  // The page lists the build files it loaded before this worker controlled it
+  // (the whole first visit). Cache them so the app opens offline next time.
+  if (event.data && event.data.type === "CACHE_URLS" && Array.isArray(event.data.urls)) {
+    event.waitUntil(cacheLoadedAssets(event.data.urls));
+  }
 });
+
+async function cacheLoadedAssets(urls) {
+  const cache = await caches.open(RUNTIME_CACHE);
+  await Promise.all(
+    urls.slice(0, 400).map(async raw => {
+      try {
+        const url = new URL(raw, self.location.href);
+        if (url.origin !== self.location.origin || !url.pathname.includes("/assets/")) return;
+        if (await cache.match(url.href, { ignoreVary: true })) return;
+        // Default cache mode: the files were just downloaded, so this is
+        // normally served from the HTTP cache without a second download.
+        const response = await fetch(url.href);
+        if (response && response.ok && response.type === "basic") await cache.put(url.href, response);
+      } catch {
+        // Best-effort: a file that cannot be fetched now is cached on its next use.
+      }
+    }),
+  );
+}
 
 self.addEventListener("fetch", event => {
   const request = event.request;
@@ -109,7 +135,10 @@ async function handleNavigation(request) {
 
 async function staleWhileRevalidate(request) {
   const cache = await caches.open(RUNTIME_CACHE);
-  const cached = await cache.match(request);
+  // Build files have content-hashed names, so a URL match is enough. Ignoring
+  // Vary lets a module script (sent with an Origin header) use a copy cached by
+  // a plain fetch, on hosts that answer with `Vary: Origin`.
+  const cached = await cache.match(request, { ignoreVary: true });
   const fetchPromise = fetch(request)
     .then(response => {
       // Only cache successful, basic-origin responses.

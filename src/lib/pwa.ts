@@ -109,10 +109,58 @@ export function registerServiceWorker(
         refreshing = true;
         window.location.reload();
       });
+      // The files of this first load were fetched before the worker existed, so
+      // it never saw them. Hand it their addresses so the next open works offline.
+      // Wait until the page has finished loading and gone quiet, so the
+      // worker's copies never compete with what the user is waiting for.
+      const ready = await navigator.serviceWorker.ready;
+      await whenIdleAfterLoad();
+      const urls = loadedAssetUrls();
+      if (urls.length > 0) ready.active?.postMessage({ type: "CACHE_URLS", urls });
     } catch {
       // Silent: SW registration is a progressive enhancement.
     }
   })();
 
   return controller;
+}
+
+function whenIdleAfterLoad(delayMs = 4000): Promise<void> {
+  return new Promise(resolve => {
+    const idle = () => {
+      const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
+      const go = () => (w.requestIdleCallback ? w.requestIdleCallback(() => resolve(), { timeout: 5000 }) : resolve());
+      window.setTimeout(go, delayMs);
+    };
+    if (document.readyState === "complete") idle();
+    else window.addEventListener("load", idle, { once: true });
+  });
+}
+
+/**
+ * Same-origin build assets this page has loaded so far (scripts, styles,
+ * workers, data chunks), from the resource timing buffer plus the document's
+ * own script and stylesheet tags.
+ */
+export function loadedAssetUrls(
+  entries: readonly { name: string }[] = typeof performance !== "undefined" ? performance.getEntriesByType("resource") : [],
+  origin: string = typeof location !== "undefined" ? location.origin : "",
+  documentUrls: readonly string[] = typeof document !== "undefined"
+    ? [...document.querySelectorAll<HTMLScriptElement | HTMLLinkElement>("script[src], link[href]")]
+      .map(el => (el instanceof HTMLScriptElement ? el.src : el.href))
+    : [],
+): string[] {
+  const out = new Set<string>();
+  for (const raw of [...entries.map(e => e.name), ...documentUrls]) {
+    let url: URL;
+    try {
+      url = new URL(raw);
+    } catch {
+      continue;
+    }
+    if (url.origin !== origin) continue;
+    if (!/\/assets\/[^/]+\.(?:js|mjs|css|json|woff2?)$/.test(url.pathname)) continue;
+    out.add(url.origin + url.pathname);
+  }
+  return [...out];
 }

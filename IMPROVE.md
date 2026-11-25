@@ -27,7 +27,7 @@ Read this first each session. Keep sections short; condense old rounds.
 | S2a–e | main jobs done, steps: find (≤2), must-have list = independent reference (exact), save+compare (≤5), home base (≤2), export JSON (≤2) | all done, steps ≤ target | all done: 2/2/5/2/2 | |
 | S3a | saved items lost (reload, 61st save, two tabs) | 0 | 11 (cap of 50 drops oldest) | |
 | S3c | a second open tab shows saves made in the first | yes | no | |
-| S4a | failure scenarios where app stays usable (bad link, corrupt storage, storage blocked, offline reload, failed code chunk) | 5/5 | 4/5 (offline reload blank) | |
+| S4a | failure scenarios where app stays usable (bad link, corrupt storage, storage blocked, offline reload, offline profile reopen, failed code chunk) | all | 4/6 (offline: blank page) | |
 | S5a | first ranked card, desktop, ms (median [min–max], 5 runs) | ≤ 1500 | 626–674 [579–728] | |
 | S5b | first ranked card, phone 1.6 Mbps + 4× CPU, ms | ≤ 8000 | 6169–6227 [6012–6523] | |
 | S5c | first-load JS, KiB gzip | ≤ 747 | 740 | |

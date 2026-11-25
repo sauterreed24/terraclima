@@ -36,8 +36,11 @@ export function PlaceEvidenceSummary({
 
   useEffect(() => {
     let cancelled = false;
-    void loadResearchReceipts().then(byId => {
+    loadResearchReceipts().then(byId => {
       if (!cancelled) setReceipt(byId[place.id] ?? null);
+    }).catch(() => {
+      // Offline or a failed download: the profile reads fine without the
+      // claim-by-claim sources; they load on a later open.
     });
     return () => {
       cancelled = true;
