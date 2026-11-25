@@ -34,22 +34,33 @@ export function PlaceEvidenceSummary({
   const panelId = useId();
   const [open, setOpen] = useState(false);
 
+  // The claim-by-claim sources for all places are one 2.5 MB file (≈120 KB
+  // gzip). Fetch it only when the reader opens this panel, not on every profile.
   useEffect(() => {
+    if (!open) return;
     let cancelled = false;
     loadResearchReceipts().then(byId => {
       if (!cancelled) setReceipt(byId[place.id] ?? null);
     }).catch(() => {
-      // Offline or a failed download: the profile reads fine without the
-      // claim-by-claim sources; they load on a later open.
+      // Offline or a failed download: the panel reads fine without the
+      // claim-by-claim sources; they load the next time it opens.
     });
     return () => {
       cancelled = true;
     };
-  }, [place.id]);
+  }, [place.id, open]);
 
-  const exportDossierData = () => {
+  const exportDossierData = async () => {
+    let researchReceipt = receipt;
+    if (!researchReceipt) {
+      try {
+        researchReceipt = (await loadResearchReceipts())[place.id] ?? null;
+      } catch {
+        researchReceipt = null;
+      }
+    }
     downloadBlobFile(
-      JSON.stringify({ place, researchReceipt: receipt ?? null }, null, 2),
+      JSON.stringify({ place, researchReceipt: researchReceipt ?? null }, null, 2),
       `${place.id}-profile.json`,
       "application/json",
     );
@@ -270,7 +281,7 @@ export function PlaceEvidenceSummary({
           </p>
 
           <div>
-            <button type="button" className="btn-ghost !text-xs" onClick={exportDossierData}>
+            <button type="button" className="btn-ghost !text-xs" onClick={() => { void exportDossierData(); }}>
               <Download className="w-3 h-3" aria-hidden />
               Download this profile's data (JSON)
             </button>
