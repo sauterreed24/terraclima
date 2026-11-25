@@ -78,9 +78,7 @@ import {
   BOOKMARK_LIMIT,
   BOOKMARKS_STORAGE_KEY,
   addBookmarksToFront,
-  importBookmarks,
   loadBookmarks,
-  parseSavedPlacesFile,
   toggleBookmark as toggleBookmarkPersist,
 } from "./lib/place-bookmarks";
 import {
@@ -1275,10 +1273,10 @@ export default function App() {
     const saved = addBookmarksToFront(finalists);
     setBookmarkIds(new Set(saved.ids));
     const savedCount = finalists.filter(id => saved.ids.includes(id)).length;
-    if (saved.added.length === 0 && saved.capped) {
-      setTransientFeedback(`Nothing saved: this browser keeps up to ${BOOKMARK_LIMIT} saved places. Remove some to make room.`);
-    } else if (saved.added.length === 0) {
-      setTransientFeedback(`These ${savedCount} top picks are already in your saved places.`);
+    if (saved.added.length === 0) {
+      setTransientFeedback(saved.capped
+        ? "Nothing saved: your saved places are full."
+        : `These ${savedCount} top picks are already in your saved places.`);
     } else if (saved.capped) {
       setTransientFeedback(
         `Saved ${saved.added.length} new place${saved.added.length === 1 ? "" : "s"}. This browser keeps up to ${BOOKMARK_LIMIT} saved places, so the rest were not added.`,
@@ -1291,30 +1289,14 @@ export default function App() {
   }, []);
 
   const importSavedPlaces = useCallback(async (file: File) => {
-    let text = "";
     try {
-      text = await file.text();
+      const { importSavedPlacesFile } = await import("./lib/saved-places-import");
+      const result = await importSavedPlacesFile(file, resolvePlaceId);
+      setBookmarkIds(new Set(result.ids));
+      setTransientFeedback(result.message);
     } catch {
-      text = "";
+      setTransientFeedback("Nothing imported: check your connection and try again.");
     }
-    const parsed = parseSavedPlacesFile(text, resolvePlaceId);
-    if (!parsed.ok) {
-      setTransientFeedback(
-        `Nothing imported: ${file.name} is not a saved-places file. Use a JSON or GeoJSON file made with Export saved places.`,
-      );
-      return;
-    }
-    const result = importBookmarks(parsed.ids);
-    setBookmarkIds(new Set(result.ids));
-    const parts = [
-      result.added.length === 0
-        ? "No new places to add"
-        : `Added ${result.added.length} saved place${result.added.length === 1 ? "" : "s"}`,
-    ];
-    if (result.alreadySaved > 0) parts.push(`${result.alreadySaved} ${result.alreadySaved === 1 ? "was" : "were"} already saved`);
-    if (parsed.unknown > 0) parts.push(`${parsed.unknown} ${parsed.unknown === 1 ? "is" : "are"} no longer in the atlas`);
-    if (result.capped) parts.push(`this browser keeps up to ${BOOKMARK_LIMIT}, so the rest were not added`);
-    setTransientFeedback(`${parts.join("; ")}.`);
   }, []);
 
   const clearRecents = useCallback(() => {
@@ -3279,7 +3261,7 @@ const HeroCard = memo(function HeroCard({
               type="button"
               className={`btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)] ${shareStatus === "failed" ? "!border-[rgba(232,90,50,0.45)] !text-ember-700" : ""}`}
               aria-label="More actions"
-              title="More actions: copy a link, show summary panels, import saved places"
+              title="More actions: copy a link, show summary panels"
               aria-expanded={heroMoreOpen}
               aria-controls="hero-more-menu-panel"
               onClick={() => setHeroMoreOpen(open => !open)}
@@ -3319,17 +3301,15 @@ const HeroCard = memo(function HeroCard({
               </button>
               <label
                 htmlFor="hero-import-saved-places"
-                className="btn-ghost !text-xs !py-1.5 w-full justify-start border-[rgba(122,212,240,0.35)] cursor-pointer focus-within:ring-2 focus-within:ring-[rgba(26,143,168,0.7)]"
-                title="Add places from a file made with Export saved places, for example on another device"
+                className="btn-ghost hero-more-menu__import !text-xs !py-1.5 w-full justify-start border-[rgba(122,212,240,0.35)]"
               >
                 <Upload className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
                 Import saved places
                 <input
                   id="hero-import-saved-places"
                   type="file"
-                  accept=".json,.geojson,application/json,application/geo+json"
+                  accept=".json,.geojson"
                   className="sr-only"
-                  aria-label="Import saved places from a file made with Export saved places"
                   onChange={event => {
                     const file = event.currentTarget.files?.[0];
                     event.currentTarget.value = "";

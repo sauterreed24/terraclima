@@ -36,8 +36,8 @@ const COLD_CHUNK_STEMS = [
 const BUDGETS = {
   /** Initial CSS file gzip. Baseline ~56.4 KB → 62 KB. */
   initialCssGzip: 62_000,
-  /** Largest synchronous entry JS chunk (index-*.js) gzip. Baseline ~100 KB → 113 KB (raised from 112 KB when the map learned to keep pins clear of its readout bar and names clear of its controls; the map is part of the entry chunk). */
-  largestEntryJsGzip: 113_000,
+  /** Largest synchronous entry JS chunk (index-*.js) gzip. Baseline ~100 KB → 113 KB (raised from 112 KB when the map learned to keep pins clear of its readout bar and names clear of its controls; the map is part of the entry chunk; raised to 113.5 KB for More → Import saved places, whose parsing and messages load only when a file is picked). */
+  largestEntryJsGzip: 113_500,
   /**
    * Sum of modulepreload + entry script JS gzip (excludes CSS).
    * Historical baseline ~603 KB → 680 KB. Corpus-truth overhaul adds authored

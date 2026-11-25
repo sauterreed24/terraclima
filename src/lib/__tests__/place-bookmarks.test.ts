@@ -6,13 +6,12 @@ import {
   addBookmarksToFront,
   clearBookmarks,
   hasBookmark,
-  importBookmarks,
   loadBookmarks,
-  parseSavedPlacesFile,
   removeBookmark,
   setBookmarks,
   toggleBookmark,
 } from "../place-bookmarks";
+import { importBookmarks, importSavedPlacesFile, parseSavedPlacesFile } from "../saved-places-import";
 
 describe("place-bookmarks", () => {
   beforeEach(() => {
@@ -178,5 +177,17 @@ describe("place-bookmarks", () => {
     for (const text of ["", "not json", "{}", "null", "42", JSON.stringify({ places: "x" }), JSON.stringify([{ name: "no id" }]), "x".repeat(8_000_001)]) {
       expect(parseSavedPlacesFile(text, resolve), text.slice(0, 20)).toEqual({ ok: false });
     }
+  });
+
+  it("describes an import in one sentence", async () => {
+    setBookmarks(["bishop-ca"]);
+    const file = (body: string) => ({ name: "saved.json", text: async () => body });
+    const resolve = (id: string) => (["bishop-ca", "sequim-wa"].includes(id) ? id : null);
+    const ok = await importSavedPlacesFile(file(JSON.stringify(["sequim-wa", "bishop-ca", "gone"])), resolve);
+    expect(ok.ids).toEqual(["bishop-ca", "sequim-wa"]);
+    expect(ok.message).toBe("Added 1 saved place; 1 was already saved; 1 is no longer in the atlas.");
+    const bad = await importSavedPlacesFile(file("<html>"), resolve);
+    expect(bad.ids).toEqual(["bishop-ca", "sequim-wa"]);
+    expect(bad.message).toMatch(/^Nothing imported: saved.json is not a saved-places file/);
   });
 });
