@@ -73,8 +73,8 @@ describe("exportShortlistAsJSON", () => {
     vi.setSystemTime(new Date("2026-05-16T12:30:00Z"));
     const second = exportShortlistAsJSON(sample);
 
-    expect(first.filename).toBe("terraclima-shortlist-20260515120000.json");
-    expect(second.filename).toBe("terraclima-shortlist-20260516123000.json");
+    expect(first.filename).toBe("terraclima-saved-places-20260515120000.json");
+    expect(second.filename).toBe("terraclima-saved-places-20260516123000.json");
     expect(JSON.parse(second.body)).toMatchObject({
       generatedAt: "2026-05-16T12:30:00.000Z",
     });

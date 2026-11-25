@@ -161,7 +161,7 @@ describe("ShortlistExportMenu", () => {
     expect(screen.getByRole("status")).toHaveTextContent("Download started.");
     await waitFor(() => expect(trigger).toHaveFocus());
     const [, filename, mimeType] = vi.mocked(downloadBlobFile).mock.calls[0]!;
-    expect(filename).toMatch(/^terraclima-shortlist-.*\.json$/);
+    expect(filename).toMatch(/^terraclima-saved-places-.*\.json$/);
     expect(mimeType).toBe("application/json");
   });
 
@@ -179,7 +179,7 @@ describe("ShortlistExportMenu", () => {
     await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledOnce(), { timeout: 5000 });
     await waitFor(() => expect(trigger).toHaveFocus());
     const [, filename, mimeType] = vi.mocked(downloadBlobFile).mock.calls[0]!;
-    expect(filename).toMatch(/^terraclima-shortlist-.*\.json$/);
+    expect(filename).toMatch(/^terraclima-saved-places-.*\.json$/);
     expect(mimeType).toBe("application/json");
   });
 
