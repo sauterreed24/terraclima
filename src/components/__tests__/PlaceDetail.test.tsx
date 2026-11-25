@@ -852,11 +852,11 @@ describe("PlaceDetail archetype field guide", () => {
     fireEvent.click(primaryChip);
 
     const guide = screen.getByRole("region", { name: /Eternal-Spring Highland climates/i });
-    expect(guide).toHaveTextContent(/4,900 and 8,200 ft/);
-    expect(guide).toHaveTextContent(/72–79°F/);
-    expect(guide).toHaveTextContent(/46–57°F/);
+    // Source reads "between about 1200 and 2700 m" and "roughly 20–30°C".
+    expect(guide).toHaveTextContent(/3,900 and 8,900 ft/);
+    expect(guide).toHaveTextContent(/68–86°F/);
     expect(guide).not.toHaveTextContent(/°C/);
-    expect(guide).not.toHaveTextContent(/\b1500 and 2500 m\b/);
+    expect(guide).not.toHaveTextContent(/\b1200 and 2700 m\b/);
   });
 });
 

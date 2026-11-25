@@ -92,6 +92,7 @@ import {
   COMPARE_LIMIT,
   formatAppRelativeUrl,
   parseAppSearch,
+  historyPlaceDepth,
   pushAppUrl,
   readInitialAppState,
   replaceAppUrl,
@@ -406,6 +407,20 @@ export default function App() {
 
   const prevPlaceIdRef = useRef<string | null>(initialAppState.placeId);
   const prevViewRef = useRef(initialAppState.view);
+  const prevCompareOpenRef = useRef(initialAppState.compareOpen);
+  /**
+   * Set while an overlay is being closed with `history.back()` / `go(-n)`.
+   * The popstate that follows must only drop the overlay: everything else the
+   * reader changed while it was open (compare set, home base, ...) is kept and
+   * written onto the entry we land on.
+   */
+  const pendingHistoryCloseRef = useRef<"detail" | "compare" | null>(null);
+  /** Latest overlay + compare state for the popstate handler (installed once). */
+  const liveOverlayStateRef = useRef<{ selectedId: string | null; compareOpen: boolean; compareIds: Set<string> }>({
+    selectedId: initialAppState.placeId,
+    compareOpen: initialAppState.compareOpen,
+    compareIds: new Set(initialAppState.compareIds),
+  });
   /**
    * First-paint URL sync flag. A useRef instead of a module-level mutable
    * so the contract is explicit and there's no shared mutable state across
@@ -433,7 +448,7 @@ export default function App() {
   const detailTriggerRef = useRef<HTMLElement | null>(null);
   /** Tracks whether a profile was actually open so first paint never steals focus. */
   const detailWasOpenRef = useRef(Boolean(initialAppState.placeId));
-  const detailCloseFallbackRef = useRef<number | null>(null);
+  const historyCloseFallbackRef = useRef<number | null>(null);
   /** Reference to the trigger that opened Compare, so closing the modal returns keyboard users to context. */
   const compareTriggerRef = useRef<HTMLElement | null>(null);
   const compareTriggerLabelRef = useRef<string | null>(null);
@@ -505,45 +520,89 @@ export default function App() {
     const wantUrl = formatAppRelativeUrl(state);
     const haveUrl = `${window.location.pathname}${window.location.search}`;
     const haveHist = window.history.state as AppHistoryState | null;
-    const wantTc = Boolean(selectedId);
-    const haveTc = Boolean(haveHist?.tcPlace);
+    const prevPlaceId = prevPlaceIdRef.current;
+    const prevView = prevViewRef.current;
+    const prevCompareOpen = prevCompareOpenRef.current;
+    prevPlaceIdRef.current = selectedId;
+    prevViewRef.current = view;
+    prevCompareOpenRef.current = compareOpen;
 
     if (!initialUrlSyncDoneRef.current) {
       initialUrlSyncDoneRef.current = true;
       replaceAppUrl(null, state);
-      prevPlaceIdRef.current = selectedId;
-      prevViewRef.current = view;
       return;
     }
 
-    if (haveUrl === wantUrl && haveTc === wantTc) {
-      prevPlaceIdRef.current = selectedId;
-      prevViewRef.current = view;
-      return;
-    }
-
-    const prev = prevPlaceIdRef.current;
-    const opening = !prev && !!selectedId;
-    // Switching top-level views is navigation: give it a history entry so
-    // Back returns to the previous view instead of leaving the site.
-    const viewChanged = prevViewRef.current !== view;
-    prevViewRef.current = view;
+    // "Going somewhere" pushes a history entry so Back retraces it: opening a
+    // profile, hopping from one profile to another, opening Compare, and
+    // switching top-level view. Everything else (search, filters, ranking,
+    // theme, compare picks) replaces the current entry.
+    const placeDepth = historyPlaceDepth(haveHist);
+    const opening = !prevPlaceId && !!selectedId;
+    const hopping = !!prevPlaceId && !!selectedId && prevPlaceId !== selectedId;
+    const compareOpened = !prevCompareOpen && compareOpen;
+    const viewChanged = prevView !== view;
 
     if (opening) {
-      pushAppUrl({ tcPlace: true }, state);
-    } else if (viewChanged && !selectedId) {
-      pushAppUrl(null, state);
-    } else {
-      const st = window.history.state as AppHistoryState | null;
-      // Only preserve tcPlace on entries that were created by an in-app place open.
-      // Deep-linked profiles must close in place instead of sending Back outside the app.
-      replaceAppUrl(selectedId && st?.tcPlace ? { tcPlace: true } : null, state);
+      pushAppUrl({ tcPlace: true, tcDepth: 1 }, state);
+      return;
     }
-    prevPlaceIdRef.current = selectedId;
+    if (hopping) {
+      pushAppUrl({ tcPlace: true, tcDepth: placeDepth + 1 }, state);
+      return;
+    }
+    if (compareOpened) {
+      pushAppUrl(
+        selectedId && placeDepth > 0
+          ? { tcCompare: true, tcPlace: true, tcDepth: placeDepth + 1 }
+          : { tcCompare: true },
+        state,
+      );
+      return;
+    }
+    if (viewChanged && !selectedId) {
+      pushAppUrl(null, state);
+      return;
+    }
+
+    // Only preserve the in-app flags on entries that were created by an in-app
+    // open. Deep-linked profiles must close in place instead of sending Back
+    // outside the app.
+    const keepPlace = Boolean(selectedId) && placeDepth > 0;
+    const keepCompare = compareOpen && Boolean(haveHist?.tcCompare);
+    const sameFlags =
+      Boolean(haveHist?.tcPlace) === keepPlace &&
+      Boolean(haveHist?.tcCompare) === keepCompare;
+    if (haveUrl === wantUrl && sameFlags) return;
+    const nextHist: AppHistoryState = keepPlace || keepCompare
+      ? {
+          ...(keepPlace ? { tcPlace: true, tcDepth: placeDepth } : {}),
+          ...(keepCompare ? { tcCompare: true } : {}),
+        }
+      : null;
+    replaceAppUrl(nextHist, state);
   }, [view, selectedId, activeCollection, filters, compareIds, compareOpen, ranking, rankingExplicitInUrl, suppressPersistedRankingInUrl, themePreference, climateScenario, comparisonLens, homeBaseId]);
 
   useEffect(() => {
     const onPop = () => {
+      const pendingClose = pendingHistoryCloseRef.current;
+      pendingHistoryCloseRef.current = null;
+      if (pendingClose) {
+        if (historyCloseFallbackRef.current !== null) {
+          window.clearTimeout(historyCloseFallbackRef.current);
+          historyCloseFallbackRef.current = null;
+        }
+        // An in-app close: drop only the overlay. The URL-sync effect then
+        // rewrites the entry we landed on with everything else as it is now.
+        if (pendingClose === "detail") {
+          setAnimatePlaceDetailEntry(false);
+          setSelectedId(null);
+        } else {
+          setCompareOpen(false);
+        }
+        return;
+      }
+      const live = liveOverlayStateRef.current;
       const v = validatedStateFromSearch(
         window.location.search,
         PLACES_BY_ID as Record<string, unknown>,
@@ -556,7 +615,11 @@ export default function App() {
       setSelectedId(v.placeId);
       setActiveCollection(v.collectionId);
       setFilters(filterStateFromValidated(v));
-      setCompareIds(new Set(v.compareIds));
+      // Browser Back/Forward out of an open profile or Compare is how phones
+      // close them: keep the compare picks made inside instead of reverting
+      // to the set the older entry was written with.
+      const leavingOverlay = live.selectedId != null || live.compareOpen;
+      setCompareIds(leavingOverlay ? new Set(live.compareIds) : new Set(v.compareIds));
       setComparisonLens(v.comparisonLens);
       setRankingExplicitInUrl(v.ranking != null);
       setSuppressPersistedRankingInUrl(v.placeId != null && v.ranking == null);
@@ -591,8 +654,13 @@ export default function App() {
         catch { /* ignore */ }
         setTheme(resolveInitialTheme("", persisted));
       }
-      setCompareOpen(v.compareOpen);
+      const nextCompareOpen = leavingOverlay
+        ? v.compareOpen && live.compareIds.size > 0
+        : v.compareOpen;
+      setCompareOpen(nextCompareOpen);
       prevPlaceIdRef.current = v.placeId;
+      prevViewRef.current = v.view;
+      prevCompareOpenRef.current = nextCompareOpen;
       // History navigation is the source of truth — drop any in-memory
       // pre-constraint snapshot so Back/Forward to explicit ?r=live-fit
       // (without constraints) is not clobbered by auto live-fit restore.
@@ -911,6 +979,7 @@ export default function App() {
     };
   }, []);
 
+  liveOverlayStateRef.current = { selectedId, compareOpen, compareIds };
   const selectedPlace = selectedId ? placeForId(selectedId) ?? null : null;
   const activeComparePlaces = useMemo(
     () =>
@@ -984,10 +1053,15 @@ export default function App() {
 
   const openPlace = useCallback((id: string, opts?: { trigger?: HTMLElement | null; entryIntent?: "surprise" | null }) => {
     preloadPlaceDetail();
-    if (opts?.trigger) {
-      detailTriggerRef.current = opts.trigger;
-    } else if (typeof document !== "undefined") {
-      detailTriggerRef.current = (document.activeElement as HTMLElement | null) ?? null;
+    // A hop from inside an open profile keeps the original launcher, so closing
+    // the chain still returns focus to the card that started it.
+    const hopping = liveOverlayStateRef.current.selectedId != null;
+    if (!hopping) {
+      if (opts?.trigger) {
+        detailTriggerRef.current = opts.trigger;
+      } else if (typeof document !== "undefined") {
+        detailTriggerRef.current = (document.activeElement as HTMLElement | null) ?? null;
+      }
     }
     const canonical = resolvePlaceId(id);
     if (canonical) {
@@ -1136,31 +1210,47 @@ export default function App() {
     focusMainContentNextFrame();
   }, [focusMainContentNextFrame]);
 
+  /**
+   * Close an overlay by stepping back to the entry it was opened from, so the
+   * history stack does not keep a stale duplicate. Only the overlay goes away:
+   * the popstate handler sees the pending marker and keeps every other piece
+   * of state. Returns false when the current entry was not created in-app
+   * (deep link, reload) and the caller should close in place.
+   */
+  const closeOverlayViaHistory = useCallback((kind: "detail" | "compare"): boolean => {
+    if (typeof window === "undefined") return false;
+    if (pendingHistoryCloseRef.current) return true;
+    const st = window.history.state as AppHistoryState | null;
+    const steps = kind === "detail" ? historyPlaceDepth(st) : st?.tcCompare ? 1 : 0;
+    if (steps === 0) return false;
+    pendingHistoryCloseRef.current = kind;
+    window.history.go(-steps);
+    if (historyCloseFallbackRef.current !== null) {
+      window.clearTimeout(historyCloseFallbackRef.current);
+    }
+    // If the browser never delivers the popstate, close in place.
+    historyCloseFallbackRef.current = window.setTimeout(() => {
+      historyCloseFallbackRef.current = null;
+      if (pendingHistoryCloseRef.current !== kind) return;
+      pendingHistoryCloseRef.current = null;
+      if (kind === "detail") setSelectedId(null);
+      else setCompareOpen(false);
+    }, 250);
+    return true;
+  }, []);
+
   const closeDetail = useCallback(() => {
     setAnimatePlaceDetailEntry(false);
-    if (typeof window !== "undefined" && selectedId) {
-      const st = window.history.state as AppHistoryState | null;
-      if (st?.tcPlace) {
-        const closingPlaceId = selectedId;
-        window.history.back();
-        if (detailCloseFallbackRef.current !== null) {
-          window.clearTimeout(detailCloseFallbackRef.current);
-        }
-        detailCloseFallbackRef.current = window.setTimeout(() => {
-          detailCloseFallbackRef.current = null;
-          setSelectedId(current => current === closingPlaceId ? null : current);
-        }, 250);
-        return;
-      }
-    }
+    if (selectedId && closeOverlayViaHistory("detail")) return;
     setSelectedId(null);
-  }, [selectedId]);
+  }, [selectedId, closeOverlayViaHistory]);
 
   useEffect(() => () => {
-    if (detailCloseFallbackRef.current !== null) {
-      window.clearTimeout(detailCloseFallbackRef.current);
-      detailCloseFallbackRef.current = null;
+    if (historyCloseFallbackRef.current !== null) {
+      window.clearTimeout(historyCloseFallbackRef.current);
+      historyCloseFallbackRef.current = null;
     }
+    pendingHistoryCloseRef.current = null;
   }, []);
 
   // Return focus after the detail panel closes. In-app opens go back to their
@@ -1293,14 +1383,21 @@ export default function App() {
     setFilters(f => ({ ...f, countries: new Set(), archetypes: new Set() }));
     setActiveCollection(null);
   }, []);
-  const closeCompare = useCallback((opts?: { restoreFocus?: boolean }) => {
+  const closeCompare = useCallback((opts?: { restoreFocus?: boolean; viaHistory?: boolean }) => {
     if (opts?.restoreFocus === false) {
       compareTriggerRef.current = null;
       compareTriggerLabelRef.current = null;
     }
     resetShareStatus();
+    // Compare opened in-app owns a history entry: step back off it so Back
+    // does not reopen a Compare the reader just closed.
+    if (opts?.viaHistory !== false && closeOverlayViaHistory("compare")) return;
     setCompareOpen(false);
-  }, [resetShareStatus]);
+  }, [resetShareStatus, closeOverlayViaHistory]);
+  const setCompareOpenFromShortcut = useCallback((open: boolean) => {
+    if (open) setCompareOpen(true);
+    else closeCompare();
+  }, [closeCompare]);
 
   useEffect(() => {
     if (!compareOpen || activeComparePlaces.length > 0) return;
@@ -1480,7 +1577,7 @@ export default function App() {
     explorerDockLg,
     setView: setViewFluid,
     setShowShortcuts,
-    setCompareOpen,
+    setCompareOpen: setCompareOpenFromShortcut,
     closeDetail,
     focusSearchInput,
     openFilterSheet,
@@ -2007,7 +2104,9 @@ export default function App() {
               // Prefer the Explorer Compare launcher as the dossier return
               // target — in-Compare controls unmount with the overlay.
               const compareLauncher = compareTriggerRef.current;
-              closeCompare({ restoreFocus: false });
+              // The profile is pushed on top of the Compare entry, so Back
+              // from the profile returns to Compare.
+              closeCompare({ restoreFocus: false, viaHistory: false });
               openPlace(id, {
                 trigger: compareLauncher ?? opts?.trigger ?? null,
               });

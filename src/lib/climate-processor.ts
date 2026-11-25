@@ -10,14 +10,16 @@
 //
 // Pipeline: project the pool to the requested scenario → hydrate the filter
 // state from the serialized request → filter → rank by profile (live-fit uses
-// `rankLiveFit`, everything else `rankPlaces`). Returns only `{ id, score,
+// `rankLiveFit`, everything else `rankPlaces`) → when a search query is
+// present, re-order by search match tier (ranking order within a tier).
+// Returns only `{ id, score,
 // note }` rows so the response payload stays tiny across `postMessage`.
 // ============================================================
 
 import type { Place } from "../types";
 import type { RankedRow, ScenarioRankRequest, ScenarioRankResult } from "../types/worker";
 import { PLACES } from "../data/places";
-import { applyFilters, filterStateFromValidated, rankPlaces } from "./scoring";
+import { applyFilters, filterStateFromValidated, orderBySearchMatch, rankPlaces } from "./scoring";
 import { rankLiveFit } from "./live-fit";
 import { projectPool } from "./climate-projection";
 
@@ -33,9 +35,12 @@ export function runScenarioRanking(req: ScenarioRankRequest): ScenarioRankResult
   const filters = filterStateFromValidated(req.filters);
   const filtered = applyFilters(projected, filters);
   const now = req.nowEpochMs != null ? new Date(req.nowEpochMs) : new Date();
-  const ranked = req.ranking === "live-fit"
+  const byProfile = req.ranking === "live-fit"
     ? rankLiveFit(filtered, filters)
     : rankPlaces(req.ranking, filtered, now);
+  // With a search query, match tier leads and the profile ranking breaks ties,
+  // so typing a place's name always puts that place first.
+  const ranked = orderBySearchMatch<{ place: Place; score: number; note?: string }>(byProfile, projected, filters.search);
 
   const rows: RankedRow[] = ranked.map(r => (
     r.note != null

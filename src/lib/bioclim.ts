@@ -49,9 +49,14 @@ export type BioclimNullReason = "mat_below_neg10" | "no_growing_season" | "no_pe
 export interface BioclimValue {
   /** Numeric index value (units vary per index — documented per-field). */
   value: number;
-  /** Machine-readable band, e.g. "semi-arid", "oceanic", "humid". */
+  /** Machine-readable band id; keeps the published band name ("semi-arid",
+   *  "mediterranean", "oceanic") and is never shown to readers. */
   class: string;
-  /** Human-readable band label, e.g. "Semi-arid". */
+  /** Plain-word band shown in the interface. Moisture indices run very dry →
+   *  dry → fairly dry → moderately moist → moist → very wet; the Conrad index
+   *  runs very small → small → moderate → large → very large swing. The
+   *  published names mean something else to a general reader ("Mediterranean"
+   *  is only an aridity band, "oceanic" only a small annual range). */
   classLabel: string;
 }
 
@@ -105,16 +110,20 @@ export interface BioclimResult {
 
 // ----- band classifiers --------------------------------------------------
 
+/** One-line glosses for the two indices the place card summarises. */
+export const DE_MARTONNE_GLOSS = "Yearly rain and snow compared with average temperature; higher is wetter.";
+export const CONRAD_GLOSS = "How far monthly temperatures swing between winter and summer; higher is a bigger swing.";
+
 function classifyDeMartonne(value: number): { class: string; classLabel: string } {
   // Le Houérou's refinement of De Martonne (1926). Half-open `[lo, hi)`.
-  if (value < 5) return { class: "hyperarid", classLabel: "Hyperarid" };
-  if (value < 10) return { class: "arid", classLabel: "Arid" };
-  if (value < 20) return { class: "semi-arid", classLabel: "Semi-arid" };
-  if (value < 24) return { class: "mediterranean", classLabel: "Mediterranean" };
-  if (value < 28) return { class: "sub-humid", classLabel: "Sub-humid" };
-  if (value < 35) return { class: "humid", classLabel: "Humid" };
-  if (value < 55) return { class: "very-humid", classLabel: "Very humid" };
-  return { class: "extremely-humid", classLabel: "Extremely humid" };
+  if (value < 5) return { class: "hyperarid", classLabel: "Very dry" };
+  if (value < 10) return { class: "arid", classLabel: "Dry" };
+  if (value < 20) return { class: "semi-arid", classLabel: "Fairly dry" };
+  if (value < 24) return { class: "mediterranean", classLabel: "Moderately moist" };
+  if (value < 28) return { class: "sub-humid", classLabel: "Moderately moist" };
+  if (value < 35) return { class: "humid", classLabel: "Moist" };
+  if (value < 55) return { class: "very-humid", classLabel: "Moist" };
+  return { class: "extremely-humid", classLabel: "Very wet" };
 }
 
 function classifyConrad(value: number): { class: string; classLabel: string } {
@@ -124,11 +133,11 @@ function classifyConrad(value: number): { class: string; classLabel: string } {
   // continental; Moscow ≈ 55 = continental; Reykjavík ≈ 8 = oceanic; tropical
   // maritime ≈ 0–5 = extreme oceanic). Negative K is legitimate for
   // ultra-low-amplitude tropical maritime climates.
-  if (value < 5) return { class: "extreme-oceanic", classLabel: "Extreme oceanic" };
-  if (value < 25) return { class: "oceanic", classLabel: "Oceanic" };
-  if (value < 50) return { class: "sub-continental", classLabel: "Sub-continental" };
-  if (value < 75) return { class: "continental", classLabel: "Continental" };
-  return { class: "extreme-continental", classLabel: "Extreme continental" };
+  if (value < 5) return { class: "extreme-oceanic", classLabel: "Very small swing" };
+  if (value < 25) return { class: "oceanic", classLabel: "Small swing" };
+  if (value < 50) return { class: "sub-continental", classLabel: "Moderate swing" };
+  if (value < 75) return { class: "continental", classLabel: "Large swing" };
+  return { class: "extreme-continental", classLabel: "Very large swing" };
 }
 
 function classifySelianinov(value: number): { class: string; classLabel: string } {
@@ -136,21 +145,21 @@ function classifySelianinov(value: number): { class: string; classLabel: string 
   // routinely run far higher (Hilo ≈ 4). Splitting the upper band keeps "wet"
   // (1.6–3.0) and "tropical-wet" (≥3.0) distinguishable on the UI tile and
   // CompareView row.
-  if (value < 0.4) return { class: "dry", classLabel: "Dry" };
-  if (value < 0.7) return { class: "arid", classLabel: "Arid" };
-  if (value < 1.0) return { class: "semi-arid", classLabel: "Semi-arid" };
-  if (value < 1.3) return { class: "sufficient", classLabel: "Sufficient moisture" };
-  if (value < 1.6) return { class: "humid", classLabel: "Humid" };
-  if (value < 3.0) return { class: "wet", classLabel: "Wet" };
-  return { class: "tropical-wet", classLabel: "Tropical-wet" };
+  if (value < 0.4) return { class: "dry", classLabel: "Very dry" };
+  if (value < 0.7) return { class: "arid", classLabel: "Dry" };
+  if (value < 1.0) return { class: "semi-arid", classLabel: "Fairly dry" };
+  if (value < 1.3) return { class: "sufficient", classLabel: "Moderately moist" };
+  if (value < 1.6) return { class: "humid", classLabel: "Moist" };
+  if (value < 3.0) return { class: "wet", classLabel: "Moist" };
+  return { class: "tropical-wet", classLabel: "Very wet" };
 }
 
 function classifyUnep(value: number): { class: string; classLabel: string } {
-  if (value < 0.05) return { class: "hyperarid", classLabel: "Hyperarid" };
-  if (value < 0.20) return { class: "arid", classLabel: "Arid" };
-  if (value < 0.50) return { class: "semi-arid", classLabel: "Semi-arid" };
-  if (value < 0.65) return { class: "dry-sub-humid", classLabel: "Dry sub-humid" };
-  return { class: "humid", classLabel: "Humid" };
+  if (value < 0.05) return { class: "hyperarid", classLabel: "Very dry" };
+  if (value < 0.20) return { class: "arid", classLabel: "Dry" };
+  if (value < 0.50) return { class: "semi-arid", classLabel: "Fairly dry" };
+  if (value < 0.65) return { class: "moderately-moist", classLabel: "Moderately moist" };
+  return { class: "humid", classLabel: "Moist" };
 }
 
 // ----- daylength (the trap) ----------------------------------------------

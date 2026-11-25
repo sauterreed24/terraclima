@@ -3,6 +3,9 @@ import {
   annualComfortMonthCount,
   avgRisk,
   coolSummer,
+  dewPointC,
+  meanAnnualHumidityPct,
+  meanSummerHumidityPct,
   meanJanLow,
   meanSummerHigh,
   meanWinterSunshinePct,
@@ -96,7 +99,7 @@ export const LIVE_FIT_PRESETS: readonly LiveFitPreset[] = [
     id: "dry-air",
     label: "Dry air",
     shortLabel: "Dry",
-    description: "Prefer lower humidity and crisp diurnal cooling.",
+    description: "Mean relative humidity at or below 50% for the year and for June–August, with a summer dew point at or below 16°C (60°F).",
   },
   {
     id: "gardenable",
@@ -206,10 +209,43 @@ function snowScore(place: Place): number {
   return clamp100(annual / 3 + months * 7);
 }
 
-function humidityScore(place: Place): number {
-  if (!place.climate.humidity) return 55;
-  const mean = place.climate.humidity.reduce((a, b) => a + b, 0) / 12;
-  return clamp100(100 - Math.max(0, mean - 35) * 2.2);
+/** Dry-air must-have: mean relative humidity ceiling, for the year and for June–August. */
+export const DRY_AIR_MAX_HUMIDITY_PCT = 50;
+/** Dry-air must-have: mean June–August dew point ceiling (16°C is about 60°F, where air starts to feel sticky). */
+export const DRY_AIR_MAX_SUMMER_DEW_POINT_C = 16;
+
+/** Mean June–August dew point (°C) from monthly mean temperature and relative humidity. */
+export function meanSummerDewPointC(place: Place): number | null {
+  const humidity = place.climate.humidity;
+  if (!humidity) return null;
+  const months = [5, 6, 7];
+  return months.reduce((sum, i) => {
+    const meanC = (place.climate.tempHighC[i] + place.climate.tempLowC[i]) / 2;
+    return sum + dewPointC(meanC, humidity[i]);
+  }, 0) / months.length;
+}
+
+/**
+ * Dry-air score (0–100) from the same humidity series the profile shows.
+ *
+ * The score is the weakest of three sub-scores, each of which crosses 50
+ * (the must-have pass line, {@link LIVE_FIT_PRESET_POOL_THRESHOLD}) exactly at
+ * its ceiling: annual mean relative humidity, June–August mean relative
+ * humidity, and June–August dew point. A place therefore passes only when all
+ * three are at or below their ceilings, so a summer-rain highland with a dry
+ * winter (Mazamitla: 44% for the year, 57% in summer) cannot pass on its
+ * annual mean alone. Places without a humidity series do not pass.
+ */
+function dryAirScore(place: Place): number {
+  const annual = meanAnnualHumidityPct(place);
+  const summer = meanSummerHumidityPct(place);
+  const dewPoint = meanSummerDewPointC(place);
+  if (annual == null || summer == null || dewPoint == null) return 0;
+  return Math.round(Math.min(
+    clamp100(50 + (DRY_AIR_MAX_HUMIDITY_PCT - annual) * 2.5),
+    clamp100(50 + (DRY_AIR_MAX_HUMIDITY_PCT - summer) * 2.5),
+    clamp100(50 + (DRY_AIR_MAX_SUMMER_DEW_POINT_C - dewPoint) * 5),
+  ));
 }
 
 export { meanWinterSunshinePct } from "./climate-metrics";
@@ -317,7 +353,7 @@ function presetScore(place: Place, preset: LiveFitPresetId): number {
     case "sunny-winters":
       return winterSunshineScore(place);
     case "dry-air":
-      return humidityScore(place);
+      return dryAirScore(place);
     case "gardenable":
       return place.scores.growability;
     case "low-fire-smoke":

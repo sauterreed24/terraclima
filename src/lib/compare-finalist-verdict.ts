@@ -1,5 +1,5 @@
 import type { Place } from "../types";
-import { getBestMonths } from "./best-months";
+import { formatVisitWindow, getVisitWindow } from "./best-months";
 import { annualComfortMonthCount, avgRisk, RISK_VALUE } from "./climate-metrics";
 import { hasSourcedSkySeries } from "./hero-glance";
 import { assessLiveFit, type LiveFitFilters } from "./live-fit";
@@ -218,7 +218,7 @@ function topRiskRead(place: Place): string | null {
 }
 
 function visitWindowRead(place: Place): Pick<CompareScoutStep, "visitWindow" | "visitDetail"> {
-  const window = getBestMonths(place, "C").find(item => item.kind === "good");
+  const window = getVisitWindow(place, "C");
   if (!window) {
     return {
       visitWindow: "See seasons in profile",
@@ -226,7 +226,7 @@ function visitWindowRead(place: Place): Pick<CompareScoutStep, "visitWindow" | "
     };
   }
   return {
-    visitWindow: `${window.label}: ${window.range}`,
+    visitWindow: formatVisitWindow(window),
     visitDetail: window.note ?? "A good first window for a visit, from monthly averages.",
   };
 }

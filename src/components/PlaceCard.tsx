@@ -6,7 +6,7 @@ import { observedSunshinePct, precipHeroLabel } from "../lib/hero-glance";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtSnow, useProse } from "../lib/units";
 import { getBioclimCardSignal, getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
-import { getBestMonths, pickVisitWindow, type BestWindow } from "../lib/best-months";
+import { getVisitWindow, type BestWindow } from "../lib/best-months";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
 import { ArrowRight, Droplets, Home, Leaf, Sun } from "lucide-react";
@@ -131,9 +131,7 @@ export const PlaceCard = memo(function PlaceCard({
   // residency brief and climate-tourism read lead with.
   const topWindow = useMemo(() => {
     if (compact) return null;
-    const windows = getBestMonths(place, temp);
-    const resonant = resonantWindow ? windows.find(w => w.kind === "good" && w.id === resonantWindow) : undefined;
-    return resonant ?? pickVisitWindow(windows);
+    return getVisitWindow(place, temp, resonantWindow ?? null);
   }, [place, compact, temp, resonantWindow]);
 
   const corpusTeaser = useMemo(() => (compact ? "" : getCorpusCardTeaser(place)), [place, compact]);
@@ -402,7 +400,7 @@ export const PlaceCard = memo(function PlaceCard({
           )}
 
           {bioclimSignal ? (
-            <div className="place-card__bioclim-row" aria-label="Aridity and continentality class">
+            <div className="place-card__bioclim-row" aria-label="Moisture and seasonal temperature swing">
               <span className="chip place-card__bioclim-chip" data-tone={bioclimSignal.tone} title={prose(bioclimSignal.title)}>
                 <Droplets className="w-3 h-3 shrink-0" aria-hidden />
                 <span>{bioclimSignal.label}</span>

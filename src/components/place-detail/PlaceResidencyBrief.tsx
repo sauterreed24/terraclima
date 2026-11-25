@@ -11,7 +11,7 @@
 import { ArrowLeftRight, Calendar, ShieldAlert } from "lucide-react";
 import type { Place } from "../../types";
 import type { BestWindow } from "../../lib/best-months";
-import { pickVisitWindow } from "../../lib/best-months";
+import { formatVisitWindow, pickVisitWindow } from "../../lib/best-months";
 import { LIVE_FIT_PRESETS, type LiveFitAssessment, type LiveFitFilters } from "../../lib/live-fit";
 import type { LivabilityResult } from "../../lib/livability-score";
 import type { PlaceVisualSignature } from "../../lib/place-visual-signature";
@@ -225,7 +225,7 @@ export function PlaceResidencyBrief({
         <div className="residency-brief__fact">
           <Calendar className="w-4 h-4" aria-hidden />
           <span>Best season</span>
-          <strong>{bestWindow ? `${bestWindow.label} · ${bestWindow.range}` : "See Seasonal rhythm"}</strong>
+          <strong>{bestWindow ? formatVisitWindow(bestWindow) : "See Seasonal rhythm"}</strong>
           {cautionWindow ? <small>Watch {cautionWindow.range.toLowerCase()}</small> : null}
         </div>
 

@@ -95,9 +95,27 @@ describe("atlas corpus stats", () => {
     const signal = getBioclimCardSignal(PLACES.find(p => p.id === "yuma-az") ?? PLACES[0]!);
 
     expect(signal).not.toBeNull();
-    expect(signal!.label).toMatch(/· (?:strongly |mildly )?(?:oceanic|continental)$/);
+    expect(signal!.label).toBe("Very dry · moderate seasonal swing");
     expect(signal!.label).not.toMatch(/\bK \d/);
-    expect(signal!.title).toContain("De Martonne");
-    expect(signal!.title).toContain("Conrad K");
+    expect(signal!.title).toMatch(/De Martonne aridity index \d+\.\d/);
+    expect(signal!.title).toMatch(/Conrad continentality index \d+\.\d/);
+  });
+
+  it("labels the card signal in plain words, never with textbook band names", () => {
+    const label = (id: string) => getBioclimCardSignal(PLACES.find(p => p.id === id)!)!.label;
+    // Oaxaca City (summer-rain highland) and Boulder used to read "Mediterranean";
+    // Real de Catorce (a 2,750 m desert town) used to read "oceanic".
+    expect(label("oaxaca-mx")).toBe("Moderately moist · small seasonal swing");
+    expect(label("boulder-co")).toBe("Moderately moist · moderate seasonal swing");
+    expect(label("real-catorce-mx")).toBe("Fairly dry · small seasonal swing");
+    expect(label("mazamitla-mx")).toBe("Moist · small seasonal swing");
+    for (const place of PLACES) {
+      const signal = getBioclimCardSignal(place);
+      if (!signal) continue;
+      expect(signal.label, place.id).not.toMatch(/mediterranean|oceanic|continental|humid|arid/i);
+      expect(signal.label, place.id).toMatch(
+        /^(Very dry|Dry|Fairly dry|Moderately moist|Moist|Very wet|Frozen year) · (very small|small|moderate|large|very large) seasonal swing$/,
+      );
+    }
   });
 });

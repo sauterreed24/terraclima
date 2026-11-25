@@ -3,7 +3,8 @@
 // ============================================================
 
 import type { Place, MicroclimateArchetype, RiskLevel } from "../types";
-import { PLACES, foldDiacritics, getPlaceSearchText } from "../data/places";
+import { PLACES } from "../data/places";
+import { searchPlaces } from "./place-search";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 import { CORPUS_MEAN_HUMIDITY } from "./atlas-corpus-stats";
 import {
@@ -617,10 +618,19 @@ export function hasNonSearchExplorerFilters(filters: FilterState): boolean {
   );
 }
 
+/**
+ * Apply every Explorer filter. Search is field-weighted and tiered (see
+ * `src/lib/place-search.ts`): a blank / whitespace query filters nothing; a
+ * query keeps only places every token matches, falling back to typo-tolerant
+ * name / region matching when nothing matches exactly. Output keeps the input
+ * order — use {@link orderBySearchMatch} (or `runScenarioRanking`, which
+ * calls it) to put the best match first.
+ */
 export function applyFilters(places: Place[], f: FilterState): Place[] {
-  // Precompute the diacritic-folded query once, not per-place. The search
-  // index is built with the same fold so "san jose" matches "San José".
-  const q = f.search ? foldDiacritics(f.search.trim()) : "";
+  // Search runs over the whole pool, before the other filters, so a term's
+  // distinctiveness does not shift as country / archetype chips are toggled.
+  const search = searchPlaces(places, f.search);
+  const hasSearch = search.mode !== "none";
   const hasCountries = f.countries.size > 0;
   const hasArchetypes = f.archetypes.size > 0;
 
@@ -629,10 +639,26 @@ export function applyFilters(places: Place[], f: FilterState): Place[] {
     if (hasCountries && !f.countries.has(p.country)) continue;
     if (hasArchetypes && !p.archetypes.some(a => f.archetypes.has(a))) continue;
     if (!liveFitFilterPass(p, f)) continue;
-    if (q) {
-      if (!getPlaceSearchText(p).includes(q)) continue;
-    }
+    if (hasSearch && !search.rankByPlace.has(p)) continue;
     out.push(p);
   }
   return out;
+}
+
+/**
+ * Re-order ranked rows for an active search: match tier first, the incoming
+ * (ranking) order second, so the place the user named is always on top. With
+ * a blank query the rows are returned unchanged. `pool` must be the same pool
+ * `applyFilters` searched.
+ */
+export function orderBySearchMatch<T extends { place: Place }>(
+  rows: readonly T[],
+  pool: readonly Place[],
+  query: string | null | undefined,
+): T[] {
+  const search = searchPlaces(pool, query);
+  if (search.mode === "none") return rows as T[];
+  const rank = (row: T) => search.rankByPlace.get(row.place) ?? Number.MAX_SAFE_INTEGER;
+  // Array.prototype.sort is stable, so ties keep the ranking order.
+  return [...rows].sort((a, b) => rank(a) - rank(b));
 }

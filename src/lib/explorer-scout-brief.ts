@@ -1,7 +1,7 @@
 import type { Place, ScenarioId } from "../types";
 import { scenarioMeta } from "./climate-projection";
 import { ARCHETYPE_LABELS } from "../types";
-import { getBestMonths } from "./best-months";
+import { getVisitWindow } from "./best-months";
 import {
   annualComfortMonthCount,
   avgRisk,
@@ -294,7 +294,7 @@ function buildScoutNextStep(
 ): ExplorerScoutBrief["nextStep"] {
   const leaderRow = decisionRows.find(row => row.place.id === leader.place.id);
   const runnerUp = decisionRows.find(row => row.place.id !== leader.place.id)?.place;
-  const firstWindow = getBestMonths(leader.place).find(window => window.kind === "good");
+  const firstWindow = getVisitWindow(leader.place);
   const watch = leaderRow?.watch
     ? `First caveat: ${lowerFirst(trimTerminalPunctuation(leaderRow.watch))}.`
     : "First caveat: read the risk and practical sections.";

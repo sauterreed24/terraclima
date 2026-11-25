@@ -25,14 +25,15 @@
  * popover.
  */
 import type { Place } from "../types";
-import { getBestMonths } from "./best-months";
+import { getBestMonths, pickVisitWindow } from "./best-months";
+import { getAnnualPrecipMm, meanJanLow, meanSummerHigh } from "./climate-metrics";
 import { COMPARE_LIMIT } from "./app-url";
 import { buildCompareDecisionProfiles, buildCompareDecisionRead } from "./compare-finalist-verdict";
 import { buildShortlistDecisionRows } from "./decision-matrix";
 import { scoreLivability } from "./livability-score";
 import { hasSourcedSkySeries } from "./hero-glance";
 import { chapterCountLabel, hasThinChapterDepth, researchedChapterCount } from "./research-chapters";
-import { mToFt } from "./units";
+import { cToF, mToFt, mmToIn } from "./units";
 
 export interface ShortlistExportFile {
   body: string;
@@ -152,61 +153,128 @@ export function exportShortlistAsGeoJSON(
   };
 }
 
+/** One contiguous run of months; `endMonth` < `startMonth` means it wraps past December. */
+export interface MonthRun {
+  startMonth: number;
+  endMonth: number;
+}
+
 /**
- * Build an iCalendar VCALENDAR with one VEVENT per shortlisted place, sized
- * to the place's first "good" best-month window. The window is parsed
- * leniently from BestWindow.range (e.g. "May–Sep") — anything we can't
- * parse falls back to a "scout this place" all-day event on the export
- * date so the user still gets a reminder.
+ * Parse a BestWindow range ("May", "May–Sep", "Nov–Feb", "Apr–May, Sep–Oct",
+ * "Year-round") into contiguous month runs. Unparseable segments are dropped;
+ * "Year-round" and prose return no runs (the caller emits a reminder instead).
+ */
+export function parseMonthRuns(range: string): MonthRun[] {
+  const runs: MonthRun[] = [];
+  for (const segment of range.split(/[,;&]|\band\b/i)) {
+    const parts = segment.split(/[\u2012-\u2015\-/]|\bto\b/i).map(s => s.trim()).filter(Boolean);
+    if (parts.length === 0 || parts.length > 2) continue;
+    const a = monthIndex(parts[0]!);
+    const b = parts.length === 2 ? monthIndex(parts[1]!) : a;
+    if (a < 0 || b < 0) continue;
+    runs.push({ startMonth: a, endMonth: b });
+  }
+  return runs;
+}
+
+/**
+ * The next occurrence of a month run on or after `now`: a run still in
+ * progress keeps this occurrence; one already over rolls to next year.
+ * Returns all-day bounds with an exclusive end (RFC 5545 DATE semantics).
+ */
+export function nextMonthRunOccurrence(run: MonthRun, now: Date): { start: Date; endExclusive: Date } {
+  const span = ((run.endMonth - run.startMonth + 12) % 12) + 1;
+  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  for (let year = now.getUTCFullYear() - 1; ; year++) {
+    const start = new Date(Date.UTC(year, run.startMonth, 1));
+    // Date.UTC normalises month overflow, so a Nov–Feb run ends on 1 March of the following year.
+    const endExclusive = new Date(Date.UTC(year, run.startMonth + span, 1));
+    if (endExclusive.getTime() > today) return { start, endExclusive };
+  }
+}
+
+function icsClimateLine(place: Place): string {
+  const f = (c: number) => `${Math.round(cToF(c))}°F`;
+  const precipIn = Math.round(mmToIn(getAnnualPrecipMm(place)));
+  return `Typical climate: summer highs near ${f(meanSummerHigh(place))}, winter lows near ${f(meanJanLow(place))}, ` +
+    `about ${precipIn} in of precipitation a year.`;
+}
+
+/**
+ * Build an iCalendar VCALENDAR of all-day "best time to visit" events: one
+ * VEVENT per contiguous month run of each place's recommended visit window
+ * (so "Apr–May, Sep–Oct" yields two events), each placed on its next
+ * occurrence relative to `generatedAt` and wrapping into the following year
+ * where the run crosses December. A place with no month window, or a
+ * year-round one, gets a single one-day reminder on the export date.
  */
 export function exportShortlistAsICS(
   places: readonly Place[],
   ctxPartial?: Partial<ExportContext>,
 ): ShortlistExportFile {
   const ctx = context(ctxPartial);
-  const year = ctx.generatedAt.getUTCFullYear();
+  const now = ctx.generatedAt;
+  const host = icsHost(ctx.appUrl);
   const lines: string[] = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     `PRODID:-//${ctx.appName}//Shortlist Export//EN`,
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
+    `X-WR-CALNAME:${icsEscape(`${ctx.appName} best times to visit`)}`,
   ];
   for (const place of places) {
-    const window = getBestMonths(place, "C").find(w => w.kind === "good");
-    const range = window ? parseMonthRange(window.range) : null;
-    const start = range
-      ? monthRangeStart(range.startMonth, year)
-      : new Date(Date.UTC(year, ctx.generatedAt.getUTCMonth(), ctx.generatedAt.getUTCDate()));
-    const end = range
-      ? monthRangeEnd(range.endMonth, year)
-      : new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate() + 1));
-    lines.push("BEGIN:VEVENT");
-    lines.push(`UID:terraclima-${place.id}-${year}@sauterreed24.github.io`);
-    lines.push(`DTSTAMP:${formatIcsUtc(ctx.generatedAt)}`);
-    lines.push(`DTSTART;VALUE=DATE:${formatIcsDate(start)}`);
-    lines.push(`DTEND;VALUE=DATE:${formatIcsDate(end)}`);
-    const summary = window
-      ? `Visit ${place.name} — ${window.label}`
-      : `Visit ${place.name}`;
-    lines.push(`SUMMARY:${icsEscape(summary)}`);
+    // US units throughout: the window note carries °F thresholds.
+    const window = pickVisitWindow(getBestMonths(place, "F"));
+    const runs = window ? parseMonthRuns(window.range) : [];
+    const yearRound = window != null && /year.?round/i.test(window.range);
+    const occurrences = runs.length > 0
+      ? runs.map(run => nextMonthRunOccurrence(run, now))
+      : [{
+          start: new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())),
+          endExclusive: new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1)),
+        }];
+    occurrences.sort((a, b) => a.start.getTime() - b.start.getTime());
+    const profileUrl = `${ctx.appUrl}?p=${encodeURIComponent(place.id)}`;
+    const summary = runs.length > 0
+      ? `Best time to visit ${place.name}`
+      : yearRound
+        ? `Visit ${place.name}: good year-round`
+        : `Plan a visit to ${place.name}`;
     const description = [
-      window?.range,
-      window?.note,
-      `Source: ${ctx.appUrl}?p=${place.id}`,
+      window ? `${window.label}: ${window.range}.${window.note ? ` ${withFullStop(window.note)}` : ""}` : null,
+      runs.length > 1 ? "This window comes in separate parts; each part has its own calendar entry." : null,
+      runs.length === 0 && !yearRound ? "No single best window stands out; see the profile's season-by-season section before picking dates." : null,
+      icsClimateLine(place),
+      "Climate averages, not a forecast.",
+      `Profile: ${profileUrl}`,
     ]
-      .filter(Boolean)
-      .join("\\n\\n");
-    if (description) lines.push(`DESCRIPTION:${icsEscape(description)}`);
-    if (Number.isFinite(place.lat) && Number.isFinite(place.lon)) {
-      lines.push(`GEO:${place.lat.toFixed(5)};${place.lon.toFixed(5)}`);
+      .filter((part): part is string => Boolean(part))
+      .join("\n\n");
+    const location = [place.name, place.region, countryLabel(place.country)].filter(Boolean).join(", ");
+    for (const { start, endExclusive } of occurrences) {
+      const uidSlug = place.id.replace(/[^A-Za-z0-9-]+/g, "-");
+      lines.push("BEGIN:VEVENT");
+      // Stable per place + occurrence, so re-importing a later export updates rather than duplicates.
+      lines.push(`UID:terraclima-${uidSlug}-${formatIcsDate(start)}@${host}`);
+      lines.push(`DTSTAMP:${formatIcsUtc(now)}`);
+      lines.push(`DTSTART;VALUE=DATE:${formatIcsDate(start)}`);
+      lines.push(`DTEND;VALUE=DATE:${formatIcsDate(endExclusive)}`);
+      lines.push(`SUMMARY:${icsEscape(summary)}`);
+      lines.push(`DESCRIPTION:${icsEscape(description)}`);
+      if (Number.isFinite(place.lat) && Number.isFinite(place.lon)) {
+        lines.push(`GEO:${place.lat.toFixed(5)};${place.lon.toFixed(5)}`);
+      }
+      lines.push(`LOCATION:${icsEscape(location)}`);
+      lines.push(`URL:${profileUrl}`);
+      // All-day planning banners should not block the day as busy.
+      lines.push("TRANSP:TRANSPARENT");
+      lines.push("END:VEVENT");
     }
-    lines.push(`LOCATION:${icsEscape(`${place.name}, ${place.region ?? ""}, ${place.country}`)}`);
-    lines.push("END:VEVENT");
   }
   lines.push("END:VCALENDAR");
   return {
-    body: lines.join("\r\n") + "\r\n",
+    body: lines.map(foldIcsLine).join("\r\n") + "\r\n",
     filename: `terraclima-shortlist-${stampSlug(ctx.generatedAt)}.ics`,
     mimeType: "text/calendar",
   };
@@ -350,25 +418,6 @@ function monthIndex(name: string): number {
   return -1;
 }
 
-/**
- * Parse a BestWindow range string into a start + end month index.
- * Accepts "May", "May–Sep", "May-Sep" (any dash flavour), and falls back
- * to `null` for anything else (split months, prose ranges, etc.).
- */
-function parseMonthRange(range: string): { startMonth: number; endMonth: number } | null {
-  const cleaned = range.trim().replace(/\s+/g, " ");
-  const parts = cleaned.split(/[\u2013\u2014–—\-/]/).map(s => s.trim()).filter(Boolean);
-  if (parts.length === 0) return null;
-  if (parts.length === 1) {
-    const idx = monthIndex(parts[0]);
-    return idx >= 0 ? { startMonth: idx, endMonth: idx } : null;
-  }
-  const a = monthIndex(parts[0]);
-  const b = monthIndex(parts[1]);
-  if (a < 0 || b < 0) return null;
-  return { startMonth: a, endMonth: b };
-}
-
 function csvCell(value: unknown): string {
   const s = value == null ? "" : String(value);
   if (s === "") return "";
@@ -396,9 +445,50 @@ function formatIcsDate(d: Date): string {
   return `${y}${m}${day}`;
 }
 
-function icsEscape(s: string): string {
-  // RFC 5545 §3.3.11: escape commas, semicolons, backslashes, newlines.
-  return s.replace(/\\/g, "\\\\").replace(/,/g, "\\,").replace(/;/g, "\\;").replace(/\r?\n/g, "\\n");
+/** RFC 5545 §3.3.11 TEXT escaping: backslash, semicolon, comma, and newline as a literal "\n". */
+export function icsEscape(s: string): string {
+  return s.replace(/\\/g, "\\\\").replace(/;/g, "\;").replace(/,/g, "\\,").replace(/\r\n|\r|\n/g, "\\n");
+}
+
+const UTF8 = new TextEncoder();
+
+/**
+ * RFC 5545 §3.1 line folding: no content line longer than 75 octets; a
+ * continuation starts with one space. Splits between code points so a
+ * multi-byte UTF-8 character is never cut.
+ */
+export function foldIcsLine(line: string): string {
+  if (UTF8.encode(line).length <= 75) return line;
+  const out: string[] = [];
+  let current = "";
+  let octets = 0;
+  for (const ch of line) {
+    const size = UTF8.encode(ch).length;
+    // Continuation lines spend one octet on the leading space.
+    const limit = out.length === 0 ? 75 : 74;
+    if (octets + size > limit) {
+      out.push(current);
+      current = "";
+      octets = 0;
+    }
+    current += ch;
+    octets += size;
+  }
+  out.push(current);
+  return out.join("\r\n ");
+}
+
+function icsHost(appUrl: string): string {
+  try {
+    return new URL(appUrl).hostname || "terraclima";
+  } catch {
+    return "terraclima";
+  }
+}
+
+function withFullStop(text: string): string {
+  const t = text.trim();
+  return /[.!?]$/.test(t) ? t : `${t}.`;
 }
 
 function markdownCell(s: string): string {
@@ -464,15 +554,4 @@ function compareUrl(appUrl: string, places: readonly Place[]): string {
 
 function countryLabel(country: Place["country"]): string {
   return country === "USA" ? "United States" : country;
-}
-
-function monthRangeStart(monthIdx: number, year: number): Date {
-  return new Date(Date.UTC(year, monthIdx, 1));
-}
-
-function monthRangeEnd(monthIdx: number, year: number): Date {
-  // DTEND is exclusive per VEVENT semantics, so we use the 1st of the next month.
-  const next = monthIdx + 1;
-  if (next > 11) return new Date(Date.UTC(year + 1, 0, 1));
-  return new Date(Date.UTC(year, next, 1));
 }

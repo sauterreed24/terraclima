@@ -5,8 +5,12 @@ import {
   exportShortlistAsICS,
   exportShortlistAsJSON,
   exportShortlistAsMarkdown,
+  foldIcsLine,
+  icsEscape,
+  nextMonthRunOccurrence,
+  parseMonthRuns,
 } from "../shortlist-export";
-import { makePlace } from "./test-fixtures";
+import { makeClimate, makePlace } from "./test-fixtures";
 
 const FIXED = new Date("2026-05-15T12:00:00Z");
 
@@ -104,34 +108,164 @@ describe("exportShortlistAsGeoJSON", () => {
   });
 });
 
+/** Unfold RFC 5545 content lines and split into one string per VEVENT. */
+function icsEvents(body: string): string[] {
+  return body.replace(/\r\n /g, "").match(/BEGIN:VEVENT[\s\S]*?END:VEVENT/g) ?? [];
+}
+
+function icsField(event: string, name: string): string {
+  const line = event.split("\r\n").find(l => l.startsWith(`${name}:`) || l.startsWith(`${name};`));
+  if (!line) throw new Error(`missing ${name}`);
+  return line.slice(line.indexOf(":") + 1);
+}
+
+/** Highs that are walkable (12–25°C) only in the given months; hot otherwise. */
+function climateWithComfortMonths(months: readonly number[]) {
+  const highs = Array.from({ length: 12 }, (_, i) => (months.includes(i) ? 20 : 33));
+  return makeClimate({
+    tempHighC: highs as never,
+    tempLowC: highs.map(h => h - 10) as never,
+    snowCm: undefined,
+  });
+}
+
 describe("exportShortlistAsICS", () => {
-  it("emits a valid VCALENDAR with one VEVENT per shortlisted place", () => {
-    const file = exportShortlistAsICS(sample, { generatedAt: FIXED });
+  const winterSun = makePlace({
+    id: "winter-sun",
+    name: "Winter Sun",
+    climate: climateWithComfortMonths([10, 11, 0, 1]),
+  });
+
+  it("emits a valid VCALENDAR with CRLF endings, PRODID and an event per place", () => {
+    const file = exportShortlistAsICS([winterSun], { generatedAt: FIXED });
     expect(file.filename).toMatch(/\.ics$/);
     expect(file.mimeType).toBe("text/calendar");
     const body = file.body;
-    expect(body.startsWith("BEGIN:VCALENDAR")).toBe(true);
+    expect(body.startsWith("BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Terraclima//Shortlist Export//EN\r\n")).toBe(true);
     expect(body).toMatch(/END:VCALENDAR\r\n$/);
-    const events = body.match(/BEGIN:VEVENT[\s\S]*?END:VEVENT/g) ?? [];
-    expect(events.length).toBe(sample.length);
-    for (const ev of events) {
-      expect(ev).toMatch(/SUMMARY:/);
-      expect(ev).toMatch(/DTSTART;VALUE=DATE:\d{8}/);
-      expect(ev).toMatch(/DTEND;VALUE=DATE:\d{8}/);
-      expect(ev).toMatch(/UID:terraclima-/);
+    // No bare LF anywhere.
+    expect(body.replace(/\r\n/g, "")).not.toMatch(/[\r\n]/);
+    const events = icsEvents(body);
+    expect(events).toHaveLength(1);
+    expect(icsField(events[0]!, "SUMMARY")).toBe("Best time to visit Winter Sun");
+    expect(icsField(events[0]!, "DTSTAMP")).toBe("20260515T120000Z");
+    expect(icsField(events[0]!, "UID")).toBe("terraclima-winter-sun-20261101@sauterreed24.github.io");
+  });
+
+  it("ends a Nov–Feb window in the following year (exclusive all-day DTEND)", () => {
+    const [event] = icsEvents(exportShortlistAsICS([winterSun], { generatedAt: FIXED }).body);
+    expect(event).toContain("DTSTART;VALUE=DATE:20261101");
+    expect(event).toContain("DTEND;VALUE=DATE:20270301");
+  });
+
+  it("keeps a wrap-around window that is still in progress in January", () => {
+    const [event] = icsEvents(exportShortlistAsICS([winterSun], { generatedAt: new Date("2027-01-20T08:00:00Z") }).body);
+    expect(event).toContain("DTSTART;VALUE=DATE:20261101");
+    expect(event).toContain("DTEND;VALUE=DATE:20270301");
+  });
+
+  it("rolls a window that has already passed this year to its next occurrence", () => {
+    const spring = makePlace({ id: "spring", name: "Spring Town", climate: climateWithComfortMonths([3, 4]) });
+    const before = icsEvents(exportShortlistAsICS([spring], { generatedAt: new Date("2026-02-10T00:00:00Z") }).body)[0]!;
+    expect(before).toContain("DTSTART;VALUE=DATE:20260401");
+    expect(before).toContain("DTEND;VALUE=DATE:20260601");
+    const during = icsEvents(exportShortlistAsICS([spring], { generatedAt: new Date("2026-05-31T23:00:00Z") }).body)[0]!;
+    expect(during).toContain("DTSTART;VALUE=DATE:20260401");
+    const after = icsEvents(exportShortlistAsICS([spring], { generatedAt: new Date("2026-06-01T00:00:00Z") }).body)[0]!;
+    expect(after).toContain("DTSTART;VALUE=DATE:20270401");
+    expect(after).toContain("DTEND;VALUE=DATE:20270601");
+    // The UID names the occurrence, so each year's event is distinct but re-exports are stable.
+    expect(icsField(after, "UID")).toBe("terraclima-spring-20270401@sauterreed24.github.io");
+    expect(icsField(during, "UID")).toBe(icsField(before, "UID"));
+  });
+
+  it("emits one event per contiguous run of a split window, each on its own next occurrence", () => {
+    const split = makePlace({ id: "split", name: "Shoulder Town", climate: climateWithComfortMonths([4, 8]) });
+    const events = icsEvents(exportShortlistAsICS([split], { generatedAt: new Date("2026-07-04T00:00:00Z") }).body);
+    expect(events).toHaveLength(2);
+    // September is still ahead this year; May has passed, so it rolls to 2027. Sorted by date.
+    expect(events[0]).toContain("DTSTART;VALUE=DATE:20260901");
+    expect(events[0]).toContain("DTEND;VALUE=DATE:20261001");
+    expect(events[1]).toContain("DTSTART;VALUE=DATE:20270501");
+    expect(events[1]).toContain("DTEND;VALUE=DATE:20270601");
+    expect(new Set(events.map(e => icsField(e, "UID"))).size).toBe(2);
+    for (const e of events) expect(icsField(e, "DESCRIPTION")).toContain("May\\, Sep");
+  });
+
+  it("every event ends after it starts and not before the export date, across the real fixture set", () => {
+    for (const iso of ["2026-01-01T00:00:00Z", "2026-06-15T00:00:00Z", "2026-12-31T23:59:59Z"]) {
+      const now = new Date(iso);
+      const today = iso.slice(0, 10).replace(/-/g, "");
+      for (const e of icsEvents(exportShortlistAsICS([...sample, winterSun], { generatedAt: now }).body)) {
+        const start = e.match(/DTSTART;VALUE=DATE:(\d{8})/)![1]!;
+        const end = e.match(/DTEND;VALUE=DATE:(\d{8})/)![1]!;
+        expect(end > start).toBe(true);
+        expect(end > today).toBe(true);
+      }
     }
   });
 
-  it("escapes commas and semicolons in LOCATION + DESCRIPTION per RFC 5545", () => {
+  it("gives a place with no parseable month window a one-day reminder on the export date", () => {
+    const never = makePlace({ id: "never", name: "Furnace", climate: climateWithComfortMonths([]) });
+    const yearRound = makePlace({ id: "always", name: "Eden", climate: climateWithComfortMonths([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) });
+    const events = icsEvents(exportShortlistAsICS([never, yearRound], { generatedAt: FIXED }).body);
+    expect(events).toHaveLength(2);
+    for (const e of events) {
+      expect(e).toContain("DTSTART;VALUE=DATE:20260515");
+      expect(e).toContain("DTEND;VALUE=DATE:20260516");
+    }
+    expect(icsField(events[1]!, "SUMMARY")).toBe("Visit Eden: good year-round");
+  });
+
+  it("writes a US-unit description with real escaped newlines, never a doubled backslash", () => {
+    const [event] = icsEvents(exportShortlistAsICS([winterSun], { generatedAt: FIXED }).body);
+    const description = icsField(event!, "DESCRIPTION");
+    expect(description).not.toContain("\\\\n");
+    expect(description.split("\\n\\n").length).toBeGreaterThanOrEqual(3);
+    expect(description).toContain("Outdoor comfort: Nov–Feb.");
+    expect(description).toMatch(/summer highs near 91°F\\, winter lows near 50°F\\, about \d+ in of precipitation a year/);
+    expect(description).not.toMatch(/°C|\bmm\b/);
+    expect(description).toContain("Profile: https://sauterreed24.github.io/terraclima/?p=winter-sun");
+  });
+
+  it("escapes commas, semicolons and backslashes in text values per RFC 5545", () => {
     const place = makePlace({
       id: "with-special",
-      name: "Foo, Bar; Baz",
+      name: "Foo, Bar; Baz\\Qux",
       region: "AZ; NM",
       country: "USA",
     });
     const file = exportShortlistAsICS([place], { generatedAt: FIXED });
-    // Commas must be escaped to "\\,", semicolons to "\\;".
-    expect(file.body).toMatch(/LOCATION:Foo\\, Bar\\; Baz\\, AZ\\; NM\\, USA/);
+    const [event] = icsEvents(file.body);
+    expect(icsField(event!, "LOCATION")).toBe("Foo\\, Bar\; Baz\\\\Qux\\, AZ\; NM\\, United States");
+    expect(icsField(event!, "SUMMARY")).toContain("Foo\\, Bar\; Baz\\\\Qux");
+    expect(icsEscape("a\\b;c,d\ne\r\nf")).toBe("a\\\\b\;c\\,d\\ne\\nf");
+  });
+
+  it("folds content lines at 75 octets without splitting multi-byte characters", () => {
+    const place = makePlace({ id: "long", name: "Mérida — Querétaro — Álamos — Mazatlán ".repeat(4).trim() });
+    const body = exportShortlistAsICS([place], { generatedAt: FIXED }).body;
+    const encoder = new TextEncoder();
+    const rawLines = body.split("\r\n");
+    for (const line of rawLines) expect(encoder.encode(line).length).toBeLessThanOrEqual(75);
+    expect(rawLines.some(line => line.startsWith(" "))).toBe(true);
+    // Unfolding restores the exact text (no replacement characters from a split code point).
+    expect(icsField(icsEvents(body)[0]!, "SUMMARY")).toBe(`Best time to visit ${place.name}`);
+    expect(body).not.toContain("�");
+
+    expect(foldIcsLine("x".repeat(75))).toBe("x".repeat(75));
+    expect(foldIcsLine("x".repeat(76))).toBe(`${"x".repeat(75)}\r\n x`);
+    expect(foldIcsLine("x".repeat(74) + "é")).toBe(`${"x".repeat(74)}\r\n é`);
+  });
+
+  it("parses month ranges into runs and finds the next occurrence", () => {
+    expect(parseMonthRuns("May")).toEqual([{ startMonth: 4, endMonth: 4 }]);
+    expect(parseMonthRuns("Nov–Feb")).toEqual([{ startMonth: 10, endMonth: 1 }]);
+    expect(parseMonthRuns("Apr–May, Sep-Oct")).toEqual([{ startMonth: 3, endMonth: 4 }, { startMonth: 8, endMonth: 9 }]);
+    expect(parseMonthRuns("Year-round")).toEqual([]);
+    const occ = nextMonthRunOccurrence({ startMonth: 11, endMonth: 11 }, new Date("2026-12-31T12:00:00Z"));
+    expect(occ.start.toISOString().slice(0, 10)).toBe("2026-12-01");
+    expect(occ.endExclusive.toISOString().slice(0, 10)).toBe("2027-01-01");
   });
 });
 

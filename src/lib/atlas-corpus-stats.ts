@@ -7,7 +7,7 @@
 import type { Place } from "../types";
 import { PLACES, PLACE_ANNUAL_PRECIP } from "../data/places";
 import { getAnnualPrecipMm, meanSummerHigh, meanJanLow, summerDiurnalC } from "./climate-metrics";
-import { computeBioclim } from "./bioclim";
+import { computeBioclim, CONRAD_GLOSS, DE_MARTONNE_GLOSS } from "./bioclim";
 import { gddForUnit, type TempUnit } from "./units";
 
 function sortAsc(a: number[]): number[] {
@@ -368,15 +368,6 @@ export function getPlaceBioclimRanks(place: Place): PlaceBioclimRanks {
   return ranks;
 }
 
-function shortConradClass(cls: string): string {
-  switch (cls) {
-    case "extreme-oceanic": return "strongly oceanic";
-    case "sub-continental": return "mildly continental";
-    case "extreme-continental": return "strongly continental";
-    default: return cls;
-  }
-}
-
 function bioclimTone(cls: string | null, conrad: number): BioclimCardSignal["tone"] {
   if (!cls) return conrad >= 50 ? "aurora" : "ice";
   if (cls === "hyperarid" || cls === "arid") return "ember";
@@ -394,24 +385,22 @@ export function getBioclimCardSignal(place: Place): BioclimCardSignal | null {
     return null;
   }
 
-  // Plain words on the card ("Very humid · continental"); the index values
-  // (Conrad K, De Martonne, PET) stay in the hover title for readers who want them.
-  const conradShort = shortConradClass(b.conrad.class);
-  const waterLabel = b.deMartonne.value !== null ? b.deMartonne.classLabel : "Frozen-year";
+  // Plain words on the card ("Moist · small seasonal swing"): the first half
+  // is how wet the climate is, the second how far temperature swings through
+  // the year. The published index names and values stay in the hover title.
+  const swingLabel = b.conrad.classLabel.toLowerCase().replace(/ swing$/, " seasonal swing");
+  const waterLabel = b.deMartonne.value !== null ? b.deMartonne.classLabel : "Frozen year";
   const titleParts = [
     b.deMartonne.value !== null
-      ? `De Martonne ${b.deMartonne.value.toFixed(1)} (${b.deMartonne.classLabel})`
-      : "De Martonne undefined: mean annual temperature ≤ −10°C",
-    `Conrad K ${b.conrad.value.toFixed(1)} (${b.conrad.classLabel})`,
-    `Thornthwaite PET ${Math.round(b.thornthwaitePet.value)} mm/yr`,
+      ? `Moisture: ${b.deMartonne.classLabel.toLowerCase()} (De Martonne aridity index ${b.deMartonne.value.toFixed(1)}). ${DE_MARTONNE_GLOSS}`
+      : "Moisture: not defined (De Martonne aridity index needs a mean annual temperature above −10°C).",
+    `Seasonal temperature swing: ${b.conrad.classLabel.toLowerCase().replace(/ swing$/, "")} (Conrad continentality index ${b.conrad.value.toFixed(1)}). ${CONRAD_GLOSS}`,
+    "This describes rain and temperature, not how humid the air feels.",
   ];
-  if (b.selianinov.value !== null) {
-    titleParts.push(`Selianinov HTC ${b.selianinov.value.toFixed(2)} (${b.selianinov.classLabel})`);
-  }
 
   const signal: BioclimCardSignal = {
-    label: `${waterLabel} · ${conradShort}`,
-    title: titleParts.join("; "),
+    label: `${waterLabel} · ${swingLabel}`,
+    title: titleParts.join(" "),
     tone: bioclimTone(b.deMartonne.value !== null ? b.deMartonne.class : null, b.conrad.value),
   };
   PLACE_BIOCLIM_CARD_SIGNAL_CACHE.set(place, signal);

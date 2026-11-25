@@ -163,8 +163,24 @@ export function parseAppSearch(search: string): Partial<ParsedAppUrl> {
   return out;
 }
 
-/** `tcPlace: true` means this history entry was created by opening a place in-app — browser Back should close the panel. */
-export type AppHistoryState = { tcPlace?: boolean } | null;
+/**
+ * Flags stored on in-app history entries.
+ * - `tcPlace`: the entry was created by opening a place in-app, so browser
+ *   Back closes the panel instead of leaving the site.
+ * - `tcDepth`: how many in-app entries sit between this profile entry and the
+ *   page it was opened from (1 for the first profile, +1 per profile-to-profile
+ *   hop or Compare opened over it). Closing the profile goes back that far.
+ * - `tcCompare`: the entry was created by opening Compare in-app, so closing
+ *   Compare goes back one entry instead of leaving a duplicate behind.
+ */
+export type AppHistoryState = { tcPlace?: boolean; tcDepth?: number; tcCompare?: boolean } | null;
+
+/** Depth of an in-app profile entry (0 when the entry was not opened in-app). */
+export function historyPlaceDepth(state: AppHistoryState | undefined): number {
+  if (!state?.tcPlace) return 0;
+  const depth = state.tcDepth;
+  return typeof depth === "number" && Number.isInteger(depth) && depth >= 1 ? depth : 1;
+}
 
 /**
  * Full canonical state used to format URLs. The `*Exists` callbacks are

@@ -78,7 +78,7 @@ describe("compare finalist verdict", () => {
     expect(read?.nextAction).toContain("Open Broad Town's profile first");
     expect(read?.scoutSequence.map(step => step.label)).toEqual(["Start here", "Counterweight", "Risk check"]);
     expect(read?.scoutSequence.map(step => step.place.name)).toEqual(["Broad Town", "Quiet Basin", "Heat Bluff"]);
-    expect(read?.scoutSequence[0].visitWindow).toContain("Gardening window");
+    expect(read?.scoutSequence[0].visitWindow).toContain("Outdoor comfort");
     expect(read?.scoutSequence[0].why).toContain("Highest overall score");
     expect(read?.scoutSequence[2].caveat).toContain("Overall risk: 42/100");
     expect(read?.verificationChecklist.map(item => item.label)).toEqual([

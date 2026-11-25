@@ -1,6 +1,6 @@
 import type { Place, RiskLevel, TopographicDriver } from "../types";
 import { ARCHETYPE_LABELS, DRIVER_LABELS } from "../types";
-import { getBestMonths, pickVisitWindow } from "./best-months";
+import { getBestMonths, getVisitWindow } from "./best-months";
 import { inlineDriverLabel, listJoin } from "./place-appendix-sections";
 import { avgRisk, meanJanLow, meanSummerHigh, RISK_VALUE } from "./scoring";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
@@ -274,7 +274,7 @@ function vibeFor(place: Place): ClimateTourismProfile["vibe"] {
 
 function bestVisitWindow(place: Place): ClimateTourismProfile["bestVisitWindow"] {
   const windows = getBestMonths(place);
-  const first = pickVisitWindow(windows) ?? windows[0];
+  const first = getVisitWindow(place);
   if (!first) {
     return {
       label: "Visit window",
@@ -290,7 +290,7 @@ function bestVisitWindow(place: Place): ClimateTourismProfile["bestVisitWindow"]
       first.note,
       caution
         ? `${first.label} is the best first choice; also note ${caution.label.toLowerCase()} in ${caution.range}.`
-        : "This is the clearest deterministic travel window from the monthly climate profile.",
+        : "This is the clearest stretch for a visit in the monthly averages.",
       210,
     ),
   };
