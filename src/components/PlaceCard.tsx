@@ -281,7 +281,7 @@ export const PlaceCard = memo(function PlaceCard({
             ) : (
               <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 text-[11px] text-stone-readable max-w-md">
                 <dt className="text-stone-readable">Climate type</dt>
-                <dd className="text-frost truncate">{primaryArchetype?.label ?? "—"}</dd>
+                <dd className="text-frost">{primaryArchetype?.label ?? "—"}</dd>
                 <dt className="text-stone-readable">Elevation</dt>
                 <dd><span className="font-mono-num text-frost">{fmtElev(place.elevationM, dist)}</span></dd>
                 <dt className="text-stone-readable" title="Köppen class: a standard letter code for climate type, from temperature and rainfall">Köppen</dt>
@@ -318,32 +318,28 @@ export const PlaceCard = memo(function PlaceCard({
         {visualSignature ? (
           <dl
             className="place-card__signature-band"
-            style={{ ["--signature-rgb" as string]: visualSignature.mapAccentRgb }}
+            // Three equal columns: the climate type that used to lead this band
+            // is already in the card header, and four columns clipped the labels.
+            style={{ ["--signature-rgb" as string]: visualSignature.mapAccentRgb, gridTemplateColumns: "repeat(3, minmax(0, 1fr))" }}
             aria-label={`${place.name} place feel`}
           >
-            <div>
-              <dt>Climate type</dt>
-              <dd title={prose(visualSignature.primaryBlurb)}>
-                <span className="place-card__signature-value">{visualSignature.primaryLabel}</span>
-              </dd>
-            </div>
-            <div>
+            <div style={{ gridColumn: "auto" }}>
               <dt>{SCORE_DEFINITIONS.placeFeel.label}</dt>
-              <dd title={SCORE_DEFINITIONS.placeFeel.definition}>
+              <dd style={SIGNATURE_DD_STYLE} title={SCORE_DEFINITIONS.placeFeel.definition}>
                 <span className="place-card__signature-value">{visualSignature.feelBand}</span>
                 <span className="place-card__signature-score font-mono-num">{visualSignature.feelScore}/100</span>
               </dd>
             </div>
             <div>
               <dt>Strongest</dt>
-              <dd title={`${visualSignature.strength.label}, the strongest part of place feel, 0–100, higher is better. ${prose(visualSignature.strength.rationale)}`}>
+              <dd style={SIGNATURE_DD_STYLE} title={`${visualSignature.strength.label}, the strongest part of place feel, 0–100, higher is better. ${prose(visualSignature.strength.rationale)}`}>
                 <span className="place-card__signature-value">{visualSignature.strength.shortLabel}</span>
                 <span className="place-card__signature-score font-mono-num">{Math.round(visualSignature.strength.value)}/100</span>
               </dd>
             </div>
             <div>
               <dt>Weakest</dt>
-              <dd title={`${visualSignature.verify.label}, the weakest part of place feel, 0–100, higher is better. ${prose(visualSignature.verify.rationale)}`}>
+              <dd style={SIGNATURE_DD_STYLE} title={`${visualSignature.verify.label}, the weakest part of place feel, 0–100, higher is better. ${prose(visualSignature.verify.rationale)}`}>
                 <span className="place-card__signature-value">{visualSignature.verify.shortLabel}</span>
                 <span className="place-card__signature-score font-mono-num">{Math.round(visualSignature.verify.value)}/100</span>
               </dd>
@@ -578,6 +574,9 @@ export const PlaceCard = memo(function PlaceCard({
     </article>
   );
 });
+
+/** Lets a score chip drop under its label instead of clipping it on a narrow card. */
+const SIGNATURE_DD_STYLE = { flexWrap: "wrap", rowGap: "0.15rem", whiteSpace: "normal" } as const;
 
 function Stat({ label, value, tone, title }: { label: string; value: string; tone: string; title?: string }) {
   return (

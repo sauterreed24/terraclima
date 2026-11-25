@@ -99,7 +99,7 @@ export const LIVE_FIT_PRESETS: readonly LiveFitPreset[] = [
     id: "dry-air",
     label: "Dry air",
     shortLabel: "Dry",
-    description: "Mean relative humidity at or below 50% for the year and for June–August, with a summer dew point at or below 16°C (60°F).",
+    description: "Mean relative humidity at or below 50% for the year and for June–August, with a summer dew point at or below 16°C.",
   },
   {
     id: "gardenable",

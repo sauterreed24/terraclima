@@ -669,27 +669,27 @@ export function describeHumanComfort(p: Place): HumanComfortNarrative {
   const strengths: string[] = [];
   const frictions: string[] = [];
 
-  if (felt >= 82) pushLimited(strengths, `${months}/12 months feel broadly usable, not just one perfect shoulder season.`);
+  if (felt >= 82) pushLimited(strengths, `${months} of 12 months are comfortable, not just a short spring or autumn.`);
   else if (months <= 5) pushLimited(frictions, `Only ${months} of 12 months are comfortable by day and night without heavy rain.`);
 
   if (summer >= 82 && summerHigh <= 30) pushLimited(strengths, `Summer heat is restrained enough for normal afternoon routines (${toFixedClean(summerHigh, 1)}°C mean high).`);
-  else if (summer < 55) pushLimited(frictions, `Summer heat load is a dominant constraint (${toFixedClean(summerHigh, 1)}°C mean high).`);
+  else if (summer < 55) pushLimited(frictions, `Summer heat is the main limit on comfort (${toFixedClean(summerHigh, 1)}°C mean high).`);
 
-  if (winter >= 82 && winterLow >= -6) pushLimited(strengths, `Winter lows stay within a manageable daily-life band (${toFixedClean(winterLow, 1)}°C mean).`);
+  if (winter >= 82 && winterLow >= -6) pushLimited(strengths, `Winter lows stay manageable for daily life (${toFixedClean(winterLow, 1)}°C mean).`);
   else if (winter < 55) pushLimited(frictions, `Winter cold is not cosmetic; it changes transport, housing, and outdoor rhythm (${toFixedClean(winterLow, 1)}°C mean low).`);
 
-  if (diurnal >= 12 && summerHigh < 34) pushLimited(strengths, `Night recovery is strong: summer diurnal swing of ${Math.round(diurnal)}°C lifts sleep quality.`);
-  if (sky >= 70) pushLimited(strengths, "Sky and light support outdoor time rather than just mild thermometer readings.");
-  if (atmosphere >= 76) pushLimited(strengths, "Wind, humidity, smoke, and solar load combine into an easy atmospheric read.");
+  if (diurnal >= 12 && summerHigh < 34) pushLimited(strengths, `Nights cool off well: a summer day-to-night swing of ${Math.round(diurnal)}°C helps sleep.`);
+  if (sky >= 70) pushLimited(strengths, "Clear skies and good light make outdoor time pleasant, beyond what the temperatures show.");
+  if (atmosphere >= 76) pushLimited(strengths, "Wind, humidity, smoke and sun are all easy here.");
 
-  if (sky < 45) pushLimited(frictions, "Fog, low sun, or damp sky cuts into the lived feel even when temperatures look mild.");
+  if (sky < 45) pushLimited(frictions, "Fog, low sun or damp skies make it feel less comfortable than the mild temperatures suggest.");
   if (wind < 55) pushLimited(frictions, "Wind exposure is strong enough to affect walking, patios, sleep noise, and perceived cold.");
-  if (muggy < 55) pushLimited(frictions, "Humidity or arid-air stress changes how the heat feels on skin and during sleep.");
-  if (air < 55) pushLimited(frictions, "Smoke, fire, drought dust, or heat-event air quality lowers the comfort ceiling.");
-  if (solar < 55) pushLimited(frictions, "Sun angle, altitude, or desert radiant load makes shade and timing matter.");
+  if (muggy < 55) pushLimited(frictions, "Air that is too humid or too dry changes how heat feels on the skin and during sleep.");
+  if (air < 55) pushLimited(frictions, "Smoke, dust or poor air on hot days lowers comfort.");
+  if (solar < 55) pushLimited(frictions, "Strong sun, from altitude or desert glare, makes shade and time of day matter.");
 
-  if (strengths.length === 0) pushLimited(strengths, "The comfort case is balanced rather than spectacular; read the component bars.");
-  if (frictions.length === 0) pushLimited(frictions, "No single atmospheric drag dominates the comfort read.");
+  if (strengths.length === 0) pushLimited(strengths, "Comfort is even across the board, with no standout strength.");
+  if (frictions.length === 0) pushLimited(frictions, "No single problem with air or sky stands out.");
 
   const headline = `${comfortBand(score)} human comfort (${Math.round(score)}/100)`;
   const summary = `${strengths[0]} ${frictions[0]}`;

@@ -1184,9 +1184,9 @@ describe("AtlasMap DOM controls", () => {
   it("offers empty-map recovery when filters leave zero pins", () => {
     setCoarsePointer(false);
     const onEmptyRecovery = vi.fn();
-    renderMap(vi.fn(), [], [], { onEmptyRecovery, emptyRecoveryLabel: "Reset Explorer" });
+    renderMap(vi.fn(), [], [], { onEmptyRecovery, emptyRecoveryLabel: "Reset the atlas" });
     expect(screen.getByText("No places on the map")).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Reset Explorer" }));
+    fireEvent.click(screen.getByRole("button", { name: "Reset the atlas" }));
     expect(onEmptyRecovery).toHaveBeenCalledTimes(1);
   });
 

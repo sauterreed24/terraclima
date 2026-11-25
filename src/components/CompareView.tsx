@@ -1090,7 +1090,7 @@ export function CompareView({
 
                   <MicroclimateFingerprint place={p} size={220} compactLabels />
 
-                  <div className="grid grid-cols-2 gap-2 mt-3 text-sm tc-compare-stats">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-2 gap-y-0 lg:gap-2 mt-3 text-sm tc-compare-stats">
                     <Row label="Elevation" value={fmtElev(p.elevationM, dist)} />
                     <Row label="Köppen class" value={p.koppen} wide />
                     <Row label="Moisture" title={`De Martonne aridity index. ${DE_MARTONNE_GLOSS}`} value={bio ? bioclimRow(bio.deMartonne, v => v.toFixed(1), prose) : "—"} wide />
@@ -1442,7 +1442,7 @@ function buildSinglePlaceGuide(profile: CompareDecisionProfile | undefined) {
 
 function Row({ label, value, wide = false, title }: { label: string; value: string; wide?: boolean; title?: string }) {
   const columns = wide
-    ? "col-span-2 grid-cols-[minmax(0,0.45fr)_minmax(0,1.55fr)]"
+    ? "lg:col-span-2 grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:grid-cols-[minmax(0,0.45fr)_minmax(0,1.55fr)]"
     : "grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]";
   return (
     <div className={`grid ${columns} items-baseline gap-2 py-1 border-b last:border-0 border-[rgba(71,90,122,0.3)]`} title={title}>

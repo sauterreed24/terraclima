@@ -448,7 +448,7 @@ export const AtlasMap = memo(function AtlasMap({
   featuredIds = [],
   featuredLabel,
   onEmptyRecovery,
-  emptyRecoveryLabel = "Reset Explorer",
+  emptyRecoveryLabel = "Reset the atlas",
   bookmarkIds,
   onToggleBookmark,
   onMapEngaged,

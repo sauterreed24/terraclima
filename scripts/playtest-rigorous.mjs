@@ -332,7 +332,7 @@ async function main() {
       // Re-open and check; some layouts show empty under the sheet
       findings.push({ label: "mobile-empty-recovery", kind: "empty-state-not-visible" });
     } else {
-      await empty.getByRole("button", { name: /Reset Explorer|Clear search/i }).first().click();
+      await empty.getByRole("button", { name: /Reset the atlas|Clear search/i }).first().click();
       await page.waitForTimeout(300);
       const q = new URL(page.url()).searchParams.get("q");
       if (q) findings.push({ label: "mobile-empty-recovery", kind: "search-param-stuck", q });
