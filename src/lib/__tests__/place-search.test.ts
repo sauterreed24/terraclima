@@ -319,9 +319,12 @@ describe("abbreviations", () => {
   it("matches a variant only as a whole word", () => {
     const parsed = parseSearchQuery("pt reyes");
     expect(parsed.tokens[0]).toEqual({ text: "pt", phrase: false, variants: ["point", "port"] });
+    // On its own an abbreviation is just itself: "mt" is Montana.
+    expect(parseSearchQuery("mt").tokens[0]).toEqual({ text: "mt", phrase: false });
+    expect(rankedIds("mt").slice(0, 3)).toEqual(expect.arrayContaining(["bozeman-mt", "missoula-mt"]));
     // Whole word only: "mt" must not reach a name that merely contains "mount…".
     const fixture = [makePlace({ id: "mountainview-xx", name: "Mountainview" })];
-    expect(searchPlaces(fixture, "mt").rankByPlace.size).toBe(0);
+    expect(searchPlaces(fixture, "mt view").rankByPlace.size).toBe(0);
   });
 });
 

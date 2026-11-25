@@ -92,18 +92,16 @@ export interface SearchToken {
  * St. John's). Matched as whole words only.
  */
 const WORD_VARIANTS: Record<string, readonly string[]> = {
-  mt: ["mount", "mountain", "mountains"],
+  mt: ["mount"],
   mount: ["mt"],
-  mtn: ["mountain", "mount"],
+  mtn: ["mountain"],
   ft: ["fort"],
   fort: ["ft"],
   pt: ["point", "port"],
   point: ["pt"],
   port: ["pt"],
-  st: ["saint", "ste", "sainte"],
-  ste: ["sainte", "saint", "st"],
-  saint: ["st", "ste"],
-  sainte: ["ste", "st"],
+  st: ["saint"],
+  saint: ["st"],
 };
 
 export interface ParsedSearchQuery {
@@ -121,8 +119,7 @@ export function parseSearchQuery(raw: string | null | undefined): ParsedSearchQu
     const key = `${phrase ? "p" : "w"}:${text}`;
     if (!text || seen.has(key)) return;
     seen.add(key);
-    const variants = phrase ? undefined : WORD_VARIANTS[text];
-    tokens.push(variants ? { text, phrase, variants: [...variants] } : { text, phrase });
+    tokens.push({ text, phrase });
   };
   const quoted = /["“”]([^"“”]*)["“”]/g;
   let rest = "";
@@ -138,6 +135,14 @@ export function parseSearchQuery(raw: string | null | undefined): ParsedSearchQu
   const meaningful = words.filter(w => !STOPWORDS.has(w));
   // A query made only of stopwords ("the") is still a query.
   for (const w of meaningful.length > 0 || tokens.length > 0 ? meaningful : words) push(w, false);
+  // Abbreviations only alongside another word: "mt washington" means Mount,
+  // but "mt" on its own is Montana.
+  if (tokens.length > 1) {
+    for (const token of tokens) {
+      const variants = token.phrase ? undefined : WORD_VARIANTS[token.text];
+      if (variants) token.variants = [...variants];
+    }
+  }
   return { normalized: normalizeSearchText(input).trim(), tokens };
 }
 
