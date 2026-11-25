@@ -6,8 +6,13 @@ import { replaceDossierHash } from "../../lib/dossier-url-hash";
 import { childOverflowsContainer, scrollChildIntoContainer } from "../../lib/scroll-within-container";
 import { useReducedMotion } from "framer-motion";
 import { BookOpen, ChevronDown } from "lucide-react";
+import { PHONE_PROFILE_QUERY } from "./place-detail-ui";
 
 const DEFAULT_OPEN_CHAPTERS = 2;
+function defaultOpenChapters(): number {
+  const phone = typeof window !== "undefined" && window.matchMedia?.(PHONE_PROFILE_QUERY).matches;
+  return phone ? 0 : DEFAULT_OPEN_CHAPTERS;
+}
 
 /** Short jump labels for derived appendix ids; curator sections fall back to trimmed title. */
 function jumpLabelForSection(sec: PlaceDeepSection): string {
@@ -47,10 +52,11 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
   // The first two chapters (history, then the lead essay) open by default;
   // the rest are a click or a jump link away, which keeps the drawer short
   // enough for its scrollbar to stay controllable.
-  const [openIds, setOpenIds] = useState<Set<string>>(() => new Set(sections.slice(0, DEFAULT_OPEN_CHAPTERS).map(s => s.id)));
+  // Phone-width drawers start every chapter on its two-line teaser.
+  const [openIds, setOpenIds] = useState<Set<string>>(() => new Set(sections.slice(0, defaultOpenChapters()).map(s => s.id)));
   useEffect(() => {
     setOpenIds(prev => {
-      const next = new Set(sections.slice(0, DEFAULT_OPEN_CHAPTERS).map(s => s.id));
+      const next = new Set(sections.slice(0, defaultOpenChapters()).map(s => s.id));
       for (const id of prev) if (sections.some(s => s.id === id)) next.add(id);
       return next;
     });

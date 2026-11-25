@@ -7,20 +7,37 @@
  * markup-shape decisions through every section.
  */
 import type { ReactNode } from "react";
+import { useMediaQuery } from "../../hooks/use-media-query";
+
+/** Phone-width drawer: secondary sections start collapsed to keep the profile scannable. */
+export const PHONE_PROFILE_QUERY = "(max-width: 640px)";
 
 export function Section({
   anchorId,
   title,
   icon,
   children,
+  phoneCollapse = false,
+  className,
 }: {
   anchorId?: string;
   title?: string;
   icon?: ReactNode;
   children: ReactNode;
+  /**
+   * Secondary reading: on phone-width screens render as a closed
+   * Show/Hide disclosure (same `<details>` as the score sections, which the
+   * reading nav and `#pd-*` hash links already know how to open).
+   */
+  phoneCollapse?: boolean;
+  className?: string;
 }) {
+  const phone = useMediaQuery(PHONE_PROFILE_QUERY);
+  if (phoneCollapse && phone && anchorId && title) {
+    return <ScoreDetails id={anchorId} title={title} icon={icon}>{children}</ScoreDetails>;
+  }
   return (
-    <section id={anchorId} className="detail-doc-section anim-fade-in">
+    <section id={anchorId} className={`detail-doc-section anim-fade-in${className ? ` ${className}` : ""}`}>
       {title && (
         <h3 className="font-atlas text-[1.15rem] md:text-lg text-ice mb-3.5 flex items-center gap-2 tracking-tight border-b border-[rgba(200,170,140,0.35)] pb-2">
           {icon}{title}
