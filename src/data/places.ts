@@ -268,7 +268,7 @@ export const REGION_SEARCH_ALIASES: Readonly<Record<string, string>> = {
   "Baja California": "BC", "Baja California Sur": "BCS", Campeche: "Camp", Chiapas: "Chis",
   Chihuahua: "Chih", Coahuila: "Coah", Durango: "Dgo", "Estado de México": "Edomex Mex",
   Guanajuato: "Gto", Guerrero: "Gro", Jalisco: "Jal", Michoacán: "Mich", Morelos: "Mor",
-  "Nuevo León": "NL", Oaxaca: "Oax", Puebla: "Pue", Querétaro: "Qro", "Quintana Roo": "QRoo Q Roo",
+  "Nuevo León": "NL", Oaxaca: "Oax", Puebla: "Pue", Querétaro: "Qro", "Quintana Roo": "Q Roo",
   "San Luis Potosí": "SLP", Sinaloa: "Sin", Sonora: "Son", Veracruz: "Ver", Yucatán: "Yuc", Zacatecas: "Zac",
 };
 

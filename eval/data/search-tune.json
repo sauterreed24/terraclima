@@ -449,6 +449,24 @@
       "expect": [
         "fort-davis-tx"
       ]
+    },
+    {
+      "q": "qro",
+      "expect": [
+        "queretaro-mx"
+      ]
+    },
+    {
+      "q": "grand marais mi",
+      "expect": [
+        "grand-marais-mi"
+      ]
+    },
+    {
+      "q": "Grand Marais, MN",
+      "expect": [
+        "grand-marais-mn"
+      ]
     }
   ]
 }

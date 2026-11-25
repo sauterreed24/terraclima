@@ -170,7 +170,9 @@ function literalTokenTier(fields: PlaceSearchFields, token: SearchToken): number
   const short = token.text.length < 3;
   if (fieldHas(fields.name, token, false)) return SEARCH_TIER.nameWord;
   if (!short && !token.phrase && fields.name.includes(token.text)) return SEARCH_TIER.namePart;
-  if (fieldHas(fields.locality, token, false)) return SEARCH_TIER.locality;
+  // A one- or two-letter token is a code here ("mi", "bc"): whole words only,
+  // so "grand marais mi" does not take "mi" as the start of "Minnesota".
+  if (fieldHas(fields.locality, token, short)) return SEARCH_TIER.locality;
   if (fieldHas(fields.classification, token, false)) return SEARCH_TIER.classification;
   if (fieldHas(fields.headline, token, short)) return SEARCH_TIER.headline;
   if (fieldHas(fields.summary, token, short)) return SEARCH_TIER.summary;
