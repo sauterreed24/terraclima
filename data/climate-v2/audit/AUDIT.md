@@ -1,6 +1,6 @@
 # Climate Data V2 Audit Report
 
-Generated: 2026-11-25T18:58:47.483Z
+Generated: 2026-11-25T19:15:41.685Z
 
 ## Coverage
 - Authored places: 226
@@ -8,9 +8,9 @@ Generated: 2026-11-25T18:58:47.483Z
 - Missing: none
 
 ## Validation status
-- validated: 56
+- validated: 55
 - grid-only: 126
-- reviewed-exception: 44
+- reviewed-exception: 45
 
 ## Shadow diff (authored vs Daymet 1996–2025)
 - Temperature outliers (|Δ| > 2°C annual high or low): **67**
