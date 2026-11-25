@@ -612,13 +612,64 @@ async function sectionAccuracy(browser: Browser) {
     await c2.close();
     return { out, n };
   };
+  // (d) Compare: the figures table for seeded pairs. Sunshine: the station record where the
+  //     export says "station"; otherwise the app's rule is "no data" (the solar-based estimate
+  //     is not shown as sunshine on screen; see Decisions in IMPROVE.md).
+  const exported = new Map(rows.map(r => [r.id!, r]));
+  const compareErrs = async (seed: number) => {
+    const out: string[] = []; let n = 0;
+    const picks = sample(PLACES, 8, seed);
+    const c4 = await newCtx(browser);
+    for (let k = 0; k < picks.length; k += 2) {
+      const pair = [picks[k]!, picks[k + 1]!];
+      const pg = await open(c4, `/?cmp=${pair.map(p => p.id).join(",")}`);
+      const dlg = pg.getByRole("dialog").first();
+      await dlg.waitFor({ timeout: 15000 }).catch(() => {});
+      await pg.waitForTimeout(800);
+      const trs = await dlg.locator("tr").evaluateAll(els => els.map(tr => [...tr.querySelectorAll("th,td")].map(c => (c as HTMLElement).innerText.replace(/\s+/g, " ").trim())));
+      const head = trs.find(r => /signal/i.test(r[1] ?? "") || /^group$/i.test(r[0] ?? "")) ?? [];
+      // Value columns follow the header's place order.
+      const order = head.slice(2).map(name => pair.find(p => p.name.toLowerCase() === name.toLowerCase()) ?? null);
+      const cells = (label: RegExp) => {
+        const row = trs.find(r => label.test(`${r[0]} ${r[1]}`)); return row ? row.slice(2) : null;
+      };
+      const val = (x: string | undefined) => (x == null || /no data/.test(x) ? null : Number(x.replace(/[^\d.\-−]/g, "").replace("−", "-")));
+      const checks: Array<[string, RegExp, (id: string) => number | null, number]> = [
+        ["summer high", /^COMFORT Summer high$/i, id => ref(id).summerHighF, 0.51],
+        ["winter low", /^COMFORT Winter low$/i, id => ref(id).winterLowF, 0.51],
+        ["humidity", /^COMFORT Humidity$/i, id => ref(id).humidityAnnual, 0.51],
+        ["annual precip", /^SEASONALITY Annual precip$/i, id => ref(id).precipIn, 0.51],
+        ["frost-free", /^SEASONALITY Frost-free$/i, id => ref(id).frostFree, 0.51],
+        ["sunshine (station)", /^SEASONALITY Sunshine$/i, id => (exported.get(id)?.sunshine_basis === "station" ? Number(exported.get(id)!.sunshine_pct) : null), 0.51],
+      ];
+      for (const [label, re, want, tol] of checks) {
+        const cs = cells(re);
+        if (order.length !== 2 || order.some(p => p == null)) { out.push(`compare ${pair.map(p => p.id).join("+")}: header not found`); continue; }
+        order.forEach((p, idx) => {
+          if (!p) return;
+          const w = want(p.id); const shown = cs ? val(cs[idx]) : undefined;
+          if (w == null && (shown == null)) return;
+          n++; const kind = `compare ${label}`; kinds[kind] = (kinds[kind] ?? 0) + 1;
+          if (shown == null) out.push(`${p.id} compare ${label}: shown "${cs?.[idx] ?? "missing"}", expected ${w!.toFixed(1)}`);
+          else if (w == null) out.push(`${p.id} compare ${label}: shown ${shown}, expected none`);
+          else if (Math.abs(shown - w) > tol) out.push(`${p.id} compare ${label}: shown ${shown}, expected ${w.toFixed(2)}`);
+        });
+      }
+      await pg.close();
+    }
+    await c4.close();
+    return { out, n };
+  };
+  const cmpTune = await compareErrs(11);
+  const cmpHeld = await compareErrs(9001);
+  checked += cmpTune.n; errs.push(...cmpTune.out);
   const tune = await profileErrs(11);
   const heldP = await profileErrs(9001);
   checked += tune.n; errs.push(...tune.out);
-  const held = { out: [...heldP.out, ...cardHeld.out], n: heldP.n + cardHeld.n };
-  record("S7a", "figures that differ from the climate records (export of all places; cards and profiles of 8 seeded places)", `${errs.length} of ${checked}`, "0", errs.length === 0, { errors: errs.slice(0, 60), checkedByKind: kinds });
+  const held = { out: [...heldP.out, ...cardHeld.out, ...cmpHeld.out], n: heldP.n + cardHeld.n + cmpHeld.n };
+  record("S7a", "figures that differ from the climate records (export of all places; cards, profiles and Compare for 8 seeded places)", `${errs.length} of ${checked}`, "0", errs.length === 0, { errors: errs.slice(0, 60), checkedByKind: kinds });
   console.log(`        checked: ${Object.entries(kinds).map(([k, v]) => `${k} ${v}`).join(" · ")}`);
-  record("S7b", "same, cards and profiles of a HELD-OUT seed (8 places)", `${held.out.length} of ${held.n}`, "0", held.out.length === 0, held.out);
+  record("S7b", "same, cards, profiles and Compare for a HELD-OUT seed (8 places)", `${held.out.length} of ${held.n}`, "0", held.out.length === 0, held.out);
   for (const e of [...errs.slice(0, 12), ...held.out.slice(0, 5)]) console.log(`        ${e}`);
 }
 

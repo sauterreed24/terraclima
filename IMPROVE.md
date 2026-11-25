@@ -35,11 +35,11 @@ Read this first each session. Keep sections short; condense old rounds.
 | S5d | first profile open, slow phone, ms to its climate figures | ≤ 3000 | 4032 | 1837–1927 | 1801–2087 |
 | S5e | first profile open, KB gzip downloaded | ≤ 250 | 676 | 125 | 125 |
 | S6a | console/page errors across all tasks | 0 | 0 | 0 | 0 |
-| S7a | figures shown or exported that differ from the climate records (independent conversion): export of all 226 with a home base, cards + profiles of 8 seeded places | 0 | — | — | 96 of 1875 (added round 3) |
-| S7b | same, cards + profiles of a HELD-OUT seed (8 places) | 0 | — | — | 5 of 71 (added round 3) |
+| S7a | figures shown or exported that differ from the climate records (conversion written in the evaluator): export of all 226 with a home base; cards, profiles and Compare for 8 seeded places | 0 | — | — | 96 of 1875 at round-3 start (Compare added after: 0 of 1920 after fixes) |
+| S7b | same, HELD-OUT seed (8 places) | 0 | — | — | 5 of 71 at round-3 start |
 
 All numbers measured by the evaluator. Noise: non-timing rows identical across two runs; timing medians move ≈ ±50 ms desktop, ±200 ms throttled.
-Proven to fail on a broken build: S2b (filter loosened 1 °C → "shown 105 vs ref 91"); S4a's 7th scenario and its unit test fail on round-1 code; S3c's DOM test fails without the storage listener. The rest failed on the baseline itself.
+Proven to fail on a broken build: S7 (summer months shifted Jun–Aug → Jul–Sep: 458 of 1920 and 24 of 114 flagged); S2b (filter loosened 1 °C → "shown 105 vs ref 91"); S4a's 7th scenario and its unit test fail on round-1 code; S3c's DOM test fails without the storage listener. The rest failed on the baseline itself.
 Next bar to raise: S5b (6.1 s on a slow phone is almost all the 740 KiB corpus; needs the corpus split — Decisions for me) and a held-out set 3 once set 2 has been seen.
 
 ## Checks for a human (cannot be scripted here)
@@ -93,4 +93,5 @@ Next bar to raise: S5b (6.1 s on a slow phone is almost all the 740 KiB corpus; 
 ## Decisions for me
 1. **Split the corpus so first load carries only what the list and map need** (recommended). ~30 % of the 742 KiB is profile-only text (citations, deep sections, confidence and climate-change notes). Expected: first ranked card on a slow phone from ~6.1 s toward ~4.5 s. Cost: the authored place files or a build step change shape; search over those fields would load lazily. Round 1's site-history split is the proven pattern.
 2. **Share saved places by link** (`?saved=a,b,c` → "Add these 5 places to your saved places?"). Import from a file is done; a link is one tap for a partner but adds a URL parameter to the documented contract.
+4. **Sunshine where no station records it**: Compare and profiles say "no data", while rankings ("Sunniest winters") and exports use an estimate from solar energy (mean error ≈ 9 points, basis labelled). The code has an explicit rule against showing that series as sunshine. Recommendation: show it in Compare as "~74% est." so finalists are not blank on a figure the app already ranks by; or keep "no data" and say in Compare that the ranking uses an estimate.
 3. **Evidence "Reviewed" date**: accept that it shows only after opening the panel (saves 120 KB per first profile), or ship the single review date with the profile.
