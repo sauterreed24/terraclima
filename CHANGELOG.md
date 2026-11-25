@@ -4,6 +4,27 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Review follow-ups: saved places, search prompts, phone profile, station fixes
+
+- **Saved places:** the list you keep is "Saved places" everywhere, with Save, Saved and Remove on the buttons. "Shortlist" is gone from the interface, and "pin" now only means a marker on the map. Filtering to one collection or trip reads "Show only these".
+- **Search:**
+  - A typo shows "No exact match for “flagstff”. Showing close matches." with up to three "Did you mean …?" buttons. A search with no results offers the same suggestions.
+  - The result count used to animate through wrong numbers for half a second after you cleared the search with another filter on. It now changes at once.
+- **Versus home:** temperature differences are whole degrees in your own unit, and a difference that rounds to zero reads "about the same" (it could read "0.0°").
+- **Phones:**
+  - A profile is about half as long (Bishop: 27,800px to 13,100px). Secondary sections start closed with a Show control, and the chapter bar opens the one you jump to.
+  - The map readout's More button, the profile's Show and Hide controls and the "Set as home base" button have full-size tap areas.
+  - Active-filter chips are 12px text (they were 9px).
+- **Map:** "United States" and "México" now show at the default view on phones and at tablet width. Where pins cover the country, the name sits just offshore.
+- **Compare:** the header card and panels are solid, so the page behind no longer shows through them.
+- **Place writing:** "In depth" chapters in 44 places talked about the atlas ("the ranking now treats…", "a scouting trip should…"). They now describe the place, from its own figures.
+- **Data, from station records (1991–2025):**
+  - **Leadville snowfall:** 324 cm a year (Lake County Airport). It read 210 cm.
+  - **Bishop snowfall:** 14 cm a year (Bishop Airport). It read 45 cm.
+  - **Lone Pine rainfall:** 186 mm a year, down from 255 mm. Lone Pine has no long-record gauge, so the grid is scaled against Independence, 25 km up the same valley floor. This is a new, narrower kind of correction (a "regional stand-in": within 30 km and 100 m, rainfall only), and the place's data confidence reads moderate, not high.
+  - **Creel:** unchanged. No GHCN station near it has usable years, and Mexico's weather service could not be reached. Its grid winters still look several degrees warm against the authored figures.
+- **Tooling:** `station-normals.ts` prints nearby stations' monthly means including snowfall. The station-check workflow has a `normals` mode and an opt-in job that commits a reviewed regeneration to its branch (never `main`).
+
 ### Search that forgives typos, a Compare bar, a month picker, honest labels
 
 - **Search:**
