@@ -44,6 +44,12 @@ type Thenable = Promise<SiteHistoryEntry | null> & {
   value?: SiteHistoryEntry | null;
 };
 const thenables = new Map<string, Thenable>();
+/**
+ * Places whose file failed to load. Their thenable stays fulfilled with null,
+ * so re-renders of the open profile do not suspend and re-request (which
+ * would loop); the next `loadSiteHistory` call — a new open — retries.
+ */
+const failed = new Set<string>();
 
 function remember(record: GroupRecord): void {
   for (const [id, entry] of Object.entries(record)) entries.set(id, entry);
@@ -63,10 +69,12 @@ export function siteHistoryFor(id: string): SiteHistoryEntry | null | undefined 
 
 /**
  * Download the file holding `id`'s site history. Never rejects: offline or on
- * a failed download the profile renders without the overlay and a later open
- * tries again.
+ * a failed download the profile renders without the overlay, and the next call
+ * (a later open of the place) tries again.
  */
 export function loadSiteHistory(id: string): Promise<SiteHistoryEntry | null> {
+  // A fresh open of a place whose file failed earlier tries again.
+  if (failed.delete(id)) thenables.delete(id);
   const known = siteHistoryFor(id);
   if (known !== undefined) return Promise.resolve(known);
   const group = SITE_HISTORY_GROUP_BY_ID[id]!;
@@ -102,8 +110,9 @@ export function siteHistoryThenable(id: string): Promise<SiteHistoryEntry | null
     pending.then(value => {
       pending.status = "fulfilled";
       pending.value = value;
-      // A failed download resolves to null; forget it so a later open retries.
-      if (siteHistoryFor(id) === undefined) thenables.delete(id);
+      // A failed download resolves to null: the profile renders without the
+      // overlay. Keep this thenable (re-renders must not retry); a later open does.
+      if (siteHistoryFor(id) === undefined) failed.add(id);
     });
     t = pending;
   }

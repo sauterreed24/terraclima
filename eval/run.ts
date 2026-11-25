@@ -389,6 +389,18 @@ async function sectionRecover(browser: Browser) {
     results["profile code fails to load → message + retry"] = /(try again|retry|reload|couldn.t load|could not load)/i.test(body);
     await ctx.close();
   }
+  {
+    // A profile's site-history file fails (offline, or an old tab after a deploy).
+    const ctx = await newCtx(browser);
+    let hits = 0;
+    await ctx.route(/site-history-(?:usa|canada|mexico)-\d+-.*\.js$/, r => { hits++; return r.abort(); });
+    const page = await open(ctx, "/?p=sequim-wa", /Failed to fetch dynamically imported module/);
+    await page.waitForTimeout(4000);
+    const body = await page.getByRole("dialog").first().innerText().catch(() => "");
+    results["profile's history file fails → profile still opens, no retry storm"] = /Sequim/.test(body) && /Climate normals/i.test(body) && hits <= 3;
+    if (hits > 3) console.log(`        site-history requests while failing: ${hits}`);
+    await ctx.close();
+  }
   const passed = Object.values(results).filter(Boolean).length;
   record("S4a", "failure scenarios where the app stays usable", `${passed}/${Object.keys(results).length}`, "all", passed === Object.keys(results).length, results);
   for (const [k, v] of Object.entries(results)) if (!v) console.log(`        fails: ${k}`);
