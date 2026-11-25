@@ -138,7 +138,7 @@ describe("composePlaceExperience", () => {
 
   it("strips generated immersive padding and keeps the authored portrait", () => {
     const astoria = composePlaceExperience(PLACES_BY_ID["astoria-or"]);
-    expect(astoria.immersive).toMatch(/storm-lashed port/i);
+    expect(astoria.immersive).toMatch(/working port/i);
     expect(astoria.immersive).not.toMatch(/doing quiet work behind the numbers|The rhythm holds most years|risk lines worth checking/);
   });
 
