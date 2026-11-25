@@ -6,7 +6,9 @@ import {
   addBookmarksToFront,
   clearBookmarks,
   hasBookmark,
+  importBookmarks,
   loadBookmarks,
+  parseSavedPlacesFile,
   removeBookmark,
   setBookmarks,
   toggleBookmark,
@@ -141,5 +143,40 @@ describe("place-bookmarks", () => {
     setBookmarks(["a", "b"]);
     expect(clearBookmarks()).toEqual([]);
     expect(loadBookmarks()).toEqual([]);
+  });
+
+  it("imports after existing saves without removing or reordering them", () => {
+    setBookmarks(["a", "b"]);
+    const result = importBookmarks(["c", "a", "d", "c", "a", ""]);
+    expect(result.added).toEqual(["c", "d"]);
+    expect(result.alreadySaved).toBe(1);
+    expect(result.capped).toBe(false);
+    expect(loadBookmarks()).toEqual(["a", "b", "c", "d"]);
+  });
+
+  it("imports only what fits under the cap", () => {
+    const existing = Array.from({ length: BOOKMARK_LIMIT - 1 }, (_, i) => `e-${i}`);
+    setBookmarks(existing);
+    const result = importBookmarks(["x", "y"]);
+    expect(result).toMatchObject({ added: ["x"], capped: true });
+    expect(loadBookmarks().slice(0, BOOKMARK_LIMIT - 1)).toEqual(existing);
+  });
+
+  it("reads ids from the JSON and GeoJSON exports and from a plain list", () => {
+    const known = new Set(["sequim-wa", "bishop-ca"]);
+    const resolve = (id: string) => (id === "old-sequim" ? "sequim-wa" : known.has(id) ? id : null);
+    expect(parseSavedPlacesFile(JSON.stringify({ count: 2, places: [{ id: "bishop-ca", name: "Bishop" }, { id: "old-sequim" }] }), resolve))
+      .toEqual({ ok: true, ids: ["bishop-ca", "sequim-wa"], unknown: 0 });
+    expect(parseSavedPlacesFile(JSON.stringify({ type: "FeatureCollection", features: [{ properties: { id: "sequim-wa" } }, { properties: { id: "gone-xx" } }, null] }), resolve))
+      .toEqual({ ok: true, ids: ["sequim-wa"], unknown: 1 });
+    expect(parseSavedPlacesFile(`\uFEFF${JSON.stringify(["bishop-ca", "bishop-ca", 7])}`, resolve))
+      .toEqual({ ok: true, ids: ["bishop-ca"], unknown: 0 });
+  });
+
+  it("rejects files that are not a saved-places export", () => {
+    const resolve = (id: string) => id;
+    for (const text of ["", "not json", "{}", "null", "42", JSON.stringify({ places: "x" }), JSON.stringify([{ name: "no id" }]), "x".repeat(8_000_001)]) {
+      expect(parseSavedPlacesFile(text, resolve), text.slice(0, 20)).toEqual({ ok: false });
+    }
   });
 });

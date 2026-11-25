@@ -160,3 +160,78 @@ export function clearBookmarks(): string[] {
 }
 
 export const BOOKMARKS_STORAGE_KEY = STORAGE_KEY;
+
+/**
+ * Add saved places brought in from a file after the ones already saved, in the
+ * file's order. Never removes or reorders an existing save; at the cap the
+ * rest are left out (`capped`).
+ */
+export function importBookmarks(ids: readonly string[]): { ids: string[]; added: string[]; alreadySaved: number; capped: boolean } {
+  const storage = safeStorage();
+  const current = readRaw(storage);
+  const saved = new Set(current);
+  const fresh: string[] = [];
+  const seen = new Set<string>();
+  let alreadySaved = 0;
+  for (const v of ids) {
+    if (typeof v !== "string" || !v || seen.has(v)) continue;
+    seen.add(v);
+    if (saved.has(v)) alreadySaved += 1;
+    else fresh.push(v);
+  }
+  const room = Math.max(0, BOOKMARK_LIMIT - current.length);
+  const added = fresh.slice(0, room);
+  const next = [...current, ...added];
+  if (added.length > 0) writeRaw(storage, next);
+  return { ids: next, added, alreadySaved, capped: added.length < fresh.length };
+}
+
+/** Largest import file read, in characters (an export of every place is ~1 MB). */
+export const SAVED_PLACES_IMPORT_MAX_CHARS = 8_000_000;
+
+/**
+ * Place ids from a file made by "Export saved places" (JSON or GeoJSON), or a
+ * plain JSON list of ids. `resolve` maps an id (or an old alias) to a current
+ * place id, or null when the atlas has no such place. Nothing but ids is read.
+ */
+export function parseSavedPlacesFile(
+  text: string,
+  resolve: (id: string) => string | null,
+): { ok: true; ids: string[]; unknown: number } | { ok: false } {
+  if (text.length > SAVED_PLACES_IMPORT_MAX_CHARS) return { ok: false };
+  let data: unknown;
+  try {
+    data = JSON.parse(text.replace(/^\uFEFF/, ""));
+  } catch {
+    return { ok: false };
+  }
+  let raw: unknown[] | null = null;
+  if (Array.isArray(data)) raw = data;
+  else if (data && typeof data === "object") {
+    const obj = data as { places?: unknown; features?: unknown };
+    if (Array.isArray(obj.places)) raw = obj.places;
+    else if (Array.isArray(obj.features)) raw = obj.features.map(f => (f && typeof f === "object" ? (f as { properties?: unknown }).properties : null));
+  }
+  if (!raw) return { ok: false };
+  const ids: string[] = [];
+  const seen = new Set<string>();
+  let unknown = 0;
+  for (const item of raw) {
+    const candidate = typeof item === "string"
+      ? item
+      : item && typeof item === "object" && typeof (item as { id?: unknown }).id === "string"
+        ? (item as { id: string }).id
+        : null;
+    if (candidate == null) continue;
+    const id = resolve(candidate);
+    if (!id) {
+      unknown += 1;
+      continue;
+    }
+    if (seen.has(id)) continue;
+    seen.add(id);
+    ids.push(id);
+  }
+  if (ids.length === 0 && unknown === 0) return { ok: false };
+  return { ok: true, ids, unknown };
+}

@@ -1,5 +1,5 @@
 import { lazy, memo, startTransition, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Cloud, Compass, Eye, Globe2, HelpCircle, Home, Library, Link2, Map, Menu, MoreHorizontal, Route, Search, ShieldAlert, Shuffle, Snowflake, Sparkles, Target, X, type LucideIcon } from "lucide-react";
+import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Cloud, Compass, Eye, Globe2, HelpCircle, Home, Library, Link2, Map, Menu, MoreHorizontal, Route, Search, ShieldAlert, Shuffle, Snowflake, Sparkles, Target, Upload, X, type LucideIcon } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { BackToTop } from "./components/chrome/BackToTop";
@@ -78,7 +78,9 @@ import {
   BOOKMARK_LIMIT,
   BOOKMARKS_STORAGE_KEY,
   addBookmarksToFront,
+  importBookmarks,
   loadBookmarks,
+  parseSavedPlacesFile,
   toggleBookmark as toggleBookmarkPersist,
 } from "./lib/place-bookmarks";
 import {
@@ -1286,6 +1288,33 @@ export default function App() {
     }
   }, []);
 
+  const importSavedPlaces = useCallback(async (file: File) => {
+    let text = "";
+    try {
+      text = await file.text();
+    } catch {
+      text = "";
+    }
+    const parsed = parseSavedPlacesFile(text, resolvePlaceId);
+    if (!parsed.ok) {
+      setTransientFeedback(
+        `Nothing imported: ${file.name} is not a saved-places file. Use a JSON or GeoJSON file made with Export saved places.`,
+      );
+      return;
+    }
+    const result = importBookmarks(parsed.ids);
+    setBookmarkIds(new Set(result.ids));
+    const parts = [
+      result.added.length === 0
+        ? "No new places to add"
+        : `Added ${result.added.length} saved place${result.added.length === 1 ? "" : "s"}`,
+    ];
+    if (result.alreadySaved > 0) parts.push(`${result.alreadySaved} ${result.alreadySaved === 1 ? "was" : "were"} already saved`);
+    if (parsed.unknown > 0) parts.push(`${parsed.unknown} ${parsed.unknown === 1 ? "is" : "are"} no longer in the atlas`);
+    if (result.capped) parts.push(`this browser keeps up to ${BOOKMARK_LIMIT}, so the rest were not added`);
+    setTransientFeedback(`${parts.join("; ")}.`);
+  }, []);
+
   const clearRecents = useCallback(() => {
     setRecentIds(clearRecentPlaces());
     focusMainContentNextFrame();
@@ -1863,6 +1892,7 @@ export default function App() {
                   onCompareContextLeaders={comparePlaces}
                   onPreloadCompare={preloadCompareView}
                   onSaveScoutFinalists={saveScoutFinalists}
+                  onImportSavedPlaces={importSavedPlaces}
                   onApplyContextScenario={applyContextScenario}
                   bookmarkIds={bookmarkIds}
                   onToggleBookmark={toggleBookmark}
@@ -3001,6 +3031,7 @@ const HeroCard = memo(function HeroCard({
   onCompareContextLeaders,
   onPreloadCompare,
   onSaveScoutFinalists,
+  onImportSavedPlaces,
   onApplyContextScenario,
   bookmarkIds,
   onToggleBookmark,
@@ -3049,6 +3080,7 @@ const HeroCard = memo(function HeroCard({
   onCompareContextLeaders: ComparePlacesHandler;
   onPreloadCompare: () => void;
   onSaveScoutFinalists: (ids: readonly string[]) => void;
+  onImportSavedPlaces: (file: File) => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
   bookmarkIds: Set<string>;
   onToggleBookmark: (id: string) => void;
@@ -3245,7 +3277,7 @@ const HeroCard = memo(function HeroCard({
               type="button"
               className={`btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)] ${shareStatus === "failed" ? "!border-[rgba(232,90,50,0.45)] !text-ember-700" : ""}`}
               aria-label="More actions"
-              title="More actions: copy a link, show summary panels"
+              title="More actions: copy a link, show summary panels, import saved places"
               aria-expanded={heroMoreOpen}
               aria-controls="hero-more-menu-panel"
               onClick={() => setHeroMoreOpen(open => !open)}
@@ -3283,6 +3315,26 @@ const HeroCard = memo(function HeroCard({
                 <Compass className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
                 Summary panels
               </button>
+              <label
+                htmlFor="hero-import-saved-places"
+                className="btn-ghost !text-xs !py-1.5 w-full justify-start border-[rgba(122,212,240,0.35)] cursor-pointer focus-within:ring-2 focus-within:ring-[rgba(26,143,168,0.7)]"
+                title="Add places from a file made with Export saved places, for example on another device"
+              >
+                <Upload className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
+                Import saved places
+                <input
+                  id="hero-import-saved-places"
+                  type="file"
+                  accept=".json,.geojson,application/json,application/geo+json"
+                  className="sr-only"
+                  aria-label="Import saved places from a file made with Export saved places"
+                  onChange={event => {
+                    const file = event.currentTarget.files?.[0];
+                    event.currentTarget.value = "";
+                    if (file) onImportSavedPlaces(file);
+                  }}
+                />
+              </label>
               {scoutToolsOpen && scoutBrief ? (
                 <button
                   type="button"

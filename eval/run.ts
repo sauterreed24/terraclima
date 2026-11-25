@@ -239,6 +239,26 @@ async function sectionJobs(browser: Browser) {
       detail = `ids=${ids.join(",")}`;
     } catch (e) { detail = String(e).slice(0, 120); }
     record("S2e", "export saved places as JSON; every saved place present", ok ? `${steps} steps` : `failed ${detail}`, "done in <= 2", ok && steps <= 2);
+    // J6 carry them to another browser that already has one saved place of its own
+    let moved = false; let mstep = steps; let mdetail = "";
+    try {
+      const file = await (await dl).path();
+      const other = await newCtx(browser);
+      await other.addInitScript(() => {
+        if (!sessionStorage.getItem("seeded")) {
+          localStorage.setItem("terraclima.bookmarks.v1", JSON.stringify(["sitka-ak"])); sessionStorage.setItem("seeded", "1");
+        }
+      });
+      const p2 = await open(other); await firstCard(p2);
+      await p2.getByRole("button", { name: "More actions" }).first().click(); mstep++;
+      await p2.getByLabel(/^Import saved places/).first().setInputFiles(file!); mstep++;
+      await p2.waitForTimeout(500);
+      const after = await bookmarks(p2);
+      moved = ["sitka-ak", "bishop-ca", "sequim-wa", "oaxaca-mx"].every(id => after.includes(id)) && after[0] === "sitka-ak";
+      mdetail = after.join(",");
+      await other.close();
+    } catch (e) { mdetail = String(e).slice(0, 120); }
+    record("S2f", "move saved places to another browser (export, then import there; its own save kept)", moved ? `${mstep} steps` : `failed ${mdetail}`, "done in <= 4", moved && mstep <= 4);
     await ctx.close();
   }
 }
