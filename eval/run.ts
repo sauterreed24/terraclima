@@ -614,6 +614,14 @@ async function sectionAccuracy(browser: Browser) {
       if (r.humidityAnnual != null && h.humidityAnnual != null) near(`${id} csv humidity_vs_home_pct`, Number(row.humidity_vs_home_pct), r.humidityAnnual - h.humidityAnnual, 0.51);
     }
   }
+  // Sunshine differences between two station series (monthly percent of possible, raw data).
+  const stationSun = (id: string) => { const m = PLACES.find(p => p.id === id)!.climate.sunshinePct; return m && m.length === 12 ? avg(m) : null; };
+  const hs = stationSun(HOME);
+  for (const row of rows) {
+    const here = stationSun(row.id!);
+    if (row.id === HOME || here == null || hs == null || row.sunshine_vs_home_pct === "") continue;
+    near(`${row.id} csv sunshine_vs_home_pct (stations)`, Number(row.sunshine_vs_home_pct), here - hs, 0.51);
+  }
   const missing = PLACES.length - rows.length;
   if (missing) errs.push(`export is missing ${missing} saved places`);
   await ctx.close();

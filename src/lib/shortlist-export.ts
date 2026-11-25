@@ -117,12 +117,14 @@ function annualSnowIn(place: Place): number | null {
 /** Share of possible sunshine: the station series where the place has one, else the solar-resource estimate. */
 function sunshine(place: Place): { pct: number; basis: "station" | "estimated" } | null {
   const raw = sunshineRaw(place);
-  return raw == null ? null : { pct: raw.basis === "estimated" ? round(raw.pct) : raw.pct, basis: raw.basis };
+  return raw == null ? null : { pct: round(raw.pct), basis: raw.basis };
 }
 
 function sunshineRaw(place: Place): { pct: number; basis: "station" | "estimated" } | null {
-  const station = observedSunshinePct(place);
-  if (station != null) return { pct: station, basis: "station" };
+  const series = place.climate.sunshinePct;
+  if (observedSunshinePct(place) != null && series) {
+    return { pct: series.reduce((sum, v) => sum + v, 0) / series.length, basis: "station" };
+  }
   const estimate = meanAnnualSunshinePct(place);
   return estimate == null ? null : { pct: estimate, basis: "estimated" };
 }
@@ -197,7 +199,7 @@ const HOME_COLUMNS: readonly ExportColumn[] = [
   { csv: "annual_precip_vs_home_in", json: "annualPrecipVsHomeIn", about: "Annual precipitation minus home's, inches.", value: vsHome(annualPrecipIn, 1) },
   { csv: "annual_snow_vs_home_in", json: "annualSnowVsHomeIn", about: "Annual snowfall minus home's, inches (blank unless both record snowfall).", value: vsHome(annualSnowIn, 1) },
   { csv: "humidity_vs_home_pct", json: "humidityVsHomePct", about: "Mean humidity minus home's, percentage points.", value: vsHome(meanAnnualHumidityPct, 0) },
-  { csv: "sunshine_vs_home_pct", json: "sunshineVsHomePct", about: "Sunshine share minus home's, percentage points.", value: vsHome(p => sunshineRaw(p)?.pct ?? null, 0) },
+  { csv: "sunshine_vs_home_pct", json: "sunshineVsHomePct", about: "Sunshine share minus home's, percentage points; either side may be an estimate (see sunshine_basis).", value: vsHome(p => sunshineRaw(p)?.pct ?? null, 0) },
   { csv: "livability_vs_home", json: "livabilityVsHome", about: "Livability score minus home's, points.", value: vsHome(p => scoreLivability(p).score, 0) },
 ];
 
