@@ -1,49 +1,454 @@
 {
-  "note": "Realistic searches a person types, with the place(s) they mean. Tuning set: changes may be measured against it.",
+  "note": "Realistic searches a person types, with the place(s) they mean. Tuning set (includes the retired held-out set 1, seen in round 1).",
   "queries": [
-    { "q": "flagstaff", "expect": ["flagstaff-az"] },
-    { "q": "flagstaff az", "expect": ["flagstaff-az"] },
-    { "q": "Asheville, NC", "expect": ["asheville-nc"] },
-    { "q": "ashvile", "expect": ["asheville-nc"] },
-    { "q": "tuscon", "expect": ["tucson-az"] },
-    { "q": "sedonna", "expect": ["sedona-az"] },
-    { "q": "monteray", "expect": ["monterey-ca"] },
-    { "q": "santa barbra", "expect": ["santa-barbara-ca"] },
-    { "q": "bozman", "expect": ["bozeman-mt"] },
-    { "q": "mt. charleston", "expect": ["mount-charleston-nv"] },
-    { "q": "mt washington", "expect": ["mount-washington-nh"] },
-    { "q": "ft davis", "expect": ["fort-davis-tx"] },
-    { "q": "saint john's", "expect": ["st-johns-nl"] },
-    { "q": "st johns", "expect": ["st-johns-nl"] },
-    { "q": "lake tahoe", "expect": ["truckee-ca"] },
-    { "q": "jackson hole", "expect": ["jackson-wy"] },
-    { "q": "outer banks", "expect": ["nags-head-nc"] },
-    { "q": "furnace creek", "expect": ["death-valley-ca"] },
-    { "q": "copper canyon", "expect": ["creel-mx"] },
-    { "q": "san cristobal", "expect": ["san-cristobal-mx"] },
-    { "q": "cuatro cienegas", "expect": ["cuatrocienegas-mx"] },
-    { "q": "queretaro", "expect": ["queretaro-mx"] },
-    { "q": "washington dc", "expect": ["washington-dc"] },
-    { "q": "halifax ns", "expect": ["halifax-ns"] },
-    { "q": "oaxaca", "expect": ["oaxaca-mx"] },
-    { "q": "puerto vallarta", "expect": ["puerto-vallarta-mx"] },
-    { "q": "niagara on the lake", "expect": ["niagara-on-the-lake"] },
-    { "q": "lake chapala", "expect": ["ajijic-lake-chapala-mx"] },
-    { "q": "palm springs ca", "expect": ["palm-springs-ca"] },
-    { "q": "key west fl", "expect": ["key-west-fl"] },
-    { "q": "point reyes station", "expect": ["point-reyes-ca"] },
-    { "q": "pt reyes", "expect": ["point-reyes-ca"] },
-    { "q": "keweenaw", "expect": ["houghton-mi"] },
-    { "q": "san miguel", "expect": ["san-miguel-de-allende-mx"] },
-    { "q": "merida", "expect": ["merida-mx"] },
-    { "q": "mazatlan", "expect": ["mazatlan-mx"] },
-    { "q": "patzcuaro", "expect": ["patzcuaro-mx"] },
-    { "q": "banff ab", "expect": ["banff-ab"] },
-    { "q": "victoria bc", "expect": ["victoria-bc"] },
-    { "q": "big island", "expect": ["hilo-hi"] },
-    { "q": "teton valley", "expect": ["driggs-id"] },
-    { "q": "hoh rainforest", "expect": ["forks-wa"] },
-    { "q": "finger lakes", "expect": ["ithaca-ny"] },
-    { "q": "columbia gorge", "expect": ["hood-river-or", "hood-river-gorge"] }
+    {
+      "q": "flagstaff",
+      "expect": [
+        "flagstaff-az"
+      ]
+    },
+    {
+      "q": "flagstaff az",
+      "expect": [
+        "flagstaff-az"
+      ]
+    },
+    {
+      "q": "Asheville, NC",
+      "expect": [
+        "asheville-nc"
+      ]
+    },
+    {
+      "q": "ashvile",
+      "expect": [
+        "asheville-nc"
+      ]
+    },
+    {
+      "q": "tuscon",
+      "expect": [
+        "tucson-az"
+      ]
+    },
+    {
+      "q": "sedonna",
+      "expect": [
+        "sedona-az"
+      ]
+    },
+    {
+      "q": "monteray",
+      "expect": [
+        "monterey-ca"
+      ]
+    },
+    {
+      "q": "santa barbra",
+      "expect": [
+        "santa-barbara-ca"
+      ]
+    },
+    {
+      "q": "bozman",
+      "expect": [
+        "bozeman-mt"
+      ]
+    },
+    {
+      "q": "mt. charleston",
+      "expect": [
+        "mount-charleston-nv"
+      ]
+    },
+    {
+      "q": "mt washington",
+      "expect": [
+        "mount-washington-nh"
+      ]
+    },
+    {
+      "q": "ft davis",
+      "expect": [
+        "fort-davis-tx"
+      ]
+    },
+    {
+      "q": "saint john's",
+      "expect": [
+        "st-johns-nl"
+      ]
+    },
+    {
+      "q": "st johns",
+      "expect": [
+        "st-johns-nl"
+      ]
+    },
+    {
+      "q": "lake tahoe",
+      "expect": [
+        "truckee-ca"
+      ]
+    },
+    {
+      "q": "jackson hole",
+      "expect": [
+        "jackson-wy"
+      ]
+    },
+    {
+      "q": "outer banks",
+      "expect": [
+        "nags-head-nc"
+      ]
+    },
+    {
+      "q": "furnace creek",
+      "expect": [
+        "death-valley-ca"
+      ]
+    },
+    {
+      "q": "copper canyon",
+      "expect": [
+        "creel-mx"
+      ]
+    },
+    {
+      "q": "san cristobal",
+      "expect": [
+        "san-cristobal-mx"
+      ]
+    },
+    {
+      "q": "cuatro cienegas",
+      "expect": [
+        "cuatrocienegas-mx"
+      ]
+    },
+    {
+      "q": "queretaro",
+      "expect": [
+        "queretaro-mx"
+      ]
+    },
+    {
+      "q": "washington dc",
+      "expect": [
+        "washington-dc"
+      ]
+    },
+    {
+      "q": "halifax ns",
+      "expect": [
+        "halifax-ns"
+      ]
+    },
+    {
+      "q": "oaxaca",
+      "expect": [
+        "oaxaca-mx"
+      ]
+    },
+    {
+      "q": "puerto vallarta",
+      "expect": [
+        "puerto-vallarta-mx"
+      ]
+    },
+    {
+      "q": "niagara on the lake",
+      "expect": [
+        "niagara-on-the-lake"
+      ]
+    },
+    {
+      "q": "lake chapala",
+      "expect": [
+        "ajijic-lake-chapala-mx"
+      ]
+    },
+    {
+      "q": "palm springs ca",
+      "expect": [
+        "palm-springs-ca"
+      ]
+    },
+    {
+      "q": "key west fl",
+      "expect": [
+        "key-west-fl"
+      ]
+    },
+    {
+      "q": "point reyes station",
+      "expect": [
+        "point-reyes-ca"
+      ]
+    },
+    {
+      "q": "pt reyes",
+      "expect": [
+        "point-reyes-ca"
+      ]
+    },
+    {
+      "q": "keweenaw",
+      "expect": [
+        "houghton-mi"
+      ]
+    },
+    {
+      "q": "san miguel",
+      "expect": [
+        "san-miguel-de-allende-mx"
+      ]
+    },
+    {
+      "q": "merida",
+      "expect": [
+        "merida-mx"
+      ]
+    },
+    {
+      "q": "mazatlan",
+      "expect": [
+        "mazatlan-mx"
+      ]
+    },
+    {
+      "q": "patzcuaro",
+      "expect": [
+        "patzcuaro-mx"
+      ]
+    },
+    {
+      "q": "banff ab",
+      "expect": [
+        "banff-ab"
+      ]
+    },
+    {
+      "q": "victoria bc",
+      "expect": [
+        "victoria-bc"
+      ]
+    },
+    {
+      "q": "big island",
+      "expect": [
+        "hilo-hi"
+      ]
+    },
+    {
+      "q": "teton valley",
+      "expect": [
+        "driggs-id"
+      ]
+    },
+    {
+      "q": "hoh rainforest",
+      "expect": [
+        "forks-wa"
+      ]
+    },
+    {
+      "q": "finger lakes",
+      "expect": [
+        "ithaca-ny"
+      ]
+    },
+    {
+      "q": "columbia gorge",
+      "expect": [
+        "hood-river-or",
+        "hood-river-gorge"
+      ]
+    },
+    {
+      "q": "Bozeman, MT",
+      "expect": [
+        "bozeman-mt"
+      ]
+    },
+    {
+      "q": "missoola",
+      "expect": [
+        "missoula-mt"
+      ]
+    },
+    {
+      "q": "duluth mn",
+      "expect": [
+        "duluth-mn"
+      ]
+    },
+    {
+      "q": "Mt Charleston NV",
+      "expect": [
+        "mount-charleston-nv"
+      ]
+    },
+    {
+      "q": "pt townsend",
+      "expect": [
+        "port-townsend-wa"
+      ]
+    },
+    {
+      "q": "st john's newfoundland",
+      "expect": [
+        "st-johns-nl"
+      ]
+    },
+    {
+      "q": "sante fe",
+      "expect": [
+        "santa-fe-nm"
+      ]
+    },
+    {
+      "q": "taos nm",
+      "expect": [
+        "taos-nm"
+      ]
+    },
+    {
+      "q": "ensenada",
+      "expect": [
+        "ensenada-mx"
+      ]
+    },
+    {
+      "q": "cuernavaca",
+      "expect": [
+        "cuernavaca-mx"
+      ]
+    },
+    {
+      "q": "san cristobal de las casas",
+      "expect": [
+        "san-cristobal-mx"
+      ]
+    },
+    {
+      "q": "valle de guadalupe",
+      "expect": [
+        "valle-guadalupe-mx"
+      ]
+    },
+    {
+      "q": "todos santos",
+      "expect": [
+        "todos-santos-mx"
+      ]
+    },
+    {
+      "q": "la paz bcs",
+      "expect": [
+        "la-paz-mx"
+      ]
+    },
+    {
+      "q": "queretaro mexico",
+      "expect": [
+        "queretaro-mx"
+      ]
+    },
+    {
+      "q": "gatlinburg tn",
+      "expect": [
+        "gatlinburg-tn"
+      ]
+    },
+    {
+      "q": "smoky mountains",
+      "expect": [
+        "gatlinburg-tn"
+      ]
+    },
+    {
+      "q": "black hills",
+      "expect": [
+        "spearfish-sd",
+        "rapid-city-sd"
+      ]
+    },
+    {
+      "q": "okanagan valley",
+      "expect": [
+        "osoyoos-bc",
+        "summerland-bc",
+        "penticton-bc",
+        "kelowna-bc"
+      ]
+    },
+    {
+      "q": "kelowna bc",
+      "expect": [
+        "kelowna-bc"
+      ]
+    },
+    {
+      "q": "whitehorse yukon",
+      "expect": [
+        "whitehorse-yt"
+      ]
+    },
+    {
+      "q": "yellow knife",
+      "expect": [
+        "yellowknife-nt"
+      ]
+    },
+    {
+      "q": "prince edward island",
+      "expect": [
+        "charlottetown-pei"
+      ]
+    },
+    {
+      "q": "bar harbour",
+      "expect": [
+        "bar-harbor-me"
+      ]
+    },
+    {
+      "q": "monterrey mexico",
+      "expect": [
+        "monterrey-mx"
+      ]
+    },
+    {
+      "q": "the berkshires",
+      "expect": [
+        "pittsfield-ma"
+      ]
+    },
+    {
+      "q": "san juan islands",
+      "expect": [
+        "friday-harbor-wa"
+      ]
+    },
+    {
+      "q": "mammoth",
+      "expect": [
+        "mammoth-lakes-ca"
+      ]
+    },
+    {
+      "q": "mt washington nh",
+      "expect": [
+        "mount-washington-nh"
+      ]
+    },
+    {
+      "q": "ft. davis texas",
+      "expect": [
+        "fort-davis-tx"
+      ]
+    }
   ]
 }

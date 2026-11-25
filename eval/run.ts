@@ -76,8 +76,9 @@ function sectionSearch() {
   const tune = searchSet("search-tune.json");
   record("S1a", "search top-1, tuning set", `${tune.hits}/${tune.total}`, ">= 95%", tune.hits / tune.total >= 0.95, tune.misses);
   const held = searchSet("search-holdout.json");
-  record("S1b", "search top-1, HELD-OUT set", `${held.hits}/${held.total}`, ">= 90%", held.hits / held.total >= 0.9, held.misses);
-  for (const m of [...tune.misses, ...held.misses]) console.log(`        miss "${m.q}" → ${m.got.join(", ") || "(nothing)"}`);
+  record("S1b", "search top-1, HELD-OUT set", `${held.hits}/${held.total}`, ">= 90%", held.hits / held.total >= 0.9);
+  // Held-out misses are not printed, so they cannot steer the next change.
+  for (const m of tune.misses) console.log(`        miss "${m.q}" → ${m.got.join(", ") || "(nothing)"}`);
 }
 
 // ---------------------------------------------------------------- browser plumbing
