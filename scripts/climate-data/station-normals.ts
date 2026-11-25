@@ -9,6 +9,7 @@
  * that meets the correction policy.
  *
  *   npx tsx scripts/climate-data/station-normals.ts --ids a,b [--radius-km 40]
+ *   npx tsx scripts/climate-data/station-normals.ts --ids smn:08035:chih
  *
  * A review aid only: nothing is applied from its output.
  */
@@ -118,8 +119,24 @@ function normals(text: string) {
 
 async function main() {
   const radiusKm = Number(arg("--radius-km") ?? 40);
-  const only = new Set((arg("--ids") ?? "").split(",").filter(Boolean));
-  if (only.size === 0) throw new Error("--ids is required");
+  const requested = (arg("--ids") ?? "").split(",").filter(Boolean);
+  // "smn:08035:chih" prints Mexico's weather-service normals for that station
+  // (GHCN-Daily holds few usable Mexican records).
+  for (const spec of requested.filter(r => r.startsWith("smn:"))) {
+    const [, station, state] = spec.split(":");
+    for (const period of ["9120", "8110"]) {
+      const url = `https://smn.conagua.gob.mx/tools/RESOURCES/Normales_Climatologicas/Normales${period}/${state}/nor${period}_${station}.txt`;
+      try {
+        const res = await fetchWithRetry(url, { timeoutMs: 60_000 });
+        console.log(`SMN ${station} ${period} | ${res.ok ? "ok" : "unavailable"}`);
+        if (res.ok) for (const line of res.body.split(/\r?\n/).slice(0, 140)) console.log(`SMN ${station} ${period} | ${line}`);
+      } catch (err) {
+        console.log(`SMN ${station} ${period} | failed: ${String(err)}`);
+      }
+    }
+  }
+  const only = new Set(requested.filter(r => !r.startsWith("smn:")));
+  if (only.size === 0) return;
   const anchors = (JSON.parse(readFileSync(ANCHORS_PATH, "utf8")) as { anchors: Anchor[] }).anchors.filter(a => only.has(a.id));
   const stationsText = await cachedText(`${GHCN_BASE}/ghcnd-stations.txt`, "ghcnd-stations.txt");
   const inventoryText = await cachedText(`${GHCN_BASE}/ghcnd-inventory.txt`, "ghcnd-inventory.txt");
