@@ -462,7 +462,7 @@ describe("App shell", () => {
     const saveButton = within(actions).getByRole("button", { name: /Save the top 4 places to your saved places/ });
     expect(saveButton).toBeInTheDocument();
     expect(saveButton).toHaveAttribute("title", saveButton.getAttribute("aria-label"));
-    const pinButton = within(actions).getByRole("button", { name: /Save .* to your saved places/ });
+    const pinButton = within(actions).getByRole("button", { name: /^Save (?!the top).* to your saved places/ });
     expect(pinButton).toHaveAttribute("aria-pressed", "false");
     expect(pinButton).toHaveAttribute("title", pinButton.getAttribute("aria-label"));
     expect(scoutBoard.compareDocumentPosition(signalRail) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -905,7 +905,7 @@ describe("App shell", () => {
     });
     expect(screen.getByText(/Saved 4 new places/)).toBeInTheDocument();
     const saved = JSON.parse(window.localStorage.getItem("terraclima.bookmarks.v1") ?? "[]") as string[];
-    expect(screen.getByLabelText("Shortlist status")).toHaveTextContent("Ready to compare");
+    expect(screen.getByLabelText("Saved places status")).toHaveTextContent("Ready to compare");
 
     fireEvent.click(screen.getByRole("button", { name: "Compare 4 places from your saved places side by side" }));
 
@@ -919,7 +919,7 @@ describe("App shell", () => {
     openScoutTools();
 
     const actions = screen.getByLabelText(/^Summary actions for /);
-    const pinButton = within(actions).getByRole("button", { name: /Save .* to your saved places/ });
+    const pinButton = within(actions).getByRole("button", { name: /^Save (?!the top).* to your saved places/ });
     expect(pinButton).toHaveAttribute("title", pinButton.getAttribute("aria-label"));
     fireEvent.click(pinButton);
 
@@ -1949,7 +1949,7 @@ describe("App shell", () => {
 
     renderApp();
 
-    const readiness = screen.getByLabelText("Shortlist status");
+    const readiness = screen.getByLabelText("Saved places status");
     expect(readiness).toHaveTextContent("1 place saved");
     expect(readiness).toHaveTextContent("Save a second place to compare");
     expect(screen.queryByLabelText("Where to start in your saved places")).not.toBeInTheDocument();
@@ -1969,7 +1969,7 @@ describe("App shell", () => {
     );
     renderApp();
     expect(screen.getByText(/Saved places · 2/)).toBeInTheDocument();
-    const readiness = screen.getByLabelText("Shortlist status");
+    const readiness = screen.getByLabelText("Saved places status");
     expect(readiness).toHaveTextContent("Ready to compare");
     expect(readiness).toHaveTextContent("Compare these 2 places, or export a visit plan");
     const packet = screen.getByLabelText("Where to start in your saved places");

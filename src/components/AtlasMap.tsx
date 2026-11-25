@@ -195,19 +195,30 @@ const COUNTRY_LABEL_FALLBACK_BOXES: Record<string, readonly (readonly [number, n
 };
 /** Tight settings of a country name: one line, then (two words) stacked. */
 function countryLabelFallbacks(label: string, tightW: number, roomPx: number, fontPx: number) {
-  const out: { variant: string; halfW: number; halfH?: number }[] = [];
-  if (tightW <= roomPx) out.push({ variant: "tight", halfW: tightW / 2 });
+  const out: { variant: string; halfW: number; halfH?: number; lineOffsets?: number[]; lineHalfH?: number }[] = [];
+  if (tightW <= roomPx || !label.includes(" ")) out.push({ variant: "tight", halfW: tightW / 2 });
   const words = label.split(" ");
   if (words.length === 2) {
     const widest = Math.max(words[0]!.length, words[1]!.length) / label.length;
-    out.push({ variant: "stacked", halfW: (tightW * widest) / 2, halfH: 6 + (fontPx * COUNTRY_LABEL_STACK_LEADING) / 2 });
+    const lead = (fontPx * COUNTRY_LABEL_STACK_LEADING) / 2;
+    out.push({ variant: "stacked", halfW: (tightW * widest) / 2, halfH: 6 + lead, lineOffsets: [-lead, lead], lineHalfH: 6 });
   }
   return out;
 }
 /** A country name may sit partly behind pins only up to this share of its length. */
 const COUNTRY_LABEL_MAX_COVER = 0.3;
-/** Last resort on crowded small maps: a faint name the pins sit on. */
-const COUNTRY_LABEL_UNDERLAY_MAX_COVER = 0.62;
+/**
+ * Last-resort seats just offshore (lon/lat), for small maps whose badges
+ * leave no room on the land itself: a small name set clear beside its
+ * coast, the way an atlas letters a crowded country, beats no name at all.
+ */
+const COUNTRY_LABEL_OFFSHORE_SEATS: Record<string, readonly (readonly [number, number])[]> = {
+  usa: [[-73.5, 32.5], [-72, 30.5], [-71, 34.5], [-70, 37]],
+  mexico: [[-93, 24], [-93.5, 22.5], [-112, 19.5], [-113.5, 17.5]],
+};
+const COUNTRY_LABEL_OFFSHORE_NUDGES: readonly (readonly [number, number])[] = [
+  [0, 0], [8, 0], [-8, 0], [0, 8], [0, -8], [8, 8], [8, -8], [-8, 8], [-8, -8], [16, 0], [0, 16], [0, -16], [16, 8], [16, -8],
+];
 const OCEAN_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0], [0, -22], [0, 22], [-48, 0], [48, 0]];
 const SEA_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0], [0, -13], [0, 13]];
 const STATIC_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0]];
@@ -993,6 +1004,7 @@ export const AtlasMap = memo(function AtlasMap({
       id: string; label: string; x: number; y: number; slide: number; wideSlides: boolean;
       altSeats: { dx: number; dy: number }[];
       gridSeats: { dx: number; dy: number }[];
+      offshoreSeats: { dx: number; dy: number }[];
     }[] = [];
     for (const a of COUNTRY_LABEL_SEATS) {
       const xy = projection(a.seats[0] as [number, number]);
@@ -1013,7 +1025,12 @@ export const AtlasMap = memo(function AtlasMap({
         }
       }
       gridSeats.sort((p, q) => Math.hypot(p.dx, p.dy) - Math.hypot(q.dx, q.dy));
-      out.push({ id: a.id, label: a.label, x: xy[0], y: xy[1], slide: a.slide, wideSlides: a.wideSlides, altSeats, gridSeats });
+      const offshoreSeats: { dx: number; dy: number }[] = [];
+      for (const seat of COUNTRY_LABEL_OFFSHORE_SEATS[a.id] ?? []) {
+        const o = projection(seat as [number, number]);
+        if (o) offshoreSeats.push({ dx: o[0] - xy[0], dy: o[1] - xy[1] });
+      }
+      out.push({ id: a.id, label: a.label, x: xy[0], y: xy[1], slide: a.slide, wideSlides: a.wideSlides, altSeats, gridSeats, offshoreSeats });
     }
     return out;
   }, [projection]);
@@ -1430,6 +1447,12 @@ export const AtlasMap = memo(function AtlasMap({
           candidates.push([seat.dx * k + dx * slide, seat.dy * k + dy * slide] as const);
         }
       }
+      const tightSettings = countryLabelFallbacks(
+        cl.label, tightW, roomPx, COUNTRY_LABEL_FONT_PX * letterScale * COUNTRY_LABEL_TIGHT_SCALE,
+      );
+      const offshoreCandidates = cl.offshoreSeats.flatMap(seat => COUNTRY_LABEL_OFFSHORE_NUDGES.map(
+        ([dx, dy]) => [seat.dx * k + dx, seat.dy * k + dy] as const,
+      ));
       const tightCandidates = candidates.concat(cl.gridSeats.map(seat => [seat.dx * k, seat.dy * k] as const));
       requests.push({
         id: `country:${cl.id}`,
@@ -1437,10 +1460,12 @@ export const AtlasMap = memo(function AtlasMap({
         y: cl.y,
         halfW: labelW <= roomPx ? labelW / 2 : Number.POSITIVE_INFINITY,
         compactHalfW: compactW <= roomPx ? compactW / 2 : undefined,
-        fallbacks: countryLabelFallbacks(cl.label, tightW, roomPx, COUNTRY_LABEL_FONT_PX * letterScale * COUNTRY_LABEL_TIGHT_SCALE)
-          .map(f => ({ ...f, candidates: tightCandidates })),
+        fallbacks: [
+          ...tightSettings.map(f => ({ ...f, candidates: tightCandidates })),
+          // The most compact setting again, clear of everything, just offshore.
+          ...tightSettings.slice(-1).map(f => ({ ...f, candidates: offshoreCandidates, clearOnly: true })),
+        ],
         maxCover: COUNTRY_LABEL_MAX_COVER,
-        underlayMaxCover: COUNTRY_LABEL_UNDERLAY_MAX_COVER,
         halfH: 8,
         candidates,
       });
@@ -2673,8 +2698,7 @@ export const AtlasMap = memo(function AtlasMap({
               const seat = backgroundLabelPlacement.get(`country:${cl.id}`);
               // Clear seat: full strength. Partly behind pins (within the
               // cover budget): dimmed so the pins read first. Otherwise hidden.
-              // Past the budget (underlay): fainter still, a watermark under them.
-              const seatOpacity = !seat || seat.clear ? 1 : seat.underlay ? 0.58 : seat.cover != null ? 0.72 : 0;
+              const seatOpacity = !seat || seat.clear ? 1 : seat.cover != null ? 0.72 : 0;
               const fontPx = (smallMapLettering ? COUNTRY_LABEL_FONT_PX * 0.88 : COUNTRY_LABEL_FONT_PX)
                 * (seat?.variant ? COUNTRY_LABEL_TIGHT_SCALE : seat?.compact ? COUNTRY_LABEL_COMPACT_SCALE : 1);
               const lines = seat?.variant === "stacked" ? cl.label.split(" ") : [cl.label];
@@ -2688,7 +2712,7 @@ export const AtlasMap = memo(function AtlasMap({
                 data-atlas-inv-scale-host=""
                 data-country-label={cl.id}
                 className="map-country-label"
-                data-label-seat={seatOpacity === 0 ? "hidden" : seat?.underlay ? "underlay" : seat && !seat.clear ? "partial" : "clear"}
+                data-label-seat={seatOpacity === 0 ? "hidden" : seat && !seat.clear ? "partial" : "clear"}
                 style={{ opacity: seatOpacity }}
               >
                 <g data-atlas-inv-scale="" transform={`scale(${1 / view.k})`}>

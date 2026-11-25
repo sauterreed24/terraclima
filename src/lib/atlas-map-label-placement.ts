@@ -55,22 +55,22 @@ export interface MapLabelRequest {
    * first every fallback for a clear seat, then every one within `maxCover`.
    */
   fallbacks?: readonly MapLabelFallback[];
-  /**
-   * Last resort, looser than `maxCover`: when no setting has a seat within
-   * budget, keep the least-covered seat of any fallback (or, without
-   * fallbacks, of the narrowest setting) up to this share and flag it
-   * `underlay` — the caller draws it faint, as a watermark the pins sit on,
-   * rather than dropping the name from the map.
-   */
-  underlayMaxCover?: number;
 }
 
 export interface MapLabelFallback {
   /** Echoed back as `MapLabelPlacement.variant` so the caller can draw it. */
   variant: string;
+  /** Skip this setting in the least-covered pass: it is only worth a clear seat. */
+  clearOnly?: boolean;
   /** Half extents of this setting in screen pixels (`halfH` defaults to the request's). */
   halfW: number;
   halfH?: number;
+  /**
+   * For a multi-line setting: each line's centre offset from the block
+   * centre, and one line's half height, so cover is measured per line.
+   */
+  lineOffsets?: readonly number[];
+  lineHalfH?: number;
   /** Own candidate offsets (a smaller setting can slide further); defaults to the request's. */
   candidates?: readonly (readonly [number, number])[];
 }
@@ -88,8 +88,6 @@ export interface MapLabelPlacement {
   compact?: boolean;
   /** Set when one of the request's `fallbacks` was needed. */
   variant?: string;
-  /** True for a last-resort seat beyond `maxCover` (see `underlayMaxCover`). */
-  underlay?: boolean;
   /**
    * Set only for a partly covered seat: the share of the label's length that
    * sits under pins. The caller should draw it dimmed, behind the pins.
@@ -164,8 +162,7 @@ export function mapLabelCoverFraction(
  *
  * Each label tries, in order: a clear seat at full width, a clear seat at its
  * compact width, then (only with `maxCover`) the least-covered seat. A label
- * with `fallbacks` then repeats clear / least-covered over those settings,
- * and one with `underlayMaxCover` finally settles for a faint underlay seat.
+ * with `fallbacks` then repeats clear / least-covered over those settings.
  */
 export function placeMapLabels(
   requests: readonly MapLabelRequest[],
@@ -211,17 +208,18 @@ export function placeMapLabels(
     let bestScore = Number.POSITIVE_INFINITY;
     const tryCovered = (
       halfW: number, halfH: number, budget: number, flags: Partial<MapLabelPlacement>, seats: Seats = req.candidates,
+      lineOffsets: readonly number[] = [0], lineHalfH = halfH,
     ) => {
+      const coverOf = (rect: ScreenRect) => lineOffsets.reduce(
+        (sum, off) => sum + mapLabelCoverFraction(rect.cx, rect.cy + off, halfW, lineHalfH, solidObstacles), 0,
+      ) / Math.max(1, lineOffsets.length);
       const total = Math.max(1, seats.length);
       seats.forEach(([dx, dy], index) => {
         const rect = seatRect(dx, dy, halfW, halfH);
         if (placed.some(other => rectsOverlap(rect, other))) return;
-        const cover = mapLabelCoverFraction(rect.cx, rect.cy, halfW, halfH, solidObstacles);
+        const cover = coverOf(rect);
         if (cover > budget) return;
-        // Translucent halos hide less than badge discs, but a seat clear of
-        // them still reads better than one threaded through several.
-        const halo = mapLabelCoverFraction(rect.cx, rect.cy, halfW, halfH, screenObstacles);
-        const score = cover + halo * 0.2 + (index / total) * 0.12;
+        const score = cover + (index / total) * 0.12;
         if (score < bestScore - 1e-9) {
           bestScore = score;
           pick.seat = { dx, dy, clear: false, cover, ...flags };
@@ -242,15 +240,8 @@ export function placeMapLabels(
     }
     if (budget > 0) {
       for (const f of fallbacks) {
-        if (!pick.seat) tryCovered(f.halfW, f.halfH ?? req.halfH, budget, { variant: f.variant }, f.candidates);
+        if (!pick.seat && !f.clearOnly) tryCovered(f.halfW, f.halfH ?? req.halfH, budget, { variant: f.variant }, f.candidates, f.lineOffsets, f.lineHalfH);
       }
-    }
-    if (!pick.seat && req.underlayMaxCover != null && req.underlayMaxCover > budget) {
-      // Shared best score: the least-covered seat across every fallback wins.
-      for (const f of fallbacks) {
-        tryCovered(f.halfW, f.halfH ?? req.halfH, req.underlayMaxCover, { variant: f.variant, underlay: true }, f.candidates);
-      }
-      if (fallbacks.length === 0 && last) tryCovered(last.halfW, req.halfH, req.underlayMaxCover, { ...lastFlags, underlay: true });
     }
     if (pick.seat && pick.rect) {
       placed.push(pick.rect);

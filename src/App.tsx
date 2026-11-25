@@ -68,7 +68,6 @@ import { LogoMark } from "./components/chrome/LogoMark";
 import { Footer } from "./components/chrome/Footer";
 import { ShortcutsOverlay } from "./components/chrome/ShortcutsOverlay";
 import { ShortlistExportMenu } from "./components/chrome/ShortlistExportMenu";
-import { SearchSuggestions } from "./components/SearchSuggestions";
 import { PlaceDetailLoadingFallback } from "./components/place-detail/PlaceDetailLoadingFallback";
 import {
   DEFAULT_RANKING,
@@ -232,6 +231,7 @@ const CollectionsView = lazy(loadCollectionsView);
 const LearnMode = lazy(loadLearnMode);
 const PlaceDetail = lazy(loadPlaceDetail);
 const CompareView = lazy(loadCompareView);
+const SearchSuggestions = lazy(() => import("./components/SearchSuggestions"));
 
 if (typeof window !== "undefined" && (parseAppSearch(window.location.search).compareIds?.length ?? 0) > 0) {
   preloadCompareView();
@@ -1627,19 +1627,22 @@ export default function App() {
   const clearSearch = useCallback(() => {
     setFilters(f => (f.search ? { ...f, search: "" } : f));
   }, []);
-  const searchSuggestions = (
-    <SearchSuggestions
-      query={deferredFilters.search ?? ""}
-      pool={pool}
-      resultCount={ranked.length}
-      className="w-full"
-      onPick={text => {
-        setFilters(f => ({ ...f, search: text }));
-        // The picked button goes away, so keep focus on the search field.
-        document.getElementById(explorerDockLg ? SEARCH_INPUT_ID : QUICK_SEARCH_INPUT_ID)?.focus({ preventScroll: true });
-      }}
-    />
-  );
+  // "Did you mean" line. Loaded on the first keystroke of a search.
+  const searchSuggestions = deferredFilters.search ? (
+    <Suspense fallback={null}>
+      <SearchSuggestions
+        query={deferredFilters.search}
+        pool={pool}
+        resultCount={ranked.length}
+        className="w-full"
+        onPick={text => {
+          setFilters(f => ({ ...f, search: text }));
+          // The picked button goes away, so keep focus on the search field.
+          document.getElementById(explorerDockLg ? SEARCH_INPUT_ID : QUICK_SEARCH_INPUT_ID)?.focus({ preventScroll: true });
+        }}
+      />
+    </Suspense>
+  ) : null;
 
   const mapEmptyRecovery = useMemo(() => {
     const hasSearch = (filters.search ?? "").trim().length > 0;

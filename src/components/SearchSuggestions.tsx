@@ -7,7 +7,7 @@ import type { Place } from "../types";
  * found typo-tolerant matches, or found nothing. The hidden status line stays
  * mounted so screen readers hear the change; the buttons set the search text.
  */
-export function SearchSuggestions({ query, pool, resultCount, onPick, className = "" }: {
+export default function SearchSuggestions({ query, pool, resultCount, onPick, className = "" }: {
   query: string;
   pool: readonly Place[];
   /** Places left in the list after search and every other filter. */

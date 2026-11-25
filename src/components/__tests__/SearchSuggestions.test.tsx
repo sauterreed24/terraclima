@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { SearchSuggestions } from "../SearchSuggestions";
+import SearchSuggestions from "../SearchSuggestions";
 import { PLACES } from "../../data/places";
 import { suggestPlaceSearches } from "../../lib/place-search";
 

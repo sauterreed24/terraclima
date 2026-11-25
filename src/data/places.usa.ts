@@ -2957,16 +2957,16 @@ export const PLACES_USA: Place[] = [
         id: "marfa-sky-and-distance",
         title: "Sky, distance, and the high-grassland feel",
         paragraphs: [
-          "Marfa's appeal is less about lushness than exposure. The plain is high enough for cool nights and long sightlines, while the Davis and Chinati Mountains frame the horizon without enclosing the town. Wind, glare, and silence are part of the daily sensory field.",
-          "That clarity now feeds the place-feel rating: Marfa has a stronger identity than its raw comfort score suggests. The same openness also means little shade, long errand loops, and a sharper divide between people who find the emptiness restorative and people who find it isolating.",
+          "Marfa is on an open grassland plateau at about 1470 m, with the Davis Mountains to the north and the Chinati Mountains to the southwest. Height brings cool nights: after a 32°C July afternoon the temperature falls to about 17°C. The plain has few trees, and wind and glare are constant.",
+          "The air is dry and clear, which is why the McDonald Observatory was built in the Davis Mountains nearby. Winter nights average −4 to −3°C under the same clear sky. There is little shade in town and a great deal of empty country around it.",
         ],
       },
       {
         id: "marfa-services-water-and-cost",
-        title: "The live-here test is services, water, and cost",
+        title: "Services, water and cost",
         paragraphs: [
-          "Marfa is compact, but it is not easy in the way a larger city is easy. Groceries, specialists, airport access, and many repairs require planning around Alpine, Fort Davis, Midland-Odessa, or El Paso. That access friction keeps the ranking from over-rewarding the desert-light appeal.",
-          "Housing pressure from tourism and the art economy is the other check. The climate is forgiving for a desert edge, but the practical scouting question is whether the household budget, groundwater reality, and service distance still feel acceptable after the first week of beautiful evenings.",
+          "Marfa has about 1,800 people. The nearest hospital is in Alpine, about 40 km east. The nearest airports with regular flights are at Midland–Odessa and El Paso, each about three hours' drive. Many repairs and most specialist appointments mean a day on the road.",
+          "The art world that followed Donald Judd to Marfa in the 1970s has pushed house prices far above local wages. Water comes from wells, and about 370 mm of rain falls in a year, most of it in thunderstorms from June to September. Weigh the house prices, the water supply and the drive to a doctor against the evenings.",
         ],
       },
     ],
@@ -3212,7 +3212,7 @@ export const PLACES_USA: Place[] = [
         title: "Why the cold pool gets so strong",
         paragraphs: [
           "Gunnison combines nearly every ingredient cold-air pooling needs: a high enclosed basin, clear dry air, weak winter sun, snow cover, and limited nighttime mixing. Dense air drains off the surrounding slopes, settles on the floor, and can sit there for days beneath an inversion cap.",
-          "The result is counterintuitive for visitors: a sunny ridge or ski slope above town may be dramatically warmer than the valley floor. The atlas treats Gunnison as a mechanism case, not just a cold station normal.",
+          "The result is counterintuitive for visitors: a sunny ridge or ski slope above town may be dramatically warmer than the valley floor. January nights in town average about −21°C, among the coldest of any town in the lower forty-eight states.",
         ],
       },
       {
@@ -3673,7 +3673,7 @@ export const PLACES_USA: Place[] = [
         title: "A snow economy with a volatile future",
         paragraphs: [
           "Deep snow supports snowmobiling, forestry access rhythms, and a winter identity that few eastern towns can match. It also loads roofs, narrows roads, and makes emergency logistics a climate design problem.",
-          "Near-term warming can intensify lake-effect events while Lake Ontario stays ice-free longer, but the late-century signal points toward more rain-on-snow and shorter continuous snowpack. That makes Tug Hill both a snow refuge and a snow-transition laboratory.",
+          "Near-term warming can intensify lake-effect events while Lake Ontario stays ice-free longer, but the late-century signal points toward more rain-on-snow and shorter continuous snowpack. Tug Hill is likely to keep its heavy snow for now and lose its continuous snowpack later.",
         ],
       },
     ],
@@ -3877,16 +3877,16 @@ export const PLACES_USA: Place[] = [
         id: "boone-escarpment-comfort",
         title: "Escarpment height makes the climate",
         paragraphs: [
-          "Boone's roughly 1000 m elevation is the whole story: summer highs stay in the low-to-mid 20s C while the Piedmont and Foothills below run much hotter. That makes it one of the Southeast's clearest heat-refuge comparisons.",
-          "The same exposure also means wind, cloud, and winter precipitation are part of the comfort read. A scout trip should compare Boone to lower Asheville or Black Mountain on the same dates, not just compare annual averages.",
+          "Boone is at about 1000 m on the Blue Ridge, just back from the escarpment that drops to the North Carolina foothills. July afternoons average 26°C and nights 16°C, while the Piedmont cities below are several degrees hotter on the same days.",
+          "The height also brings wind, cloud and winter weather. About 140 cm of snow falls in a year, and about 1500 mm of precipitation, spread fairly evenly. Asheville, about 350 m lower in its basin, is warmer and drier.",
         ],
       },
       {
         id: "boone-living-friction",
-        title: "A real town, but still mountain logistics",
+        title: "A university town on mountain roads",
         paragraphs: [
-          "Watauga Medical Center gives Boone a stronger service base than many mountain resort towns, and Appalachian State keeps the town active year-round. That lowers access friction compared with smaller Blue Ridge hamlets.",
-          "Housing pressure, student-season traffic, winter roads, flood-prone valleys, and landslide exposure still belong in the lived-climate read. Treat the climate advantage as a reason to visit carefully, not a shortcut around local due diligence.",
+          "Appalachian State University, with about 20,000 students, keeps the town busy all year, and Watauga Medical Center gives it a hospital that most mountain towns of its size lack.",
+          "Housing is tight and expensive for the area, partly because of the university and second homes. Roads are steep and can be icy in winter. Streams rise quickly in heavy rain: Hurricane Helene in September 2024 flooded parts of Boone and caused landslides across Watauga County. Check the flood zone and the slope above any property.",
         ],
       },
     ],
@@ -4498,18 +4498,18 @@ export const PLACES_USA: Place[] = [
     deepSections: [
       {
         id: "cannon-beach-temperature-stability",
-        title: "The Lower 48 cool-summer extreme",
+        title: "A year without much temperature change",
         paragraphs: [
-          "Cannon Beach is one of the clearest examples of temperature stability in the atlas. Pacific upwelling, sea breeze, and immediate coastal exposure flatten both summer heat and winter cold, producing a climate that heat-sensitive residents can actually feel in their bodies.",
-          "That stability is why the place-feel model rewards sensory comfort even though annual rainfall is high. The climate is not sunny Mediterranean ease; it is cool, damp, salt-air moderation with bright summer breaks and long wet-season stretches.",
+          "Cannon Beach faces the open Pacific, and the sea sets its temperature. In summer, northerly winds draw cold water to the surface along the coast, and the sea breeze holds August afternoons to about 21°C. In winter the same ocean keeps afternoons near 10°C and nights above freezing. Afternoons in the coldest month are only about ten degrees cooler than in the warmest.",
+          "It is a wet climate, with about 2300 mm of rain a year and more than 300 mm in each month from November to January. July and August are the dry break, with 25 to 35 mm each. Summer days often start in fog or low cloud that clears by afternoon.",
         ],
       },
       {
         id: "cannon-beach-resort-friction",
-        title: "Beautiful, expensive, and hazard-aware",
+        title: "A small resort town on an exposed coast",
         paragraphs: [
-          "The same place that feels climatically rare is also a small resort economy on an exposed coast. Housing cost, visitor surges, landslide-prone headlands, winter storms, and Cascadia tsunami planning are not side notes; they are part of the daily decision.",
-          "A relocation scout should spend time in both Cannon Beach and Seaside. The first shows the atmospheric ideal; the second shows whether groceries, health care, schools, evacuation routes, and off-season services make the ideal workable.",
+          "About 1,500 people live here year-round, and many of the houses are second homes or rentals, so prices are high and long-term rentals are few. The headlands are prone to landslides, and winter storms bring high surf and strong wind. The town lies in the tsunami zone for a Cascadia earthquake, and the evacuation routes to high ground are signposted.",
+          "Seaside, about 13 km north, has the hospital, the larger grocery stores and more year-round housing. Spend time in both towns before deciding, and visit in November as well as in August.",
         ],
       },
     ],
@@ -4791,7 +4791,7 @@ export const PLACES_USA: Place[] = [
         title: "A globally rare loess ridge",
         paragraphs: [
           "Loess is wind-built silt, but in western Iowa it accumulated deeply enough to behave like a sculpted mountain material. Streams and gravity cut the deposit into narrow ridges, catsteps, and knife-edge slopes that feel out of scale with the surrounding Corn Belt.",
-          "That physical oddity is the climate story too: slope angle and aspect create dry prairie, oak shade, and frost pockets over very short distances. The atlas treats the Hills as a topographic anomaly embedded in a broadly ordinary Midwestern climate.",
+          "The steep ground makes the local climate as well: slope angle and aspect produce dry prairie, oak shade and frost pockets within a short walk of each other. Around the hills the climate is ordinary for the Midwest.",
         ],
       },
       {
@@ -5103,7 +5103,7 @@ export const PLACES_USA: Place[] = [
         title: "Ridges, hollows, and block-scale microclimate",
         paragraphs: [
           "The town's vertical street pattern turns climate into a walking experience. A shaded hollow can hold cool damp air while a south-facing limestone bench a few blocks away warms early, dries fast, and supports a different garden palette.",
-          "That fine-scale contrast is the point of the entry: Eureka is not just an Ozark town with springs. It is a compact demonstration of how karst relief makes climate change at neighborhood scale.",
+          "The town is built up the sides of a steep hollow, with streets stacked one above another, so the contrast is met on an ordinary walk to the shops.",
         ],
       },
     ],

@@ -65,7 +65,7 @@ describe("Explorer search suggestions", () => {
     renderApp("/");
     await typeSearch("flagstff");
 
-    const group = screen.getByRole("group", { name: "Search suggestions" });
+    const group = await screen.findByRole("group", { name: "Search suggestions" });
     expect(group).toHaveTextContent("No exact match for “flagstff”. Showing close matches.");
     const status = screen.getAllByRole("status").find(el => /No exact match/.test(el.textContent ?? ""));
     expect(status).toHaveAttribute("aria-live", "polite");
