@@ -1197,13 +1197,13 @@ export default function App() {
 
   const toggleBookmark = useCallback((id: string) => {
     const canonical = resolvePlaceId(id) ?? id;
-    const { ids, pinned } = toggleBookmarkPersist(canonical);
+    const { ids, pinned, full } = toggleBookmarkPersist(canonical);
     setBookmarkIds(new Set(ids));
     const place = PLACES_BY_ID[canonical];
     const placeName = place?.name ?? "Place";
-    if (pinned && ids.length === BOOKMARK_LIMIT) {
+    if (full) {
       setTransientFeedback(
-        `Saved ${placeName}. You can save up to ${BOOKMARK_LIMIT} places, so the oldest one was removed.`,
+        `${placeName} was not saved: this browser keeps up to ${BOOKMARK_LIMIT} saved places. Remove one to make room.`,
       );
     } else if (pinned) {
       setTransientFeedback(`Saved ${placeName}.`);
@@ -1263,7 +1263,7 @@ export default function App() {
       setTransientFeedback(`These ${savedCount} top picks are already in your saved places.`);
     } else if (saved.capped) {
       setTransientFeedback(
-        `Saved ${saved.added.length} new place${saved.added.length === 1 ? "" : "s"}. You can save up to ${BOOKMARK_LIMIT}, so only the top ${BOOKMARK_LIMIT} were kept.`,
+        `Saved ${saved.added.length} new place${saved.added.length === 1 ? "" : "s"}. This browser keeps up to ${BOOKMARK_LIMIT} saved places, so the rest were not added.`,
       );
     } else {
       setTransientFeedback(

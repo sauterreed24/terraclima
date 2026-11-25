@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Saved places that stay put
+
+- **Saved places:** you can save every place in the atlas. The list used to hold 50, and saving the 51st quietly removed your oldest saved place (saving the 50th also said one had been removed when none was). A save now never removes another one.
+
 ### Review follow-ups: saved places, search prompts, phone profile, station fixes
 
 - **Saved places:** the list you keep is "Saved places" everywhere, with Save, Saved and Remove on the buttons. "Shortlist" is gone from the interface, and "pin" now only means a marker on the map. Filtering to one collection or trip reads "Show only these".

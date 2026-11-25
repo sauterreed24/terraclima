@@ -69,16 +69,53 @@ describe("place-bookmarks", () => {
     expect(loadBookmarks()).toEqual(["port-townsend-wa", "sequim-wa", "portal-az", "creel-mx"]);
   });
 
-  it("caps merged finalist saves while keeping the incoming shortlist order", () => {
-    const existing = Array.from({ length: BOOKMARK_LIMIT }, (_, i) => `existing-${i}`);
+  it("never drops an existing save to make room for finalists", () => {
+    const existing = Array.from({ length: BOOKMARK_LIMIT - 1 }, (_, i) => `existing-${i}`);
     setBookmarks(existing);
 
-    const result = addBookmarksToFront(["leader-1", "leader-2"]);
+    const result = addBookmarksToFront(["leader-1", "existing-5", "leader-2"]);
 
     expect(result.capped).toBe(true);
-    expect(result.added).toEqual(["leader-1", "leader-2"]);
+    expect(result.added).toEqual(["leader-1"]);
     expect(result.ids).toHaveLength(BOOKMARK_LIMIT);
-    expect(result.ids.slice(0, 3)).toEqual(["leader-1", "leader-2", "existing-0"]);
+    expect(result.ids.slice(0, 3)).toEqual(["leader-1", "existing-5", "existing-0"]);
+    for (const id of existing) expect(result.ids).toContain(id);
+  });
+
+  it("refuses a new save when full instead of dropping the oldest", () => {
+    const existing = Array.from({ length: BOOKMARK_LIMIT }, (_, i) => `existing-${i}`);
+    setBookmarks(existing);
+    const result = toggleBookmark("one-more");
+    expect(result).toMatchObject({ pinned: false, full: true });
+    expect(loadBookmarks()).toEqual(existing);
+    // Removing still works at the cap.
+    expect(toggleBookmark("existing-3")).toMatchObject({ pinned: false, full: false });
+    expect(loadBookmarks()).toHaveLength(BOOKMARK_LIMIT - 1);
+  });
+
+  it("keeps every place in the atlas savable at once", async () => {
+    const { PLACES } = await import("../../data/places");
+    expect(BOOKMARK_LIMIT).toBeGreaterThanOrEqual(PLACES.length);
+  });
+
+  it("never loses a saved id across random toggle / finalist sequences", () => {
+    let seed = 7;
+    const rand = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+    for (let run = 0; run < 40; run++) {
+      window.localStorage.clear();
+      const model = new Set<string>();
+      for (let step = 0; step < 200; step++) {
+        const id = `p-${Math.floor(rand() * 30)}`;
+        if (rand() < 0.8) {
+          const r = toggleBookmark(id);
+          if (r.pinned) model.add(id); else if (!r.full) model.delete(id);
+        } else {
+          const batch = [id, `p-${Math.floor(rand() * 30)}`];
+          addBookmarksToFront(batch).added.forEach(a => model.add(a));
+        }
+        expect(new Set(loadBookmarks())).toEqual(model);
+      }
+    }
   });
 
   it("ignores malformed storage payloads gracefully", () => {
