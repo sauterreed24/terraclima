@@ -76,6 +76,7 @@ import {
 } from "./lib/app-ranking-preference";
 import {
   BOOKMARK_LIMIT,
+  BOOKMARKS_STORAGE_KEY,
   addBookmarksToFront,
   loadBookmarks,
   toggleBookmark as toggleBookmarkPersist,
@@ -366,6 +367,15 @@ export default function App() {
     return resolved;
   });
   const [bookmarkIds, setBookmarkIds] = useState<Set<string>>(() => new Set(loadBookmarks()));
+  // Another tab saved or removed a place: show the same list here, so this tab
+  // never displays (or exports) a stale set of saved places.
+  useEffect(() => {
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === BOOKMARKS_STORAGE_KEY || event.key === null) setBookmarkIds(new Set(loadBookmarks()));
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
   const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
   const [animatePlaceDetailEntry, setAnimatePlaceDetailEntry] = useState(false);
   const [placeEntryIntent, setPlaceEntryIntent] = useState<"surprise" | null>(null);
