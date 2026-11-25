@@ -7,6 +7,7 @@ All notable changes to Terraclima are tracked here.
 ### Figures you can check against the source
 
 - **Exports with a home base:** the humidity and sunshine differences were sometimes a whole point off, because both sides were rounded before subtracting (−7 where the records give −6.2). They now come from the unrounded values.
+- **Cards with a home base:** the "Humidity" difference is now labelled "Summer humidity", which is what it measures (June–August, as in the profile). Next to the card's own year-round humidity it read as a yearly difference: Zacatecas showed "+17 pts" against Flagstaff, while its yearly humidity is less than 2 points higher.
 
 ### Saved places that stay put
 

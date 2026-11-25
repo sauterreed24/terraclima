@@ -230,7 +230,7 @@ const PRECIP_SPEC: SignalSpec = {
 const HUMIDITY_SPEC: SignalSpec = {
   id: "summer-humidity",
   label: "Summer humidity",
-  shortLabel: "Humidity",
+  shortLabel: "Summer humidity",
   unit: "points",
   basis: "Mean June–August relative humidity, percentage points vs home.",
   cuts: [3, 10],
