@@ -184,6 +184,15 @@ const COUNTRY_LABEL_COMPACT_TRACKING_EM = 0.16;
 const COUNTRY_LABEL_TIGHT_SCALE = 0.84;
 const COUNTRY_LABEL_TIGHT_TRACKING_EM = 0.08;
 const COUNTRY_LABEL_STACK_LEADING = 1.18;
+/**
+ * Interior lon/lat boxes ([west, east, south, north]) gridded into extra
+ * seats for the tight settings only: a small name can sit in a gap between
+ * badges that the classic seats miss, and stays centred on its own land.
+ */
+const COUNTRY_LABEL_FALLBACK_BOXES: Record<string, readonly (readonly [number, number, number, number])[]> = {
+  usa: [[-117, -90, 35, 46], [-90, -85, 35, 41], [-102, -96, 31, 35], [-90, -84, 32.5, 35]],
+  mexico: [[-105.5, -100, 21, 28.5], [-100, -98, 22, 25.5]],
+};
 /** Tight settings of a country name: one line, then (two words) stacked. */
 function countryLabelFallbacks(label: string, tightW: number, roomPx: number, fontPx: number) {
   const out: { variant: string; halfW: number; halfH?: number }[] = [];
@@ -983,6 +992,7 @@ export const AtlasMap = memo(function AtlasMap({
     const out: {
       id: string; label: string; x: number; y: number; slide: number; wideSlides: boolean;
       altSeats: { dx: number; dy: number }[];
+      gridSeats: { dx: number; dy: number }[];
     }[] = [];
     for (const a of COUNTRY_LABEL_SEATS) {
       const xy = projection(a.seats[0] as [number, number]);
@@ -993,7 +1003,17 @@ export const AtlasMap = memo(function AtlasMap({
         const alt = projection(seat as [number, number]);
         if (alt) altSeats.push({ dx: alt[0] - xy[0], dy: alt[1] - xy[1] });
       }
-      out.push({ id: a.id, label: a.label, x: xy[0], y: xy[1], slide: a.slide, wideSlides: a.wideSlides, altSeats });
+      const gridSeats: { dx: number; dy: number }[] = [];
+      for (const [w, e, s, n] of COUNTRY_LABEL_FALLBACK_BOXES[a.id] ?? []) {
+        for (let lon = w; lon <= e; lon += 1.5) {
+          for (let lat = s; lat <= n; lat += 1) {
+            const g = projection([lon, lat]);
+            if (g) gridSeats.push({ dx: g[0] - xy[0], dy: g[1] - xy[1] });
+          }
+        }
+      }
+      gridSeats.sort((p, q) => Math.hypot(p.dx, p.dy) - Math.hypot(q.dx, q.dy));
+      out.push({ id: a.id, label: a.label, x: xy[0], y: xy[1], slide: a.slide, wideSlides: a.wideSlides, altSeats, gridSeats });
     }
     return out;
   }, [projection]);
@@ -1410,24 +1430,15 @@ export const AtlasMap = memo(function AtlasMap({
           candidates.push([seat.dx * k + dx * slide, seat.dy * k + dy * slide] as const);
         }
       }
+      const tightCandidates = candidates.concat(cl.gridSeats.map(seat => [seat.dx * k, seat.dy * k] as const));
       requests.push({
         id: `country:${cl.id}`,
         x: cl.x,
         y: cl.y,
         halfW: labelW <= roomPx ? labelW / 2 : Number.POSITIVE_INFINITY,
         compactHalfW: compactW <= roomPx ? compactW / 2 : undefined,
-        // A smaller setting may slide further and still stay inside the
-        // envelope the compact name was allowed to occupy.
         fallbacks: countryLabelFallbacks(cl.label, tightW, roomPx, COUNTRY_LABEL_FONT_PX * letterScale * COUNTRY_LABEL_TIGHT_SCALE)
-          .map(f => {
-            const sx = slide + Math.max(0, compactW / 2 - f.halfW) / 40;
-            return {
-              ...f,
-              candidates: cl.altSeats.flatMap(seat => COUNTRY_LABEL_SEAT_NUDGES.map(
-                ([dx, dy]) => [seat.dx * k + dx * sx, seat.dy * k + dy * slide] as const,
-              )),
-            };
-          }),
+          .map(f => ({ ...f, candidates: tightCandidates })),
         maxCover: COUNTRY_LABEL_MAX_COVER,
         underlayMaxCover: COUNTRY_LABEL_UNDERLAY_MAX_COVER,
         halfH: 8,

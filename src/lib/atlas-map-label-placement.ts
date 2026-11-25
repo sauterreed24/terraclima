@@ -218,7 +218,10 @@ export function placeMapLabels(
         if (placed.some(other => rectsOverlap(rect, other))) return;
         const cover = mapLabelCoverFraction(rect.cx, rect.cy, halfW, halfH, solidObstacles);
         if (cover > budget) return;
-        const score = cover + (index / total) * 0.12;
+        // Translucent halos hide less than badge discs, but a seat clear of
+        // them still reads better than one threaded through several.
+        const halo = mapLabelCoverFraction(rect.cx, rect.cy, halfW, halfH, screenObstacles);
+        const score = cover + halo * 0.2 + (index / total) * 0.12;
         if (score < bestScore - 1e-9) {
           bestScore = score;
           pick.seat = { dx, dy, clear: false, cover, ...flags };
