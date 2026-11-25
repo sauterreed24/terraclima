@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PLACES, PLACES_BY_ID, getPlaceSearchFields, getPlaceSearchText } from "../../data/places";
+import { PLACES, PLACES_BY_ID, REGION_SEARCH_ALIASES, getPlaceSearchFields, getPlaceSearchText } from "../../data/places";
 import { ARCHETYPE_LABELS, type Place } from "../../types";
 import {
   SEARCH_TIER,
@@ -322,6 +322,26 @@ describe("abbreviations", () => {
     // Whole word only: "mt" must not reach a name that merely contains "mount…".
     const fixture = [makePlace({ id: "mountainview-xx", name: "Mountainview" })];
     expect(searchPlaces(fixture, "mt").rankByPlace.size).toBe(0);
+  });
+});
+
+describe("state, province and Mexican state abbreviations", () => {
+  it("find places whose id does not end in the code", () => {
+    expect(rankedIds("la paz bcs")[0]).toBe("la-paz-mx");
+    expect(rankedIds("yellowknife nwt")[0]).toBe("yellowknife-nt");
+    expect(rankedIds("charlottetown pei")[0]).toBe("charlottetown-pei");
+    expect(rankedIds("niagara on")[0]).toBe("niagara-on-the-lake");
+    expect(rankedIds("san miguel gto")[0]).toBe("san-miguel-de-allende-mx");
+  });
+
+  it("every region in the atlas has an abbreviation", () => {
+    for (const place of PLACES) expect(REGION_SEARCH_ALIASES[place.region], place.region).toBeTruthy();
+  });
+});
+
+describe("typo matches prefer whole words", () => {
+  it("'sante fe' puts Santa Fe ahead of Felton", () => {
+    expect(rankedIds("sante fe")[0]).toBe("santa-fe-nm");
   });
 });
 

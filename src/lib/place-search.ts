@@ -317,7 +317,12 @@ export function searchPlaces(places: readonly Place[], query: string | null | un
     for (let t = 0; t < parsed.tokens.length; t++) {
       const token = parsed.tokens[t]!;
       const exactTier = tiers[t]![i]!;
-      if (exactTier <= SEARCH_TIER.headline) continue;
+      if (exactTier <= SEARCH_TIER.headline) {
+        // A short exact word ("fe") that is a whole word here beats one that is
+        // only the start of a longer word ("Felton"): "sante fe" → Santa Fe.
+        if (exactTier <= SEARCH_TIER.namePart && !` ${f.name} ${f.locality} `.includes(` ${token.text} `)) total += 1;
+        continue;
+      }
       const budget = token.phrase ? 0 : typoBudget(token.text);
       const inName = budget > 0 ? fuzzyFieldDistance(f.name, token.text, budget) : null;
       const inLocality = budget > 0 && inName == null ? fuzzyFieldDistance(f.locality, token.text, budget) : null;

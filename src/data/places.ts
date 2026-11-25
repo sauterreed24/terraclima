@@ -247,6 +247,32 @@ const COUNTRY_SEARCH_ALIASES: Record<Place["country"], string> = {
 };
 
 /**
+ * Postal and common abbreviations for states, provinces and territories, so
+ * "kelowna bc", "la paz bcs" or "yellowknife nwt" find their place whatever
+ * the place id happens to end with. Keyed by `Place.region`.
+ */
+export const REGION_SEARCH_ALIASES: Readonly<Record<string, string>> = {
+  Alabama: "AL", Alaska: "AK", Arizona: "AZ", Arkansas: "AR", California: "CA", Colorado: "CO",
+  Connecticut: "CT", Delaware: "DE", "District of Columbia": "DC", Florida: "FL", Georgia: "GA",
+  Hawaii: "HI", Idaho: "ID", Illinois: "IL", Indiana: "IN", Iowa: "IA", Kansas: "KS", Kentucky: "KY",
+  Louisiana: "LA", Maine: "ME", Maryland: "MD", Massachusetts: "MA", Michigan: "MI", Minnesota: "MN",
+  Mississippi: "MS", Missouri: "MO", Montana: "MT", Nebraska: "NE", Nevada: "NV", "New Hampshire": "NH",
+  "New Jersey": "NJ", "New Mexico": "NM", "New York": "NY", "North Carolina": "NC", "North Dakota": "ND",
+  Ohio: "OH", Oklahoma: "OK", Oregon: "OR", Pennsylvania: "PA", "Rhode Island": "RI",
+  "South Carolina": "SC", "South Dakota": "SD", Tennessee: "TN", Texas: "TX", Utah: "UT", Vermont: "VT",
+  Virginia: "VA", Washington: "WA", "West Virginia": "WV", Wisconsin: "WI", Wyoming: "WY",
+  Alberta: "AB", "British Columbia": "BC", Manitoba: "MB", "New Brunswick": "NB",
+  "Newfoundland and Labrador": "NL Newfoundland Labrador NFLD", "Northwest Territories": "NT NWT",
+  "Nova Scotia": "NS", Nunavut: "NU", Ontario: "ON", "Prince Edward Island": "PE PEI", Quebec: "QC",
+  Saskatchewan: "SK", Yukon: "YT",
+  "Baja California": "BC", "Baja California Sur": "BCS", Campeche: "Camp", Chiapas: "Chis",
+  Chihuahua: "Chih", Coahuila: "Coah", Durango: "Dgo", "Estado de México": "Edomex Mex",
+  Guanajuato: "Gto", Guerrero: "Gro", Jalisco: "Jal", Michoacán: "Mich", Morelos: "Mor",
+  "Nuevo León": "NL", Oaxaca: "Oax", Puebla: "Pue", Querétaro: "Qro", "Quintana Roo": "QRoo Q Roo",
+  "San Luis Potosí": "SLP", Sinaloa: "Sin", Sonora: "Son", Veracruz: "Ver", Yucatán: "Yuc", Zacatecas: "Zac",
+};
+
+/**
  * Runtime indexes.
  *
  * Annual precipitation stays eager because it is a small numeric lookup used
@@ -300,6 +326,7 @@ export function getPlaceSearchFields(place: Place): PlaceSearchFields {
       place.municipality ?? "",
       place.region,
       COUNTRY_SEARCH_ALIASES[place.country] ?? place.country,
+      REGION_SEARCH_ALIASES[place.region] ?? "",
       idSuffix,
       ...settlements.map(s => s.name),
     ]),

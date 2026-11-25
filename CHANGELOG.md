@@ -11,6 +11,7 @@ All notable changes to Terraclima are tracked here.
 - **Search:** abbreviations work both ways: "Mt. Charleston", "Ft Davis", "Pt Reyes", "Pt Townsend" and "Saint John's" find their places (they found nothing). A word with two letters left out, like "ashvile", finds Asheville; other two-letter slips still do not match, so "houston" does not turn into Houghton.
 - **Two tabs:** a place saved or removed in one tab shows up in your other open tabs straight away, so neither shows or exports an out-of-date list.
 - **Faster profiles on phones:** opening your first profile downloads about 125 KB instead of 680 KB. It fetches the local history for that place's part of the atlas instead of all 226 places, and the source-by-source evidence list (2.5 MB unpacked) loads when you open the Evidence panel rather than with every profile; the "Reviewed" date shows there. On a slow phone connection the profile appears in about 1.8 seconds; it took 4.
+- **Search by state or province code:** "La Paz BCS", "Yellowknife NWT", "Charlottetown PEI", "San Miguel Gto" and every US, Canadian and Mexican code now find their place. A misspelt "sante fe" puts Santa Fe first (Felton came first).
 - **Saved places:** you can save every place in the atlas. The list used to hold 50, and saving the 51st quietly removed your oldest saved place (saving the 50th also said one had been removed when none was). A save now never removes another one.
 
 ### Review follow-ups: saved places, search prompts, phone profile, station fixes
