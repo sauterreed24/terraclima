@@ -60,3 +60,6 @@ Icon?
 .cache/daymet/
 .cache/climate-data/
 .cache/nex-gddp/
+
+# Evaluator output (numbers are recorded in IMPROVE.md)
+eval/results/
