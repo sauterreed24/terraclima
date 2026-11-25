@@ -131,7 +131,7 @@ export const PLACES_MEXICO: Place[] = [
         title: "Dry season vs wet season — how the year actually feels",
         paragraphs: [
           "From November into May the valleys sit under dry, stable air most afternoons. Rain is rare; dust picks up on windier days; irrigation and municipal water planning dominate conversation. This is when outdoor markets, rooftop dining, and festival calendars concentrate — the city feels like perpetual spring because humidity is moderate and skies are reliably clear.",
-          "June opens the monsoon gate: convection builds over the sierras first, then cells drift across the valles. Rain tends to arrive mid-afternoon to evening, often intense but short; mornings can still be bright. June and September are usually the wettest months, and September the hardest emotionally as well as hydrologically — roads cut by arroyos, hillside communities watch for debris flows. Anyone scouting property should ask where stormwater goes, not only what the view looks like in February.",
+          "June opens the monsoon gate: convection builds over the sierras first, then cells drift across the valles. Rain tends to arrive mid-afternoon to evening, often intense but short; mornings can still be bright. June and September are usually the wettest months, and September the hardest emotionally as well as hydrologically — roads cut by arroyos, hillside communities watch for debris flows. If you are looking at property, find out where the stormwater goes.",
         ],
       },
       {
@@ -139,7 +139,7 @@ export const PLACES_MEXICO: Place[] = [
         title: "Valley breezes, smoke, and air you can plan around",
         paragraphs: [
           "East–west valley orientation channels easterly flow in some regimes and blocks it in others, so micro-variation block-to-block is real: a courtyard with tall walls may feel still while a rooftop two streets over catches a steady draft.",
-          "Late dry season agricultural burns and occasional forest-fire smoke can degrade air quality for days at a time — less a surprise than a calendar item for sensitive households. The atlas treats smoke as a seasonal risk; locals often track visibility toward Monte Albán as an informal index.",
+          "Late dry season agricultural burns and occasional forest-fire smoke can degrade air quality for days at a time — less a surprise than a calendar item for sensitive households. Treat smoke as a seasonal risk, at its worst late in the dry season.",
         ],
       },
       {
@@ -295,7 +295,7 @@ export const PLACES_MEXICO: Place[] = [
         title: "A climate people organize around",
         paragraphs: [
           "Markets, weaving villages, and highland agriculture all use the cool basin setting. The climate makes long walking days possible in a part of Mexico where nearby lowlands can be oppressive in heat and humidity.",
-          "For travelers, the best read is seasonal rhythm: dry season brings brighter walking weather; wet season brings lush hillsides, road-risk tradeoffs, and more persistent cloud.",
+          "For travelers the choice is by season. The dry months bring brighter walking weather. The wet months bring green hillsides, more cloud and roads that can wash out.",
         ],
       },
       {
@@ -303,7 +303,7 @@ export const PLACES_MEXICO: Place[] = [
         title: "Warming pressure on a cloud-dependent landscape",
         paragraphs: [
           "The main climate-change concern is not only warmer afternoons. Rising cloud bases, altered wet-season intensity, and forest fragmentation can move the ecological band upslope and stress water reliability.",
-          "Because the station picture is partly basin-specific, confidence is high on the mechanism but local parcel decisions still need slope, drainage, and landslide diligence.",
+          "The weather record here comes from the basin floor, and conditions on the slopes differ. For a particular lot, check the slope, the drainage and any history of landslides.",
         ],
       },
     ],
@@ -399,8 +399,8 @@ export const PLACES_MEXICO: Place[] = [
         id: "cuernavaca-urban-water",
         title: "Urban growth is the climate constraint",
         paragraphs: [
-          "Cuernavaca's climate advantage has drawn people for centuries, and that demand is now part of the risk profile. Water supply, hillside development, and urban heat matter as much as the regional normals.",
-          "The place still deserves its eternal-spring reputation, but the best version of it is parcel-specific: shade, airflow, reliable water, and slope stability are the practical checks.",
+          "Cuernavaca's mild weather has drawn people for centuries, from Aztec rulers and Hernán Cortés to weekenders from Mexico City. The growth that followed strains the water supply, has built over ravines and hillsides, and makes the center hotter.",
+          "The city still earns its name as the city of eternal spring. For a particular house, check the shade, the airflow, the water supply and the slope it stands on.",
         ],
       },
     ],
@@ -490,7 +490,7 @@ export const PLACES_MEXICO: Place[] = [
         title: "Water sets the ceiling",
         paragraphs: [
           "The valley's appeal can hide the hard constraint: summer rain is negligible and groundwater is finite. Vineyard expansion, tourism, and residential demand all compete with a dry Mediterranean baseline.",
-          "Any relocation or land investment should treat water security and irrigation legality as first-order climate data.",
+          "Before buying land, check the well and the water rights. Annual rain is only about 240 mm, and nearly all of it falls from November to March.",
         ],
       },
       {
@@ -498,7 +498,7 @@ export const PLACES_MEXICO: Place[] = [
         title: "Granitic soils and diurnal swing",
         paragraphs: [
           "Fast-draining granitic and alluvial soils help vines avoid wet feet, while warm afternoons build ripeness and cool nights protect acidity. The climate favors Mediterranean grapes and drought-adapted orchard crops more than humid-climate fruit.",
-          "The profile is intentionally marked moderate confidence because station coverage and vineyard-level microclimates vary across a valley that is small but climatically uneven.",
+          "Weather stations in the valley are few, and conditions differ from one vineyard to the next, so treat the figures here as approximate.",
         ],
       },
     ],
@@ -591,7 +591,7 @@ export const PLACES_MEXICO: Place[] = [
         title: "Lake health is climate resilience",
         paragraphs: [
           "The long-term risk is tied to water quality, lake level, and watershed management. Warming and land-use pressure can reduce the lake's buffering role even if air temperatures remain comfortable for people.",
-          "For this atlas, Pátzcuaro's beauty and comfort are inseparable from watershed governance.",
+          "The lake has shrunk and silted up over recent decades, and the comfort of the basin depends on how its watershed is managed.",
         ],
       },
     ],
@@ -678,7 +678,7 @@ export const PLACES_MEXICO: Place[] = [
       { label: "Historic town center", kind: "culture", season: "year-round", note: "The settlement anchor keeps the profile from becoming just a scenic lake card." },
     ],
     deepSections: [
-      { id: "valle-bravo-lake-basin", title: "Lake comfort with slope complications", paragraphs: ["The lake softens local extremes and makes the town feel cooler and more humid than nearby dry highland stretches, especially at night and during the shoulder seasons. That moderation is the heart of the climate appeal.", "But the same basin is steep and developed. Drainage, landslide exposure, road access, and water rules can vary sharply between neighborhoods, so site selection matters more than the regional score implies."] },
+      { id: "valle-bravo-lake-basin", title: "Lake comfort with slope complications", paragraphs: ["The lake softens local extremes and makes the town feel cooler and more humid than nearby dry highland stretches, especially at night and during the shoulder seasons. That moderation is the heart of the climate appeal.", "But the same basin is steep and developed. Drainage, landslide exposure, road access, and water rules can vary sharply between neighborhoods, so the choice of neighborhood matters."] },
       { id: "valle-bravo-wet-dry-rhythm", title: "Dry-season ease, wet-season drama", paragraphs: ["Dry season brings the postcard version: bright afternoons, cool nights, outdoor dining, and lake light. Wet season brings the ecological engine, when storms build on the rim and keep pine-oak slopes green.", "For living there, both seasons matter. The rain feeds beauty and water supply, but it also tests roads, slopes, roofs, and drainage in ways a climate chart can hide."] },
     ],
     citations: [
@@ -751,8 +751,8 @@ export const PLACES_MEXICO: Place[] = [
       { label: "Historic center and clockmaking culture", kind: "culture", season: "year-round", note: "A lived town center, not a resort-only climate bubble." },
     ],
     deepSections: [
-      { id: "zacatlan-gulf-slope-cloud", title: "Gulf moisture climbs into apple country", paragraphs: ["Zacatlan's climate comes from a collision: tropical Gulf moisture moves upslope into a highland that is cool enough for temperate fruit. Fog and drizzle are not accidents; they are the atmospheric signature of the Sierra Norte.", "That makes the place unusually gardenable for cool-season crops at a Mexican latitude, but also damp enough that ventilation, drainage, and fungal pressure matter."] },
-      { id: "zacatlan-slope-living", title: "The best climate is on the right slope", paragraphs: ["A highland cloud climate changes quickly with aspect and exposure. A bright, draining slope can feel like an orchard refuge, while a shaded pocket nearby may hold damp air and road-surface problems much longer.", "For a live-here shortlist, Zacatlan rewards precise scouting: morning sun, drainage, landslide history, access in wet season, and the distance to everyday services all matter."] },
+      { id: "zacatlan-gulf-slope-cloud", title: "Gulf moisture climbs into apple country", paragraphs: ["Zacatlán, at about 2040 m, is on the edge of the Sierra Norte de Puebla, where the highland drops toward the Gulf of Mexico. Moist air from the Gulf rises up the slope and cools, and the town is often in fog or drizzle, even in the drier months. Afternoons stay between 21 and 26°C all year.", "The cool, damp air suits apples, and the town holds an apple fair each August. Houses need ventilation, and fungal disease is a constant in gardens and orchards. September and October are the wettest months, with about 300 mm between them."] },
+      { id: "zacatlan-slope-living", title: "The best climate is on the right slope", paragraphs: ["The town stands on the rim of the Barranca de los Jilgueros, a deep ravine, and the ground around it is steep. A slope that faces the morning sun dries by midday. A shaded hollow nearby can stay wet for days, and its road with it.", "Before choosing a house, look at the morning sun, the drainage and the road in the wet season, and ask about past landslides on the slope. The heavy rains of October 1999 caused many in the Sierra Norte."] },
     ],
     citations: [
       { label: "SMN/CONAGUA climate data bank", kind: "smn", url: "https://www.gob.mx/smn/acciones-y-programas/banco-nacional-de-datos-climatologicos-del-smn" },
@@ -858,16 +858,16 @@ export const PLACES_MEXICO: Place[] = [
         id: "alamos-dry-winter-green-monsoon",
         title: "Dry winter, green monsoon",
         paragraphs: [
-          "Alamos is not an all-year mild escape. Winter and early spring are the easy read: warm afternoons, low humidity, bright skies, and enough elevation above the coastal plain to make the town feel drier and clearer than the humid tropics farther south.",
-          "July through September are the real test. The monsoon turns the foothills green and powers birding, gardens, and the dramatic tropical-deciduous landscape, but it also brings muggy nights, heavier downpours, road/drainage questions, and a very different daily rhythm than the dry-season postcard.",
+          "From November to April Álamos is dry and sunny, with afternoons of 27 to 33°C and nights of 8 to 13°C. The town lies in the foothills of the Sierra Madre Occidental at about 400 m, some 50 km inland from Navojoa, and the winter sky is clear day after day.",
+          "May and June are the hottest months, with afternoons of 36 to 38°C and the hills bare and grey. The rains arrive in July, and about 310 mm of the year's 400 mm falls by the end of September. The tropical deciduous forest comes into leaf within days. Nights stay near 22°C, the air is humid, and storms fill the arroyos that cross the town.",
         ],
       },
       {
         id: "alamos-small-town-service-reality",
-        title: "A cultural small town with regional-service homework",
+        title: "A small colonial town an hour from the nearest city",
         paragraphs: [
-          "The Pueblo Magico identity, colonial architecture, and FAOT cultural calendar give Alamos more visitor infrastructure and civic life than its size implies. For travel, that is part of the draw: a compact historic town that can anchor a Sonora foothills trip.",
-          "For relocation, the same small scale is the tradeoff. A scout plan should check airport logistics, specialty-care backup, internet reliability, summer cooling costs, and block-level drainage before treating Alamos as move-ready rather than a winter or shoulder-season base.",
+          "Álamos was a silver-mining town, and its arcades and courtyard houses are well preserved. The Festival Alfonso Ortiz Tirado brings musicians and crowds each January. For its size the town has a good supply of hotels and restaurants.",
+          "Navojoa, about 50 km away, has the nearest hospitals and large shops, and the nearest airport with regular flights is at Ciudad Obregón, under two hours' drive. Anyone planning to stay through the summer should check the cost of air conditioning, the internet service, and whether the street floods in August.",
         ],
       },
     ],
@@ -931,8 +931,8 @@ export const PLACES_MEXICO: Place[] = [
       { label: "Sierra de la Laguna day trips", kind: "trail", season: "cool season", note: "A fast climb into the mountain source area behind the oasis." },
     ],
     deepSections: [
-      { id: "todos-santos-pacific-oasis", title: "Pacific coolness around a desert oasis", paragraphs: ["Todos Santos works because two unlikely systems overlap: a groundwater-fed oasis and the cooler Pacific side of Baja Sur. The ocean lowers the summer ceiling compared with the Gulf side, while the oasis lets palms, citrus, and gardens exist in desert surroundings.", "That does not mean easy water. A live-here read should ask where water comes from, how drainage behaves during tropical storms, and whether the parcel is truly protected from wind and flood pulses."] },
-      { id: "todos-santos-seasonal-reality", title: "Winter perfection, summer humidity, hurricane homework", paragraphs: ["The winter climate is the postcard: warm days, cool nights, bright dry air, and ocean texture. It is one of the reasons Todos Santos keeps attracting people who thought they wanted Cabo but needed a quieter rhythm.", "Late summer and fall are the test. Humidity rises, tropical systems can matter, and roads and arroyos reveal whether a pretty place is also practical."] },
+      { id: "todos-santos-pacific-oasis", title: "Pacific coolness around a desert oasis", paragraphs: ["Todos Santos is on the Pacific side of Baja California Sur, almost on the Tropic of Cancer. The cool California Current runs along this coast, and the sea breeze keeps afternoons a little cooler than at La Paz, on the Gulf side about 80 km away. Summer afternoons here still average 33 to 35°C.", "The town exists because of water. Springs fed from the Sierra de la Laguna surface here and irrigate palms, mangoes and vegetable plots in a desert that gets about 200 mm of rain a year. The aquifer is small, and new building draws on the same supply. Ask where a property's water comes from."] },
+      { id: "todos-santos-seasonal-reality", title: "Dry winters, humid late summer, and hurricanes", paragraphs: ["From November to May the weather is dry and bright. Afternoons reach 27 to 31°C and nights fall to 11 to 15°C. Almost no rain falls from March to June.", "August to October is hot and humid, with nights of 19 to 23°C. Half the year's rain falls in September, from tropical storms and hurricanes moving up the coast. Hurricane Odile in 2014 damaged much of the southern peninsula. Arroyos run hard in these storms and cut the dirt roads."] },
     ],
   },
 
@@ -993,8 +993,8 @@ export const PLACES_MEXICO: Place[] = [
       { label: "Town center food markets", kind: "food-drink", season: "weekends", note: "A practical anchor for repeated-life scouting." },
     ],
     deepSections: [
-      { id: "tapalpa-pine-plateau", title: "A cool pine plateau above warm Jalisco", paragraphs: ["Tapalpa's appeal is the immediate altitude correction: climb from lower Jalisco into pine-oak air, and the heat falls away. Summer afternoons stay usable, wet-season storms keep the forest green, and nights carry a mountain chill.", "That makes it a serious live-here candidate for people who want Mexico without lowland heat. It also means accepting damp-season roads, weekend crowding, and forest-edge fire management."] },
-      { id: "tapalpa-cabin-siting", title: "Cabin climate depends on exposure", paragraphs: ["A sunny clearing, a shaded pine lot, and a windy plateau edge can all claim the Tapalpa climate while feeling different day to day. The best sites balance morning sun, drainage, wind protection, and access to services.", "Because the profile is partly lifestyle-driven, it is worth scouting on both a busy weekend and a quiet weekday. The climate is excellent; the settlement pattern decides whether it feels peaceful."] },
+      { id: "tapalpa-pine-plateau", title: "A cool pine plateau above warm Jalisco", paragraphs: ["Tapalpa sits on a pine-and-oak plateau in southern Jalisco, about 2020 m up. The road from the Sayula basin climbs roughly 700 m, and the air cools on the way up. Afternoons reach 23 to 29°C through the year and nights fall to 5 to 13°C, with light frost on some winter mornings.", "June to September brings about 670 mm of rain, four fifths of the annual total, and keeps the forest and the meadows green. Dirt roads turn to mud in those months. March to May is dry, and that is the season for forest fires."] },
+      { id: "tapalpa-cabin-siting", title: "Cabin climate depends on exposure", paragraphs: ["A sunny clearing, a lot under pines and the open edge of the plateau are three different places to live. The clearing warms quickly on a winter morning. The shaded lot stays cold and damp. The plateau edge has the views and takes the wind.", "Visit once on a busy weekend and once midweek, because the town is a different size on each. Look for morning sun, ground that drains, shelter from the wind and a short drive to the shops in town."] },
     ],
   },
 
@@ -1062,18 +1062,18 @@ export const PLACES_MEXICO: Place[] = [
     deepSections: [
       {
         id: "morelia-urban-highland-feel",
-        title: "Why Morelia feels easier than smaller highland towns",
+        title: "A state capital at 1920 m",
         paragraphs: [
-          "Morelia is not only a climate point; it is a full-service state capital sitting inside the highland comfort envelope. That changes the relocation math: hospitals, universities, airport access, groceries, and repair services are normal city infrastructure rather than special trips.",
-          "The tradeoff is that the lived feel depends strongly on neighborhood choice. The historic core gives the atmospheric Morelia people imagine, while fringe growth can read hotter, busier, and more car-dependent. The ranking now treats service depth as a real positive without pretending the whole metro feels identical.",
+          "Morelia is the capital of Michoacán and lies at about 1920 m in the Guayangareo valley. Hospitals, universities, an international airport, groceries and repair trades are all in the city, so the mild highland weather does not come with the long drives for services that smaller highland towns require.",
+          "Which part of the city you are in matters. The historic center is built of pink cantera stone, with arcades and thick walls that stay cool through the afternoon. The newer districts on the edges have less shade and more pavement, are hotter in April and May, and depend on a car.",
         ],
       },
       {
         id: "morelia-rainy-season-rhythm",
         title: "Rainy-season rhythm and dry-season light",
         paragraphs: [
-          "The climate feels most generous from late autumn through spring: crisp mornings, dry highland light, and evenings cool enough for plazas and walking. This is the version of Morelia that pushes it up the live-here rankings.",
-          "June through September shifts the day around storms. Afternoon convection cools the basin but also tests drainage, traffic, hillside roads, and older roofs. The comfort score is high because heat is rarely oppressive; the scouting note is to verify water movement block by block.",
+          "From November to March the days are dry and clear. Afternoons reach 25 to 29°C and mornings start at 4 to 7°C, so a jacket is needed early and the plazas are comfortable in the evening. April and May are the hottest months, with afternoons of 30 to 32°C before the rains begin.",
+          "June to September brings about 530 mm of the year's 650 mm, mostly as afternoon and evening thunderstorms. The storms cool the valley, and afternoons drop back to about 28°C. They also flood low streets, slow traffic and find the leaks in old flat roofs. See how water drains from a street before choosing a house on it.",
         ],
       },
     ],
@@ -1122,18 +1122,18 @@ export const PLACES_MEXICO: Place[] = [
     deepSections: [
       {
         id: "guanajuato-canyon-microclimate",
-        title: "Canyon geometry makes the city feel different block by block",
+        title: "A city built in a ravine",
         paragraphs: [
-          "Guanajuato's climate is not spread evenly across a flat grid. Sun-facing slopes warm quickly, shaded lanes hold cool air, and the tunnel-and-stair network changes how wind, runoff, and daily movement feel.",
-          "That geometry is why a mild annual profile can still demand careful neighborhood choice. The best streets can feel cool and atmospheric; the wrong exposure can mean hard climbs, poor drainage, and limited access.",
+          "Guanajuato fills a narrow ravine at about 2000 m. Houses climb both walls, the old riverbed runs underneath as a road tunnel, and most of the center is reached on foot by lanes and stairs. Slopes that face the sun warm early. The lanes at the bottom stay in shade and hold cool air into late morning.",
+          "Afternoons average 23 to 30°C and nights 5 to 14°C. Where a house stands on the slope decides the rest: the steps to the nearest road, the winter sun and where storm water goes. The river was put underground after repeated floods, and downpours still send water down the lanes.",
         ],
       },
       {
         id: "guanajuato-services-and-mobility",
-        title: "The comfort score needs a mobility check",
+        title: "Stairs, tunnels and festival crowds",
         paragraphs: [
-          "The city has enough services, university life, and cultural depth to be more than a tourist stop. But living there is physically specific: stairs, narrow lanes, parking limits, festival crowds, and hillside maintenance are part of the climate experience.",
-          "The corpus now treats those factors as lived friction rather than leaving the ranking to over-reward cool nights and pretty stone. A scouting trip should include errands, rain, and an uphill walk home.",
+          "The University of Guanajuato and the state government keep the city busy all year, and there are hospitals, markets and theaters in the center. Getting around is the difficulty. Cars use the tunnels and a few through streets, parking is scarce, and many houses can only be reached by stairs.",
+          "The Festival Internacional Cervantino fills the city for about three weeks each October. Larger shops, the city of León and the international airport at Silao are 30 to 60 minutes away by road. Before renting, carry groceries home on foot and walk the route once in the rain.",
         ],
       },
     ],
@@ -1185,16 +1185,16 @@ export const PLACES_MEXICO: Place[] = [
         id: "zacatecas-cool-highland-feel",
         title: "The cool Mexican highland with real frost",
         paragraphs: [
-          "Zacatecas is the place in the Mexican highland set where the word cool is literal. At roughly 2440 m, it has mild summer afternoons, dry air, and winter mornings that can bite. That makes it feel more like a stone-built high-desert capital than a soft eternal-spring resort.",
-          "The ranking benefits from this because heat stress is low and the city has a strong identity. It also subtracts for water and cold-season friction: unheated interiors, wind exposure, dry skin, and drought planning matter more here than in lower Bajio cities.",
+          "Zacatecas is built in a ravine below the Cerro de la Bufa at about 2440 m. The height keeps it cool: summer afternoons average 23 to 26°C, the air is dry, and winter mornings are near 3°C, with frost on some nights. Houses are built of stone and most have no heating, so January feels colder indoors than the numbers suggest.",
+          "The setting is open and windy. The hills around the city are dry grassland and scrub with nopal and few trees, and the wind is strongest in late winter and spring. The sun is strong all year at this height, and the dry air is hard on skin in the cool months.",
         ],
       },
       {
         id: "zacatecas-service-and-water",
-        title: "Services are good; water is the long question",
+        title: "A working city with a short water supply",
         paragraphs: [
-          "Daily life is easier than the remote mining-town atmosphere implies. Zacatecas and Guadalupe form a functional metro with universities, hospitals, supermarkets, and culture, so the access penalty is moderate rather than severe.",
-          "The constraint is water. The same dry, clear sky that gives Zacatecas its appeal also means gardens, trees, household storage, and future growth depend on careful supply management. A scouting trip should include neighborhood water reliability, not just temperature comfort.",
+          "Zacatecas and the adjoining city of Guadalupe form one urban area with universities, hospitals, supermarkets and museums. The old silver-mining center is a UNESCO World Heritage Site, with steep lanes and a cable car across the ravine to La Bufa. Daily errands are easier than the mining-town look suggests.",
+          "Water is the constraint. The year brings about 410 mm of rain, three quarters of it from June to September, and the city draws on aquifers that are pumped faster than they refill. In some neighborhoods water arrives on a schedule. Ask how often it comes on a given street, and what storage the house has.",
         ],
       },
     ],
@@ -1247,18 +1247,18 @@ export const PLACES_MEXICO: Place[] = [
     deepSections: [
       {
         id: "saltillo-monterrey-relief",
-        title: "The Monterrey escape that still functions like a city",
+        title: "Cooler and drier than Monterrey, an hour away",
         paragraphs: [
-          "Saltillo's value is easiest to understand from Monterrey. The drive west climbs into cooler, drier highland air without leaving a serious service economy behind. That combination makes Saltillo more relocation-relevant than many prettier but thinner desert towns.",
-          "The city is not lush or soft; it is bright, dry, and sometimes windy. But the live-here score improves because hospitals, universities, manufacturing work, and regional transport keep the climate advantage connected to everyday life.",
+          "Saltillo is about 85 km west of Monterrey and roughly 1000 m higher. The highway climbs through the Sierra Madre Oriental, and the air at the top is cooler and much drier. Summer afternoons average 29 to 30°C here against about 36°C in Monterrey, and nights fall to about 16°C.",
+          "The city is bright, dry and often windy, with desert scrub on the hills around it. It is also the capital of Coahuila and a large car-manufacturing center, so it has hospitals, universities and steady work.",
         ],
       },
       {
         id: "saltillo-water-and-foothills",
-        title: "Water discipline and foothill choice",
+        title: "Little rain, and a greener side toward Arteaga",
         paragraphs: [
-          "The climate dividend comes with a water bill. Desert landscaping, household storage, shade, and drainage all matter because the same dry air that moderates humidity also limits resilience in prolonged drought.",
-          "Neighbourhood choice changes the feel. Foothill edges near Arteaga can read cooler and greener; industrial corridors toward Ramos Arizpe feel flatter, hotter, and more utilitarian. The ranking now gives Saltillo credit for urban ease while keeping drought and heat trend penalties visible.",
+          "The year's rain comes to only about 335 mm, mostly between June and September, and the city depends on groundwater. Gardens here are desert gardens, household water tanks are normal, and a long drought reaches the tap.",
+          "The east side of the valley, toward Arteaga and the pine-covered sierra, is higher, cooler and greener. The north side, toward Ramos Arizpe and the car plants, is lower, flatter and hotter. A few times each winter a norther arrives, and nights can then fall below freezing.",
         ],
       },
     ],
@@ -1476,18 +1476,18 @@ export const PLACES_MEXICO: Place[] = [
     deepSections: [
       {
         id: "tequila-agave-terroir",
-        title: "Agave terroir is the climate story",
+        title: "Volcanic soil and blue agave",
         paragraphs: [
-          "Tequila is not just a warm highland town with a famous product. The place works because volcanic soils, summer rain, dry-season sun, and cool nights line up for blue agave at landscape scale.",
-          "That gives the profile stronger identity than its generic comfort score would suggest. The ranking now has better anchors for why this is a specific lived agricultural climate rather than just another Jalisco town.",
+          "Tequila lies at about 1180 m on the north side of the Volcán de Tequila, an extinct volcano of roughly 2900 m. The slopes are red volcanic soil that drains fast. Blue agave suits them: about 700 mm of rain falls from June to September, the other eight months are dry and sunny, and frost is rare.",
+          "Fields of spiky blue-grey plants run for kilometers around the town, and the agave landscape and its old distilleries were made a UNESCO World Heritage Site in 2006.",
         ],
       },
       {
         id: "tequila-tourism-and-heat-check",
-        title: "Tourism access is easy; heat and traffic need checking",
+        title: "Close to Guadalajara, hot before the rains",
         paragraphs: [
-          "Guadalajara proximity keeps services and transport friction relatively low, but the tourism economy changes the street-level feel. Distillery traffic, visitor peaks, and harvest logistics can make the town feel busier than the climate map implies.",
-          "A live-here scout should check shade, drainage, noise, and road access outside the central visitor corridor. The agave landscape is real; so are hot exposed streets and monsoon runoff around fields and slopes.",
+          "Guadalajara is about 60 km to the southeast, around an hour by road, and has the hospitals, airport and large shops that Tequila lacks. Day visitors come out from the city by bus and tourist train, and on weekends the streets near the distilleries are crowded and loud.",
+          "Heat is the thing to check. April and May afternoons average 34 to 35°C under a clear sky, and the streets have little shade. From July to September afternoons are near 31°C. Storm runoff from the fields runs through town, so look at the drainage on any street away from the center.",
         ],
       },
     ],
@@ -1555,8 +1555,8 @@ export const PLACES_MEXICO: Place[] = [
       { label: "Town center weekend market", kind: "food-drink", season: "weekends", note: "Shows the resort pressure and services behind the climate appeal." },
     ],
     deepSections: [
-      { id: "mazamitla-sierra-tigre-cool", title: "Sierra del Tigre coolness at a subtropical latitude", paragraphs: ["Mazamitla is the kind of Mexican highland that feels improbable if you arrive from lower Jalisco: pine scent, cool evenings, mist after storms, and a cabin culture built around needing a sweater.", "The climate score is not about agricultural power alone. It is about human comfort, summer relief, and the ability to live outdoors without the heat load common in nearby lower valleys."] },
-      { id: "mazamitla-forest-cabin-tradeoffs", title: "The cabin fantasy needs drainage and fire realism", paragraphs: ["Forest shade is the attraction and the complication. It keeps afternoons cool, but can hold dampness, hide drainage problems, and place homes close to fuels that need maintenance.", "A good Mazamitla shortlist looks at access after rain, defensible space, morning sun, and whether weekend tourism changes the quiet-small-town feel. The climate is lovely; the property details decide durability."] },
+      { id: "mazamitla-sierra-tigre-cool", title: "Sierra del Tigre coolness at a subtropical latitude", paragraphs: ["Mazamitla stands at about 2220 m in the Sierra del Tigre, south of Lake Chapala. The road up from the lake climbs roughly 700 m into pine and oak forest. Evenings call for a sweater in every month, and winter mornings are near 4°C.", "Height keeps the afternoons mild. The warmest month, May, averages 29°C, and by July, with the rains under way, afternoons are down to 24 to 25°C. About 730 mm falls from June to September, mostly in afternoon storms, and mist hangs in the pines afterwards."] },
+      { id: "mazamitla-forest-cabin-tradeoffs", title: "Cabins in the pines: damp, fire and weekend traffic", paragraphs: ["The forest shade that keeps a cabin cool also keeps it damp. Lots under dense pines dry slowly in the rainy season, and mold and soft ground are common. March to May is dry, the pine litter is ready to burn, and fires in the sierra are a yearly risk.", "Most visitors come from Guadalajara, about two hours away. The town is crowded on weekends and holidays and quiet midweek. Check the access after heavy rain, whether the lot gets morning sun, and how far the trees stand from the walls."] },
     ],
   },
 
@@ -1626,7 +1626,7 @@ export const PLACES_MEXICO: Place[] = [
     growability: { score: 46, growsWell: ["Apples", "Pears", "Beans", "Corn (Tarahumara landraces)"], tricky: ["Heat-loving crops"], homeGarden: "Short-season highland gardening; the Tarahumara grow staple varieties adapted to the altitude." },
     climateChange: { outlook2050: "Warmer; drier dry-season; fire regime shifting.", outlook2100: "Pine-oak belt migrating upslope; snow events rarer.", keyShifts: [{ variable: "Snow", direction: "down" }, { variable: "Fire weather", direction: "up" }, { variable: "Monsoon timing", direction: "mixed" }], resilienceNote: "The plateau is mountain-buffered but fire and water stress are rising." },
     risks: { wildfire: { level: "elevated", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "elevated", trend: "worsening" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "low", trend: "stable" }, landslide: { level: "moderate", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
-    nearbyContrasts: [{ label: "Batopilas (canyon floor, 495 m)", note: "Subtropical, palm-and-citrus climate about 80 km south and 1,800 m down; winter highs near 26°C while Creel's nights hover near freezing." }],
+    nearbyContrasts: [{ label: "Batopilas (canyon floor, 495 m)", note: "Subtropical, palm-and-citrus climate about 80 km south and 1,800 m down; winter afternoons there are warm enough for citrus while Creel's nights hover near freezing." }],
     scores: { hiddenGem: 82, microclimateUniqueness: 86, comfort: 54, resilience: 58, growability: 46, tradeoff: 60 },
     liveSignals: {
       costPressure: 38,
@@ -1664,7 +1664,7 @@ export const PLACES_MEXICO: Place[] = [
         title: "Monsoon relief, fire-season concern",
         paragraphs: [
           "Summer rains support pine-oak forest and Rarámuri agriculture, but the dry season can leave fuels receptive to fire. Climate change raises concern for longer dry spells, hotter fire weather, and shifting pine health.",
-          "This is a high-value Tier B entry precisely because it compresses forest, canyon, Indigenous land use, and climate risk into a terrain system that is easy to understand but hard to reduce to one station.",
+          "Forest, canyon, Rarámuri land use and fire risk all sit within a day's walk here, and no single weather station can stand for all of it.",
         ],
       },
     ],
@@ -2170,18 +2170,18 @@ export const PLACES_MEXICO: Place[] = [
       },
       {
         id: "ajijic-expat-comfort",
-        title: "Why this became a comfort-climate magnet",
+        title: "Why so many people retire here",
         paragraphs: [
-          "Ajijic offers a rare mix: walkable village life, warm dry-season days, cool nights, lush wet-season renewal, and limited need for heating or cooling in well-designed homes.",
-          "That comfort has a social footprint. Popularity brings traffic, housing pressure, and service strain, so the atlas treats it as a high-comfort place with a well-known reputation, not an undiscovered one.",
+          "Ajijic is on the north shore of Lake Chapala at about 1530 m. Afternoons run from 25°C in January to 32°C in May and nights from 8 to 16°C, so most houses have neither heating nor air conditioning. The village can be covered on foot, and the rains from June to September turn the hills behind it green.",
+          "Foreign retirees have settled here since the mid-twentieth century, and the place is well known. That has brought traffic on the one lakeshore road, higher rents and pressure on local services.",
         ],
       },
       {
         id: "ajijic-watershed-risk",
-        title: "The lake is also the risk register",
+        title: "The lake is also the risk",
         paragraphs: [
           "Lake health, wastewater, algal blooms, and watershed demand are not side issues; they are the core long-term resilience question for the Chapala basin.",
-          "A move or investment here should verify water source, drainage, shade, and slope stability. The climate is generous, but the basin is under pressure.",
+          "Before buying, check the water source, the drainage, the shade and the slope above the lot. The lake's level has swung widely, and in the early 2000s the shore lay far out from the village.",
         ],
       },
     ],
@@ -2230,18 +2230,18 @@ export const PLACES_MEXICO: Place[] = [
     deepSections: [
       {
         id: "queretaro-service-ease",
-        title: "A climate compromise with unusually strong services",
+        title: "A dry highland city with everything close",
         paragraphs: [
-          "Queretaro is not the most romantic highland profile, but it is one of the easiest to live in if daily infrastructure matters. Hospitals, airport access, universities, industry, and shopping reduce the access penalty that smaller highland towns carry.",
-          "That is why the ranking should not read it as only a dry climate point. The place is a practical relocation candidate whose value comes from combining tolerable highland weather with a deep service base.",
+          "Querétaro lies at about 1820 m on the dry northern side of the central highlands. Afternoons run from 23°C in winter to 30°C in May, nights from 6 to 14°C, and only about 480 mm of rain falls in a year. It is drier and browner than Morelia or the Jalisco highlands, and for eight months the sky is mostly clear.",
+          "The city is one of Mexico's main manufacturing centers, with aerospace and car plants, universities, large hospitals and an international airport. Mexico City is about 200 km away by highway. Everyday services are closer here than in the smaller highland towns.",
         ],
       },
       {
         id: "queretaro-growth-water-heat",
-        title: "Growth is the climate modifier",
+        title: "Fast growth, less shade, short water",
         paragraphs: [
-          "The same growth that makes Queretaro practical also changes its feel. New districts can run hotter, more car-dependent, and more water-stressed than the historic centre or older shaded neighborhoods.",
-          "A scouting pass should compare the walkable core, northern planned communities, and industrial corridors separately. The climate is broadly comfortable; the metro form decides whether it feels easy.",
+          "The city has grown quickly since the 1990s. The historic center has narrow streets, stone buildings and plazas with trees. The newer districts to the north, around Juriquilla, and along the industrial corridors have wide roads and little shade, are hotter in the afternoon and need a car.",
+          "Water limits that growth. The local aquifer is overdrawn, and since 2011 much of the city's supply has come through the Acueducto II from springs more than 100 km away. Ask about water service and pressure in any neighborhood.",
         ],
       },
     ],

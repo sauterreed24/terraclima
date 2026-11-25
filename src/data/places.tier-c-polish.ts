@@ -104,7 +104,7 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
         title: "A working port, winter storms and tsunami ground",
         paragraphs: [
           "Astoria still works for a living. Fishing, seafood processing, the river pilots and the Coast Guard keep people employed when tourism is slow, and housing has stayed cheaper than in the resort towns down the coast. Columbia Memorial Hospital handles everyday care. Specialists and the nearest major airport are in Portland, about two hours away.",
-          "Winter storms are the regular hazard. The Great Coastal Gale of December 2007 brought hurricane-force gusts, and it cut power and road links for days. Steep, wet slopes in town are prone to landslides. The low waterfront lies in the tsunami zone for a Cascadia earthquake. Check the slope, the elevation and the evacuation route for any address.",
+          "Winter storms are the regular hazard. The Great Coastal Gale of December 2007 brought hurricane-force gusts, and it cut power and road links for days. Steep, wet slopes in town are prone to landslides. The low waterfront lies in the tsunami zone for a Cascadia earthquake. For any address, look at the slope, the elevation and the evacuation route.",
         ],
       },
     ],
@@ -162,7 +162,7 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
         id: "bar-harbor-tourism-and-winter-isolation",
         title: "A summer town in winter",
         paragraphs: [
-          "Acadia National Park and cruise ships bring several million visitors a year, nearly all between May and October. Seasonal rentals and second homes take up much of the housing, and year-round rents are high compared with local wages. Mount Desert Island Hospital handles everyday care. Specialists and the nearest sizeable airport are in Bangor, about an hour and a quarter away.",
+          "Acadia National Park and cruise ships bring several million visitors a year, nearly all between May and October. Seasonal rentals and second homes take up much of the housing, and year-round rents are high compared with local wages. Mount Desert Island Hospital handles everyday care. Bangor, about an hour and a quarter away, has the specialists and the nearest sizeable airport.",
           "From November to April many restaurants and shops close and the town is quiet. Nor'easters can cut power for a day or more. Winter storms in January 2024 damaged the Shore Path and waterfront buildings. Year-round work is limited outside health care, the research laboratories and the college. Anyone planning to stay through winter should plan for that season as well as the summer.",
         ],
       },
@@ -174,45 +174,9 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
   },
   "beverly-shores-in": {
     climate: { humidity: [76, 74, 70, 66, 66, 68, 70, 72, 73, 72, 75, 78], sunshinePct: [42, 48, 55, 60, 65, 70, 72, 70, 65, 58, 45, 38] },
-    deepSections: [
-      {
-        id: "beverly-shores-lake-michigan-snowbelt-and-dunes",
-        title: "Lake Michigan, the dunes and the snow",
-        paragraphs: [
-          "Beverly Shores lies on a strip of dunes between Lake Michigan and the Great Marsh. When cold north or northwest winds blow down the length of the lake in early winter, bands of snow come ashore here, and totals can differ greatly over a few kilometres. In summer the lake breeze keeps the beach a few degrees cooler than towns inland.",
-          "The dune ridges and the marsh behind them differ at night. Cold air drains off the sand ridges and settles in the marsh and the low hollows between the dunes, which hold frost later in spring. The beach side stays closer to the lake's temperature all year: cooler in spring and early summer, milder in autumn.",
-        ],
-      },
-      {
-        id: "beverly-shores-lake-access-and-coastal-erosion",
-        title: "A small town in a national park, and a moving shoreline",
-        paragraphs: [
-          "Beverly Shores has a few hundred residents and is surrounded by Indiana Dunes National Park. The beach and the trails are the reason to live here. Shops, schools and medical care are in Chesterton and Michigan City, a short drive away, and a commuter train runs to Chicago.",
-          "The shoreline is the thing to check. Lake Michigan reached record high levels in 2019 and 2020, and winter storms cut away the beach and undermined parts of Lake Front Drive. Lake levels rise and fall over periods of years, and erosion follows them. For any lakefront property, look at the distance from the dune edge, the elevation and the shoreline protection in place.",
-        ],
-      },
-    ],
   },
   "bismarck-nd": {
     climate: { humidity: [78, 76, 72, 64, 62, 65, 68, 70, 70, 70, 76, 80], sunshinePct: [50, 56, 62, 64, 66, 68, 70, 68, 64, 58, 48, 44] },
-    deepSections: [
-      {
-        id: "bismarck-northern-plains-and-missouri-river-corridor",
-        title: "Open plains and the Missouri valley",
-        paragraphs: [
-          "Bismarck stands on the east bank of the Missouri River, with open plains in every direction. No mountain range or large body of water moderates the seasons. Arctic air arrives unhindered in winter and can hold night temperatures below −25°C for days. In summer, hot air from the south pushes afternoons above 32°C, though nights cool well in the dry air.",
-          "The river valley and the uplands differ a little. On calm, clear nights cold air drains into the valley bottom, which records the lowest readings. The upland to the east and the bluffs across the river at Mandan are windier and take more drifting snow. Trees along the river give the older neighbourhoods some shelter from the wind.",
-        ],
-      },
-      {
-        id: "bismarck-winter-cost-and-snow-read",
-        title: "Winter costs and river flooding",
-        paragraphs: [
-          "Bismarck is the state capital and the service centre for a large part of the northern plains, so it has more stable employment and medical care than most cities of its size. Two hospital systems, Sanford and CHI St. Alexius, serve the region, and the airport has flights to Minneapolis and Denver.",
-          "Winter is the main cost. The heating season runs from October to April, snow clearing is routine for months, and blizzards close the interstate highways several times in most winters. The Missouri is the other risk. In 2011 record releases from Garrison Dam flooded low-lying neighbourhoods along the river for weeks. Check the floodplain status and the heating bills for any house.",
-        ],
-      },
-    ],
   },
   "block-island-ri": {
     climate: { humidity: [80, 78, 75, 72, 72, 76, 80, 82, 82, 80, 78, 80], sunshinePct: [48, 52, 56, 60, 62, 65, 68, 68, 62, 58, 48, 45] },
@@ -230,7 +194,7 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
         title: "Ferries and storms",
         paragraphs: [
           "About a thousand people live on the island year-round. Nearly everything, including groceries, fuel and building materials, arrives on the ferry from Point Judith. A medical centre handles routine and urgent care, and serious cases go to the mainland by boat or air. In winter, rough seas cancel ferries often, sometimes for several days in a row.",
-          "Storms are the climate risk. The hurricanes of 1938 and 1991 and Hurricane Sandy in 2012 all damaged the harbour and cut Corn Neck Road, the low road that links the north of the island to the town. The bluffs lose ground to the sea every year. Check the elevation, the exposure to wind and the distance from an eroding edge for any property.",
+          "Storms do the damage here. The hurricanes of 1938 and 1991 and Hurricane Sandy in 2012 all damaged the harbour and cut Corn Neck Road, the low road that links the north of the island to the town. The bluffs lose ground to the sea every year. A property's elevation, its exposure to wind and its distance from an eroding edge all need checking.",
         ],
       },
     ],
@@ -271,7 +235,7 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
         title: "Downslope winds and mild winter days",
         paragraphs: [
           "Boulder sits where the Front Range drops to the plains. When westerly winds cross the Continental Divide and come down the eastern slope, the air warms as it sinks. A winter day can warm by 10 to 15°C within hours, and snow in town usually melts within a few days. The same winds can reach damaging speeds, with gusts above 150 km/h in the strongest events.",
-          "The city and the foothills above it differ. On calm nights cold air drains out of the canyons and across the lower parts of town toward the plains. Neighbourhoods on the mesas and in the foothills are cooler in summer and get more snow, and they are also closer to forest and grass that can burn.",
+          "On calm nights cold air drains out of the canyons and across the lower parts of town toward the plains. Neighbourhoods on the mesas and in the foothills are cooler in summer and get more snow, and they are also closer to forest and grass that can burn.",
         ],
       },
       {
@@ -302,8 +266,8 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
         id: "bozeman-growth-housing-and-gallatin-fire",
         title: "Fast growth, housing costs and smoke",
         paragraphs: [
-          "Bozeman has been one of the fastest-growing small cities in the United States. The university, technology firms and remote workers have driven house prices far above what local wages support, and that is the main difficulty of living here. Bozeman Health Deaconess Hospital serves the region, and the airport is the busiest in Montana.",
-          "Wildfire smoke is the usual summer problem. In August and September, smoke from fires across the northern Rockies can settle in the valley for days. Fires also burn in the foothills close to town; the Bridger Foothills Fire of 2020 destroyed about thirty homes. Check the wildfire exposure of foothill lots, and the floodplain along the creeks that cross the valley.",
+          "Bozeman has been one of the fastest-growing small cities in the United States. The university, technology firms and remote workers have driven house prices far above what local wages support. Bozeman Health Deaconess Hospital serves the region, and the airport is the busiest in Montana.",
+          "Wildfire smoke is the usual summer problem. In August and September, smoke from fires across the northern Rockies can settle in the valley for days. Fires also burn in the foothills close to town; the Bridger Foothills Fire of 2020 destroyed about thirty homes. Foothill lots need a look at their wildfire exposure, and lots along the creeks at the floodplain.",
         ],
       },
     ],
@@ -329,15 +293,15 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
         title: "Ouachita foothills, forest and the Mountain Fork River",
         paragraphs: [
           "Broken Bow lies at the southern foot of the Ouachita Mountains. Moist air from the Gulf rises over the hills, which makes this the wettest corner of Oklahoma, with about 1400 mm of rain a year. Pine and hardwood forest covers the ridges. Summer afternoons average about 33°C with high humidity, and thunderstorms are frequent.",
-          "The river valleys and the ridges differ. Below Broken Bow Dam the Mountain Fork runs cold all summer, because the water is released from deep in the lake, and it cools the valley beside it and lays fog over it in the morning. Cold air settles in the valleys on clear nights. The ridge tops are warmer at night and catch more breeze.",
+          "Below Broken Bow Dam the Mountain Fork runs cold all summer, because the water is released from deep in the lake, and it cools the valley beside it and lays fog over it in the morning. Cold air settles in the valleys on clear nights. The ridge tops are warmer at night and catch more breeze.",
         ],
       },
       {
         id: "broken-bow-tourism-and-flood-plain-read",
         title: "Cabin tourism, distance and floods",
         paragraphs: [
-          "Beavers Bend State Park and the cabin district at Hochatown, north of town, bring a steady flow of weekend visitors, mostly from Dallas. Tourism and timber provide most of the work. A small hospital in Idabel handles basic care. Specialists and the nearest commercial flights are in Texarkana, more than an hour away.",
-          "Heavy rain is the climate risk. Storms can drop 150 mm or more in a day on these hills, and creeks and low roads flood quickly; widespread flooding closed roads across the county in 2015. Many rental cabins stand on steep, wooded lots at the end of gravel roads. Check the flood zone, the road access in wet weather and the drive time to a hospital.",
+          "Beavers Bend State Park and the cabin district at Hochatown, north of town, bring a steady flow of weekend visitors, mostly from Dallas. Tourism and timber provide most of the work. A small hospital in Idabel handles basic care. For specialists and commercial flights, people drive to Texarkana, more than an hour away.",
+          "Flooding is the hazard to plan for. Storms can drop 150 mm or more in a day on these hills, and creeks and low roads flood quickly; widespread flooding closed roads across the county in 2015. Many rental cabins stand on steep, wooded lots at the end of gravel roads. Before renting or buying, look at the flood zone, the road in wet weather and the drive time to a hospital.",
         ],
       },
     ],

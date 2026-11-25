@@ -979,7 +979,7 @@ function DetailBody({
           section opens on the closest match, so neither needs a teaser above it. */}
       <PlaceVersusHome place={place} home={homePlace ?? null} onHomeBaseToggle={onHomeBaseToggle} scenario={scenario} />
 
-      <Section anchorId={PD.similar} title="Climate twins" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
+      <Section phoneCollapse anchorId={PD.similar} title="Climate twins" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
         <PlaceClimateTwins place={place} onOpenPlace={onOpenPlace} />
       </Section>
 
@@ -1028,7 +1028,7 @@ function DetailBody({
                   {liveFit.cautions.map(c => <li key={c}>{prose(c)}</li>)}
                 </ul>
               ) : (
-                <p className="text-sm text-frost">No single warning stands out. Still read the risk, water and fit sections before shortlisting.</p>
+                <p className="text-sm text-frost">No single warning stands out. Still read the risk, water and fit sections before you save it.</p>
               )}
             </div>
           </div>
@@ -1101,7 +1101,7 @@ function DetailBody({
       </div>
 
       {place.liveSignals ? (
-        <Section anchorId={PD.livedSignals} title="Cost and access" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
+        <Section phoneCollapse anchorId={PD.livedSignals} title="Cost and access" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
           <div className="panel-thin p-4">
             <div className="text-[11px] text-stone-readable leading-snug mb-3 max-w-2xl">
               Housing cost and travel times, which climate figures do not show. Each is scored from 0 (easy) to 100 (severe) from public sources. These are not appraisals or insurance assessments.
@@ -1186,7 +1186,7 @@ function DetailBody({
       ) : null}
 
       {settlementAnchors.length > 0 && (
-        <Section anchorId={PD.settlements} title="Nearby towns" icon={<Users className="w-4 h-4" style={{ color: "#c3e4f1" }} />}>
+        <Section phoneCollapse anchorId={PD.settlements} title="Nearby towns" icon={<Users className="w-4 h-4" style={{ color: "#c3e4f1" }} />}>
           <div className="grid md:grid-cols-2 gap-2">
             {settlementAnchors.map(s => (
               <div key={s.name} className="panel-thin p-3 flex items-start gap-3">
@@ -1253,6 +1253,7 @@ function DetailBody({
         );
         return (
           <Section
+            phoneCollapse
             anchorId={PD.activities}
             title={attractions.length > 0 ? "Things to do nearby" : "Things to check in person"}
             icon={<Compass className="w-4 h-4" style={{ color: "#c6dcbd" }} />}
@@ -1281,7 +1282,7 @@ function DetailBody({
 
       {/* "Who might not" already closes the overview, so this keeps only the
           best-fit read and the relocation / travel tags. */}
-      <Section anchorId={PD.who} title="Who it suits">
+      <Section phoneCollapse anchorId={PD.who} title="Who it suits">
         <div className="panel-thin p-3 border-l-2" style={{ borderLeftColor: "#7ea182" }}>
           <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1">Fits best</div>
           <div className="text-sm text-frost">{prose(place.whoWouldLove)}</div>
@@ -1321,7 +1322,7 @@ function DetailBody({
         </div>
       </ScoreDetails>
 
-      <Section anchorId={PD.rhythm} icon={<Wind className="w-4 h-4" style={{ color: "#8cc8e0" }} />} title="Seasonal rhythm">
+      <Section phoneCollapse anchorId={PD.rhythm} icon={<Wind className="w-4 h-4" style={{ color: "#8cc8e0" }} />} title="Seasonal rhythm">
         <div className="space-y-4">
           <div>
             <LabelRow label={`Monthly highs & lows (°${temp})`} />
@@ -1346,7 +1347,7 @@ function DetailBody({
       </Section>
 
       {bestMonths.length > 0 && (
-        <Section anchorId={PD.bestMonths} title="Best months for…" icon={<Calendar className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+        <Section phoneCollapse anchorId={PD.bestMonths} title="Best months for…" icon={<Calendar className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
           <div className="grid md:grid-cols-2 gap-2">
             {bestMonths.map(w => (
               <div key={w.label} className="panel-thin p-3 flex items-start gap-3">
@@ -1369,7 +1370,7 @@ function DetailBody({
 
       <PlaceBioclimaticIndices place={place} anchorId={PD.bioclimaticIndices} />
 
-      <Section anchorId={PD.numbersTogether} title="How the numbers read together" icon={<TrendingUp className="w-4 h-4" style={{ color: "#8cc8e0" }} />}>
+      <Section phoneCollapse anchorId={PD.numbersTogether} title="How the numbers read together" icon={<TrendingUp className="w-4 h-4" style={{ color: "#8cc8e0" }} />}>
         <div className="panel-thin p-4 space-y-2">
           {synthesized.lines.map((line, i) => (
             <div key={i} className="flex items-start justify-between gap-4 text-sm border-b last:border-0 pb-2 last:pb-0 border-[rgba(200,160,120,0.28)]">
@@ -1510,7 +1511,7 @@ function DetailBody({
         </details>
       </Section>
 
-      <Section anchorId={PD.soil} title="Agriculture & soil" icon={<Leaf className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+      <Section phoneCollapse anchorId={PD.soil} title="Agriculture & soil" icon={<Leaf className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
           Soil, drainage and what grows well here. Hardiness zone, frost-free days and chill hours are under Climate basics above.
         </p>
@@ -1578,7 +1579,7 @@ function DetailBody({
         <RiskProfile place={place} />
       </Section>
 
-      <Section anchorId={PD.outlook} title="Climate-change outlook">
+      <Section phoneCollapse anchorId={PD.outlook} title="Climate-change outlook">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <EvidenceClassLabel cls={classifyDossierSection("outlook")} />
         </div>
@@ -1594,7 +1595,7 @@ function DetailBody({
 
       <PlaceEvidenceSummary place={place} anchorId={PD.evidence} />
 
-      <Section anchorId={PD.verdict} title="Scores and sources">
+      <Section phoneCollapse anchorId={PD.verdict} title="Scores and sources">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <EvidenceClassLabel cls={classifyDossierSection("scores")} />
         </div>

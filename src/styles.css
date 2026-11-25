@@ -4123,11 +4123,11 @@
       padding: 0.72rem;
       border: 1px solid rgba(26, 143, 168, 0.16);
       border-radius: 0.8rem;
-      background: rgba(255, 253, 247, 0.78);
+      /* Opaque: the page underneath must not read through the Compare header. */
+      background: #fffdf7;
       box-shadow:
         0 12px 30px -24px rgba(24, 55, 64, 0.45),
         0 1px 0 rgba(255, 255, 255, 0.8) inset;
-      backdrop-filter: blur(18px);
     }
     .compare-dialog__title-text {
       font-size: 1.48rem;
@@ -5679,7 +5679,7 @@
     padding: 0.75rem;
     border-radius: 0.875rem;
     border: 1px solid rgba(71, 90, 122, 0.18);
-    background: rgba(255, 253, 248, 0.78);
+    background: #fffdf8;
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.88) inset,
       0 10px 28px -22px rgba(24, 55, 64, 0.24);
@@ -11314,7 +11314,7 @@ html[data-theme="dark"] .compare-finalist-table,
 html[data-theme="dark"] .compare-diff-board,
 html[data-theme="dark"] .compare-insight-strip,
 html[data-theme="dark"] .compare-bioclim-key {
-  background: rgba(20, 28, 48, 0.78);
+  background: #141c30;
   border-color: rgba(120, 138, 178, 0.28);
   color: var(--color-frost-strong);
 }
@@ -14183,9 +14183,52 @@ html[data-theme="dark"] .detail-zone-divider__eyebrow {
 }
 
 /* Touch screens: give the small text toggles a full-size tap area. */
+/* Compare panels sit on a scrim over the live page: give their translucent
+   gradients a solid base so nothing underneath shows through while scrolling. */
+.compare-workbench,
+.compare-decision-read,
+.compare-evidence-readiness,
+.compare-insight-strip {
+  background-color: #fffdf8;
+}
 @media (pointer: coarse) {
   .tc-hero-compact-toggle {
     min-height: 44px;
     padding-inline: 0.9rem;
+  }
+  .detail-dossier-chapter-toggle,
+  .place-geospatial-details__summary,
+  [data-place-detail] .btn-primary {
+    min-height: 2.75rem;
+  }
+  .detail-dossier-chapter-toggle {
+    padding-inline: 0.8rem;
+  }
+  .place-geospatial-details__summary {
+    display: flex;
+    align-items: center;
+  }
+  /* The map readout chip stays slim; its More/Less control gets an invisible
+     44px hit area instead of growing the chip over the map. */
+  .map-atlas-readout__expand {
+    position: relative;
+  }
+  .map-atlas-readout__expand::after {
+    content: "";
+    position: absolute;
+    inset: 50% -0.3rem auto;
+    height: 2.75rem;
+    translate: 0 -50%;
+  }
+  /* Active-filter chips: readable text and a finger-sized row on phones. */
+  .lens-receipt__chip {
+    padding: 0.62rem 0.7rem;
+    font-size: 0.75rem;
+  }
+}
+/* Phone profiles: collapsed sections stack as a tight list, not 40px apart. */
+@media (max-width: 640px) {
+  [data-place-detail] .place-score-details:has(+ .place-score-details) {
+    margin-block-end: 0.6rem;
   }
 }

@@ -40,7 +40,7 @@ export const BookmarkButton = memo(function BookmarkButton({
 
   const Icon = pinned ? BookmarkCheck : Bookmark;
   const context = ariaContext ? ` ${ariaContext}` : "";
-  const ariaLabel = pinned ? `Unpin ${placeName} from your shortlist${context}` : `Pin ${placeName} to your shortlist${context}`;
+  const ariaLabel = pinned ? `Remove ${placeName} from your saved places${context}` : `Save ${placeName} to your saved places${context}`;
   const title = ariaLabel;
 
   if (size === "header") {
@@ -54,7 +54,7 @@ export const BookmarkButton = memo(function BookmarkButton({
         title={title}
       >
         <Icon className="w-3 h-3" aria-hidden />
-        <span>{pinned ? "Pinned" : "Pin"}</span>
+        <span>{pinned ? "Saved" : "Save"}</span>
       </button>
     );
   }

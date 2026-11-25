@@ -126,10 +126,10 @@ export function CollectionsView({ onOpenPlace, onPick, activeId }: Props) {
                 onClick={() => onPick(c.id)}
                 className={`collection-pin-button ${isActive ? "btn-primary !text-xs !py-1.5" : "btn-ghost !text-xs"}`}
                 aria-pressed={isActive}
-                aria-label={isActive ? `Clear ${c.title} collection filter` : `Pin ${c.title} collection`}
+                aria-label={isActive ? `Clear ${c.title} collection filter` : `Show only the ${c.title} collection`}
                 title={isActive ? `Clear ${c.title} from the Explorer filter` : `Filter the Explorer to ${c.title}`}
               >
-                {isActive ? "Clear filter" : "Pin collection"}
+                {isActive ? "Clear filter" : "Show only these"}
               </button>
             </div>
             <p className="text-sm text-frost leading-relaxed mb-3">{prose(c.description)}</p>

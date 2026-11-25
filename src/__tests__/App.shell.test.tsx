@@ -357,7 +357,7 @@ describe("App shell", () => {
     fireEvent.click(screen.getAllByRole("button", { name: "Collections" })[0]);
     const pinButton = await screen.findByRole(
       "button",
-      { name: "Pin Rain-Shadow Sanctuaries collection" },
+      { name: "Show only the Rain-Shadow Sanctuaries collection" },
       { timeout: APP_SHELL_TIMEOUT_MS },
     );
     fireEvent.click(pinButton);
@@ -459,10 +459,10 @@ describe("App shell", () => {
     expect(dossierButton).toHaveAttribute("title", dossierButton.getAttribute("aria-label"));
     expect(compareButton).toBeInTheDocument();
     expect(compareButton).toHaveAttribute("title", "Compare the top 4 places from the summary");
-    const saveButton = within(actions).getByRole("button", { name: /Save the top 4 places to your shortlist/ });
+    const saveButton = within(actions).getByRole("button", { name: /Save the top 4 places to your saved places/ });
     expect(saveButton).toBeInTheDocument();
     expect(saveButton).toHaveAttribute("title", saveButton.getAttribute("aria-label"));
-    const pinButton = within(actions).getByRole("button", { name: /Pin .* to your shortlist/ });
+    const pinButton = within(actions).getByRole("button", { name: /^Save (?!the top).* to your saved places/ });
     expect(pinButton).toHaveAttribute("aria-pressed", "false");
     expect(pinButton).toHaveAttribute("title", pinButton.getAttribute("aria-label"));
     expect(scoutBoard.compareDocumentPosition(signalRail) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -549,7 +549,7 @@ describe("App shell", () => {
 
     renderApp();
 
-    const receipt = await screen.findByLabelText("Trip pinned: Places That Feel Like Another Country");
+    const receipt = await screen.findByLabelText("Trip: Places That Feel Like Another Country");
     expect(receipt).toHaveTextContent("Top stop on this trip");
     expect(receipt).toHaveTextContent("tourism appeal");
     expect(receipt).toHaveTextContent("stops in view");
@@ -718,11 +718,11 @@ describe("App shell", () => {
     const openLeader = within(scoutBriefSection as HTMLElement).getByRole("button", { name: /^Open the top pick, / });
     const leaderCard = within(scoutBriefSection as HTMLElement).getByRole("button", { name: /current best match/ });
     const compareLeaders = within(scoutBriefSection as HTMLElement).getByRole("button", { name: "Compare the top 4 places from the summary" });
-    const saveFinalists = within(scoutBriefSection as HTMLElement).getByRole("button", { name: /Save the top 4 places to your shortlist/ });
+    const saveFinalists = within(scoutBriefSection as HTMLElement).getByRole("button", { name: /Save the top 4 places to your saved places/ });
     expect(openLeader).toHaveAttribute("title", openLeader.getAttribute("aria-label"));
     expect(leaderCard).toHaveAttribute("title", leaderCard.getAttribute("aria-label"));
     expect(compareLeaders).toHaveAttribute("title", "Compare the top 4 places from the summary");
-    expect(saveFinalists).toHaveAttribute("title", "Save the top 4 places to your shortlist");
+    expect(saveFinalists).toHaveAttribute("title", "Save the top 4 places to your saved places");
   }, APP_SHELL_TIMEOUT_MS);
 
   it("anchors the desktop Go to summary jump to the relocation workbench", () => {
@@ -759,7 +759,7 @@ describe("App shell", () => {
       const params = new URLSearchParams(window.location.search);
       expect(params.get("col")).toBe("places-that-feel-like-another-country");
     });
-    expect(await screen.findByLabelText("Trip pinned: Places That Feel Like Another Country")).toBeInTheDocument();
+    expect(await screen.findByLabelText("Trip: Places That Feel Like Another Country")).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps the map leader caption synchronized with the selected ranking", () => {
@@ -897,7 +897,7 @@ describe("App shell", () => {
     openScoutTools();
 
     const actions = screen.getByLabelText(/^Summary actions for /);
-    fireEvent.click(within(actions).getByRole("button", { name: /Save the top 4 places to your shortlist/ }));
+    fireEvent.click(within(actions).getByRole("button", { name: /Save the top 4 places to your saved places/ }));
 
     await waitFor(() => {
       const saved = JSON.parse(window.localStorage.getItem("terraclima.bookmarks.v1") ?? "[]") as string[];
@@ -905,9 +905,9 @@ describe("App shell", () => {
     });
     expect(screen.getByText(/Saved 4 new places/)).toBeInTheDocument();
     const saved = JSON.parse(window.localStorage.getItem("terraclima.bookmarks.v1") ?? "[]") as string[];
-    expect(screen.getByLabelText("Shortlist status")).toHaveTextContent("Ready to compare");
+    expect(screen.getByLabelText("Saved places status")).toHaveTextContent("Ready to compare");
 
-    fireEvent.click(screen.getByRole("button", { name: "Compare 4 places from your shortlist side by side" }));
+    fireEvent.click(screen.getByRole("button", { name: "Compare 4 places from your saved places side by side" }));
 
     expect(await screen.findByRole("dialog", { name: "4 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
     expect(screen.getByTestId("compare-place-ids")).toHaveTextContent(saved.join(","));
@@ -919,19 +919,19 @@ describe("App shell", () => {
     openScoutTools();
 
     const actions = screen.getByLabelText(/^Summary actions for /);
-    const pinButton = within(actions).getByRole("button", { name: /Pin .* to your shortlist/ });
+    const pinButton = within(actions).getByRole("button", { name: /^Save (?!the top).* to your saved places/ });
     expect(pinButton).toHaveAttribute("title", pinButton.getAttribute("aria-label"));
     fireEvent.click(pinButton);
 
     await waitFor(() => expect(pinButton).toHaveAttribute("aria-pressed", "true"));
-    const pinnedButton = within(actions).getByRole("button", { name: /Unpin .* from your shortlist/ });
-    expect(pinnedButton).toHaveTextContent("Pinned");
+    const pinnedButton = within(actions).getByRole("button", { name: /Remove .* from your saved places/ });
+    expect(pinnedButton).toHaveTextContent("Saved");
     expect(pinnedButton).toHaveAttribute("title", pinnedButton.getAttribute("aria-label"));
     const dismiss = screen.getByRole("button", { name: "Dismiss message" });
     expect(dismiss).toHaveAttribute("title", "Dismiss message");
     fireEvent.click(dismiss);
-    expect(screen.queryByText(/Pinned .* to your shortlist/)).not.toBeInTheDocument();
-    expect(screen.getByText(/Your shortlist · 1/)).toBeInTheDocument();
+    expect(screen.queryByText(/Saved .*\./)).not.toBeInTheDocument();
+    expect(screen.getByText(/Saved places · 1/)).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("compares distinct context leaders from the stress test", async () => {
@@ -1888,16 +1888,16 @@ describe("App shell", () => {
 
     renderApp();
 
-    expect(screen.getByText(/Your shortlist · 1/)).toBeInTheDocument();
+    expect(screen.getByText(/Saved places · 1/)).toBeInTheDocument();
     try {
       expect(() => {
-        fireEvent.click(screen.getByRole("button", { name: "Unpin Sequim from your shortlist" }));
+        fireEvent.click(screen.getByRole("button", { name: "Remove Sequim from your saved places" }));
       }).not.toThrow();
     } finally {
       window.localStorage.setItem = originalSetItem;
     }
     expect(screen.getByRole("main")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Unpin Sequim from your shortlist" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Remove Sequim from your saved places" })).not.toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("moves focus to main content after removing the last pinned rail place", async () => {
@@ -1907,10 +1907,10 @@ describe("App shell", () => {
     );
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Unpin Sequim from your shortlist" }));
+    fireEvent.click(screen.getByRole("button", { name: "Remove Sequim from your saved places" }));
 
     await waitFor(() => {
-      expect(screen.queryByRole("button", { name: "Unpin Sequim from your shortlist" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Remove Sequim from your saved places" })).not.toBeInTheDocument();
       expect(screen.getByRole("main")).toHaveFocus();
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
@@ -1923,17 +1923,17 @@ describe("App shell", () => {
     );
     renderApp();
 
-    const sequimRemove = screen.getByRole("button", { name: "Unpin Sequim from your shortlist" });
+    const sequimRemove = screen.getByRole("button", { name: "Remove Sequim from your saved places" });
     sequimRemove.focus();
     expect(sequimRemove).toHaveFocus();
     fireEvent.click(sequimRemove);
 
     await waitFor(() => {
-      expect(screen.queryByRole("button", { name: "Unpin Sequim from your shortlist" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Remove Sequim from your saved places" })).not.toBeInTheDocument();
     }, { timeout: APP_SHELL_TIMEOUT_MS });
 
     const nextRemove = await screen.findByRole("button", {
-      name: "Unpin Port Townsend from your shortlist",
+      name: "Remove Port Townsend from your saved places",
     }, { timeout: APP_SHELL_TIMEOUT_MS });
 
     await waitFor(() => {
@@ -1949,10 +1949,10 @@ describe("App shell", () => {
 
     renderApp();
 
-    const readiness = screen.getByLabelText("Shortlist status");
-    expect(readiness).toHaveTextContent("1 place pinned");
-    expect(readiness).toHaveTextContent("Pin a second place to compare");
-    expect(screen.queryByLabelText("Where to start in your shortlist")).not.toBeInTheDocument();
+    const readiness = screen.getByLabelText("Saved places status");
+    expect(readiness).toHaveTextContent("1 place saved");
+    expect(readiness).toHaveTextContent("Save a second place to compare");
+    expect(screen.queryByLabelText("Where to start in your saved places")).not.toBeInTheDocument();
 
     const compareSetup = screen.getByRole("button", { name: "Open Compare with Sequim and add a second place" });
     expect(compareSetup).toHaveAttribute("title", compareSetup.getAttribute("aria-label"));
@@ -1968,30 +1968,30 @@ describe("App shell", () => {
       JSON.stringify(["sequim-wa", "port-townsend-wa"]),
     );
     renderApp();
-    expect(screen.getByText(/Your shortlist · 2/)).toBeInTheDocument();
-    const readiness = screen.getByLabelText("Shortlist status");
+    expect(screen.getByText(/Saved places · 2/)).toBeInTheDocument();
+    const readiness = screen.getByLabelText("Saved places status");
     expect(readiness).toHaveTextContent("Ready to compare");
     expect(readiness).toHaveTextContent("Compare these 2 places, or export a visit plan");
-    const packet = screen.getByLabelText("Where to start in your shortlist");
-    expect(packet).toHaveTextContent("Your shortlist");
+    const packet = screen.getByLabelText("Where to start in your saved places");
+    expect(packet).toHaveTextContent("Saved places");
     expect(packet).toHaveTextContent(/Start with/);
     expect(packet).toHaveTextContent("Watch:");
-    const firstDossier = within(packet).getByRole("button", { name: /Open the first shortlist profile:/ });
-    const contrastDossier = within(packet).getByRole("button", { name: /Open the most different shortlist place:/ });
+    const firstDossier = within(packet).getByRole("button", { name: /Open the first saved place:/ });
+    const contrastDossier = within(packet).getByRole("button", { name: /Open the most different saved place:/ });
     expect(firstDossier).toBeInTheDocument();
     expect(firstDossier).toHaveAttribute("title", firstDossier.getAttribute("aria-label"));
     expect(contrastDossier).toBeInTheDocument();
     expect(contrastDossier).toHaveAttribute("title", contrastDossier.getAttribute("aria-label"));
-    expect(screen.getByLabelText(/^Your shortlist\. Select a place/)).toHaveAccessibleDescription(
-      "Swipe or scroll horizontally to browse saved shortlist places; each place also has an unpin control.",
+    expect(screen.getByLabelText(/^Saved places\. Select a place/)).toHaveAccessibleDescription(
+      "Swipe or scroll horizontally to browse your saved places; each place also has a remove button.",
     );
-    const openSequim = screen.getByRole("button", { name: "Open Sequim from your shortlist" });
-    const unpinSequim = screen.getByRole("button", { name: "Unpin Sequim from your shortlist" });
+    const openSequim = screen.getByRole("button", { name: "Open Sequim from your saved places" });
+    const unpinSequim = screen.getByRole("button", { name: "Remove Sequim from your saved places" });
     expect(openSequim).toHaveClass("hero-mini-rail__chip-open");
-    expect(openSequim).toHaveAttribute("title", "Open Sequim from your shortlist");
+    expect(openSequim).toHaveAttribute("title", "Open Sequim from your saved places");
     expect(unpinSequim).toHaveClass("hero-mini-rail__chip-remove");
-    expect(unpinSequim).toHaveAttribute("title", "Unpin Sequim from your shortlist");
-    const comparePinned = screen.getByRole("button", { name: "Compare 2 places from your shortlist side by side" });
+    expect(unpinSequim).toHaveAttribute("title", "Remove Sequim from your saved places");
+    const comparePinned = screen.getByRole("button", { name: "Compare 2 places from your saved places side by side" });
     expect(comparePinned).toHaveAttribute("title", comparePinned.getAttribute("aria-label"));
   }, APP_SHELL_TIMEOUT_MS);
 
@@ -2029,7 +2029,7 @@ describe("App shell", () => {
     );
     renderApp();
 
-    const comparePinned = screen.getByRole("button", { name: "Compare 3 places from your shortlist side by side" });
+    const comparePinned = screen.getByRole("button", { name: "Compare 3 places from your saved places side by side" });
     expect(comparePinned).toHaveAttribute("title", comparePinned.getAttribute("aria-label"));
     fireEvent.click(comparePinned);
 
@@ -2044,7 +2044,7 @@ describe("App shell", () => {
     );
     renderApp();
 
-    const comparePinned = screen.getByRole("button", { name: "Compare 4 places from your shortlist side by side" });
+    const comparePinned = screen.getByRole("button", { name: "Compare 4 places from your saved places side by side" });
     expect(comparePinned).toHaveAttribute("title", comparePinned.getAttribute("aria-label"));
     fireEvent.click(comparePinned);
 
@@ -2118,7 +2118,7 @@ describe("App shell", () => {
     );
     renderApp();
 
-    const opener = screen.getByRole("button", { name: /Open Sequim from your shortlist/ });
+    const opener = screen.getByRole("button", { name: /Open Sequim from your saved places/ });
     fireEvent.click(opener);
     await screen.findByRole("button", { name: "Close profile" }, { timeout: APP_SHELL_TIMEOUT_MS });
     await act(async () => {

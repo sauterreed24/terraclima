@@ -71,7 +71,7 @@ export function buildCompareCandidates({
     placeForCompareSlot(id, placesById, scenario, resolveCorpusPlace(id));
 
   for (const id of bookmarkIds) {
-    push(resolve(id), "Shortlist", "Saved to your shortlist");
+    push(resolve(id), "Shortlist", "In your saved places");
   }
   for (const id of recentIds) {
     push(resolve(id), "Recent", "Recently opened profile");

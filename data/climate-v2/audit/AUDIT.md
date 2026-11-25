@@ -1,6 +1,6 @@
 # Climate Data V2 Audit Report
 
-Generated: 2026-10-18T05:18:28.933Z
+Generated: 2026-11-25T19:15:41.685Z
 
 ## Coverage
 - Authored places: 226
@@ -14,7 +14,7 @@ Generated: 2026-10-18T05:18:28.933Z
 
 ## Shadow diff (authored vs Daymet 1996–2025)
 - Temperature outliers (|Δ| > 2°C annual high or low): **67**
-- Precipitation outliers (|bias| > 30%): **15**
+- Precipitation outliers (|bias| > 30%): **14**
 - Elevation outliers (|Δ| > 250 m): **2**
 
 Large differences are a **review queue**, not automatic proof either value is wrong.
@@ -61,5 +61,6 @@ Authored-vs-Daymet outliers are **not** auto-corrected. Runtime uses Daymet 1996
 - fernie-elk-valley-bc
 - salt-spring-bc
 - zacatlan-de-las-manzanas-mx
+- alamos-mx
 
 See `shadow-diff.json` for full outlier tables and `RANK-DIFF.md` for lens movement >25 places.

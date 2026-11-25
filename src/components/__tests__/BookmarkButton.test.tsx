@@ -8,17 +8,17 @@ afterEach(cleanup);
 describe("BookmarkButton — compact (chip)", () => {
   it("uses an unpinned label + Bookmark icon when not pinned", () => {
     render(<BookmarkButton pinned={false} placeName="Sequim" onToggle={() => undefined} />);
-    const btn = screen.getByRole("button", { name: "Pin Sequim to your shortlist" });
+    const btn = screen.getByRole("button", { name: "Save Sequim to your saved places" });
     expect(btn).toHaveAttribute("aria-pressed", "false");
-    expect(btn).toHaveAttribute("title", "Pin Sequim to your shortlist");
+    expect(btn).toHaveAttribute("title", "Save Sequim to your saved places");
     expect(btn.className).not.toContain("tc-bookmark-chip--pinned");
   });
 
   it("uses an unpin label + BookmarkCheck icon when pinned", () => {
     render(<BookmarkButton pinned placeName="Sequim" onToggle={() => undefined} />);
-    const btn = screen.getByRole("button", { name: "Unpin Sequim from your shortlist" });
+    const btn = screen.getByRole("button", { name: "Remove Sequim from your saved places" });
     expect(btn).toHaveAttribute("aria-pressed", "true");
-    expect(btn).toHaveAttribute("title", "Unpin Sequim from your shortlist");
+    expect(btn).toHaveAttribute("title", "Remove Sequim from your saved places");
     expect(btn.className).toContain("tc-bookmark-chip--pinned");
   });
 });
@@ -26,14 +26,14 @@ describe("BookmarkButton — compact (chip)", () => {
 describe("BookmarkButton — header variant", () => {
   it("renders the labelled toolbar variant when size='header'", () => {
     render(<BookmarkButton pinned placeName="Eureka" onToggle={() => undefined} size="header" />);
-    const btn = screen.getByRole("button", { name: "Unpin Eureka from your shortlist" });
+    const btn = screen.getByRole("button", { name: "Remove Eureka from your saved places" });
     expect(btn.className).toContain("tc-bookmark-btn");
-    expect(btn).toHaveTextContent("Pinned");
+    expect(btn).toHaveTextContent("Saved");
   });
 
-  it("renders 'Pin' text when unpinned in header variant", () => {
+  it("renders 'Save' text when not saved in header variant", () => {
     render(<BookmarkButton pinned={false} placeName="Eureka" onToggle={() => undefined} size="header" />);
-    expect(screen.getByRole("button", { name: /Pin Eureka/ })).toHaveTextContent("Pin");
+    expect(screen.getByRole("button", { name: /Save Eureka/ })).toHaveTextContent("Save");
   });
 
   it("can disambiguate duplicate visible pin controls with an aria context", () => {
@@ -46,9 +46,9 @@ describe("BookmarkButton — header variant", () => {
         ariaContext="from the fit summary"
       />,
     );
-    const btn = screen.getByRole("button", { name: "Pin Eureka to your shortlist from the fit summary" });
-    expect(btn).toHaveTextContent("Pin");
-    expect(btn).toHaveAttribute("title", "Pin Eureka to your shortlist from the fit summary");
+    const btn = screen.getByRole("button", { name: "Save Eureka to your saved places from the fit summary" });
+    expect(btn).toHaveTextContent("Save");
+    expect(btn).toHaveAttribute("title", "Save Eureka to your saved places from the fit summary");
   });
 });
 
@@ -65,7 +65,7 @@ describe("BookmarkButton — click", () => {
       </>,
     );
     // Click only the bookmark child, not the outer open-place button.
-    fireEvent.click(screen.getByRole("button", { name: /Pin Atlin/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Save Atlin/ }));
     expect(onToggle).toHaveBeenCalledTimes(1);
     expect(parentClick).not.toHaveBeenCalled();
   });

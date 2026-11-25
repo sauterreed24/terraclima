@@ -122,8 +122,8 @@ export const PLACES_USA_EXTRA: Place[] = [
         id: "nome-ice-season",
         title: "Living with the ice calendar",
         paragraphs: [
-          "Sea ice is not just scenery — it is a travel surface, a hunting platform, and a buffer that steadies winter temperatures. When the pack is solid, cold air sitting over Siberia does not translate into quite the same shock at the shoreline as it does over open ocean. When ice is thin or absent, the same wind can feel brutally raw.",
-          "Break-up turns logistics on its head: barges replace ice roads, river mouths become debris jams, and coastal erosion accelerates where permafrost bluffs thaw. Anyone scouting property here should ask about flood insurance, shoreline setbacks, and whether foundations are on piles or thermosyphons — not just about view lines.",
+          "Sea ice is a travel surface, a hunting platform and a buffer that steadies winter temperatures. When the pack is solid, cold air sitting over Siberia does not translate into quite the same shock at the shoreline as it does over open ocean. When ice is thin or absent, the same wind can feel brutally raw.",
+          "Break-up turns logistics on its head: barges replace ice roads, river mouths become debris jams, and coastal erosion accelerates where permafrost bluffs thaw. For any property, ask about flood insurance, the setback from the shore, and whether the foundation is on piles or thermosyphons.",
         ],
       },
       {
@@ -131,7 +131,7 @@ export const PLACES_USA_EXTRA: Place[] = [
         title: "Summer light, winter dark, and daily rhythm",
         paragraphs: [
           "Summer weeks bring usable light deep into the evening — gardeners and construction crews stretch schedules naturally. Winter reverses the bargain: short daylight concentrates errands and social life into a few bright hours, while artificial light becomes a mental-health variable as much as a utility bill.",
-          "Remote workers sometimes love the quiet bandwidth of winter; others discover they need a sun lamp and a travel budget to southern latitudes. Neither choice is wrong — the atlas simply flags that latitude here is a lifestyle contract, not a cosmetic detail.",
+          "On the shortest day the sun is up for less than four hours, and in late June for more than twenty-one. At this latitude the light governs the working year as much as the temperature does.",
         ],
       },
     ],
@@ -171,7 +171,7 @@ export const PLACES_USA_EXTRA: Place[] = [
         title: "Surge, bays, and why geometry matters more than category",
         paragraphs: [
           "Hurricane hazard here is not only wind — it is water pushed into a concave coastline. Corpus Christi Bay narrows toward the city; Aransas Pass and the Laguna Madre exchange water on wind shifts. A modest storm on paper can still stack surge against a high tide. If you are evaluating a lot, elevation above the base flood elevation and the vintage of the drainage system matter more than distance to the beach in miles.",
-          "Insurance maps and FIRM panels change after major events; the atlas cites NOAA normals for climate, not your premium — always pull current flood products for the parcel.",
+          "Flood insurance maps are revised after major storms, so look up the current map for the address before relying on an older one.",
         ],
       },
       {
@@ -261,18 +261,18 @@ export const PLACES_USA_EXTRA: Place[] = [
     deepSections: [
       {
         id: "bismarck-continentality-is-logistics",
-        title: "Continentality becomes a logistics question",
+        title: "Planning around the extremes",
         paragraphs: [
-          "Bismarck is not just cold or hot; it asks whether a household is comfortable planning around extremes. Winter errands, school closures, vehicle reliability, wind chill, and snowpack all matter as much as monthly averages.",
-          "The same openness creates upside. Air dries quickly after storms, sunshine is common for a northern city, and the Missouri River valley gives the place more shape than a flat-plains stereotype suggests.",
+          "Bismarck is far from any ocean, and no mountain range shelters it. January afternoons average −5°C and nights −16°C, and July afternoons 29°C. Winter errands depend on the car starting, on the wind chill and on whether the roads are open, and blizzards close schools and highways several times in most winters.",
+          "The open setting has advantages. The air dries quickly after a storm, summer nights cool to about 15°C, and winter days are often sunny. The Missouri River runs in a wooded valley along the west side of the city and breaks up the plain.",
         ],
       },
       {
         id: "bismarck-capital-service-counterweight",
-        title: "The state-capital service base is the counterweight",
+        title: "A state capital on the plains",
         paragraphs: [
-          "Many Great Plains climates look difficult on paper because the hazard and seasonality scores are heavy. Bismarck earns a better lived read because it has hospitals, state offices, retail, airport access, and municipal services close at hand.",
-          "That makes it a useful comparison anchor: harsher than lake-moderated or mountain towns, but much easier to operate from than a small remote prairie settlement with the same wind and cold.",
+          "Bismarck is the capital of North Dakota and the service center for a wide stretch of the northern plains. Two hospital systems, the state offices, large shops and an airport with flights to Minneapolis and Denver are all in the city.",
+          "The climate is harsher than in lake-moderated or mountain towns. Living with it is far easier here than in a small prairie town with the same wind and cold and a long drive to a hospital.",
         ],
       },
     ],
@@ -395,16 +395,16 @@ export const PLACES_USA_EXTRA: Place[] = [
         id: "port-orford-upwelling-headland",
         title: "Cold upwelling and a town on the edge of the current",
         paragraphs: [
-          "Cape Blanco sticks far enough into the Pacific that summer air is constantly rewritten by the ocean. Northerly winds help draw cold water toward the surface, the marine layer thickens, and afternoons stay capped while inland Oregon heats up.",
-          "That is the live-here magic and the live-here tax. Heat risk is low, but wind, salt, fog, and winter storm exposure are part of the daily operating system, not occasional weather.",
+          "Cape Blanco is the westernmost point of Oregon, and Port Orford lies just south of it. In summer, strong northerly winds blow along this coast and draw cold water to the surface. The sea air holds afternoons to about 20°C while the inland valleys of southern Oregon are above 30°C.",
+          "Wind is the constant here: Cape Blanco is one of the windiest places on the Oregon coast, with northerlies in summer and southerly gales in winter. Salt spray, fog and about 1800 mm of rain a year, nearly all of it from October to May, come with the cool air.",
         ],
       },
       {
         id: "port-orford-parcel-reality",
-        title: "The best blocks are shelter problems, not temperature problems",
+        title: "Shelter from the wind decides the lot",
         paragraphs: [
-          "Two homes with the same monthly normals can feel different here because the controlling variables are bluff exposure, tree shelter, drainage, and whether a garden can hide from salt wind. The atlas score should start a scouting list, not replace a site walk.",
-          "Look for south-facing pockets, wind-filtering vegetation, and practical access during storm season. The climate gives you cool summers; the parcel decides whether that feels serene or punishing.",
+          "Two houses a few hundred meters apart can feel very different here. One on the open bluff takes the wind and the salt directly. One behind a stand of shore pine or spruce, or on ground that faces south, has a usable garden and a quieter winter.",
+          "Look for shelter belts, south-facing ground and good drainage, and check the road in storm season. Highway 101 is the only route north and south, and slides close it from time to time. The nearest hospitals are in Gold Beach and Bandon, each about 45 km away.",
         ],
       },
     ],
@@ -480,7 +480,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       { label: "Lava Beds and Tulelake basin", kind: "historic", season: "shoulder seasons", note: "A stark nearby contrast in lava, dry air, and basin settlement history." },
     ],
     deepSections: [
-      { id: "klamath-water-climate", title: "Water is the climate story, not an afterthought", paragraphs: ["The Upper Klamath Basin can look comfortable on temperature charts: bright, dry, cool at night, and rarely humid. But the livability question is tied to water allocation, wetland health, irrigation districts, and lake ecology.", "That means a home search should read climate and hydrology together. A parcel with secure water, wind protection, and clean-air exposure can feel excellent; the same monthly normals can be much less livable under smoke or irrigation stress."] },
+      { id: "klamath-water-climate", title: "Water decides more than temperature", paragraphs: ["The Upper Klamath Basin can look comfortable on temperature charts: bright, dry, cool at night, and rarely humid. But the livability question is tied to water allocation, wetland health, irrigation districts, and lake ecology.", "In drought years irrigation deliveries from the Klamath Project have been cut sharply, as in 2001 and 2021, and some household wells have gone dry. Ask about the water source for any property before anything else."] },
       { id: "klamath-inversion-sun", title: "Sunny basin, stagnant winter lid", paragraphs: ["Clear high-desert nights drain cold air into the basin, and winter high pressure can hold a stable lid over the city. That creates a familiar western-basin split: bright climate in the abstract, but occasional stagnant air at street level.", "Summer reverses the problem. Mixing is stronger, humidity is low, and evening cooling is reliable, but regional fires can import smoke into the same basin geometry that otherwise protects the place from marine gloom."] },
     ],
     citations: [
@@ -556,8 +556,8 @@ export const PLACES_USA_EXTRA: Place[] = [
       { label: "Los Alamos mesa trail network", kind: "trail", season: "year-round", note: "Everyday access to mesa rims, canyons, and dry highland air." },
     ],
     deepSections: [
-      { id: "los-alamos-mesa-canyon", title: "Mesa neighborhoods are not one smooth climate", paragraphs: ["The Pajarito Plateau is a stack of finger mesas separated by canyons. Cold air, smoke, runoff, and wind do not move across that landscape the way they move across a regular grid of streets, so neighborhood exposure matters.", "For relocation, this is the difference between a climate profile and a place decision. The town score is compelling, but the exact street decides evacuation routes, drainage, sun, and defensible-space work."] },
-      { id: "los-alamos-altitude-fire", title: "Altitude buys comfort, not immunity", paragraphs: ["At more than 2,200 m, Los Alamos dodges much of the lower Rio Grande heat and keeps strong night cooling. That altitude is why the place can feel almost ideal in shoulder seasons, with bright days and dry, crisp evenings.", "But the same forested highland setting brings the core caution: fire history, smoke, and post-fire flooding are part of the climate reality. A serious shortlist has to read fuels and drainage as carefully as temperature."] },
+      { id: "los-alamos-mesa-canyon", title: "Mesa neighborhoods are not one smooth climate", paragraphs: ["Los Alamos is built on the Pajarito Plateau, a set of narrow mesas divided by deep canyons on the east flank of the Jemez Mountains. Cold air drains into the canyons at night, smoke and runoff follow them, and the wind blows hardest across the mesa tops.", "Each mesa is a peninsula with few roads out, and that matters in a fire. The town was evacuated for the Cerro Grande fire in 2000, which destroyed more than 200 homes, and again for the Las Conchas fire in 2011. For any street, check the evacuation route, the drainage and how much clearing the lot needs."] },
+      { id: "los-alamos-altitude-fire", title: "Altitude buys comfort, not immunity", paragraphs: ["At more than 2,200 m, the town is far cooler than the Rio Grande valley below it. July afternoons average about 28°C and nights about 14°C, and the air is dry. Winter afternoons average 4 to 7°C in strong sun, and the season's snow comes to about 80 cm.", "The forest above the town is the hazard. After both fires, summer thunderstorms on the burned slopes sent floods and debris down the canyons. July and August are the wettest months, with about 65 mm each, and that is when the flood risk below a burn is highest."] },
     ],
     citations: [
       { label: "NOAA NCEI U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" },

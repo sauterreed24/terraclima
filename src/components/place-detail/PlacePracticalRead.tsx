@@ -1,6 +1,7 @@
 import { useMemo, type ReactNode } from "react";
 import { Compass, Home, Leaf, Satellite } from "lucide-react";
 import type { Place } from "../../types";
+import { Section } from "./place-detail-ui";
 import { buildPracticalReadCards, type PracticalReadCard, type PracticalReadId } from "../../lib/practical-read";
 import { useProse } from "../../lib/units";
 
@@ -25,11 +26,7 @@ export function PlacePracticalRead({ place, anchorId }: { place: Place; anchorId
   const cards = useMemo(() => buildPracticalReadCards(place), [place]);
 
   return (
-    <section id={anchorId} className="detail-doc-section anim-fade-in scroll-mt-28">
-      <h3 className="font-atlas text-[1.15rem] md:text-lg text-ice mb-3.5 flex items-center gap-2 tracking-tight border-b border-[rgba(200,170,140,0.35)] pb-2">
-        <Compass className="w-4 h-4 shrink-0" style={{ color: "#c7b5ea" }} aria-hidden />
-        Practical notes
-      </h3>
+    <Section phoneCollapse anchorId={anchorId} className="scroll-mt-28" title="Practical notes" icon={<Compass className="w-4 h-4 shrink-0" style={{ color: "#c7b5ea" }} aria-hidden />}>
       <p className="text-[12px] text-stone-readable leading-relaxed mb-3.5 max-w-2xl">
         What grows here, how terrain changes conditions over short distances, the main tradeoffs, and where to go to feel the difference in person.
       </p>
@@ -59,6 +56,6 @@ export function PlacePracticalRead({ place, anchorId }: { place: Place; anchorId
           </article>
         ))}
       </div>
-    </section>
+    </Section>
   );
 }

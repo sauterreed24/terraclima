@@ -16,11 +16,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "diagnose (temperature/precipitation), humidity (dew points), or apply (regenerate with the reviewed corrections)"
+        description: "diagnose (temperature/precipitation), humidity (dew points), apply (regenerate with the reviewed corrections), or normals (station monthly means incl. snowfall; needs ids)"
         required: true
         default: diagnose
         type: choice
-        options: [diagnose, humidity, apply]
+        options: [diagnose, humidity, apply, normals]
       ids:
         description: "Comma-separated place ids to diagnose (blank = all)"
         required: false
@@ -29,6 +29,11 @@ on:
         description: "Station search radius in km (blank = 30 to diagnose, 40 for humidity)"
         required: false
         default: ""
+      commit:
+        description: "apply mode only: commit the regenerated assets back to this branch (never main)"
+        required: false
+        default: false
+        type: boolean
   push:
     branches-ignore: [main]
     paths:
@@ -76,10 +81,14 @@ jobs:
           path: .cache/isd
           key: isd-${{ github.run_id }}
           restore-keys: isd-
+      - name: Station normals
+        if: inputs.mode == 'normals'
+        run: npx tsx scripts/climate-data/station-normals.ts --ids "$IDS" --radius-km "$RADIUS"
       - name: Fetch Daymet (resume-safe)
+        if: inputs.mode != 'normals'
         run: npm run climate:data:fetch -- --through=2025 --concurrency=4
       - name: Compare with stations
-        if: inputs.mode != 'apply' && inputs.mode != 'humidity'
+        if: inputs.mode != 'apply' && inputs.mode != 'humidity' && inputs.mode != 'normals'
         run: |
           npx tsx scripts/climate-data/station-bias.ts --ids "$IDS" --radius-km "$RADIUS"
           gzip -9 -c data/climate-v2/stations/station-bias-diagnostics.json | base64 -w 0 | fold -w 6000 | sed 's/^/DIAG /'
@@ -99,3 +108,41 @@ jobs:
           tar czf /tmp/climate-v2.tgz src/data/generated/climate-v2 data/climate-v2/manifest.json data/climate-v2/audit
           base64 -w 0 /tmp/climate-v2.tgz | fold -w 6000 | sed 's/^/TGZ /'
           echo
+      - name: Keep regenerated assets for the commit job
+        if: inputs.mode == 'apply' && inputs.commit
+        uses: actions/upload-artifact@v4
+        with:
+          name: climate-v2
+          path: /tmp/climate-v2.tgz
+          retention-days: 1
+
+  # Commits a reviewed regeneration back to the branch it ran on, for
+  # environments that cannot reach NOAA or download workflow output.
+  commit:
+    needs: check
+    if: inputs.mode == 'apply' && inputs.commit && github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6.0.2
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: climate-v2
+          path: /tmp/regenerated
+      - name: Commit regenerated assets
+        run: |
+          tar xzf /tmp/regenerated/climate-v2.tgz
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/generated/climate-v2 data/climate-v2/manifest.json data/climate-v2/audit
+          if git diff --cached --quiet; then echo "No change to commit"; exit 0; fi
+          git commit -m "Regenerate Climate V2 assets with the reviewed station corrections"
+          # The branch may have moved while this ran; the assets touch no other file.
+          for attempt in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep 10
+          done
+          exit 1

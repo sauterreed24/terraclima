@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18",
+  "generatedAt": "2026-11-25",
   "placeCount": 226,
   "elevOutliers": [
     {
@@ -20,5 +20,5 @@
     "gridOnly": 126,
     "reviewedException": 45
   },
-  "manifestHash": "9c8a37406f312b6e316536f07e9413763dbb31cdb833b1c1ca30866bc5035529"
+  "manifestHash": "8e6a9932db6c8ce127c2214e0bb4cb01a331bfdf6600c842b1dee32730fbccbf"
 }

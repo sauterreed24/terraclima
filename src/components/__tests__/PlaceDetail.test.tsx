@@ -502,8 +502,8 @@ describe("PlaceDetail header accessibility", () => {
 
     expect(screen.getByLabelText(`Actions for ${place.name}`)).toHaveTextContent("Next step");
 
-    const pinBtn = screen.getByRole("button", { name: `Pin ${place.name} to your shortlist from the fit summary` });
-    expect(pinBtn).toHaveAttribute("title", `Pin ${place.name} to your shortlist from the fit summary`);
+    const pinBtn = screen.getByRole("button", { name: `Save ${place.name} to your saved places from the fit summary` });
+    expect(pinBtn).toHaveAttribute("title", `Save ${place.name} to your saved places from the fit summary`);
     fireEvent.click(pinBtn);
     expect(onBookmarkToggle).toHaveBeenCalledWith(place.id);
 
@@ -669,7 +669,7 @@ describe("PlaceDetail glossary driver chip a11y", () => {
       </UnitProvider>,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: `Pin ${place.name} to your shortlist` }));
+    fireEvent.click(screen.getByRole("button", { name: `Save ${place.name} to your saved places` }));
     expect(onBookmarkToggle).toHaveBeenCalledWith(place.id);
 
     fireEvent.click(screen.getByRole("button", { name: `Add ${place.name} to compare` }));

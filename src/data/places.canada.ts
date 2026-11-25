@@ -134,15 +134,15 @@ export const PLACES_CANADA: Place[] = [
         title: "Why the desert reaches Canada here",
         paragraphs: [
           "Osoyoos is not dry by accident. Pacific storms lose moisture crossing the Coast Mountains and Cascades, then the Okanagan valley keeps descending toward the Columbia Basin. By the time air reaches the South Okanagan, summer humidity is low, cloud cover is limited, and evapotranspiration outruns rainfall for much of the growing season.",
-          "That mechanism is why the ecology feels abruptly un-Canadian: antelope-brush, bunchgrass, sage, and open talus share space with orchards and vineyards. The atlas treats this as a true north-tip desert pocket, not merely a warm lake town.",
+          "That mechanism is why the ecology feels abruptly un-Canadian: antelope-brush, bunchgrass, sage, and open talus share space with orchards and vineyards. This is the northern tip of the dry shrub-steppe that runs up from the Columbia Basin.",
         ],
       },
       {
         id: "osoyoos-lake-irrigation",
-        title: "Warm lake, irrigation, and the lived microclimate",
+        title: "Warm lake, irrigation and the dry benches",
         paragraphs: [
           "Osoyoos Lake stores heat through summer and softens immediate shoreline nights, but the broader agricultural system depends on managed water. The visible lushness is a human-hydrology layer sitting on top of a semi-desert baseline.",
-          "For relocation and land scouting, that distinction matters. A parcel with secure irrigation, slope-air drainage, and smoke-filtered indoor space behaves very differently from dry benchland just outside the water network.",
+          "The distinction matters when choosing land. A lot with irrigation rights and a slope that drains cold air is a different proposition from dry benchland outside the irrigation district.",
         ],
       },
       {
@@ -157,8 +157,8 @@ export const PLACES_CANADA: Place[] = [
         id: "osoyoos-risk-water-smoke",
         title: "The two binding constraints: water and smoke",
         paragraphs: [
-          "The climate appeal is obvious, but the long-term tradeoff is equally clear. Hotter summers increase irrigation demand while regional fire seasons add smoke exposure that can affect health, tourism, and wine quality.",
-          "Osoyoos remains one of the most distinctive climates in Canada; it is also one of the least forgiving if a household assumes the lake alone solves heat, water, or smoke risk.",
+          "The warmth has a cost. Hotter summers increase irrigation demand while regional fire seasons add smoke exposure that can affect health, tourism, and wine quality.",
+          "The lake does not solve any of this. July afternoons average 32°C, only about 330 mm of precipitation falls in a year, and smoke is a regular part of late summer.",
         ],
       },
     ],
@@ -308,7 +308,7 @@ export const PLACES_CANADA: Place[] = [
         title: "Wind as landscape infrastructure",
         paragraphs: [
           "Wind shapes everything from shelterbelts to road closures to how people experience winter. The same downslope pattern that warms the city can strip snow from fields, desiccate evergreens, and stress orchard bark through freeze-thaw cycles.",
-          "For a household, the practical microclimate question is not just average temperature. It is whether the building site, yard, and commute are exposed to the full westerly flow or tucked into a lee pocket.",
+          "What matters for a house is its exposure. A lot on the open prairie takes the full west wind. One in the Oldman River valley or behind a shelterbelt is noticeably calmer.",
         ],
       },
       {
@@ -316,7 +316,7 @@ export const PLACES_CANADA: Place[] = [
         title: "Dryland prairie with irrigation corridors",
         paragraphs: [
           "Southern Alberta's soils can be productive, but climate and water rights decide the ceiling. Dryland grains fit the baseline; irrigated districts along the Oldman and related systems support more intensive crops.",
-          "The result is a dual climate economy: big-sky dryland agriculture across the plain, and narrower irrigated belts where water governance matters as much as heat units.",
+          "Dryland grain covers most of the plain. The narrower irrigated belts grow sugar beets, potatoes and corn, and there the water licence matters as much as the summer heat.",
         ],
       },
       {
@@ -324,7 +324,7 @@ export const PLACES_CANADA: Place[] = [
         title: "Warming does not remove the volatility",
         paragraphs: [
           "Climate change likely reduces the depth and persistence of extreme cold while increasing hot, dry summer stress. The chinook mechanism itself remains tied to mountain-wave and pressure patterns, so volatility is part of the long-term identity rather than a temporary inconvenience.",
-          "Lethbridge is therefore a resilience tradeoff: less humid and less cold than much of the prairie, but exposed to drought, wind, smoke, and rapid weather swings.",
+          "Lethbridge is less humid and less cold than much of the prairie, and more exposed to drought, wind, smoke and rapid swings in the weather.",
         ],
       },
     ],
@@ -511,15 +511,15 @@ export const PLACES_CANADA: Place[] = [
         title: "Rainforest hydrology and soil",
         paragraphs: [
           "High rainfall, acidic organic soils, and conifer canopy produce a water-rich landscape that is excellent for rainforest species and poor for drought-loving plants. Drainage and root disease matter more than irrigation for many home gardens.",
-          "For land scouting, slope stability and wet-season access deserve the same attention as temperature comfort.",
+          "When looking at land, check the stability of the slope and the access in the wet season.",
         ],
       },
       {
         id: "tofino-heat-resilience",
-        title: "Heat refuge with coastal exposure",
+        title: "Cool in a heat wave, exposed in a storm",
         paragraphs: [
-          "Tofino is a genuine heat refuge in a warming continent. Even regional heat events arrive diluted by ocean air compared with inland Vancouver Island or the Lower Mainland.",
-          "That resilience comes with storm, erosion, and tsunami exposure. The climate is gentle thermally but not operationally easy.",
+          "Tofino stays cool when the rest of the region is hot. Even regional heat events arrive diluted by ocean air compared with inland Vancouver Island or the Lower Mainland.",
+          "The cool air comes with exposure to storms, erosion and tsunami. August afternoons average 19°C, and the year's rain comes to about 3000 mm.",
         ],
       },
     ],
@@ -696,22 +696,22 @@ export const PLACES_CANADA: Place[] = [
         title: "Lake below, escarpment behind",
         paragraphs: [
           "The Niagara fruit belt sits in the narrow space where Lake Ontario slows seasonal temperature swings and the escarpment organizes slope drainage. That geometry reduces spring frost risk compared with colder inland pockets and extends autumn ripening.",
-          "It is a small corridor by Canadian standards, but the microclimate value for its size is extremely high.",
+          "The belt between the lake and the escarpment is only a few kilometres wide, and most of Ontario's tender fruit comes from it.",
         ],
       },
       {
         id: "niagara-icewine-threshold",
-        title: "Icewine as a climate threshold",
+        title: "Icewine and the cold it needs",
         paragraphs: [
-          "Icewine is a useful signal because it requires reliable cold after enough warmth to ripen grapes. Warming helps some red varieties and shoulder-season tourism, but it erodes the cold windows that made the region globally recognizable.",
-          "The profile should be read as a moving target: more heat units, fewer deep freezes, and more management around disease and rain.",
+          "Icewine needs a hard frost, about −8°C, after a season warm enough to ripen the grapes. Warming helps some red varieties and shoulder-season tourism, but it erodes the cold windows that made the region globally recognizable.",
+          "The trend is toward more summer heat, fewer deep freezes and more work against disease and rain.",
         ],
       },
       {
         id: "niagara-humidity-disease",
-        title: "The growability tradeoff is humidity",
+        title: "Humid summers and vine disease",
         paragraphs: [
-          "Niagara is not a dry Mediterranean wine region. Humid summers and lake-influenced storms raise disease pressure in vines and tender fruit, so canopy management and spray timing are part of the climate story.",
+          "Niagara is not a dry Mediterranean wine region. Humid summers and lake-influenced storms raise disease pressure in vines and tender fruit, so growers spend much of the season on canopy management and spraying.",
           "For gardeners, the same moisture that helps lush growth also means airflow, drainage, and cultivar choice matter more than in arid orchard valleys.",
         ],
       },
@@ -789,8 +789,8 @@ export const PLACES_CANADA: Place[] = [
       { label: "Local arts and summer gatherings", kind: "culture", season: "summer", note: "Small-community life is concentrated and seasonal." },
     ],
     deepSections: [
-      { id: "atlin-lake-moderation", title: "A huge cold lake in a dry northern basin", paragraphs: ["Atlin Lake is large enough to matter thermally, but cold enough that it does not create softness in the coastal sense. It trims some extremes, delays seasonal transitions, and gives the town a lake-shore identity inside a fundamentally northern climate.", "That is why Atlin belongs in a live-here finder: it is not just cold. It is cold with lake light, dry air, long summer days, and a specific kind of small settlement resilience."] },
-      { id: "atlin-remoteness-filter", title: "The climate includes the logistics", paragraphs: ["Remote northern climates cannot be judged by weather alone. Road distance, supply chains, healthcare access, winter darkness, and heating loads are part of the lived climate because they determine whether cold becomes manageable or exhausting.", "Atlin rewards people who want solitude and can plan around it. The same remoteness that makes the place magical also raises the threshold for everyday life."] },
+      { id: "atlin-lake-moderation", title: "A huge cold lake in a dry northern basin", paragraphs: ["Atlin Lake is the largest natural lake in British Columbia and is fed by glaciers of the Juneau Icefield. It is cold all year. Near the shore it holds back the first autumn frosts and keeps spring late, and it freezes over in winter.", "The town is in the rain shadow of the Coast Mountains and gets about 460 mm of precipitation a year. Winters are cold and fairly dry, with January nights near −16°C. In summer the afternoons reach 17 to 18°C, and in June it hardly gets dark."] },
+      { id: "atlin-remoteness-filter", title: "At the end of a 100 km road", paragraphs: ["Atlin has a few hundred residents and is reached by a single road, about 100 km long, from the Alaska Highway in Yukon. Whitehorse, about two and a half hours away, has the nearest hospital, airport and large shops. Winter days are short, heating runs for most of the year, and supplies need planning.", "People who live here have chosen the quiet and the distance. The same distance means a long drive for a dentist or a spare part, on a road that can be icy from October to April."] },
     ],
     citations: [
       { label: "ECCC Canadian Climate Normals", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
@@ -864,8 +864,8 @@ export const PLACES_CANADA: Place[] = [
       { label: "Historic downtown Fernie", kind: "culture", season: "year-round", note: "A real settlement center, not only a resort appendage." },
     ],
     deepSections: [
-      { id: "fernie-snow-machine", title: "Why the Elk Valley holds winter", paragraphs: ["Fernie sits in a storm corridor where moist westerlies keep finding terrain to climb. The valley floor is lower than the alpine bowls, but the whole settlement lives under a snow machine that shapes roads, roofs, recreation, and mood.", "That makes the climate attractive to people who want winter as identity. It also makes maintenance, roof load, avalanche literacy, and travel disruption part of the lived profile."] },
-      { id: "fernie-valley-hazards", title: "Comfort comes with slope homework", paragraphs: ["Summer comfort is strong: mild afternoons, cool nights, and lush mountain shade. But the same terrain concentrates water, snow, debris, and smoke in ways a flat-city score cannot show.", "A serious Fernie shortlist should ask simple questions early: floodplain or bench, shaded or sunny, evacuation route or dead end, and how much winter labor the household is willing to do."] },
+      { id: "fernie-snow-machine", title: "Why the Elk Valley holds winter", paragraphs: ["Fernie lies in the Elk Valley at about 1010 m, with the Lizard Range to the west and the main ranges of the Rockies to the east. Moist Pacific air that has already crossed the rest of British Columbia is lifted once more here, and the town gets about 400 cm of snow in a winter. The ski area above it gets more than twice that.", "Snow shapes daily life from November to April. Roofs are steep, clearing is constant, and Highway 3 is sometimes closed for avalanche control. Winter afternoons average about −1°C, so the snow in town is often heavy and wet."] },
+      { id: "fernie-valley-hazards", title: "Mild summers and a river that floods", paragraphs: ["Summer is mild: July and August afternoons reach 26 to 27°C and nights fall below 10°C. It is also the season of wildfire smoke, which can fill the valley for days.", "The Elk River runs through town and flooded parts of it in 1995 and again in June 2013. Check whether a house is on the floodplain or on a bench above it, how much winter sun the lot gets, and whether the road has a second way out."] },
     ],
     citations: [
       { label: "ECCC Canadian Climate Normals", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
@@ -1159,16 +1159,16 @@ export const PLACES_CANADA: Place[] = [
         id: "nelson-lake-selkirk-moderation",
         title: "A deep lake at the foot of the Selkirks",
         paragraphs: [
-          "Kootenay Lake gives Nelson a softer edge than many interior mountain towns. It delays seasonal swings, keeps some winter nights from bottoming out as hard, and adds a maritime glint to a place that is otherwise deep in continental mountain country.",
-          "The moderation is local rather than magical. A shaded slope, a bench above town, and a lakeside pocket can feel materially different in winter ice, summer smoke, and garden timing.",
+          "Nelson is on the West Arm of Kootenay Lake, in a narrow valley of the Selkirk Mountains. The main lake is deep and does not freeze, and the water takes the edge off winter nights near the shore. January lows average about −4°C, mild for the interior of British Columbia.",
+          "The effect is local. The town is built on a steep slope that faces north across the water, and in midwinter parts of it get little direct sun. A shaded street high on the hill holds ice long after the lakeshore has cleared, and gardens there start later.",
         ],
       },
       {
         id: "nelson-smoke-snow-tradeoff",
-        title: "Mountain charm with smoke and winter labor",
+        title: "Smoke, snow and a small-town service base",
         paragraphs: [
-          "Nelson's live-here appeal is obvious: walkable heritage core, lake views, cool summer nights, and fast access to snowy Selkirk terrain. That combination is why it graduates from hidden-gem curiosity to a serious shortlist candidate.",
-          "The caution is equally real. Regional wildfire smoke can settle into valleys, steep lots need winter maintenance, and services are still small-town services. The climate works best for people who want mountain life enough to do the work.",
+          "The town has a compact centre of brick and stone buildings from the 1890s mining boom and the Whitewater ski area about 20 km away. July and August afternoons are 28 to 29°C, and nights cool to 12°C.",
+          "Wildfire smoke is the main summer drawback. In bad fire years it settles in the valley for days or weeks in July and August. The town gets about 250 cm of snow in a winter, and steep driveways and stairs need clearing. The hospital is small. Specialist care and most flights mean a trip to Trail, Castlegar or Kelowna, and the Castlegar airport is often closed by low cloud in winter.",
         ],
       },
     ],
@@ -1261,8 +1261,8 @@ export const PLACES_CANADA: Place[] = [
         id: "qualicum-rain-shadow",
         title: "How the island spine steals the rain",
         paragraphs: [
-          "Pacific moisture hits the western slopes first; by the time air subsides over the Strait of Georgia side, much of the water has already fallen. That is why Qualicum can sit in a Csb pocket while communities a short ferry ride away log rainforest totals — the atlas numbers are not a mistake, they are geometry.",
-          "For a home search, translate that into winter light: east-side winters are grey but not as endlessly sodden as the outer west coast; summers reward you with clearer skies and a real dry window for decks, tomatoes, and outdoor work.",
+          "Pacific moisture hits the western slopes first; by the time air subsides over the Strait of Georgia side, much of the water has already fallen. That is why Qualicum has dry summers while communities on the outer coast, across the island, record rainforest totals.",
+          "East-side winters are grey but not as endlessly sodden as the outer west coast; summers reward you with clearer skies and a real dry window for decks, tomatoes, and outdoor work.",
         ],
       },
       {
@@ -1496,18 +1496,18 @@ export const PLACES_CANADA: Place[] = [
     deepSections: [
       {
         id: "st-johns-fog-wind-lifestyle",
-        title: "Fog and wind are lifestyle, not backdrop",
+        title: "Fog, wind and wet snow",
         paragraphs: [
-          "St. John's is not a bad-weather version of a normal city. It is a full urban life built around fog, wind, wet snow, salt air, steep streets, and sudden Atlantic changes. The climate's drama is daily, not occasional.",
-          "The place-feel score therefore reads differently from the comfort score. Thermal comfort is modest and sunshine is scarce, but identity is extremely strong: harbour light, coloured row houses, cliff walks, and storm awareness make the place memorable if a person is wired for it.",
+          "St. John's faces the open Atlantic near the place where the cold Labrador Current meets warmer water from the south. Fog forms over that boundary and comes ashore most often in spring and early summer. The city is among the windiest and foggiest in Canada. July afternoons average 21°C.",
+          "Winter is not severely cold for Canada, with afternoons near 0°C and nights near −6°C, but about 350 cm of snow falls, much of it wet and heavy. In January 2020 a single storm dropped about 76 cm in a day and shut the city for a week.",
         ],
       },
       {
         id: "st-johns-service-depth",
-        title: "Service depth keeps the weather from becoming isolation",
+        title: "A capital city on the edge of the island",
         paragraphs: [
-          "Because St. John's is the provincial capital, the access penalty is not as punishing as the weather map implies. Hospitals, university services, an airport, shops, and a large labour market are nearby enough that the city can absorb storms better than a small outport.",
-          "A relocation scouting trip should still test slope, wind exposure, snow storage, basement water, and neighbourhood microclimate. Two homes a few blocks apart can have very different winter maintenance loads when the same storm arrives from the harbour.",
+          "St. John's is the provincial capital and has the province's main hospitals, Memorial University, an international airport and a large share of its jobs. A storm that would cut off a small outport for days is an interruption here.",
+          "Within the city, conditions vary over a few blocks. Streets on the hills above the harbour take more wind and are steep in ice. Low ground collects meltwater in basements. Look at the slope, the exposure to wind, where the snow can be piled and whether the basement has been wet.",
         ],
       },
     ],
@@ -1949,18 +1949,18 @@ export const PLACES_CANADA: Place[] = [
     deepSections: [
       {
         id: "halifax-urban-maritime-ease",
-        title: "The easiest urban version of Atlantic maritime living",
+        title: "A maritime climate with a city's services",
         paragraphs: [
-          "Halifax gives the cool-summer maritime profile a service base that smaller coastal towns cannot match. Hospitals, universities, transit, groceries, flights, and cultural life make the fog and winter storms less isolating.",
-          "That service depth now matters in the ranking. Halifax is not as rare climatically as St. John's or the outer Oregon coast, but it is easier to live in day after day because errands, health care, and social options are close.",
+          "Halifax is the largest city in Atlantic Canada, built around a deep harbour that stays free of ice through winter. It has the region's main hospitals, several universities, an international airport and a working port.",
+          "The weather is less extreme than at St. John's, which is windier, foggier and cooler in summer. Summer afternoons here average 23 to 24°C and winter nights about −8°C. Fog is most common in late spring and early summer, when warm air moves over the cold water offshore.",
         ],
       },
       {
         id: "halifax-storm-and-housing-friction",
-        title: "Storm exposure and housing pressure are the checks",
+        title: "Storms from several directions, and rising rents",
         paragraphs: [
-          "The comfort case is real: summer heat is moderated, fall is crisp, and winter cold is softer than inland Canada. The penalty is water from several directions: nor'easters, hurricane remnants, freeze-thaw slush, harbour surge, and old-building moisture.",
-          "Housing pressure has also changed the lived feel. A perfect climate pocket is less useful if the household ends up far from transit, exposed to a long bridge commute, or paying urban prices for damp maintenance. The place-feel model rewards access but still flags those frictions.",
+          "Summer heat is moderate, autumn is clear and crisp, and winter is milder than inland Canada. About 1450 mm of precipitation falls in a year, spread across every month. Winter storms often change from snow to rain and back, and leave slush and ice. Late summer and autumn bring the remains of hurricanes: Juan in 2003, Dorian in 2019 and Fiona in 2022 all brought down trees and cut power.",
+          "Housing costs have risen steeply since about 2020, and few rentals are vacant. Many older wooden houses need steady work against damp. The two harbour bridges between Halifax and Dartmouth are congested at rush hour, so check the commute as well as the house.",
         ],
       },
     ],
@@ -2010,18 +2010,18 @@ export const PLACES_CANADA: Place[] = [
     deepSections: [
       {
         id: "charlottetown-island-service-anchor",
-        title: "The island service anchor changes the lived read",
+        title: "The island's capital and service town",
         paragraphs: [
-          "Charlottetown is small, but within PEI it functions like the service center. That means the maritime climate comes with hospitals, university life, government offices, airport access, groceries, and cultural venues close enough for daily use.",
-          "For relocation, that access matters as much as the weather. A rural PEI beach climate can become isolating in winter; Charlottetown keeps the same broad island signal while reducing everyday friction.",
+          "Charlottetown has about 40,000 people and is the capital of Prince Edward Island. The island's main hospital, its university, the provincial government and the airport are all here, and the centre is small enough to walk.",
+          "That matters most in winter. January and February afternoons average −2°C and nights −10°C, snow drifts across the open farmland, and country roads can be blocked for a day or two after a storm. In town, shops and medical care stay within reach. The Confederation Bridge to New Brunswick restricts high-sided vehicles in strong wind.",
         ],
       },
       {
         id: "charlottetown-seasonal-lag-and-coast",
-        title: "Seasonal lag, red soil, and coastal diligence",
+        title: "A late spring, a long autumn and a soft coastline",
         paragraphs: [
-          "The Gulf delays spring, moderates summer, and keeps autumn useful. Gardens and farms benefit from moisture and long light, but the island setting also means wind, salt, coastal erosion, and storm-water decisions are never far away.",
-          "That makes Charlottetown a strong comparison anchor for people weighing maritime comfort against mainland convenience. It is easier to live in than a small fishing village, but less urban and less insulated than Halifax or Moncton.",
+          "The southern Gulf of St. Lawrence freezes over in winter, and ice lingers offshore into April. Spring is late and cool as a result: April afternoons average 8°C. The water then warms through summer and holds its heat, so September afternoons still average 20°C and the first frosts come late.",
+          "The island is made of soft red sandstone, and its shores erode readily. Post-tropical storm Fiona in September 2022 cut metres off dunes and cliffs and brought down trees across the province. For any property near the water, check the elevation, the distance from the bank and the erosion history.",
         ],
       },
     ],
@@ -2102,14 +2102,14 @@ export const PLACES_CANADA: Place[] = [
         title: "Small orchards in a cold-country pocket",
         paragraphs: [
           "Baie-Saint-Paul is not Niagara or the Okanagan. Its growability comes from protected benches, hardy cultivars, and careful use of aspect rather than raw heat.",
-          "That makes it valuable for the atlas: a northern orchard and food-culture pocket where micro-siting decides whether a yard feels merely cold or surprisingly productive.",
+          "The exact site decides whether a garden here is merely cold or productive, and a sheltered south-facing bench does far better than an open flat beside the estuary.",
         ],
       },
       {
         id: "baie-hazard-diligence",
-        title: "Beautiful terrain with practical hazards",
+        title: "Steep terrain and a river that floods",
         paragraphs: [
-          "The same terrain that creates beauty also raises due-diligence questions: river flooding, slope drainage, freeze-thaw on roads, and estuary storm exposure.",
+          "The same terrain brings hazards: river flooding, slope drainage, freeze-thaw on roads and storms off the estuary. The Rivière du Gouffre flooded part of the town in May 2023.",
           "The best sites are not necessarily closest to the water. They are the ones with enough elevation, wind shelter, and soil depth to use the microclimate without inheriting the wettest hazard layer.",
         ],
       },

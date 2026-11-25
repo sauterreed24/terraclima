@@ -249,7 +249,7 @@ export function scorePlaceFeel(place: Place): PlaceFeelResult {
   if (strengths.length === 0) pushLimited(strengths, `${sorted[0]!.label} is the strongest part of the feel read.`);
 
   if (values.sensoryComfort < 55) pushLimited(frictions, "Sensory comfort is mixed: temperature, sky, storm, smoke, or dampness can change the mood fast.");
-  if (values.dailyEase < 55) pushLimited(frictions, "Check daily ease before shortlisting: remoteness, housing cost or hazards can bite.");
+  if (values.dailyEase < 55) pushLimited(frictions, "Check daily ease before you save it: remoteness, housing cost or hazards can bite.");
   if (values.placeIdentity < 55) pushLimited(frictions, "The entry is still thin here; treat the place-feel score as a starting point, not a finished portrait.");
   if (values.scoutingClarity < 55) pushLimited(frictions, "Documentation is limited; the entry names fewer towns, activities or nearby contrasts than stronger entries.");
   if (frictions.length === 0) pushLimited(frictions, `${weak[0]!.label} is the first thing to verify in person.`);

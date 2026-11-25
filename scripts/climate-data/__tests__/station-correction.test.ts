@@ -66,6 +66,7 @@ describe("station correction", () => {
     expect(() => validateStationCorrection("x", { ...correction, tmaxDeltaC: [1, 2] })).toThrow(/12 finite/);
     expect(() => validateStationCorrection("x", { ...correction, tminDeltaC: undefined })).toThrow(/together/);
     expect(() => validateStationCorrection("x", { ...correction, precipRatio: 9 })).toThrow(/precipRatio/);
+    expect(() => validateStationCorrection("x", { ...correction, regionalStandIn: true })).toThrow(/precipitation only/);
   });
 
   it("records the station as the validation receipt", () => {
@@ -74,6 +75,14 @@ describe("station correction", () => {
     expect(v.stations[0]!.stationId).toBe("USC00000001");
     expect(v.bias?.annualPrecipBiasPct).toBeCloseTo(33.3, 1);
     expect(v.notes).toContain("temperature and precipitation corrected to GHCN-Daily USC00000001");
+  });
+
+  it("does not call a regional stand-in validated", () => {
+    const standIn = { station: correction.station, reason: "x", precipRatio: 0.73, regionalStandIn: true };
+    const v = stationValidation(standIn);
+    expect(v.status).toBe("reviewed-exception");
+    expect(v.exceptionReason).toBe("regional-stand-in");
+    expect(v.stations).toHaveLength(1);
   });
 
   it("keeps the reviewed corrections file well-formed", () => {
@@ -85,7 +94,8 @@ describe("station correction", () => {
     for (const id of ids) {
       const c = file.corrections[id]!;
       expect(() => validateStationCorrection(id, c)).not.toThrow();
-      expect(c.station.distanceKm, id).toBeLessThanOrEqual(15);
+      // A regional stand-in (precipitation only) may sit up to 30 km away.
+      expect(c.station.distanceKm, id).toBeLessThanOrEqual(c.regionalStandIn ? 30 : 15);
       expect(Math.abs(c.station.elevationDeltaM ?? 0), id).toBeLessThanOrEqual(100);
     }
   });

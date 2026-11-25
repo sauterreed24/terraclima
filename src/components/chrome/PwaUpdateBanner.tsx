@@ -17,7 +17,7 @@ export function PwaUpdateBanner({ onRefresh, onDismiss }: Props) {
         <div className="min-w-0">
           <p className="m-0 font-atlas text-base text-ice">Atlas update ready</p>
           <p className="m-0 mt-1 text-sm leading-relaxed text-stone-readable" aria-live="polite">
-            A newer version of Terraclima has downloaded. Refresh to use it. Your filters and shortlist are kept.
+            A newer version of Terraclima has downloaded. Refresh to use it. Your filters and saved places are kept.
           </p>
         </div>
       </div>

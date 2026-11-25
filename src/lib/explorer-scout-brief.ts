@@ -111,7 +111,7 @@ function topRiskLine(place: Place): string {
     return `Tradeoffs are high; start with ${RISK_LABELS[key].toLowerCase()} (${riskText}).`;
   }
   if (RISK_VALUE[risk.level] >= 3) {
-    return `Watch ${RISK_LABELS[key].toLowerCase()} exposure (${riskText}) before shortlisting.`;
+    return `Watch ${RISK_LABELS[key].toLowerCase()} exposure (${riskText}) before you save it.`;
   }
   return "No single major risk for the top place. Still read its risk section before deciding.";
 }
@@ -272,17 +272,17 @@ function buildAudienceRead(
 
   let pause: string;
   if (leaderRow?.watch) {
-    pause = `${lowerFirst(trimTerminalPunctuation(leaderRow.watch))} would be a deal-breaker; verify that in the profile before shortlisting.`;
+    pause = `${lowerFirst(trimTerminalPunctuation(leaderRow.watch))} would be a deal-breaker; verify that in the profile before you save it.`;
   } else {
     pause = "you need address-level certainty; this summary narrows a list; it does not replace checking the exact location.";
   }
 
   if (leaderRow && leaderRow.liveFitScore < 68) {
-    pause = `you need a clean all-around fit; ${leader.place.name} only reaches ${leaderRow.liveFitScore}/100 on your must-haves, so read the profile before shortlisting.`;
+    pause = `you need a clean all-around fit; ${leader.place.name} only reaches ${leaderRow.liveFitScore}/100 on your must-haves, so read the profile before you save it.`;
   } else if (avgRisk(leader.place) * 20 >= 45) {
-    pause = `risk tolerance is low; the leader's overall risk is ${Math.round(avgRisk(leader.place) * 20)}/100, so read the profile before shortlisting.`;
+    pause = `risk tolerance is low; the leader's overall risk is ${Math.round(avgRisk(leader.place) * 20)}/100, so read the profile before you save it.`;
   } else if (annualComfortMonthCount(leader.place) <= 4) {
-    pause = `you need year-round outdoor ease; only ${annualComfortMonthCount(leader.place)} months clear the comfort threshold, so read the profile before shortlisting.`;
+    pause = `you need year-round outdoor ease; only ${annualComfortMonthCount(leader.place)} months clear the comfort threshold, so read the profile before you save it.`;
   }
 
   return { love, pause };
@@ -314,7 +314,7 @@ function buildScoutNextStep(
   return {
     label: "Visit next",
     place: leader.place,
-    action: `Read ${possessive(leader.place.name)} profile before shortlisting it.`,
+    action: `Read ${possessive(leader.place.name)} profile before you save it.`,
     detail: `${watch} ${compare}`,
   };
 }
@@ -424,11 +424,11 @@ function buildAdvisorRead(
     ? `fit ${leaderRow.liveFitScore}/100`
     : `ranking score ${Math.round(leader.score)}/100`;
 
-  let confidence = "Confidence: rough. Compare at least one other place before shortlisting.";
+  let confidence = "Confidence: rough. Compare at least one other place before you save one.";
   if (leaderRow && decisionRows.length >= 3 && leaderRow.liveFitScore >= 78 && signalWins >= 2) {
     confidence = "Confidence: strong for this ranking. Still check the exact location yourself.";
   } else if (leaderRow && leaderRow.liveFitScore >= 68) {
-    confidence = "Confidence: fair, with one tradeoff to check before shortlisting.";
+    confidence = "Confidence: fair, with one tradeoff to check before you save it.";
   } else if (decisionRows.length < 3) {
     confidence = "Confidence: low, because few places match. Widen the search or compare more places.";
   }

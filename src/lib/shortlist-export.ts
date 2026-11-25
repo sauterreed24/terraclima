@@ -463,12 +463,12 @@ export function exportShortlistAsMarkdown(
     "",
     "This plan is built from climate averages and editorial scores. It is not live weather and not advice. Check housing, services, hazards, medical needs, schools, insurance and local rules with official local sources before deciding anything.",
     "",
-    "## Pinned shortlist",
+    "## Saved places",
     "",
   ];
 
   if (places.length === 0) {
-    lines.push("No pinned places yet.");
+    lines.push("No saved places yet.");
   } else {
     for (const row of rows) {
       const place = row.place;
@@ -516,7 +516,7 @@ export function exportShortlistAsMarkdown(
     lines.push(`Compare URL: ${compareUrl(ctx.appUrl, comparePlaces)}`);
     lines.push("");
     if (places.length > COMPARE_LIMIT) {
-      lines.push(`Compare opens the first ${COMPARE_LIMIT} pinned places; all ${places.length} pinned places are listed above.`);
+      lines.push(`Compare opens the first ${COMPARE_LIMIT} saved places; all ${places.length} saved places are listed above.`);
       lines.push("");
     }
     if (compareRead) {
@@ -549,16 +549,16 @@ export function exportShortlistAsMarkdown(
     const row = rows[0];
     lines.push(`Compare URL: ${compareUrl(ctx.appUrl, places)}`);
     lines.push("");
-    lines.push(`${anchor.name} is the only pinned place. Add a second place in Compare to see tradeoffs.`);
+    lines.push(`${anchor.name} is the only saved place. Add a second place in Compare to see tradeoffs.`);
     if (row) {
       lines.push(`${row.bestFor} Check first: ${row.watch}`);
     }
     lines.push("");
   } else {
-    lines.push("Pin at least two places to get a side-by-side table.");
+    lines.push("Save at least two places to get a side-by-side table.");
     lines.push("");
   }
-  lines.push("Places are listed in the order you pinned them. This plan is not a route, a booking, an appraisal or a recommendation to move.");
+  lines.push("Places are listed in the order you saved them. This plan is not a route, a booking, an appraisal or a recommendation to move.");
 
   return {
     body: lines.join("\n") + "\n",

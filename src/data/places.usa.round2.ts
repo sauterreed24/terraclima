@@ -641,16 +641,16 @@ export const PLACES_USA_ROUND2: Place[] = [
         id: "anchorage-alaska-city-services",
         title: "Alaska scale, city services",
         paragraphs: [
-          "Anchorage is the Alaska comparison anchor that can support a serious relocation shortlist. Providence gives it statewide medical weight, Ted Stevens Anchorage International Airport makes it the air gateway, and the Port of Alaska keeps freight moving well beyond the city.",
-          "That does not make it low-friction by lower-48 standards. Freight-linked prices, winter darkness, snow routines, and distance from alternate metros still need a scout plan, but the service base is fundamentally different from smaller Alaska towns.",
+          "Anchorage holds about 290,000 people, roughly two in five Alaskans. Providence Alaska Medical Center is the largest hospital in the state, Ted Stevens Anchorage International Airport is its main air gateway, and much of the state's freight arrives through the Port of Alaska.",
+          "It is still a long way from anywhere else. Nearly everything is shipped or flown in, and prices show it. On the shortest day the sun is up for about five and a half hours. Snow totals about 200 cm in a winter and lies from late autumn into April.",
         ],
       },
       {
         id: "anchorage-cook-inlet-hazard-homework",
-        title: "Cook Inlet mildness still has hazard homework",
+        title: "Milder than the interior, with earthquakes and avalanches",
         paragraphs: [
-          "Cook Inlet and the Chugach frame keep Anchorage milder than interior Alaska, with long summer daylight and enough maritime influence to blunt the deepest cold. It is a useful contrast against Fairbanks, Juneau, and lower-48 mountain cities.",
-          "The hazards are not abstract: the municipal plan highlights earthquake, landslide and ground-failure, wildfire, flooding, extreme weather, avalanche, and volcanic ashfall concerns. A move read should compare neighborhoods by ground conditions, snow removal, smoke exposure, and winter commute reliability.",
+          "Cook Inlet and the Chugach Mountains keep Anchorage milder than interior Alaska. January nights average about −12°C here and about −25°C in Fairbanks. Summer afternoons average 19 to 20°C, with daylight late into the evening.",
+          "The ground is the main hazard. The 1964 earthquake, magnitude 9.2, destroyed parts of downtown and the Turnagain neighborhood where the clay beneath them gave way, and a magnitude 7.1 earthquake in 2018 damaged roads and buildings. Hillside neighborhoods face wildfire and strong winds off the Chugach, and avalanches close the Seward Highway in some winters.",
         ],
       },
     ],

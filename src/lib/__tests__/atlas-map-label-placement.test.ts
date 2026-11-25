@@ -90,6 +90,31 @@ describe("atlas map label placement", () => {
     expect(mapLabelCoverFraction(100, 100, 50, 8, [{ x: 100, y: 60, r: 10 }])).toBe(0);
   });
 
+  it("tries fallback settings only after the regular ones, clear seats first", () => {
+    const wall = [{ x: 100, y: 100, r: 30 }];
+    const request = {
+      id: "a", x: 100, y: 100, halfW: 60, compactHalfW: 50, halfH: 8, maxCover: 0.3, candidates: [[0, 0]] as const,
+      fallbacks: [
+        { variant: "tight", halfW: 30 },
+        { variant: "stacked", halfW: 14, halfH: 14, candidates: [[0, 0], [70, 0]] as const },
+      ],
+    };
+    // Roomy map: the regular setting wins and no fallback is reported.
+    expect(placeMapLabels([request], [], 1).get("a")).toEqual({ dx: 0, dy: 0, clear: true });
+    // Badge on the anchor: only the stacked setting has a clear seat, on its own candidate list.
+    expect(placeMapLabels([request], wall, 1).get("a")).toEqual({ dx: 70, dy: 0, clear: true, variant: "stacked" });
+  });
+
+  it("never seats a fallback partly under a badge", () => {
+    const badge = [{ x: 100, y: 100, r: 30, solidR: 6 }];
+    const request = {
+      id: "a", x: 100, y: 100, halfW: Number.POSITIVE_INFINITY, halfH: 8, maxCover: 0.3, candidates: [[0, 0]] as const,
+      fallbacks: [{ variant: "tight", halfW: 30 }],
+    };
+    expect(placeMapLabels([request], badge, 1).get("a")).toEqual({ dx: 0, dy: 0, clear: false });
+    expect(placeMapLabels([request], [], 1).get("a")).toEqual({ dx: 0, dy: 0, clear: true, variant: "tight" });
+  });
+
   it("estimates tracked lettering width", () => {
     expect(estimateMapLabelWidth("CANADA", 10, 0.3, 0.7)).toBeCloseTo(60);
   });

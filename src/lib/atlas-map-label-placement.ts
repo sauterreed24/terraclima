@@ -47,6 +47,25 @@ export interface MapLabelRequest {
    * this budget — partly covered but readable beats absent. Omit to hide.
    */
   maxCover?: number;
+  /**
+   * Smaller or re-shaped settings of the same lettering (one size down, a
+   * two-line stack…), in preference order, for maps too small for the
+   * compact one. Tried only after the full and compact settings found
+   * neither a clear nor a budgeted seat, so roomy maps never shrink a name.
+   * A fallback only ever takes a clear seat — small lettering half under a
+   * badge is not worth drawing.
+   */
+  fallbacks?: readonly MapLabelFallback[];
+}
+
+export interface MapLabelFallback {
+  /** Echoed back as `MapLabelPlacement.variant` so the caller can draw it. */
+  variant: string;
+  /** Half extents of this setting in screen pixels (`halfH` defaults to the request's). */
+  halfW: number;
+  halfH?: number;
+  /** Own candidate offsets (a smaller setting can slide further); defaults to the request's. */
+  candidates?: readonly (readonly [number, number])[];
 }
 
 export interface MapLabelPlacement {
@@ -60,6 +79,8 @@ export interface MapLabelPlacement {
   clear: boolean;
   /** True when the tighter `compactHalfW` setting was needed. */
   compact?: boolean;
+  /** Set when one of the request's `fallbacks` was needed. */
+  variant?: string;
   /**
    * Set only for a partly covered seat: the share of the label's length that
    * sits under pins. The caller should draw it dimmed, behind the pins.
@@ -133,7 +154,8 @@ export function mapLabelCoverFraction(
  * obstacles for later ones). `k` is the map zoom: map units × k = pixels.
  *
  * Each label tries, in order: a clear seat at full width, a clear seat at its
- * compact width, then (only with `maxCover`) the least-covered seat.
+ * compact width, then (only with `maxCover`) the least-covered seat. A label
+ * with `fallbacks` then tries each of those settings for a clear seat.
  */
 export function placeMapLabels(
   requests: readonly MapLabelRequest[],
@@ -152,47 +174,60 @@ export function placeMapLabels(
     if (req.compactHalfW != null && Number.isFinite(req.compactHalfW) && req.compactHalfW < req.halfW) {
       widths.push({ halfW: req.compactHalfW, compact: true });
     }
-    if (widths.length === 0 || !Number.isFinite(req.halfH)) {
+    const fallbacks = (req.fallbacks ?? []).filter(f => Number.isFinite(f.halfW) && f.halfW > 0);
+    if ((widths.length === 0 && fallbacks.length === 0) || !Number.isFinite(req.halfH)) {
       out.set(req.id, { dx: 0, dy: 0, clear: false });
       continue;
     }
     const ax = req.x * zoom;
     const ay = req.y * zoom;
-    let chosen: MapLabelPlacement | null = null;
-    let chosenRect: ScreenRect | null = null;
-    for (const width of widths) {
-      for (const [dx, dy] of req.candidates) {
-        const rect: ScreenRect = { cx: ax + dx, cy: ay + dy, halfW: width.halfW + pad, halfH: req.halfH + pad };
+    const pick: { seat: MapLabelPlacement | null; rect: ScreenRect | null } = { seat: null, rect: null };
+    const seatRect = (dx: number, dy: number, halfW: number, halfH: number): ScreenRect => (
+      { cx: ax + dx, cy: ay + dy, halfW: halfW + pad, halfH: halfH + pad }
+    );
+    type Seats = readonly (readonly [number, number])[];
+    const tryClear = (halfW: number, halfH: number, flags: Partial<MapLabelPlacement>, seats: Seats = req.candidates) => {
+      for (const [dx, dy] of seats) {
+        const rect = seatRect(dx, dy, halfW, halfH);
         if (screenObstacles.some(o => circleHitsRect(o.x, o.y, o.r, rect))) continue;
         if (placed.some(other => rectsOverlap(rect, other))) continue;
-        chosen = width.compact ? { dx, dy, clear: true, compact: true } : { dx, dy, clear: true };
-        chosenRect = rect;
-        break;
+        pick.seat = { dx, dy, clear: true, ...flags };
+        pick.rect = rect;
+        return;
       }
-      if (chosen) break;
-    }
-    if (!chosen && req.maxCover != null && req.maxCover > 0) {
-      const width = widths[widths.length - 1]!;
-      // Least covered wins, with a mild pull toward earlier (preferred)
-      // candidates so the name does not wander for a marginal gain.
-      let bestScore = Number.POSITIVE_INFINITY;
+    };
+    // Least covered wins, with a mild pull toward earlier (preferred)
+    // candidates so the name does not wander for a marginal gain.
+    let bestScore = Number.POSITIVE_INFINITY;
+    const tryCovered = (halfW: number, halfH: number, budget: number, flags: Partial<MapLabelPlacement>) => {
       const total = Math.max(1, req.candidates.length);
       req.candidates.forEach(([dx, dy], index) => {
-        const rect: ScreenRect = { cx: ax + dx, cy: ay + dy, halfW: width.halfW + pad, halfH: req.halfH + pad };
+        const rect = seatRect(dx, dy, halfW, halfH);
         if (placed.some(other => rectsOverlap(rect, other))) return;
-        const cover = mapLabelCoverFraction(rect.cx, rect.cy, width.halfW, req.halfH, solidObstacles);
-        if (cover > req.maxCover!) return;
+        const cover = mapLabelCoverFraction(rect.cx, rect.cy, halfW, halfH, solidObstacles);
+        if (cover > budget) return;
         const score = cover + (index / total) * 0.12;
         if (score < bestScore - 1e-9) {
           bestScore = score;
-          chosen = { dx, dy, clear: false, cover, ...(width.compact ? { compact: true } : {}) };
-          chosenRect = rect;
+          pick.seat = { dx, dy, clear: false, cover, ...flags };
+          pick.rect = rect;
         }
       });
+    };
+    for (const width of widths) {
+      tryClear(width.halfW, req.halfH, width.compact ? { compact: true } : {});
+      if (pick.seat) break;
     }
-    if (chosen && chosenRect) {
-      placed.push(chosenRect);
-      out.set(req.id, chosen);
+    const budget = req.maxCover != null && req.maxCover > 0 ? req.maxCover : 0;
+    const last = widths[widths.length - 1];
+    const lastFlags: Partial<MapLabelPlacement> = last?.compact ? { compact: true } : {};
+    if (!pick.seat && last && budget > 0) tryCovered(last.halfW, req.halfH, budget, lastFlags);
+    for (const f of fallbacks) {
+      if (!pick.seat) tryClear(f.halfW, f.halfH ?? req.halfH, { variant: f.variant }, f.candidates);
+    }
+    if (pick.seat && pick.rect) {
+      placed.push(pick.rect);
+      out.set(req.id, pick.seat);
     } else {
       out.set(req.id, { dx: 0, dy: 0, clear: false });
     }

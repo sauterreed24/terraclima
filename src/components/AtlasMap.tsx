@@ -180,8 +180,41 @@ const COUNTRY_LABEL_SEATS: readonly {
 /** Tighter fallback setting for a country name: less tracking, one size down. */
 const COUNTRY_LABEL_COMPACT_SCALE = 0.92;
 const COUNTRY_LABEL_COMPACT_TRACKING_EM = 0.16;
+/** Smallest setting, for maps where even the compact name finds no seat. */
+const COUNTRY_LABEL_TIGHT_SCALE = 0.84;
+const COUNTRY_LABEL_TIGHT_TRACKING_EM = 0.08;
+const COUNTRY_LABEL_STACK_LEADING = 1.18;
+/** Tight settings of a country name: one line, then (two words) stacked. */
+function countryLabelFallbacks(label: string, tightW: number, roomPx: number, fontPx: number) {
+  const out: { variant: string; halfW: number; halfH?: number }[] = [];
+  if (tightW <= roomPx || !label.includes(" ")) out.push({ variant: "tight", halfW: tightW / 2 });
+  const words = label.split(" ");
+  if (words.length === 2) {
+    const widest = Math.max(words[0]!.length, words[1]!.length) / label.length;
+    out.push({ variant: "stacked", halfW: (tightW * widest) / 2, halfH: 6 + (fontPx * COUNTRY_LABEL_STACK_LEADING) / 2 });
+  }
+  return out;
+}
 /** A country name may sit partly behind pins only up to this share of its length. */
 const COUNTRY_LABEL_MAX_COVER = 0.3;
+/**
+ * Last-resort seats just offshore (lon/lat), for small maps whose badges
+ * leave no room on the land itself: a small name set clear beside its
+ * coast, the way an atlas letters a crowded country, beats no name at all.
+ */
+const COUNTRY_LABEL_OFFSHORE_SEATS: Record<string, readonly (readonly [number, number, number, number])[]> = {
+  // [lon, lat, push x, push y]: the name backs away from the coast along the
+  // push direction until it clears the badges.
+  usa: [[-73.5, 32.5, 1, 0], [-71, 36, 1, 0]],
+  mexico: [[-93, 23.5, 0, 0], [-112, 19.5, -0.8, 0.6], [-116, 23.5, -1, 0]],
+};
+const COUNTRY_LABEL_OFFSHORE_NUDGES: readonly (readonly [number, number])[] = (() => {
+  const out: [number, number][] = [];
+  for (let t = 0; t <= 64; t += 8) {
+    for (const d of [0, 8, -8, 16, -16]) out.push([t, d]);
+  }
+  return out;
+})();
 const OCEAN_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0], [0, -22], [0, 22], [-48, 0], [48, 0]];
 const SEA_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0], [0, -13], [0, 13]];
 const STATIC_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0]];
@@ -966,6 +999,7 @@ export const AtlasMap = memo(function AtlasMap({
     const out: {
       id: string; label: string; x: number; y: number; slide: number; wideSlides: boolean;
       altSeats: { dx: number; dy: number }[];
+      offshoreSeats: { dx: number; dy: number; ux: number; uy: number }[];
     }[] = [];
     for (const a of COUNTRY_LABEL_SEATS) {
       const xy = projection(a.seats[0] as [number, number]);
@@ -976,7 +1010,12 @@ export const AtlasMap = memo(function AtlasMap({
         const alt = projection(seat as [number, number]);
         if (alt) altSeats.push({ dx: alt[0] - xy[0], dy: alt[1] - xy[1] });
       }
-      out.push({ id: a.id, label: a.label, x: xy[0], y: xy[1], slide: a.slide, wideSlides: a.wideSlides, altSeats });
+      const offshoreSeats: { dx: number; dy: number; ux: number; uy: number }[] = [];
+      for (const [lon, lat, ux, uy] of COUNTRY_LABEL_OFFSHORE_SEATS[a.id] ?? []) {
+        const o = projection([lon, lat]);
+        if (o) offshoreSeats.push({ dx: o[0] - xy[0], dy: o[1] - xy[1], ux, uy });
+      }
+      out.push({ id: a.id, label: a.label, x: xy[0], y: xy[1], slide: a.slide, wideSlides: a.wideSlides, altSeats, offshoreSeats });
     }
     return out;
   }, [projection]);
@@ -1374,6 +1413,12 @@ export const AtlasMap = memo(function AtlasMap({
         COUNTRY_LABEL_COMPACT_TRACKING_EM,
         0.7,
       );
+      const tightW = estimateMapLabelWidth(
+        cl.label,
+        COUNTRY_LABEL_FONT_PX * letterScale * COUNTRY_LABEL_TIGHT_SCALE,
+        COUNTRY_LABEL_TIGHT_TRACKING_EM,
+        0.7,
+      );
       // A name wider than its country has no honest seat — leave it out.
       const roomPx = landSpanPx * (cl.id === "mexico" ? 0.5 : 0.95);
       // Classic seat and its slides first, then the quieter alternate seats
@@ -1387,12 +1432,30 @@ export const AtlasMap = memo(function AtlasMap({
           candidates.push([seat.dx * k + dx * slide, seat.dy * k + dy * slide] as const);
         }
       }
+      const tightSettings = countryLabelFallbacks(
+        cl.label, tightW, roomPx, COUNTRY_LABEL_FONT_PX * letterScale * COUNTRY_LABEL_TIGHT_SCALE,
+      );
+      // Offshore seats must also stay on screen and clear of the map chrome
+      // (caption above, readout and scale below) to be worth drawing.
+      const tightHalfW = Math.max(0, ...tightSettings.slice(-1).map(f => f.halfW)) + 6;
+      const offshoreCandidates = cl.offshoreSeats.flatMap(seat => COUNTRY_LABEL_OFFSHORE_NUDGES.map(
+        // `t` px along the push direction, `d` px across it.
+        ([t, d]) => [seat.dx * k + t * seat.ux - d * seat.uy, seat.dy * k + t * seat.uy + d * (seat.ux || 1)] as const,
+      )).filter(([dx, dy]) => {
+        const sx = cl.x * k + dx + settledView.x;
+        const sy = cl.y * k + dy + settledView.y;
+        return sx >= tightHalfW && sx <= width - tightHalfW && sy >= 76 && sy <= height - (smallMapLettering ? 150 : 64);
+      });
       requests.push({
         id: `country:${cl.id}`,
         x: cl.x,
         y: cl.y,
         halfW: labelW <= roomPx ? labelW / 2 : Number.POSITIVE_INFINITY,
         compactHalfW: compactW <= roomPx ? compactW / 2 : undefined,
+        // Only the most compact setting may step offshore, after its land seats.
+        fallbacks: tightSettings.map((f, i) => (
+          i === tightSettings.length - 1 ? { ...f, candidates: candidates.concat(offshoreCandidates) } : f
+        )),
         maxCover: COUNTRY_LABEL_MAX_COVER,
         halfH: 8,
         candidates,
@@ -1417,7 +1480,7 @@ export const AtlasMap = memo(function AtlasMap({
       });
     }
     return placeMapLabels(requests, obstacles, k);
-  }, [settledView.k, clusterItems, markerRenderOrder, featuredRankById, countryLabels, physicalLabels, projection, smallMapLettering]);
+  }, [settledView, width, height, clusterItems, markerRenderOrder, featuredRankById, countryLabels, physicalLabels, projection, smallMapLettering]);
 
   const rankTrailTone =
     clusterEnabled || settledView.k < 1.35
@@ -2627,7 +2690,11 @@ export const AtlasMap = memo(function AtlasMap({
               // cover budget): dimmed so the pins read first. Otherwise hidden.
               const seatOpacity = !seat || seat.clear ? 1 : seat.cover != null ? 0.72 : 0;
               const fontPx = (smallMapLettering ? COUNTRY_LABEL_FONT_PX * 0.88 : COUNTRY_LABEL_FONT_PX)
-                * (seat?.compact ? COUNTRY_LABEL_COMPACT_SCALE : 1);
+                * (seat?.variant ? COUNTRY_LABEL_TIGHT_SCALE : seat?.compact ? COUNTRY_LABEL_COMPACT_SCALE : 1);
+              const lines = seat?.variant === "stacked" ? cl.label.split(" ") : [cl.label];
+              const trackingEm = seat?.variant
+                ? COUNTRY_LABEL_TIGHT_TRACKING_EM
+                : seat?.compact ? COUNTRY_LABEL_COMPACT_TRACKING_EM : COUNTRY_LABEL_TRACKING_EM;
               return (
               <g
                 key={cl.id}
@@ -2640,17 +2707,21 @@ export const AtlasMap = memo(function AtlasMap({
               >
                 <g data-atlas-inv-scale="" transform={`scale(${1 / view.k})`}>
                 <text
-                  x={seat?.dx ?? 0}
-                  y={seat?.dy ?? 0}
                   textAnchor="middle"
                   dominantBaseline="middle"
                   fontSize={fontPx}
-                  letterSpacing={`${seat?.compact ? COUNTRY_LABEL_COMPACT_TRACKING_EM : COUNTRY_LABEL_TRACKING_EM}em`}
+                  letterSpacing={`${trackingEm}em`}
                   fontWeight={600}
                   fill="rgba(236,244,252,0.8)"
                   fontFamily="var(--font-sans), system-ui, sans-serif"
                   style={{ paintOrder: "stroke fill", stroke: "rgba(30,46,72,0.72)", strokeWidth: 3, strokeLinejoin: "round" }}
-                >{cl.label}</text>
+                >{lines.map((line, i) => (
+                  <tspan
+                    key={line}
+                    x={seat?.dx ?? 0}
+                    y={(seat?.dy ?? 0) + (i - (lines.length - 1) / 2) * fontPx * COUNTRY_LABEL_STACK_LEADING}
+                  >{line}</tspan>
+                ))}</text>
                 </g>
               </g>
               );
@@ -3460,7 +3531,7 @@ const Marker = memo(function Marker({
     onFocusLeave();
   }, [onFocusLeave]);
 
-  const pinHint = onToggleBookmark ? " Shift-click or press P to pin to shortlist." : "";
+  const pinHint = onToggleBookmark ? " Shift-click or press P to save it." : "";
   const ariaLabelBase =
     subLine.length > 0
       ? `${place.name}, ${subLine}. Open full profile.${pinHint}`

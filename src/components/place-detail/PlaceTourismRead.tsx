@@ -1,6 +1,7 @@
 import { useMemo, type ReactNode } from "react";
 import { Calendar, Compass, Home, Leaf, MapPin, Route, ShieldAlert, Sprout, TrendingUp } from "lucide-react";
 import type { Place } from "../../types";
+import { Section } from "./place-detail-ui";
 import { getClimateTourismProfile } from "../../lib/climate-tourism";
 import { useProse } from "../../lib/units";
 import { SCORE_DEFINITIONS } from "../../lib/livability-score";
@@ -10,11 +11,7 @@ export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: 
   const profile = useMemo(() => getClimateTourismProfile(place), [place]);
 
   return (
-    <section id={anchorId} className="detail-doc-section anim-fade-in scroll-mt-28">
-      <h3 className="font-atlas text-[1.15rem] md:text-lg text-ice mb-3.5 flex items-center gap-2 tracking-tight border-b border-[rgba(200,170,140,0.35)] pb-2">
-        <Route className="w-4 h-4 shrink-0" style={{ color: "#f0d29c" }} aria-hidden />
-        Visiting for the climate
-      </h3>
+    <Section phoneCollapse anchorId={anchorId} className="scroll-mt-28" title="Visiting for the climate" icon={<Route className="w-4 h-4 shrink-0" style={{ color: "#f0d29c" }} aria-hidden />}>
       <p className="text-[12px] text-stone-readable leading-relaxed mb-3.5 max-w-2xl">
         When to come, what to see and what to check if you visit to try the climate. These are suggestions from climate averages; confirm lodging, roads and closures yourself.
       </p>
@@ -85,7 +82,7 @@ export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: 
       <div className="panel-warm p-3 mt-3 text-[12px] text-stone-readable leading-relaxed">
         Travel and lodging cues are static and carry no paid placement. The long-term climate and land score is a rough guide, not financial advice, not a real estate valuation, not a parcel-level recommendation, and not a recommendation to buy. Hazard reads are atlas-grade screens; local official maps and sources matter.
       </div>
-    </section>
+    </Section>
   );
 }
 

@@ -265,18 +265,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     deepSections: [
       {
         id: "beverly-shores-lake-season-lag",
-        title: "Lake moderation is useful but asymmetric",
+        title: "The lake shifts the seasons",
         paragraphs: [
-          "Lake Michigan makes Beverly Shores milder than inland Indiana, but the benefit changes by season. Spring stays colder longer because the lake is still cold, while late summer and early autumn can feel softer than the inland corn belt.",
-          "That seasonal lag is exactly what makes it useful as a comparison anchor. It is not simply cooler or warmer; it shifts the calendar, trims peak heat, adds cloud and snowband risk, and makes parcel exposure matter block by block.",
+          "Lake Michigan warms and cools more slowly than the land, and Beverly Shores follows it. In April and May the water is still cold and a breeze off the lake can chill the beach within minutes. In September and October the water is warm and holds off the first frost.",
+          "In July the lake breeze keeps the beach a few degrees cooler than towns inland. From November to January cold winds blowing down the length of the lake bring cloud and bands of snow, about 190 cm in a winter, and totals differ over a few kilometers.",
         ],
       },
       {
         id: "beverly-shores-small-town-friction",
-        title: "A climate refuge with small-town friction",
+        title: "A few hundred residents inside a national park",
         paragraphs: [
-          "The dunes setting is exceptional, but daily life is not frictionless. The resident population is small, many homes are seasonal, and routine services often mean Michigan City, Chesterton, or Chicago instead of a self-contained town.",
-          "For travel, that is part of the charm. For relocation, the decision turns on whether rail access, park proximity, and lake comfort outweigh limited local services, winter cloud, and lakefront housing pressure.",
+          "Beverly Shores has a few hundred year-round residents and is surrounded by Indiana Dunes National Park. Many of the houses are seasonal. Shops, schools and medical care are in Chesterton and Michigan City, a short drive away, and the South Shore Line runs to Chicago.",
+          "The beach and the dune trails are the reason to live here. Against them stand the grey winters, the small number of houses for sale and the lake itself: high water in 2019 and 2020 cut away the beach and undermined parts of Lake Front Drive.",
         ],
       },
     ],
