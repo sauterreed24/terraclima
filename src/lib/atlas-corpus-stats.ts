@@ -233,26 +233,26 @@ export function getCorpusSynthesisLines(place: Place, displayTemp: TempUnit = "F
   const out: { label: string; value: string }[] = [
     {
       label: "Wetness vs full atlas (annual mean)",
-      value: `Wetter than ${pct99(r.wetterThanAtlasShare)} of stops · drier than ${pct99(r.drierThanAtlasShare)} of stops (ties possible)`,
+      value: `Wetter than ${pct99(r.wetterThanAtlasShare)} of places · drier than ${pct99(r.drierThanAtlasShare)} of places (ties possible)`,
     },
     {
       label: "Summer mean high vs full atlas (Jun–Aug blend)",
-      value: `Cooler than ${pct99(r.coolerSummersThanAtlasShare)} of stops; hotter than ${pct99(rest(r.coolerSummersThanAtlasShare))}`,
+      value: `Cooler than ${pct99(r.coolerSummersThanAtlasShare)} of places; hotter than ${pct99(rest(r.coolerSummersThanAtlasShare))}`,
     },
     {
       label: "Winter mean low vs full atlas (Dec–Feb blend)",
-      value: `Milder than ${pct99(r.milderWintersThanAtlasShare)} of stops; colder than ${pct99(rest(r.milderWintersThanAtlasShare))}`,
+      value: `Milder than ${pct99(r.milderWintersThanAtlasShare)} of places; colder than ${pct99(rest(r.milderWintersThanAtlasShare))}`,
     },
     {
       label: "Elevation & diurnal (same atlas set)",
-      value: `Higher ground than ${pct99(r.higherElevationThanAtlasShare)} · larger summer diurnal than ${pct99(r.largerDiurnalThanAtlasShare)} of stops`,
+      value: `Higher ground than ${pct99(r.higherElevationThanAtlasShare)} · larger summer diurnal than ${pct99(r.largerDiurnalThanAtlasShare)} of places`,
     },
   ];
   if (r.gddAboveShare != null) {
     const gddLabel = displayTemp === "F" ? "Growing-degree signal (GDD, base 50°F)" : "Growing-degree signal (GDD, base 10°C)";
     out.push({
       label: gddLabel,
-      value: `More degree-days than ${pct99(r.gddAboveShare)} of stops with GDD filled`,
+      value: `More degree-days than ${pct99(r.gddAboveShare)} of places with growing-degree data`,
     });
   }
   return out;
@@ -274,13 +274,13 @@ export function getCorpusContextPanelRows(
   const pr = PLACE_ANNUAL_PRECIP[place.id];
   const di = summerDiurnalC(place);
   const rows: CorpusPanelRow[] = [
-    { metric: "Mean Jun–Aug high (normal)", you: fmtT(jh), context: `Cooler summers than ${pct(r.coolerSummersThanAtlasShare)} of atlas stops` },
-    { metric: "Mean winter low (Dec–Feb)", you: fmtT(jl), context: `Milder mid-winter than ${pct(r.milderWintersThanAtlasShare)} of atlas stops` },
-    { metric: "Annual precip (atlas field)", you: fmtP(pr), context: `Wetter than ${pct(r.wetterThanAtlasShare)} of atlas stops` },
-    { metric: "Site elevation", you: fmtE(place.elevationM), context: `Higher than ${pct(r.higherElevationThanAtlasShare)} of stops` },
-    { metric: "High-season diurnal (July proxy)", you: fmtD(di), context: `Larger swing than ${pct(r.largerDiurnalThanAtlasShare)} of stops` },
+    { metric: "Mean Jun–Aug high (normal)", you: fmtT(jh), context: `Cooler summers than ${pct(r.coolerSummersThanAtlasShare)} of atlas places` },
+    { metric: "Mean winter low (Dec–Feb)", you: fmtT(jl), context: `Milder mid-winter than ${pct(r.milderWintersThanAtlasShare)} of atlas places` },
+    { metric: "Annual precip (atlas field)", you: fmtP(pr), context: `Wetter than ${pct(r.wetterThanAtlasShare)} of atlas places` },
+    { metric: "Site elevation", you: fmtE(place.elevationM), context: `Higher than ${pct(r.higherElevationThanAtlasShare)} of places` },
+    { metric: "High-season diurnal (July proxy)", you: fmtD(di), context: `Larger swing than ${pct(r.largerDiurnalThanAtlasShare)} of places` },
     { metric: "Resilience / grow / uniqueness (scores)", you: `${place.scores.resilience} / ${place.scores.growability} / ${place.scores.microclimateUniqueness}`,
-      context: `Resilience above ${pct(r.higherResilienceShare)} · grow above ${pct(r.higherGrowabilityShare)} · uniqueness above ${pct(r.higherUniquenessShare)} of stops`,
+      context: `Resilience above ${pct(r.higherResilienceShare)} · grow above ${pct(r.higherGrowabilityShare)} · uniqueness above ${pct(r.higherUniquenessShare)} of places`,
     },
   ];
   if (place.climate.frostFreeDays != null) {
@@ -288,8 +288,8 @@ export function getCorpusContextPanelRows(
       metric: "Frost-free days (est.)",
       you: `${place.climate.frostFreeDays} d`,
       context: r.frostAboveShare != null
-        ? `Longer season than ${pct(r.frostAboveShare)} of stops with data`
-        : "Compare within stops that report frost-free days",
+        ? `Longer season than ${pct(r.frostAboveShare)} of places with data`
+        : "Compare within places that report frost-free days",
     });
   }
   if (place.climate.gdd10 != null) {
@@ -298,8 +298,8 @@ export function getCorpusContextPanelRows(
       metric: gddMetric,
       you: Math.round(gddForUnit(place.climate.gdd10, displayTemp)).toLocaleString("en-US"),
       context: r.gddAboveShare != null
-        ? `More heat units than ${pct(r.gddAboveShare)} of stops with GDD`
-        : "Among stops with GDD filled",
+        ? `More heat units than ${pct(r.gddAboveShare)} of places with growing-degree data`
+        : "Among places with growing-degree data",
     });
   }
   return rows;
@@ -309,7 +309,7 @@ export function getCorpusContextPanelRows(
 
 export interface PlaceBioclimRanks {
   /** Share of corpus places with a *smaller* De Martonne value than this place
-   *  (i.e. this place is wetter-per-degree than that share of stops). */
+   *  (i.e. this place is wetter-per-degree than that share of places). */
   deMartonneAboveShare: number | null;
   /** Share with a smaller Conrad index (this place is more continental). */
   conradAboveShare: number;
@@ -412,7 +412,7 @@ export function getCorpusMapHint(place: Place): string {
   const cached = PLACE_CORPUS_MAP_HINT_CACHE.get(place);
   if (cached) return cached;
   const r = getPlaceCorpusRanks(place);
-  const hint = `Water year wetter than ${pct(r.wetterThanAtlasShare)} of atlas stops; Jun-Aug mean high cooler than ${pct(r.coolerSummersThanAtlasShare)} of stops.`;
+  const hint = `Water year wetter than ${pct(r.wetterThanAtlasShare)} of atlas places; Jun-Aug mean high cooler than ${pct(r.coolerSummersThanAtlasShare)} of places.`;
   PLACE_CORPUS_MAP_HINT_CACHE.set(place, hint);
   return hint;
 }

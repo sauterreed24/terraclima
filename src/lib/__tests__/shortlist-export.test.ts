@@ -10,7 +10,17 @@ import {
   nextMonthRunOccurrence,
   parseMonthRuns,
 } from "../shortlist-export";
+import { CSV_BOM } from "../shortlist-export";
 import { makeClimate, makePlace } from "./test-fixtures";
+import { PLACES, PLACES_BY_ID } from "../../data/places";
+import { CLIMATE_NORMALS_PERIOD } from "../atlas-metadata";
+import { getBestMonths, pickVisitWindow } from "../best-months";
+import { getAnnualPrecipMm, meanAnnualHumidityPct, meanAnnualSunshinePct, meanJanLow, meanSummerHigh, summerDiurnalC } from "../climate-metrics";
+import { observedSunshinePct } from "../hero-glance";
+import { scoreLivability } from "../livability-score";
+import { assessLiveFit, rankLiveFit } from "../live-fit";
+import { rankPlaces } from "../scoring";
+import { cToF, mmToIn } from "../units";
 
 const FIXED = new Date("2026-05-15T12:00:00Z");
 
@@ -71,20 +81,193 @@ describe("exportShortlistAsJSON", () => {
   });
 });
 
+/** Minimal RFC 4180 reader for the tests: BOM-stripped rows of cells. */
+function parseCsv(body: string): string[][] {
+  const text = body.replace(/^\uFEFF/, "");
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let cell = "";
+  let quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i]!;
+    if (quoted) {
+      if (ch === '"' && text[i + 1] === '"') { cell += '"'; i++; }
+      else if (ch === '"') quoted = false;
+      else cell += ch;
+    } else if (ch === '"') quoted = true;
+    else if (ch === ",") { row.push(cell); cell = ""; }
+    else if (ch === "\r" && text[i + 1] === "\n") { row.push(cell); rows.push(row); row = []; cell = ""; i++; }
+    else cell += ch;
+  }
+  return rows;
+}
+
+function csvRecords(body: string): Array<Record<string, string>> {
+  const [header, ...rows] = parseCsv(body);
+  return rows.map(row => Object.fromEntries(header!.map((name, i) => [name, row[i] ?? ""])));
+}
+
+const r1 = (n: number) => String(Math.round(n * 10) / 10 + 0);
+
 describe("exportShortlistAsCSV", () => {
   it("quotes cells that contain commas, quotes, or CR/LF", () => {
     const file = exportShortlistAsCSV(sample, { generatedAt: FIXED });
     expect(file.filename).toMatch(/\.csv$/);
-    expect(file.mimeType).toBe("text/csv");
+    expect(file.mimeType).toBe("text/csv;charset=utf-8");
     const lines = file.body.split("\r\n");
-    expect(lines[0]).toBe("id,name,region,country,lat,lon,elevation_ft,koppen,tier,biome");
-    // First data row uses the unquoted id but should keep the name unquoted too.
+    // Existing columns keep their names and positions; new ones are appended.
+    expect(lines[0]!.startsWith("\uFEFFid,name,region,country,lat,lon,elevation_ft,koppen,tier,biome,")).toBe(true);
     expect(lines[1]).toContain("alpha-valley");
     // Elevation is exported in feet (1,200 m → 3,937 ft), like the rest of the atlas.
     expect(lines[1]).toContain(",3937,");
     // Second row has both a comma in the id and a double quote in the name.
     expect(lines[2]).toContain('"beta, ridge"');
     expect(lines[2]).toContain('"Beta ""Ridge"""');
+    const tricky = makePlace({ id: "x", name: "Line\nBreak", biome: " padded " });
+    const [, row] = parseCsv(exportShortlistAsCSV([tricky], { generatedAt: FIXED }).body);
+    expect(row![1]).toBe("Line\nBreak");
+    expect(row![9]).toBe(" padded ");
+    expect(file.body.endsWith("\r\n")).toBe(true);
+  });
+
+  it("starts with a UTF-8 BOM and keeps accents intact for Excel", () => {
+    const file = exportShortlistAsCSV([PLACES_BY_ID["merida-mx"]!], { generatedAt: FIXED });
+    expect(file.body.charCodeAt(0)).toBe(0xfeff);
+    expect(CSV_BOM).toBe("\uFEFF");
+    expect(new TextEncoder().encode(file.body).slice(0, 3)).toEqual(new Uint8Array([0xef, 0xbb, 0xbf]));
+    expect(csvRecords(file.body)[0]).toMatchObject({ name: "Mérida", region: "Yucatán" });
+  });
+
+  it("carries the climate figures and scores the app shows, in US units, for two known places", () => {
+    const sequim = PLACES_BY_ID["sequim-wa"]!;
+    const oaxaca = PLACES_BY_ID["oaxaca-mx"]!;
+    const file = exportShortlistAsCSV([sequim, oaxaca], { generatedAt: FIXED });
+    const records = csvRecords(file.body);
+    expect(records).toHaveLength(2);
+    for (const [record, place] of [[records[0]!, sequim], [records[1]!, oaxaca]] as const) {
+      expect(record.id).toBe(place.id);
+      expect(record.summer_high_f).toBe(r1(cToF(meanSummerHigh(place))));
+      expect(record.winter_low_f).toBe(r1(cToF(meanJanLow(place))));
+      expect(record.annual_precip_in).toBe(r1(mmToIn(getAnnualPrecipMm(place))));
+      expect(record.humidity_pct).toBe(String(Math.round(meanAnnualHumidityPct(place)!)));
+      expect(record.frost_free_days).toBe(String(place.climate.frostFreeDays));
+      expect(record.summer_day_night_swing_f).toBe(r1(summerDiurnalC(place) * 1.8));
+      expect(record.best_months).toBe(pickVisitWindow(getBestMonths(place, "F"))!.range);
+      expect(record.best_months_for).toBe(pickVisitWindow(getBestMonths(place, "F"))!.label);
+      expect(record.wildfire_risk).toBe(place.risks.wildfire.level);
+      expect(record.smoke_risk).toBe(place.risks.smoke.level);
+      expect(record.flood_risk).toBe(place.risks.flood.level);
+      expect(record.uniqueness_score_0_100).toBe(String(place.scores.microclimateUniqueness));
+      expect(record.livability_score_0_100).toBe(String(scoreLivability(place).score));
+      expect(record.live_here_fit_score_0_100).toBe(String(assessLiveFit(place).score));
+      expect(record.resilience_score_0_100).toBe(String(place.scores.resilience));
+      expect(record.growability_score_0_100).toBe(String(place.scores.growability));
+      expect(record.climate_normals_period).toBe(CLIMATE_NORMALS_PERIOD);
+      // Station sunshine where the place has it (what the profile shows).
+      expect(record.sunshine_pct).toBe(String(observedSunshinePct(place)));
+      expect(record.sunshine_basis).toBe("station");
+    }
+    // Sanity anchors in plain numbers: a cool-summer rain-shadow town and a tropical highland.
+    expect(Number(records[0]!.summer_high_f)).toBeGreaterThan(60);
+    expect(Number(records[0]!.summer_high_f)).toBeLessThan(75);
+    expect(Number(records[0]!.annual_precip_in)).toBeLessThan(25);
+    expect(Number(records[0]!.annual_snow_in)).toBeGreaterThan(0);
+    expect(records[1]!.annual_snow_in).toBe("");
+    expect(records[1]!.best_months).toBe("Nov–Feb");
+  });
+
+  it("marks estimated sunshine, leaves unrecorded values blank and never formats numbers", () => {
+    const merida = PLACES_BY_ID["merida-mx"]!;
+    expect(observedSunshinePct(merida)).toBeNull();
+    const [record] = csvRecords(exportShortlistAsCSV([merida], { generatedAt: FIXED }).body);
+    expect(record!.sunshine_basis).toBe("estimated");
+    expect(record!.sunshine_pct).toBe(String(Math.round(meanAnnualSunshinePct(merida)!)));
+
+    const bare = makePlace({ id: "bare", elevationM: 3000, climate: makeClimate({ humidity: undefined, snowCm: undefined, frostFreeDays: undefined }) });
+    const [blank] = csvRecords(exportShortlistAsCSV([bare], { generatedAt: FIXED }).body);
+    expect(blank).toMatchObject({ annual_snow_in: "", humidity_pct: "", frost_free_days: "", sunshine_pct: "", sunshine_basis: "" });
+    expect(blank!.elevation_ft).toBe("9843");
+    const numeric = Object.entries(blank!).filter(([key]) => /_(f|in|ft|pct|days|0_100)$/.test(key));
+    expect(numeric.length).toBeGreaterThan(10);
+    for (const [, value] of numeric) expect(value).toMatch(/^(-?\d+(\.\d+)?)?$/);
+  });
+
+  it("adds the active ranking's name, rank and score when a ranking is given", () => {
+    const sequim = PLACES_BY_ID["sequim-wa"]!;
+    const yuma = PLACES_BY_ID["yuma-az"]!;
+    const without = parseCsv(exportShortlistAsCSV([sequim], { generatedAt: FIXED }).body)[0]!;
+    expect(without).not.toContain("ranking");
+    const records = csvRecords(exportShortlistAsCSV([sequim, yuma], { generatedAt: FIXED, ranking: "coolest-summers" }).body);
+    const ranked = rankPlaces("coolest-summers", PLACES, FIXED);
+    for (const [record, place] of [[records[0]!, sequim], [records[1]!, yuma]] as const) {
+      const at = ranked.findIndex(row => row.place.id === place.id);
+      expect(record.ranking).toBe("Coolest summers");
+      expect(record.ranking_rank).toBe(String(at + 1));
+      expect(record.ranking_of).toBe(String(PLACES.length));
+      expect(Number(record.ranking_score)).toBeCloseTo(ranked[at]!.score, 2);
+    }
+    expect(Number(records[0]!.ranking_rank)).toBeLessThan(Number(records[1]!.ranking_rank));
+    const liveFit = csvRecords(exportShortlistAsCSV([sequim], { generatedAt: FIXED, ranking: "live-fit" }).body)[0]!;
+    expect(liveFit.ranking).toBe("Live-here fit");
+    expect(liveFit.ranking_rank).toBe(String(rankLiveFit([...PLACES]).findIndex(row => row.place.id === sequim.id) + 1));
+  });
+
+  it("adds vs-home delta columns only when a home base is set", () => {
+    const sequim = PLACES_BY_ID["sequim-wa"]!;
+    const yuma = PLACES_BY_ID["yuma-az"]!;
+    expect(parseCsv(exportShortlistAsCSV([sequim], { generatedAt: FIXED }).body)[0]!.join(",")).not.toContain("home");
+    const records = csvRecords(exportShortlistAsCSV([sequim, yuma], { generatedAt: FIXED, home: yuma }).body);
+    const [s, y] = records as [Record<string, string>, Record<string, string>];
+    expect(s.home_base).toBe("Yuma");
+    expect(Number(s.summer_high_vs_home_f)).toBeCloseTo(Number(s.summer_high_f) - Number(y.summer_high_f), 1);
+    expect(Number(s.summer_high_vs_home_f)).toBeLessThan(-25);
+    expect(Number(s.annual_precip_vs_home_in)).toBeCloseTo(Number(s.annual_precip_in) - Number(y.annual_precip_in), 1);
+    expect(Number(s.livability_vs_home)).toBe(scoreLivability(sequim).score - scoreLivability(yuma).score);
+    // Yuma records no snowfall, so the snow delta is blank rather than a made-up number.
+    expect(s.annual_snow_vs_home_in).toBe("");
+    // Home against itself is all zeros.
+    expect([y.summer_high_vs_home_f, y.winter_low_vs_home_f, y.humidity_vs_home_pct, y.livability_vs_home]).toEqual(["0", "0", "0", "0"]);
+  });
+});
+
+describe("JSON and GeoJSON carry the same fields as the CSV", () => {
+  it("JSON states units, score scale and data period, and matches the CSV values", () => {
+    const places = [PLACES_BY_ID["sequim-wa"]!, PLACES_BY_ID["oaxaca-mx"]!];
+    const ctx = { generatedAt: FIXED, ranking: "most-unique" as const, home: PLACES_BY_ID["boulder-co"]! };
+    const parsed = JSON.parse(exportShortlistAsJSON(places, ctx).body) as {
+      readme: string[]; scoreScale: string; climateNormalsPeriod: string; units: Record<string, string>;
+      ranking: { id: string; label: string; placesRanked: number }; homeBase: { id: string };
+      fields: Record<string, string>; places: Array<Record<string, string | number | null>>;
+    };
+    expect(parsed.readme.join(" ")).toMatch(/Scores run 0–100 and higher is better/);
+    expect(parsed.readme.join(" ")).toContain(CLIMATE_NORMALS_PERIOD);
+    expect(parsed.scoreScale).toBe("0–100, higher is better");
+    expect(parsed.climateNormalsPeriod).toBe(CLIMATE_NORMALS_PERIOD);
+    expect(parsed.units.temperature).toBe("°F");
+    expect(parsed.ranking).toEqual({ id: "most-unique", label: "Most unique", placesRanked: PLACES.length });
+    expect(parsed.homeBase.id).toBe("boulder-co");
+    const sequim = parsed.places[0]!;
+    // Original keys survive unchanged.
+    expect(sequim).toMatchObject({ id: "sequim-wa", name: "Sequim", region: "Washington", country: "USA", koppen: "Csb", tier: "A" });
+    expect(typeof sequim.elevationFt).toBe("number");
+    expect(sequim.summerHighF).toBe(Math.round(cToF(meanSummerHigh(places[0]!)) * 10) / 10);
+    expect(sequim.livabilityScore).toBe(scoreLivability(places[0]!).score);
+    expect(parsed.places[1]!.annualSnowIn).toBeNull();
+    // Every field is documented, and the JSON has exactly the CSV's columns.
+    expect(Object.keys(sequim)).toEqual(Object.keys(parsed.fields));
+    const csvHeader = parseCsv(exportShortlistAsCSV(places, ctx).body)[0]!;
+    expect(Object.keys(sequim)).toHaveLength(csvHeader.length);
+    const csvRow = csvRecords(exportShortlistAsCSV(places, ctx).body)[0]!;
+    expect(Object.values(sequim).map(v => (v == null ? "" : String(v)))).toEqual(csvHeader.map(name => csvRow[name]));
+  });
+
+  it("GeoJSON properties equal the JSON record", () => {
+    const places = [PLACES_BY_ID["sequim-wa"]!];
+    const ctx = { generatedAt: FIXED, ranking: "most-unique" as const };
+    const json = JSON.parse(exportShortlistAsJSON(places, ctx).body) as { places: unknown[] };
+    const geo = JSON.parse(exportShortlistAsGeoJSON(places, ctx).body) as { features: Array<{ properties: unknown }>; scoreScale: string };
+    expect(geo.features[0]!.properties).toEqual(json.places[0]);
+    expect(geo.scoreScale).toBe("0–100, higher is better");
   });
 });
 
@@ -237,9 +420,9 @@ describe("exportShortlistAsICS", () => {
     });
     const file = exportShortlistAsICS([place], { generatedAt: FIXED });
     const [event] = icsEvents(file.body);
-    expect(icsField(event!, "LOCATION")).toBe("Foo\\, Bar\; Baz\\\\Qux\\, AZ\; NM\\, United States");
-    expect(icsField(event!, "SUMMARY")).toContain("Foo\\, Bar\; Baz\\\\Qux");
-    expect(icsEscape("a\\b;c,d\ne\r\nf")).toBe("a\\\\b\;c\\,d\\ne\\nf");
+    expect(icsField(event!, "LOCATION")).toBe("Foo\\, Bar\\; Baz\\\\Qux\\, AZ\\; NM\\, United States");
+    expect(icsField(event!, "SUMMARY")).toContain("Foo\\, Bar\\; Baz\\\\Qux");
+    expect(icsEscape("a\\b;c,d\ne\r\nf")).toBe("a\\\\b\\;c\\,d\\ne\\nf");
   });
 
   it("folds content lines at 75 octets without splitting multi-byte characters", () => {
@@ -270,13 +453,14 @@ describe("exportShortlistAsICS", () => {
 });
 
 describe("exportShortlistAsMarkdown", () => {
-  it("emits a human-readable scouting plan in pinned order", () => {
+  it("emits a human-readable visit plan in pinned order", () => {
     const file = exportShortlistAsMarkdown(sample, {
       generatedAt: FIXED,
       appUrl: "https://example.test/terraclima/",
     });
 
-    expect(file.filename).toBe("terraclima-scout-plan-20260515120000.md");
+    expect(file.filename).toBe("terraclima-visit-plan-20260515120000.md");
+    expect(file.body).not.toMatch(/scout|dossier/i);
     expect(file.mimeType).toBe("text/markdown");
     expect(file.body).toContain("# Terraclima visit plan");
     expect(file.body).toContain("Generated: 2026-05-15T12:00:00.000Z");
@@ -306,7 +490,8 @@ describe("exportShortlistAsMarkdown", () => {
     expect(file.body).toContain("- When to visit - ");
     expect(file.body).toContain("- Hazard check - ");
     expect(file.body).toContain("- Daily life - ");
-    expect(file.body).toContain("- Source gap - ");
+    // The label text belongs to compare-finalist-verdict (being reworded elsewhere); accept either.
+    expect(file.body).toMatch(/- (Source gap|Sources to check) - /);
     expect(file.body).toContain("Proof:");
     expect(file.body).toContain("before booking");
     expect(file.body).toContain("| Role | Place | Score | Fit | Risk | Visit | Check first |");

@@ -474,12 +474,12 @@ function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): L
 
   if (summer <= 23) pushUnique(reasons, "Summer afternoons stay comparatively cool for the atlas.", 3);
   if (winter >= -2) pushUnique(reasons, "Winter lows are relatively easy compared with colder inland basins.", 3);
-  if (atmosphere >= 74) pushUnique(reasons, "Sun, humidity, wind, and smoke signals read easy for daily outdoor time.", 3);
-  if (place.scores.growability >= 72) pushUnique(reasons, "Growability is strong enough for serious garden or orchard scouting.", 3);
-  if (comfortMonths >= 8) pushUnique(reasons, `${comfortMonths} months clear the easy-living comfort screen.`, 3);
+  if (atmosphere >= 74) pushUnique(reasons, "Sun, humidity, wind and smoke are all easy on daily time outdoors.", 3);
+  if (place.scores.growability >= 72) pushUnique(reasons, "Growing conditions are strong enough for a serious garden or orchard.", 3);
+  if (comfortMonths >= 8) pushUnique(reasons, `${comfortMonths} months of the year are comfortable outdoors, day and night.`, 3);
   if (feel.score >= 74) pushUnique(reasons, `Place feel is ${feel.band.toLowerCase()}: ${feel.strengths[0]}`, 3);
-  if (place.scores.microclimateUniqueness >= 78) pushUnique(reasons, "The terrain signal is distinctive, not generic regional weather.", 3);
-  if (place.settlementsWithinZone?.length) pushUnique(reasons, "Nearby settlement anchors make the climate easier to picture on the ground.", 3);
+  if (place.scores.microclimateUniqueness >= 78) pushUnique(reasons, "The terrain gives it a climate of its own, not the general weather of the region.", 3);
+  if (place.settlementsWithinZone?.length) pushUnique(reasons, "Named towns inside the zone make the climate easier to picture on the ground.", 3);
   if (reasons.length === 0) pushUnique(reasons, "Balanced climate, risk, and terrain scores make it worth a closer look.", 3);
 
   if (place.scores.tradeoff >= 65) pushUnique(cautions, "Tradeoffs are substantial; read the risk and fit sections before shortlisting.", 3);
@@ -488,10 +488,10 @@ function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): L
   if (RISK_VALUE[place.risks.coastal.level] >= 3) pushUnique(cautions, `Coastal exposure is ${place.risks.coastal.level}.`, 3);
   if (winter < -12) pushUnique(cautions, "Winter cold is a real lifestyle filter.", 3);
   if (summer > 31) pushUnique(cautions, "Peak summer heat will matter for daily routines.", 3);
-  if (atmosphere < 48) pushUnique(cautions, "Atmospheric comfort is the main drag: sky, wind, humidity, smoke, or solar load reduce the lived feel.", 3);
-  if (windEase < 55) pushUnique(cautions, `Wind exposure is a real comfort filter (${Math.round(windEase)}/100).`, 3);
-  if (humidityEase < 55) pushUnique(cautions, `Humidity or arid-air strain pulls down the comfort read (${Math.round(humidityEase)}/100).`, 3);
-  if (comfortMonths <= 4) pushUnique(cautions, `Only ${comfortMonths} months clear the easy-living comfort screen.`, 3);
+  if (atmosphere < 48) pushUnique(cautions, "Air and sky are the main drawback: cloud, wind, humidity, smoke or strong sun make it less comfortable than the temperatures suggest.", 3);
+  if (windEase < 55) pushUnique(cautions, `Wind is a real drawback for comfort (${Math.round(windEase)}/100, higher is calmer).`, 3);
+  if (humidityEase < 55) pushUnique(cautions, `Air that is too humid or too dry lowers comfort (${Math.round(humidityEase)}/100, higher is better).`, 3);
+  if (comfortMonths <= 4) pushUnique(cautions, `Only ${comfortMonths} ${comfortMonths === 1 ? "month" : "months"} of the year ${comfortMonths === 1 ? "is" : "are"} comfortable outdoors, day and night.`, 3);
   if (annualRange > 36) pushUnique(cautions, "Annual temperature range is large; expect harder seasonal swings.", 3);
   if (feel.score < 58) {
     const drag = dominantPlaceFeelDrag(place);
@@ -513,13 +513,13 @@ function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): L
       pushUnique(cautions, `Hospital or airport access is limited — remoteness ${Math.round(access)}/100${lived.note && dom?.axis === "access" ? ` (${lived.note})` : ""}.`, 3);
     }
     if ((housing ?? 100) <= 35 && (access ?? 100) <= 40) {
-      pushUnique(reasons, "Lived indicators are easy: housing pressure and access remoteness both read benign.", 3);
+      pushUnique(reasons, "Housing cost and travel times are both easy here.", 3);
     }
     if (livedCoverage.confidence === "partial") {
-      pushPinnedUnique(cautions, "Lived-indicator coverage is partial; verify housing burden, hospital access, and transport before shortlisting.", 3);
+      pushPinnedUnique(cautions, "Cost and access data is partial; check housing cost, hospital access and transport before shortlisting.", 3);
     }
   } else {
-    pushPinnedUnique(cautions, "Lived indicators are not source-backed yet; verify housing burden, hospital access, and transport before shortlisting.", 3);
+    pushPinnedUnique(cautions, "There is no sourced cost and access data yet; check housing cost, hospital access and transport before shortlisting.", 3);
   }
 
   // Marine-fog / low-sunshine caution
@@ -569,7 +569,7 @@ export function rankLiveFit(pool: Place[], filters: LiveFitFilters = {}) {
       return {
         place,
         score: fit.score,
-        note: `${fit.score}/100 live-here fit · ${fit.reasons[0] ?? "Balanced scouting signal."}`,
+        note: `${fit.score}/100 live-here fit · ${fit.reasons[0] ?? "No single strength stands out."}`,
       };
     })
     .sort((a, b) =>

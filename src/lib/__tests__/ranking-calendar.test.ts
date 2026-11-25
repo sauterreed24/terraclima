@@ -20,3 +20,23 @@ describe("ranking-calendar", () => {
     expect(june30).not.toBe(july1);
   });
 });
+
+describe("chosen ranking month", () => {
+  it("builds an epoch whose month is the chosen one", async () => {
+    const { rankingEpochMsForMonth, monthIndexFromParam } = await import("../ranking-calendar");
+    const now = new Date(2026, 10, 25, 9, 0, 0);
+    for (let month = 0; month < 12; month += 1) {
+      expect(rankingReferenceMonth(rankingEpochMsForMonth(month, now))).toBe(month);
+    }
+    expect(monthIndexFromParam("2")).toBe(1);
+    expect(monthIndexFromParam("13")).toBeNull();
+    expect(monthIndexFromParam(null)).toBeNull();
+  });
+
+  it("names the month in the ranking label", async () => {
+    const { rankingOptionLabel } = await import("../ranking-options");
+    expect(rankingOptionLabel("best-this-month", 1)).toBe("Best in February");
+    expect(rankingOptionLabel("best-this-month")).toBe("Best this month");
+    expect(rankingOptionLabel("coolest-summers", 1)).toBe("Coolest summers");
+  });
+});

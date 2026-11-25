@@ -84,7 +84,8 @@ describe("PlaceCard overlay warmup", () => {
       </UnitProvider>,
     );
 
-    expect(screen.getByText("Livability")).toBeInTheDocument();
+    // One living score per card: Livability moved to the profile breakdown.
+    expect(screen.queryByText("Livability")).not.toBeInTheDocument();
     expect(screen.getByText("Live-here fit")).toBeInTheDocument();
     expect(screen.getByLabelText(`${place.name} place feel`)).toBeInTheDocument();
     expect(screen.getByLabelText("Why this place ranks here")).toHaveTextContent("Check first");

@@ -47,7 +47,7 @@ export function PlaceEvidenceSummary({
   const exportDossierData = () => {
     downloadBlobFile(
       JSON.stringify({ place, researchReceipt: receipt ?? null }, null, 2),
-      `${place.id}-dossier.json`,
+      `${place.id}-profile.json`,
       "application/json",
     );
   };

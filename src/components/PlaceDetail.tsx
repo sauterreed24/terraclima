@@ -35,7 +35,7 @@ import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { formatLivedSources } from "../lib/lived-sources";
 import { effectiveAccessRemoteness, effectiveHousingPressure } from "../lib/research/lived-indicators";
 import { buildComfortPrecisionProfile } from "../lib/comfort-precision";
-import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
+import { describeHumanComfort, SCORE_DEFINITIONS, scoreLivability } from "../lib/livability-score";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "../lib/place-visual-signature";
 import { safeExternalHref } from "../lib/safe-url";
 import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
@@ -587,9 +587,9 @@ function DetailHeader({
         aria-label={`${place.name} place feel`}
       >
         <div className="detail-signature-panel__primary">
-          <dt>Feel</dt>
-          <dd title={prose(visualSignature.primaryBlurb)}>
-            <span>{visualSignature.feelBand}</span>
+          <dt>{SCORE_DEFINITIONS.placeFeel.label}</dt>
+          <dd title={`${SCORE_DEFINITIONS.placeFeel.definition} ${prose(visualSignature.primaryBlurb)}`}>
+            <span>{visualSignature.feelBand} · <span className="font-mono-num">{visualSignature.feelScore}/100</span></span>
             <span className="text-frost font-normal">{visualSignature.primaryLabel}</span>
           </dd>
         </div>
@@ -994,7 +994,7 @@ function DetailBody({
           Fit summary
         </h3>
         <p className="text-[12px] text-stone-readable leading-relaxed mb-3.5 max-w-2xl">
-          Three scores for living here (live-here fit, livability and place feel), the best season, and the first thing to check. The reasons and score breakdowns follow.
+          One score for living here, live-here fit, with the best season and the first thing to check. Each score runs from 0 to 100 and higher is better. The reasons and the livability breakdown follow.
         </p>
         <PlaceResidencyBrief
           place={place}
@@ -1049,7 +1049,7 @@ function DetailBody({
                 </div>
               </div>
               <div className="text-[11px] text-stone-readable max-w-lg leading-snug">
-                Human-felt thermal comfort, atmosphere (sky, wind, humidity, smoke, and solar load), tail-risk-aware hazard cushion, U-shaped precip moderation, curated lived friction, and derived place feel. Hover a row for its formula.
+                {SCORE_DEFINITIONS.livability.definition} Hazards count the worst single risk as well as the average, and rainfall scores best in the middle: neither desert-dry nor very wet. Hover a row to see how it is worked out.
               </div>
             </div>
             <div className="divider-contour my-3" />
@@ -1599,15 +1599,15 @@ function DetailBody({
           <EvidenceClassLabel cls={classifyDossierSection("scores")} />
         </div>
         <p className="text-[11px] text-stone leading-relaxed mb-3 max-w-2xl">
-          These scores are editorial ratings from 0 to 100, used for ranking and comparison. They are not measurements and not an appraisal of the place.
+          These scores are editorial ratings from 0 to 100, used for ranking and comparison. Higher is better for all but tradeoff level, where lower is better. They are not measurements and not an appraisal of the place. Hover a score for what goes into it.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-          <ScorePill label="Hidden gem" value={place.scores.hiddenGem} tone="sage" />
-          <ScorePill label="Microclimate uniqueness" value={place.scores.microclimateUniqueness} tone="ochre" />
-          <ScorePill label="Comfort" value={place.scores.comfort} tone="glacier" />
-          <ScorePill label="Resilience" value={place.scores.resilience} tone="glacier" />
-          <ScorePill label="Growability" value={place.scores.growability} tone="sage" />
-          <ScorePill label="Tradeoff level" value={place.scores.tradeoff} tone="ember" />
+          <ScorePill label={SCORE_DEFINITIONS.hiddenGem.label} definition={SCORE_DEFINITIONS.hiddenGem.definition} value={place.scores.hiddenGem} tone="sage" />
+          <ScorePill label={SCORE_DEFINITIONS.uniqueness.label} definition={SCORE_DEFINITIONS.uniqueness.definition} value={place.scores.microclimateUniqueness} tone="ochre" />
+          <ScorePill label={SCORE_DEFINITIONS.editorComfort.label} definition={SCORE_DEFINITIONS.editorComfort.definition} value={place.scores.comfort} tone="glacier" />
+          <ScorePill label={SCORE_DEFINITIONS.resilience.label} definition={SCORE_DEFINITIONS.resilience.definition} value={place.scores.resilience} tone="glacier" />
+          <ScorePill label={SCORE_DEFINITIONS.growability.label} definition={SCORE_DEFINITIONS.growability.definition} value={place.scores.growability} tone="sage" />
+          <ScorePill label="Tradeoff level" definition="Tradeoff level, 0–100, lower is better. An editor's rating of how much you give up to live here: isolation, cost, hard seasons or hazards." value={place.scores.tradeoff} tone="ember" />
         </div>
 
         <div className="panel-thin p-3 flex items-center justify-between">

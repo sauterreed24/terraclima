@@ -37,7 +37,7 @@ describe("buildExplorerScoutBrief", () => {
       "Easy months",
       "Place feel",
       "Precip range",
-      "Avg risk",
+      "Overall risk",
       "Most common type",
     ]);
     expect(brief!.metrics.find(metric => metric.label === "Summer highs")!.value).toMatch(/°C$/);

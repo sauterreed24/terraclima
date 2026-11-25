@@ -16,17 +16,22 @@
 //   3 name-part       the token appears inside a name word
 //   4 locality        municipality, state / province, country, towns in the zone
 //   5 classification  archetype labels, drivers, biome, Köppen
-//   6 summary         short + immersive summary and why-distinct
-//   7 prose           other authored prose          } only for distinctive
-//   8 cross-reference mentions of OTHER places      } terms — see below
-//   9 fuzzy           typo-tolerant name / locality match (fallback pass only)
+//   6 headline        the one-sentence summary and the why-distinct mechanism
+//   7 summary         the immersive summary paragraph   } only for
+//   8 prose           other authored prose              } distinctive terms
+//   9 cross-reference mentions of OTHER places          } — see below
+//  10 fuzzy           typo-tolerant name / locality match (fallback pass only)
 //
-// Concept words. "snow" appears somewhere in the long prose of every place, so
-// a prose-only hit says nothing. Tiers 7–8 therefore count for a token only
-// when that token is distinctive: nothing matches it at a better tier, or at
-// most PROSE_ONLY_MAX_PLACES places match it through prose alone ("bandelier"
-// still finds Los Alamos; "snow" returns the snowbelt and alpine places whose
-// classification or summary is about snow).
+// Concept words. "snow" appears somewhere in the long prose of nearly every
+// place, so a hit there says nothing. Tiers 7–9 are therefore admitted for a
+// token one tier at a time, and only while the token stays distinctive: the
+// places it would add through those tiers number at most
+// `distinctiveLimit(pool)` (12, or 10% of the pool if larger). So "bandelier"
+// (one place, deep prose) still finds Los Alamos, "wine" reaches into the
+// summaries, and "snow" stops at the snowbelt / alpine places whose
+// classification or headline is about snow. When nothing matches a token at
+// tiers 0–6 at all, the first tier that has matches is admitted regardless,
+// so a query is never emptied by the gate alone.
 //
 // Typos. The fuzzy pass runs only when the exact pass returns nothing, and
 // only against name and locality words: Damerau–Levenshtein distance ≤ 1 for
@@ -43,16 +48,22 @@ export const SEARCH_TIER = {
   namePart: 3,
   locality: 4,
   classification: 5,
-  summary: 6,
-  prose: 7,
-  crossReference: 8,
-  fuzzy: 9,
+  headline: 6,
+  summary: 7,
+  prose: 8,
+  crossReference: 9,
+  fuzzy: 10,
 } as const;
 
 export type SearchTier = (typeof SEARCH_TIER)[keyof typeof SEARCH_TIER];
 
-/** A prose-only term is "distinctive" when at most this many places match it that way. */
-export const PROSE_ONLY_MAX_PLACES = 12;
+/**
+ * How many places a token may add through the gated tiers (summary, prose,
+ * cross-reference) and still count as distinctive.
+ */
+export function distinctiveLimit(poolSize: number): number {
+  return Math.max(12, Math.ceil(poolSize * 0.1));
+}
 
 const NO_MATCH = 99;
 
@@ -115,6 +126,7 @@ function tokenTier(fields: PlaceSearchFields, token: SearchToken): number {
   if (!short && !token.phrase && fields.name.includes(token.text)) return SEARCH_TIER.namePart;
   if (fieldHas(fields.locality, token, false)) return SEARCH_TIER.locality;
   if (fieldHas(fields.classification, token, false)) return SEARCH_TIER.classification;
+  if (fieldHas(fields.headline, token, short)) return SEARCH_TIER.headline;
   if (fieldHas(fields.summary, token, short)) return SEARCH_TIER.summary;
   if (fieldHas(fields.prose, token, short)) return SEARCH_TIER.prose;
   if (fieldHas(fields.crossReference, token, short)) return SEARCH_TIER.crossReference;
@@ -200,15 +212,24 @@ export function searchPlaces(places: readonly Place[], query: string | null | un
   const fields = places.map(getPlaceSearchFields);
   // tiers[t][i]: best raw tier of token t in place i.
   const tiers = parsed.tokens.map(token => fields.map(f => tokenTier(f, token)));
-  // Distinctive-term gate, per token (see header).
-  const proseAllowed = tiers.map(row => {
-    let strong = 0;
-    let proseOnly = 0;
-    for (const t of row) {
-      if (t <= SEARCH_TIER.summary) strong += 1;
-      else if (t !== NO_MATCH) proseOnly += 1;
+  // Distinctive-term gate, per token (see header): the worst tier admitted.
+  const limit = distinctiveLimit(places.length);
+  const maxTier = tiers.map(row => {
+    const count = new Array<number>(SEARCH_TIER.fuzzy).fill(0);
+    for (const t of row) if (t !== NO_MATCH) count[t]! += 1;
+    let admitted: number = SEARCH_TIER.headline;
+    let hasMatch = count.slice(0, SEARCH_TIER.summary).some(n => n > 0);
+    let gated = 0;
+    for (let tier: number = SEARCH_TIER.summary; tier <= SEARCH_TIER.crossReference; tier++) {
+      const n = count[tier]!;
+      if (n === 0) continue;
+      if (hasMatch && gated + n > limit) break;
+      // The first tier with any match is admitted whatever its size; it still uses up the allowance.
+      hasMatch = true;
+      gated += n;
+      admitted = tier;
     }
-    return strong === 0 || proseOnly <= PROSE_ONLY_MAX_PLACES;
+    return admitted;
   });
 
   for (let i = 0; i < places.length; i++) {
@@ -216,7 +237,7 @@ export function searchPlaces(places: readonly Place[], query: string | null | un
     let sum = 0;
     for (let t = 0; t < tiers.length; t++) {
       let tier = tiers[t]![i]!;
-      if (tier >= SEARCH_TIER.prose && tier !== NO_MATCH && !proseAllowed[t]) tier = NO_MATCH;
+      if (tier > maxTier[t]!) tier = NO_MATCH;
       if (tier > worst) worst = tier;
       sum += tier;
       if (worst === NO_MATCH) break;
@@ -229,7 +250,7 @@ export function searchPlaces(places: readonly Place[], query: string | null | un
   if (rankByPlace.size > 0) return { mode: "exact", rankByPlace };
 
   // Typo-tolerant fallback: every token must match — exactly at a name /
-  // locality / classification / summary tier, or within its typo budget
+  // locality / classification / headline tier, or within its typo budget
   // against a name or locality word.
   for (let i = 0; i < places.length; i++) {
     const f = fields[i]!;
@@ -239,7 +260,7 @@ export function searchPlaces(places: readonly Place[], query: string | null | un
     for (let t = 0; t < parsed.tokens.length; t++) {
       const token = parsed.tokens[t]!;
       const exactTier = tiers[t]![i]!;
-      if (exactTier <= SEARCH_TIER.summary) continue;
+      if (exactTier <= SEARCH_TIER.headline) continue;
       const budget = token.phrase ? 0 : typoBudget(token.text);
       const inName = budget > 0 ? fuzzyFieldDistance(f.name, token.text, budget) : null;
       const inLocality = budget > 0 && inName == null ? fuzzyFieldDistance(f.locality, token.text, budget) : null;

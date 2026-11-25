@@ -7,49 +7,38 @@ interface Props {
   onOpenPlace: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
 }
 
+const PLACE_COUNT = Object.keys(PLACES_BY_ID).length;
+
 export function LearnMode({ onOpenPlace }: Props) {
   const prose = useProse();
   return (
     <div className="space-y-4">
-      <div className="panel p-4 border-[rgba(26,143,168,0.22)]">
-        <div className="text-xs uppercase tracking-wider text-stone mb-1">Data methodology</div>
-        <h3 className="font-atlas text-lg text-ice mb-2">Where the climate numbers come from</h3>
-        <p className="text-sm text-frost leading-relaxed mb-2">
-          Default <span className="text-ice font-medium">Recent · 1996–2025</span> is a rolling Daymet V4 R1 climatology
-          (a recent 30-year average, not the official WMO 1991–2020 period). Official <span className="text-ice font-medium">1991–2020</span> normals stay as
-          the same-source comparison. Station products (NOAA, ECCC, SMN) validate the grid; ERA5-Land is fallback/QA only.
-          Solar resource is daily shortwave energy in kWh/m² per day (the NREL convention), from radiation × day length, not observed sunshine hours. Daymet SWE is
-          snowpack, never snowfall inches. Mid-century layers use NEX-GDDP-CMIP6 ensemble deltas when ingested
-          (research/screening only — not for engineering design).
-        </p>
-        <p className="text-xs text-stone leading-relaxed">
-          Full formulas, validation thresholds, and limitations live in the repository doc
-          {" "}<code className="text-ice">docs/CLIMATE-DATA-V2.md</code>.
-        </p>
+      <div className="panel-warm p-4">
+        <div className="flex items-start gap-3">
+          <BookOpen className="w-5 h-5 mt-1" style={{ color: "#f0d29c" }} aria-hidden />
+          <div>
+            <div className="text-xs uppercase tracking-wider text-stone">The idea</div>
+            <h3 className="font-atlas text-xl text-ice mb-1.5">What a microclimate is</h3>
+            <p className="text-sm text-frost leading-relaxed">
+              A microclimate is a place where the weather differs from the region around it because of the land. Mountains block rain and leave a dry side. Water keeps nearby land cooler in summer and milder in winter. Height cools the air. A slope that faces the sun is warmer than one that faces away. Two towns an hour apart can have different summers, winters and rainfall for these reasons.
+            </p>
+            <p className="text-sm text-frost leading-relaxed mt-2">
+              This atlas describes {PLACE_COUNT} such places in the United States, Canada and Mexico. Each profile gives the monthly averages, explains what causes the local climate, and says what it is like to visit or live there.
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="panel p-4 border-[rgba(26,143,168,0.22)]">
         <div className="text-xs uppercase tracking-wider text-stone mb-1">Start here</div>
-        <h3 className="font-atlas text-lg text-ice mb-2">How to read every location in the atlas</h3>
+        <h3 className="font-atlas text-lg text-ice mb-2">How to use the atlas</h3>
         <ol className="text-sm text-frost leading-relaxed list-decimal pl-5 space-y-1.5">
-          <li>Go to <span className="text-ice font-medium">Atlas</span>, then open any place from the map or the card list.</li>
-          <li>In the profile, read top to bottom, or use <span className="text-ice font-medium">On this page</span> to jump — same content, less scrolling.</li>
-          <li>Use <span className="text-ice font-medium">Search</span> and <span className="text-ice font-medium">Rank by</span> in the <span className="text-ice font-medium">Filters</span> panel (the side panel on desktop, the Filters button on a phone) to reorder or narrow the list; the map always shows the same filtered set.</li>
-          <li>Come back to <span className="text-ice font-medium">Learn</span> for vocabulary (rain shadow, chinook, etc.) and example places linked under each term.</li>
+          <li>Go to <span className="text-ice font-medium">Atlas</span> and open any place from the map or the card list.</li>
+          <li>Read the profile from the top, or use <span className="text-ice font-medium">On this page</span> to jump to a section.</li>
+          <li>Use <span className="text-ice font-medium">Search</span> and <span className="text-ice font-medium">Rank by</span> in the <span className="text-ice font-medium">Filters</span> panel (the side panel on desktop, the Filters button on a phone) to reorder or narrow the list. The map shows the same filtered set.</li>
+          <li>Save places to a shortlist, then open <span className="text-ice font-medium">Compare</span> to see up to four side by side.</li>
+          <li>Come back here for the terms (rain shadow, chinook and others). Each one links to example places; select one to open its profile.</li>
         </ol>
-      </div>
-      <div className="panel-warm p-4">
-        <div className="flex items-start gap-3">
-          <BookOpen className="w-5 h-5 mt-1" style={{ color: "#f0d29c" }} />
-          <div>
-            <div className="text-xs uppercase tracking-wider text-stone">The idea</div>
-            <h3 className="font-atlas text-xl text-ice mb-1.5">How terrain writes the weather</h3>
-            <p className="text-sm text-frost leading-relaxed">
-              Climate is not uniform across a region. Mountains block rain, cast rain shadows, shelter valleys and channel wind. Water moderates temperature. Elevation cools. The direction a slope faces changes how much sun it gets. Every place in this atlas has a climate shaped by its terrain and position, and the terms below explain how.
-            </p>
-            <p className="text-xs text-stone mt-2 italic">Select any example place below to open its profile.</p>
-          </div>
-        </div>
       </div>
 
       <div className="panel p-4 border-[rgba(232,155,32,0.2)]">
@@ -62,31 +51,31 @@ export function LearnMode({ onOpenPlace }: Props) {
           <div className="border-l-2 border-[rgba(232,155,32,0.45)] pl-3">
             <dt className="font-semibold text-ice">Topography &amp; elevation</dt>
             <dd className="text-frost leading-relaxed mt-0.5">
-              Sky islands, thermal belts, rain shadows and foehn, slope aspect, cold-air drainage, gap winds — terrain rewrites temperature, moisture, and wind speed.
+              Sky islands, thermal belts, rain shadows, warm downslope winds, the direction a slope faces, cold air pooling in valleys, and winds through gaps: terrain changes temperature, moisture and wind.
             </dd>
           </div>
           <div className="border-l-2 border-[rgba(26,143,168,0.4)] pl-3">
-            <dt className="font-semibold text-ice">Hydrological</dt>
+            <dt className="font-semibold text-ice">Water</dt>
             <dd className="text-frost leading-relaxed mt-0.5">
-              Oceans and cold currents, lakes (moderation and lake-effect snow), rivers and wetlands — water stores heat and moisture differently than land.
+              Oceans and cold currents, lakes (which steady temperature and feed lake-effect snow), rivers and wetlands: water stores heat and moisture differently from land.
             </dd>
           </div>
           <div className="border-l-2 border-[rgba(61,143,85,0.4)] pl-3">
             <dt className="font-semibold text-ice">Vegetation &amp; soil</dt>
             <dd className="text-frost leading-relaxed mt-0.5">
-              Forest canopies (phytoclimates), soil drainage, karst — the surface cover and substrate change humidity, frost, and how water moves.
+              Forest canopy, soil drainage and limestone ground: what covers the surface and what lies under it change humidity, frost and how water moves.
             </dd>
           </div>
           <div className="border-l-2 border-[rgba(224,77,122,0.35)] pl-3">
             <dt className="font-semibold text-ice">Urban &amp; built form</dt>
             <dd className="text-frost leading-relaxed mt-0.5">
-              Heat islands from paving and rooftops; wind channeling in street canyons; altered drainage — cities overlay their own microclimates on natural ones.
+              Paving and rooftops hold heat, streets channel wind and drains change where water goes: cities add their own microclimates to the natural ones.
             </dd>
           </div>
           <div className="border-l-2 border-[rgba(90,79,71,0.35)] pl-3">
-            <dt className="font-semibold text-ice">Subterranean &amp; shelter</dt>
+            <dt className="font-semibold text-ice">Underground &amp; shelter</dt>
             <dd className="text-frost leading-relaxed mt-0.5">
-              Caves, deep ravines, and frost hollows — highly sheltered volumes where temperature and air stagnation decouple from the free atmosphere.
+              Caves, deep ravines and frost hollows: sheltered pockets where still air keeps its own temperature, apart from the open air above.
             </dd>
           </div>
         </dl>
@@ -99,14 +88,14 @@ export function LearnMode({ onOpenPlace }: Props) {
             className="panel p-4 learn-concept-card"
           >
             <div className="flex items-center gap-2 mb-2">
-              <Compass className="w-3.5 h-3.5" style={{ color: "#8cc8e0" }} />
+              <Compass className="w-3.5 h-3.5" style={{ color: "#8cc8e0" }} aria-hidden />
               <h4 className="font-atlas text-lg text-ice">{c.term}</h4>
             </div>
             <div className="text-sm text-frost italic mb-1.5">{prose(c.short)}</div>
             <p className="text-sm text-frost leading-relaxed">{prose(c.long)}</p>
             {c.mechanism && (
               <div className="panel-thin p-2.5 mt-2 border-l-2" style={{ borderLeftColor: "#f0d29c" }}>
-                <div className="text-[10px] uppercase tracking-wider text-stone">Mechanism</div>
+                <div className="text-[10px] uppercase tracking-wider text-stone">How it works</div>
                 <div className="text-xs text-ice mt-0.5">{prose(c.mechanism)}</div>
               </div>
             )}
@@ -134,6 +123,31 @@ export function LearnMode({ onOpenPlace }: Props) {
             )}
           </div>
         ))}
+      </div>
+
+      <div className="panel p-4 border-[rgba(26,143,168,0.22)]">
+        <div className="text-xs uppercase tracking-wider text-stone mb-1">Sources</div>
+        <h3 className="font-atlas text-lg text-ice mb-2">Where the numbers come from</h3>
+        <ul className="text-sm text-frost leading-relaxed list-disc pl-5 space-y-1.5">
+          <li>
+            Temperature and precipitation are 30-year averages for <span className="text-ice font-medium">1996–2025</span>, taken from Daymet, a NASA-supported dataset that estimates daily weather on a 1 km grid from station records. This is a recent average, not the official 1991–2020 climate normal; profiles show the 1991–2020 figures alongside for comparison.
+          </li>
+          <li>
+            Weather-station records from NOAA (United States), Environment and Climate Change Canada and Mexico&apos;s Servicio Meteorológico Nacional are used to check the grid. ERA5-Land, a European reanalysis, fills gaps and is used for cross-checks only.
+          </li>
+          <li>
+            Sunshine is shown as solar energy reaching the ground (kWh per square metre per day), calculated from the grid. It is not a count of observed sunshine hours.
+          </li>
+          <li>
+            Snow figures from the grid are the water held in the snowpack, not inches of snowfall.
+          </li>
+          <li>
+            Mid-century outlooks, where shown, come from the NASA NEX-GDDP-CMIP6 set of climate-model projections. They are broad regional guides, not engineering figures.
+          </li>
+          <li>
+            Scores are editorial ratings or calculations from these averages. Each profile lists its own sources under <span className="text-ice font-medium">Scores and sources</span>.
+          </li>
+        </ul>
       </div>
     </div>
   );

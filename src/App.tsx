@@ -4,10 +4,13 @@ import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { BackToTop } from "./components/chrome/BackToTop";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
-import { FilterBar, RANKING_OPTIONS, type LensScope } from "./components/FilterBar";
+import { FilterBar, type LensScope } from "./components/FilterBar";
+import { rankingOptionLabel } from "./lib/ranking-options";
+import { isMonthIndex, rankingEpochMsForMonth } from "./lib/ranking-calendar";
 import { FootprintPanel } from "./components/FootprintPanel";
 import { useElementIsolation } from "./hooks/use-element-isolation";
 import { useFocusTrap } from "./hooks/use-focus-trap";
+import { CompareBar } from "./components/explorer/CompareBar";
 import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts";
 import { useMediaQuery } from "./hooks/use-media-query";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS, resolvePlaceId, warmPlaceSearchIndex } from "./data/places";
@@ -233,6 +236,9 @@ if (typeof window !== "undefined" && (parseAppSearch(window.location.search).com
   preloadCompareView();
 }
 
+/** Phone-only search field under the hero; shares `filters.search` with the Filters sheet. */
+const QUICK_SEARCH_INPUT_ID = "tc-atlas-quick-search";
+
 export default function App() {
   const richVisualEffects = useRichVisualEffects();
   useEffect(() => {
@@ -322,6 +328,24 @@ export default function App() {
     () => initialAppState.placeId != null && initialAppState.ranking == null,
   );
   const [climateScenario, setClimateScenario] = useState<ScenarioId>(() => initialAppState.scenario ?? "now");
+  // Pin Visit-now / the month ranking to the calendar month so a long-lived tab
+  // does not keep June ranks while PlaceCard chrome has rolled into July.
+  const { nowEpochMs: calendarNowEpochMs, referenceMonth: calendarMonth } = useRankingCalendarMonth();
+  /**
+   * Month (0–11) the reader picked for "Best in <Month>"; null follows the
+   * calendar. Only the month ranking reads it, so every other ranking keeps
+   * the cards' "this month" line on the real current month.
+   */
+  const [rankingMonthChoice, setRankingMonthChoice] = useState<number | null>(() => initialAppState.month);
+  const rankingReferenceMonth =
+    ranking === "best-this-month" && rankingMonthChoice != null ? rankingMonthChoice : calendarMonth;
+  const rankingNowEpochMs = rankingReferenceMonth === calendarMonth
+    ? calendarNowEpochMs
+    : rankingEpochMsForMonth(rankingReferenceMonth, new Date(calendarNowEpochMs));
+  const setRankingMonth = useCallback((monthIndex: number) => {
+    if (!isMonthIndex(monthIndex)) return;
+    setRankingMonthChoice(monthIndex);
+  }, []);
   // Home-base climate anchor. URL ?hb= wins on first paint (shareable
   // "vs our home" links) and is written through to storage so Back/Forward
   // sticky restore matches the shared link. Otherwise the last explicit
@@ -374,6 +398,7 @@ export default function App() {
     persistRankingProfile(profile);
     // Explicit menu/bundle choice owns persistence; cancel any auto live-fit marker.
     liveFitAutoAppliedRef.current = null;
+    setAutoRankingNotice(null);
   }, []);
 
   // Apply theme on mount and whenever the preference changes. When the
@@ -468,6 +493,11 @@ export default function App() {
     ranking: RankingProfile;
     rankingExplicitInUrl: boolean;
   } | null>(null);
+  /** The reader pressed Undo on the auto-switch: leave their ranking alone until the must-haves clear. */
+  const autoLiveFitDeclinedRef = useRef(false);
+  const [autoRankingNotice, setAutoRankingNotice] = useState<{ previous: RankingProfile } | null>(null);
+  /** "Find home base" explains itself where the focus lands. */
+  const [homeBasePromptOpen, setHomeBasePromptOpen] = useState(false);
 
   useEffect(() => {
     if (!selectedId) {
@@ -503,6 +533,8 @@ export default function App() {
       compareIds: [...compareIds],
       compareClosed: !compareOpen,
       ranking: rankingForUrl,
+      // The current calendar month is the default and stays out of the URL.
+      month: rankingReferenceMonth === calendarMonth ? null : rankingReferenceMonth,
       fitPresets: [...(filters.fitPresets ?? new Set())],
       maxSummerHighC: filters.maxSummerHighC ?? null,
       minWinterLowC: filters.minWinterLowC ?? null,
@@ -581,7 +613,7 @@ export default function App() {
         }
       : null;
     replaceAppUrl(nextHist, state);
-  }, [view, selectedId, activeCollection, filters, compareIds, compareOpen, ranking, rankingExplicitInUrl, suppressPersistedRankingInUrl, themePreference, climateScenario, comparisonLens, homeBaseId]);
+  }, [view, selectedId, activeCollection, filters, compareIds, compareOpen, ranking, rankingReferenceMonth, calendarMonth, rankingExplicitInUrl, suppressPersistedRankingInUrl, themePreference, climateScenario, comparisonLens, homeBaseId]);
 
   useEffect(() => {
     const onPop = () => {
@@ -624,6 +656,7 @@ export default function App() {
       setRankingExplicitInUrl(v.ranking != null);
       setSuppressPersistedRankingInUrl(v.placeId != null && v.ranking == null);
       setRankingRaw(v.ranking ?? loadPersistedRanking());
+      setRankingMonthChoice(v.month);
       setClimateScenario(v.scenario ?? "now");
       // Home base is a sticky preference like theme: an explicit ?hb= on the
       // target entry wins and is written through to storage; otherwise fall
@@ -665,6 +698,8 @@ export default function App() {
       // pre-constraint snapshot so Back/Forward to explicit ?r=live-fit
       // (without constraints) is not clobbered by auto live-fit restore.
       liveFitAutoAppliedRef.current = null;
+      autoLiveFitDeclinedRef.current = false;
+      setAutoRankingNotice(null);
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
@@ -757,6 +792,8 @@ export default function App() {
       ...createEmptyFilterState(),
       search: f.search,
     }));
+    // "Visit now" always means the real current month.
+    if (pick === "best-this-month") setRankingMonthChoice(null);
     setRanking(pick);
   }, [setRanking, setViewFluid]);
 
@@ -772,29 +809,59 @@ export default function App() {
     }
     if (activeCollection) return false;
     if (filters.archetypes.size > 0) return false;
+    if (pick === "best-this-month" && rankingReferenceMonth !== calendarMonth) return false;
     return ranking === pick;
-  }, [activeCollection, ranking, filters.archetypes]);
+  }, [activeCollection, ranking, filters.archetypes, rankingReferenceMonth, calendarMonth]);
 
   useEffect(() => {
     if (anyLifestyleBundleActive(ranking, filters)) {
       liveFitAutoAppliedRef.current = null;
+      autoLiveFitDeclinedRef.current = false;
+      setAutoRankingNotice(null);
       return;
     }
     const liveSignals = countLiveFinderConstraintSignals(filters);
-    if (liveSignals > 0 && ranking !== "live-fit") {
+    if (liveSignals === 0) autoLiveFitDeclinedRef.current = false;
+    if (liveSignals > 0 && ranking !== "live-fit" && !autoLiveFitDeclinedRef.current) {
       // Transient lens for active constraints — do not persist over the user's last explicit ranking.
       liveFitAutoAppliedRef.current = { ranking, rankingExplicitInUrl };
       setRankingRaw("live-fit");
       setRankingExplicitInUrl(true);
+      // Say so: the switch used to be silent, which read as the goal vanishing.
+      setAutoRankingNotice({ previous: ranking });
       return;
     }
     if (liveSignals === 0 && liveFitAutoAppliedRef.current && ranking === "live-fit") {
       const snap = liveFitAutoAppliedRef.current;
       liveFitAutoAppliedRef.current = null;
+      setAutoRankingNotice(null);
       setRankingRaw(snap.ranking);
       setRankingExplicitInUrl(snap.rankingExplicitInUrl);
     }
   }, [filters, ranking, rankingExplicitInUrl]);
+
+  // The notice only describes an auto-switch that is still in force: it is
+  // cleared wherever the snapshot is consumed or cancelled, and the memo below
+  // also requires the ranking to still be Live-here fit.
+  const undoAutoRanking = useCallback(() => {
+    const snap = liveFitAutoAppliedRef.current;
+    setAutoRankingNotice(null);
+    if (!snap) return;
+    liveFitAutoAppliedRef.current = null;
+    // Keep the must-haves; just stop re-applying Live-here fit until they clear.
+    autoLiveFitDeclinedRef.current = true;
+    setRankingRaw(snap.ranking);
+    setRankingExplicitInUrl(snap.rankingExplicitInUrl);
+  }, []);
+  const rankingNotice = useMemo(
+    () => autoRankingNotice && ranking === "live-fit"
+      ? {
+          message: `Ranking switched to ${rankingOptionLabel("live-fit")} because a must-have is on. It was ${rankingOptionLabel(autoRankingNotice.previous, rankingReferenceMonth)}.`,
+          onUndo: undoAutoRanking,
+        }
+      : null,
+    [autoRankingNotice, ranking, rankingReferenceMonth, undoAutoRanking],
+  );
 
   const deferredFilters = useDeferredValue(filters);
   // Narrow live-fit inputs so search keystrokes don't invalidate PlaceCard /
@@ -844,9 +911,6 @@ export default function App() {
     () => activeCollection ? baselinePool.map(p => p.id) : undefined,
     [activeCollection, baselinePool],
   );
-  // Pin Visit-now / best-this-month to the calendar month so a long-lived tab
-  // does not keep June ranks while PlaceCard chrome has rolled into July.
-  const { nowEpochMs: rankingNowEpochMs, referenceMonth: rankingReferenceMonth } = useRankingCalendarMonth();
   const processor = useClimateProcessor({
     scenario: climateScenario,
     ranking,
@@ -858,6 +922,8 @@ export default function App() {
     disableWorker: climateScenario === "now",
   });
   const resultsPending = explorerResultsPending(filters, deferredFilters, processor.projecting);
+  const resultsPendingRef = useRef(resultsPending);
+  resultsPendingRef.current = resultsPending;
   // NB: `Map` is shadowed by the lucide-react `Map` icon imported above, so a
   // plain record is used to index the projected pool by id.
   const placesById = useMemo(() => {
@@ -915,8 +981,8 @@ export default function App() {
     [sortTopFive],
   );
   const rankingLabel = useMemo(
-    () => RANKING_OPTIONS.find(o => o.id === ranking)?.label ?? ranking.replace(/-/g, " "),
-    [ranking],
+    () => rankingOptionLabel(ranking, rankingReferenceMonth),
+    [ranking, rankingReferenceMonth],
   );
   const scenarioRankingLabel = useMemo(
     () => climateScenario === "now" ? rankingLabel : `${scenarioMeta(climateScenario).short} · ${rankingLabel}`,
@@ -1294,6 +1360,16 @@ export default function App() {
     setEvictedComparePlaceId(null);
   }, [evictedComparePlaceId]);
 
+  const compareBarNames = useMemo(
+    () => activeComparePlaces.map(place => place.name),
+    [activeComparePlaces],
+  );
+  const clearCompare = useCallback(() => {
+    setCompareIds(prev => (prev.size === 0 ? prev : new Set()));
+    setTransientFeedback("Comparison cleared.");
+    focusMainContentNextFrame();
+  }, [focusMainContentNextFrame]);
+
   const openCompare = useCallback((opts?: { trigger?: HTMLElement | null }) => {
     preloadCompareView();
     if (opts?.trigger) {
@@ -1355,6 +1431,7 @@ export default function App() {
     // the last Live Finder constraint restores the pre-constraint snapshot.
     const snap = liveFitAutoAppliedRef.current;
     liveFitAutoAppliedRef.current = null;
+    setAutoRankingNotice(null);
     if (ranking === "live-fit") {
       if (snap) {
         setRankingRaw(snap.ranking);
@@ -1489,6 +1566,63 @@ export default function App() {
     });
   }, [explorerDockLg, openFilterSheet, focusSearchInput]);
 
+  /**
+   * Enter in the search box opens the first ranked result. The ranking is
+   * deferred behind typing, so a fast Enter waits for the list to settle on
+   * the query that was actually typed instead of opening a stale leader.
+   */
+  const pendingSearchSubmitRef = useRef<HTMLElement | null>(null);
+  const openFirstSearchResult = useCallback((trigger: HTMLElement | null): boolean => {
+    const first = rankedRef.current[0];
+    if (!first) {
+      setTransientFeedback("No places match that search yet.");
+      return false;
+    }
+    // On phones the search box lives in the Filters sheet, which closes as the
+    // profile opens; return focus to the Filters button rather than a hidden input.
+    const launcher = trigger?.closest("dialog")
+      ? document.querySelector<HTMLElement>("[data-filter-sheet-trigger-shell] button") ?? trigger
+      : trigger;
+    openPlace(first.place.id, { trigger: launcher });
+    return true;
+  }, [openPlace]);
+  const submitSearch = useCallback((input: HTMLInputElement) => {
+    if (input.value.trim().length === 0) return;
+    if (resultsPendingRef.current) {
+      pendingSearchSubmitRef.current = input;
+      return;
+    }
+    openFirstSearchResult(input);
+  }, [openFirstSearchResult]);
+  useEffect(() => {
+    if (resultsPending) return;
+    const input = pendingSearchSubmitRef.current;
+    if (!input) return;
+    pendingSearchSubmitRef.current = null;
+    if ((filters.search ?? "").trim().length === 0) return;
+    openFirstSearchResult(input);
+  }, [resultsPending, filters.search, openFirstSearchResult]);
+  const focusFirstResult = useCallback((): boolean => {
+    const first = document.querySelector<HTMLElement>(
+      'section[aria-labelledby="ranked-places-heading"] :is(article, li) :is(button, a[href]), section[aria-labelledby="ranked-places-heading"] :is(button, a[href])[data-place-card-open]',
+    );
+    if (!first) return false;
+    first.focus();
+    return document.activeElement === first;
+  }, []);
+
+  const findHomeBase = useCallback((trigger?: HTMLElement | null) => {
+    setHomeBasePromptOpen(true);
+    focusExplorerSearch(trigger);
+  }, [focusExplorerSearch]);
+  const dismissHomeBasePrompt = useCallback(() => setHomeBasePromptOpen(false), []);
+  useEffect(() => {
+    if (homeBaseId) setHomeBasePromptOpen(false);
+  }, [homeBaseId]);
+  const searchPrompt = homeBasePromptOpen && !homeBaseId
+    ? "Search for the place nearest where you live, open it, then choose Set home."
+    : null;
+
   const clearSearch = useCallback(() => {
     setFilters(f => (f.search ? { ...f, search: "" } : f));
   }, []);
@@ -1497,7 +1631,7 @@ export default function App() {
     const hasSearch = (filters.search ?? "").trim().length > 0;
     return hasSearch
       ? { onEmptyRecovery: clearSearch, emptyRecoveryLabel: "Clear search" as const }
-      : { onEmptyRecovery: clearAllFilters, emptyRecoveryLabel: "Reset Explorer" as const };
+      : { onEmptyRecovery: clearAllFilters, emptyRecoveryLabel: "Reset the atlas" as const };
   }, [filters.search, clearSearch, clearAllFilters]);
 
   const explorerPendingMessage = resultsPending
@@ -1587,6 +1721,8 @@ export default function App() {
     toggleHomeBaseSelected,
     searchInputId: SEARCH_INPUT_ID,
     clearSearch,
+    compareCount: compareIds.size,
+    openCompare,
   });
   const onOpenPlaceFromCollections = useCallback((id: string, opts?: { trigger?: HTMLElement | null }) => {
     openPlace(id, opts);
@@ -1686,7 +1822,7 @@ export default function App() {
                   shareStatus={shareStatus}
                   shareFallbackUrl={compareOpen ? null : shareFallbackUrl}
                   homeBasePlace={homeBasePlace}
-                  onFindHomeBase={focusExplorerSearch}
+                  onFindHomeBase={findHomeBase}
                   onClearHomeBase={clearHomeBase}
                   compareCount={compareIds.size}
                   onOpenCompare={openCompare}
@@ -1710,6 +1846,46 @@ export default function App() {
                   onExpandChrome={expandHeroChrome}
                   onCollapseChrome={collapseHeroChrome}
                 />
+                {!explorerDockLg ? (
+                  <label
+                    htmlFor={QUICK_SEARCH_INPUT_ID}
+                    data-quick-search
+                    className="panel-thin flex min-h-[46px] items-center gap-2.5 px-3 focus-within:ring-2 focus-within:ring-[rgba(94,196,220,0.35)]"
+                  >
+                    <Search className="h-4 w-4 shrink-0 text-stone" aria-hidden />
+                    <input
+                      id={QUICK_SEARCH_INPUT_ID}
+                      type="search"
+                      value={filters.search ?? ""}
+                      onChange={event => {
+                        const value = event.target.value;
+                        setFilters(f => ({ ...f, search: value }));
+                      }}
+                      onKeyDown={event => {
+                        if (event.key !== "Enter" || event.nativeEvent.isComposing) return;
+                        if (event.currentTarget.value.trim().length === 0) return;
+                        event.preventDefault();
+                        submitSearch(event.currentTarget);
+                      }}
+                      placeholder="Search places"
+                      aria-label="Quick search by place name, region or climate type"
+                      enterKeyHint="go"
+                      autoComplete="off"
+                      className="min-w-0 flex-1 bg-transparent text-[16px] text-ice outline-none placeholder:text-stone/65 [&::-webkit-search-cancel-button]:hidden"
+                    />
+                    {(filters.search ?? "").length > 0 ? (
+                      <button
+                        type="button"
+                        onClick={clearSearch}
+                        aria-label="Clear quick search"
+                        title="Clear search"
+                        className="-mr-1.5 flex min-h-11 min-w-11 items-center justify-center rounded-lg text-stone hover:text-ice"
+                      >
+                        <X className="h-4 w-4" aria-hidden />
+                      </button>
+                    ) : null}
+                  </label>
+                ) : null}
 
                 <div
                   ref={mapStageRef}
@@ -1962,6 +2138,13 @@ export default function App() {
                     scenario={climateScenario}
                     onScenarioChange={setClimateScenario}
                     lensScope={lensScope}
+                    rankingMonth={rankingReferenceMonth}
+                    onRankingMonthChange={setRankingMonth}
+                    onSearchSubmit={submitSearch}
+                    onSearchArrowDown={focusFirstResult}
+                    rankingNotice={rankingNotice}
+                    searchPrompt={searchPrompt}
+                    onDismissSearchPrompt={dismissHomeBasePrompt}
                   />
                   <FootprintPanel />
                 </aside>
@@ -2042,6 +2225,14 @@ export default function App() {
             scenario={climateScenario}
             onScenarioChange={setClimateScenario}
             lensScope={lensScope}
+            rankingMonth={rankingReferenceMonth}
+            onRankingMonthChange={setRankingMonth}
+            onSearchSubmit={submitSearch}
+            rankingNotice={rankingNotice}
+            searchPrompt={searchPrompt}
+            onDismissSearchPrompt={dismissHomeBasePrompt}
+            resultCount={ranked.length}
+            resultsPending={resultsPending}
             projecting={processor.projecting}
             footer={<FootprintPanel />}
             detailOpen={Boolean(selectedId)}
@@ -2058,6 +2249,16 @@ export default function App() {
       </div>
 
       <BackToTop hidden={Boolean(selectedPlace) || compareOpen || showShortcuts || filterSheetOpen || siteMenuOpen} />
+
+      {compareBarNames.length > 0 && !selectedPlace && !compareOpen && !showShortcuts && !filterSheetOpen && !siteMenuOpen ? (
+        <CompareBar
+          names={compareBarNames}
+          limit={COMPARE_LIMIT}
+          onOpen={openCompare}
+          onPreload={preloadCompareView}
+          onClear={clearCompare}
+        />
+      ) : null}
 
       {selectedPlace ? (
         <LazyRouteErrorBoundary routeLabel="Place profile">
@@ -2394,9 +2595,6 @@ const COUNTRY_LABELS: Record<Country, string> = {
   Mexico: "Mexico",
 };
 
-function rankingOptionLabel(id: RankingProfile): string {
-  return RANKING_OPTIONS.find(option => option.id === id)?.label ?? id.replace(/-/g, " ");
-}
 
 function fitJourneySignals(bundle: LifestyleBundle, temp: UnitState["temp"]): string {
   const parts = bundle.presets.map(preset => LIVE_FIT_PRESET_BY_ID[preset]?.shortLabel ?? preset);

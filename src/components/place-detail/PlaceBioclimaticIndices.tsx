@@ -1,7 +1,7 @@
 import { memo, useMemo } from "react";
 import { Layers } from "lucide-react";
 import type { Place } from "../../types";
-import { computeBioclim, type BioclimIndex, type BioclimResult } from "../../lib/bioclim";
+import { computeBioclim, CONRAD_GLOSS, DE_MARTONNE_GLOSS, type BioclimIndex, type BioclimResult } from "../../lib/bioclim";
 import { getPlaceBioclimRanks, type PlaceBioclimRanks } from "../../lib/atlas-corpus-stats";
 import { classifyDossierSection } from "../../lib/evidence-summary";
 import { EvidenceClassLabel } from "./PlaceEvidenceSummary";
@@ -23,7 +23,7 @@ function valueWithClass(idx: BioclimIndex, format: (v: number) => string): { pri
 }
 
 function nullReasonLabel(reason: "mat_below_neg10" | "no_growing_season" | "no_pet"): string {
-  if (reason === "mat_below_neg10") return "Undefined (MAT ≤ −10 °C)";
+  if (reason === "mat_below_neg10") return "Not defined (mean annual temperature ≤ −10 °C)";
   if (reason === "no_growing_season") return "No growing season (no month > 10 °C)";
   return "Undefined (every month below freezing)";
 }
@@ -41,70 +41,70 @@ function deMartonneRead(b: BioclimResult): string {
   if (b.deMartonne.value === null) return "Mean annual temperature is at or below −10 °C, so the De Martonne ratio is not defined.";
   const value = b.deMartonne.value;
   const cls = b.deMartonne.class;
-  if (cls === "hyperarid") return "Annual precipitation is a tiny fraction of warmth — desert-end of the spectrum.";
-  if (cls === "arid") return "Sparse rain against warm temperatures: irrigation-dependent agriculture.";
-  if (cls === "semi-arid") return "Typical of steppe and rain shadows: rain barely keeps pace with warmth.";
-  if (cls === "mediterranean") return "Le Houérou's Mediterranean band — wet enough for forest where summer rain isn't required.";
-  if (cls === "sub-humid") return "Rain moderately exceeds warmth — temperate woodland regime.";
-  if (cls === "humid") return "Comfortable annual moisture surplus relative to warmth.";
-  if (cls === "very-humid") return "Cool wet regime: temperate rainforest or boreal humid.";
-  return `Cool or very wet: De Martonne reaches ${value.toFixed(1)} — the index loses discriminating power above ~55.`;
+  if (cls === "hyperarid") return "Very little rain or snow for how warm it is: a true desert.";
+  if (cls === "arid") return "Little rain for how warm it is: crops need irrigation.";
+  if (cls === "semi-arid") return "Typical of dry grassland and rain shadows: rain barely keeps pace with warmth.";
+  if (cls === "mediterranean") return "Enough rain and snow for woodland, though dry seasons still show. The published name for this band is “Mediterranean”; it describes the yearly total, not when the rain falls.";
+  if (cls === "sub-humid") return "Rain and snow moderately exceed what the warmth uses: woodland country.";
+  if (cls === "humid") return "More rain and snow through the year than the warmth uses.";
+  if (cls === "very-humid") return "Cool and wet: temperate rainforest or northern forest.";
+  return `Cool or very wet: the index reaches ${value.toFixed(1)}. Above about 55 it no longer separates places well.`;
 }
 
 function conradRead(b: BioclimResult): string {
   const value = b.conrad.value as number;
   const cls = (b.conrad as { class: string }).class;
-  if (cls === "extreme-oceanic") return "Annual temperature swing is tiny — pure maritime regime, often tropical.";
-  if (cls === "oceanic") return "Coast-modulated swing; mild winters and cool summers vs interior.";
-  if (cls === "sub-continental") return "Interior modulation: noticeable winter cold or summer heat.";
-  if (cls === "continental") return "Wide annual temperature swing — strongly continental interior.";
-  return `Verkhoyansk-grade continentality (K ≈ ${value.toFixed(0)}): extreme winter / summer divergence.`;
+  if (cls === "extreme-oceanic") return "Temperature barely changes through the year: an ocean-governed climate, often tropical.";
+  if (cls === "oceanic") return "A small swing between winter and summer, as on coasts and in tropical highlands. The published name for this band is “oceanic”, whether or not the sea is near.";
+  if (cls === "sub-continental") return "A moderate swing: noticeable winter cold or summer heat.";
+  if (cls === "continental") return "A wide swing between winter and summer, typical of land far from the sea.";
+  return `An extreme swing between winter and summer (index about ${value.toFixed(0)}), among the largest on Earth.`;
 }
 
 function petRead(b: BioclimResult): string {
   const pet = b.thornthwaitePet.value;
-  if (pet === 0) return "Every month is below freezing — Thornthwaite reports no evaporative demand.";
-  if (pet < 500) return "Low atmospheric water demand: cool or short growing season.";
-  if (pet < 1000) return "Moderate evaporative demand — temperate to cool-summer regime.";
-  if (pet < 1500) return "Substantial water demand — warm-summer / subtropical.";
-  return "Very high evaporative demand — hot, sunny, water-stressed regime.";
+  if (pet === 0) return "Every month is below freezing, so the method reports no evaporative demand.";
+  if (pet < 500) return "The air takes up little water: a cool or short growing season.";
+  if (pet < 1000) return "Moderate evaporative demand, typical of temperate and cool-summer climates.";
+  if (pet < 1500) return "High water demand, typical of warm-summer and subtropical climates.";
+  return "Very high evaporative demand: hot, sunny and short of water.";
 }
 
 function selianinovRead(b: BioclimResult): string {
   if (b.selianinov.value === null) return "No month's mean temperature exceeds 10 °C, so the growing-season ratio is not defined.";
   const cls = b.selianinov.class;
-  if (cls === "dry") return "Growing-season precipitation is far below thermal demand — irrigation essential.";
-  if (cls === "arid") return "Sparse growing-season rain; dryland agriculture is marginal.";
-  if (cls === "semi-arid") return "Growing-season moisture is partial — supplemental water often needed.";
-  if (cls === "sufficient") return "Growing-season precipitation roughly matches thermal demand.";
-  if (cls === "humid") return "Reliable growing-season moisture — green-summer regime.";
-  if (cls === "wet") return "Abundant growing-season rain — wet temperate / lush regime.";
-  return "Monsoon-grade growing-season rainfall — tropical wet climate.";
+  if (cls === "dry") return "Growing-season rain is far below what the warmth uses: irrigation is essential.";
+  if (cls === "arid") return "Sparse growing-season rain; farming without irrigation is marginal.";
+  if (cls === "semi-arid") return "Growing-season rain covers part of the need; extra water is often required.";
+  if (cls === "sufficient") return "Growing-season rain roughly matches what the warmth uses.";
+  if (cls === "humid") return "Reliable growing-season rain: summers stay green.";
+  if (cls === "wet") return "Abundant growing-season rain: lush, wet summers.";
+  return "Very heavy growing-season rain, as in monsoon and wet tropical climates.";
 }
 
 function unepRead(b: BioclimResult): string {
-  if (b.unepAridity.value === null) return "Thornthwaite PET is zero (frozen year), so the UNEP ratio is not defined.";
+  if (b.unepAridity.value === null) return "Evaporative demand is zero (every month is frozen), so the ratio is not defined.";
   const cls = b.unepAridity.class;
-  if (cls === "hyperarid") return "True desert by the UNEP classification (P / PET < 0.05).";
-  if (cls === "arid") return "Annual precipitation covers a small fraction of PET.";
-  if (cls === "semi-arid") return "Steppe-to-savanna regime; precipitation covers 20–50% of PET.";
-  if (cls === "dry-sub-humid") return "Transitional band — precipitation covers ~half to two-thirds of PET.";
-  return "Humid annual balance: precipitation comfortably exceeds 65% of PET.";
+  if (cls === "hyperarid") return "True desert: precipitation is under 5% of evaporative demand.";
+  if (cls === "arid") return "Precipitation covers a small part of evaporative demand.";
+  if (cls === "semi-arid") return "Dry grassland country: precipitation covers 20–50% of evaporative demand.";
+  if (cls === "dry-sub-humid") return "In between: precipitation covers about half to two-thirds of evaporative demand.";
+  return "Precipitation covers more than 65% of evaporative demand.";
 }
 
 function buildCards(bio: BioclimResult, ranks: PlaceBioclimRanks): CardConfig[] {
   return [
     {
-      label: "De Martonne",
-      full: "De Martonne aridity index",
+      label: "Moisture (De Martonne aridity index)",
+      full: `De Martonne aridity index. ${DE_MARTONNE_GLOSS}`,
       citation: "De Martonne 1926",
       format: v => v.toFixed(1),
       read: () => ({ idx: bio.deMartonne, share: ranks.deMartonneAboveShare }),
       description: () => deMartonneRead(bio),
     },
     {
-      label: "Conrad",
-      full: "Conrad continentality",
+      label: "Seasonal swing (Conrad continentality index)",
+      full: `Conrad continentality index. ${CONRAD_GLOSS}`,
       citation: "Conrad 1946",
       format: v => v.toFixed(1),
       read: () => ({ idx: bio.conrad, share: ranks.conradAboveShare }),
@@ -119,15 +119,15 @@ function buildCards(bio: BioclimResult, ranks: PlaceBioclimRanks): CardConfig[] 
       description: () => petRead(bio),
     },
     {
-      label: "Selianinov HTC",
-      full: "Growing-season hydrothermal coefficient",
+      label: "Growing-season moisture (Selianinov coefficient)",
+      full: "Selianinov hydrothermal coefficient: rain in the growing season compared with its warmth; higher is wetter.",
       citation: "Selianinov 1928",
       format: v => v.toFixed(2),
       read: () => ({ idx: bio.selianinov, share: ranks.selianinovAboveShare }),
       description: () => selianinovRead(bio),
     },
     {
-      label: "UNEP aridity",
+      label: "Rain vs evaporation (UNEP aridity index)",
       full: "Annual precipitation ÷ potential evapotranspiration (PET)",
       citation: "UNEP 1992",
       format: v => v.toFixed(2),
@@ -189,7 +189,7 @@ export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ p
               <div className="text-xs text-frost">{prose(display.secondary)}</div>
               {percentile ? <div className="text-[11px] text-stone">{percentile}</div> : null}
               <div className="text-[11px] text-stone leading-snug mt-1">{prose(card.description(bio))}</div>
-              <div className="text-[10px] text-stone/70 mt-auto pt-1 font-mono-num">{card.citation}</div>
+              <div className="text-[10px] text-stone mt-auto pt-1 font-mono-num">{card.citation}</div>
             </div>
           );
         })}

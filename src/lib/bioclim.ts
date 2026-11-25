@@ -158,7 +158,7 @@ function classifyUnep(value: number): { class: string; classLabel: string } {
   if (value < 0.05) return { class: "hyperarid", classLabel: "Very dry" };
   if (value < 0.20) return { class: "arid", classLabel: "Dry" };
   if (value < 0.50) return { class: "semi-arid", classLabel: "Fairly dry" };
-  if (value < 0.65) return { class: "moderately-moist", classLabel: "Moderately moist" };
+  if (value < 0.65) return { class: "dry-sub-humid", classLabel: "Moderately moist" };
   return { class: "humid", classLabel: "Moist" };
 }
 

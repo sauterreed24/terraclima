@@ -30,7 +30,7 @@ export interface PlaceFeelComponent {
 export interface PlaceFeelResult {
   place: Place;
   score: number;
-  band: "Exceptional" | "Easy" | "Textured" | "Demanding" | "Hard";
+  band: "Exceptional" | "Easy" | "Mixed" | "Demanding" | "Hard";
   headline: string;
   summary: string;
   components: PlaceFeelComponent[];
@@ -59,7 +59,7 @@ function clamp(n: number, lo = 0, hi = 100): number {
 function placeBand(score: number): PlaceFeelResult["band"] {
   if (score >= 84) return "Exceptional";
   if (score >= 74) return "Easy";
-  if (score >= 62) return "Textured";
+  if (score >= 62) return "Mixed";
   if (score >= 48) return "Demanding";
   return "Hard";
 }
@@ -206,11 +206,11 @@ function scoutingClarity(place: Place): number {
 function componentRationale(place: Place, key: PlaceFeelComponentKey): string {
   switch (key) {
     case "sensoryComfort":
-      return `${annualComfortMonthCount(place)}/12 easy months, summer ${toFixedClean(meanSummerHigh(place), 1)}°C, winter ${toFixedClean(meanJanLow(place), 1)}°C, sky/air cue ${Math.round(skyAirCue(place))}/100`;
+      return `${annualComfortMonthCount(place)}/12 easy months, summer ${toFixedClean(meanSummerHigh(place), 1)}°C, winter ${toFixedClean(meanJanLow(place), 1)}°C, sky and air ${Math.round(skyAirCue(place))}/100`;
     case "dailyEase":
-      return `Services/access ${Math.round(serviceAnchorScore(place))}/100, lived axes ${Math.round(livedAxisEase(place))}/100, risk ease ${Math.round(clamp(100 - avgRisk(place) * 17))}/100`;
+      return `Services and access ${Math.round(serviceAnchorScore(place))}/100, cost and access ${Math.round(livedAxisEase(place))}/100, low hazard ${Math.round(clamp(100 - avgRisk(place) * 17))}/100 (all higher is better)`;
     case "placeIdentity":
-      return `Authored texture ${Math.round(authoredTextureScore(place))}/100, uniqueness ${Math.round(place.scores.microclimateUniqueness)}/100, hidden-gem ${Math.round(place.scores.hiddenGem)}/100`;
+      return `Depth of the written entry ${Math.round(authoredTextureScore(place))}/100, uniqueness ${Math.round(place.scores.microclimateUniqueness)}/100, hidden gem ${Math.round(place.scores.hiddenGem)}/100`;
     case "scoutingClarity":
       return `${sourceCount(place)} sources, ${(place.settlementsWithinZone?.length ?? 0)} settlements, ${(place.thingsToDo?.length ?? 0)} activities, ${place.confidence} confidence`;
   }
@@ -243,15 +243,15 @@ export function scorePlaceFeel(place: Place): PlaceFeelResult {
   const frictions: string[] = [];
 
   if (values.sensoryComfort >= 72) pushLimited(strengths, "The climate reads easy at skin level, not only on annual averages.");
-  if (values.dailyEase >= 72) pushLimited(strengths, "Daily-life signals look workable: access, risk load, and lived friction do not dominate.");
-  if (values.placeIdentity >= 72) pushLimited(strengths, "The place has a legible identity in the corpus: terrain, culture, and activity cues reinforce each other.");
-  if (values.scoutingClarity >= 72) pushLimited(strengths, "The entry gives enough anchors to scout the place in the real world instead of guessing from a map.");
+  if (values.dailyEase >= 72) pushLimited(strengths, "Daily life looks workable: access, hazards, and cost do not dominate.");
+  if (values.placeIdentity >= 72) pushLimited(strengths, "The place has a clear identity: its terrain, culture and activities point the same way.");
+  if (values.scoutingClarity >= 72) pushLimited(strengths, "The entry names enough towns, activities and nearby contrasts to check the place in person instead of guessing from a map.");
   if (strengths.length === 0) pushLimited(strengths, `${sorted[0]!.label} is the strongest part of the feel read.`);
 
   if (values.sensoryComfort < 55) pushLimited(frictions, "Sensory comfort is mixed: temperature, sky, storm, smoke, or dampness can change the mood fast.");
-  if (values.dailyEase < 55) pushLimited(frictions, "Daily ease needs verification before shortlisting: access remoteness, housing pressure, or risk load can bite.");
-  if (values.placeIdentity < 55) pushLimited(frictions, "The corpus still reads thin here; treat the feel score as a scouting prompt, not a finished portrait.");
-  if (values.scoutingClarity < 55) pushLimited(frictions, "Documentation is limited; there are fewer authored anchors, activities, or contrasts than stronger entries.");
+  if (values.dailyEase < 55) pushLimited(frictions, "Check daily ease before shortlisting: remoteness, housing cost or hazards can bite.");
+  if (values.placeIdentity < 55) pushLimited(frictions, "The entry is still thin here; treat the place-feel score as a starting point, not a finished portrait.");
+  if (values.scoutingClarity < 55) pushLimited(frictions, "Documentation is limited; the entry names fewer towns, activities or nearby contrasts than stronger entries.");
   if (frictions.length === 0) pushLimited(frictions, `${weak[0]!.label} is the first thing to verify in person.`);
 
   const headline = `${band} place feel (${score}/100)`;

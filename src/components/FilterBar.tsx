@@ -10,7 +10,8 @@ import {
 import { createEmptyFilterState, hasActiveExplorerFilters, type FilterState } from "../lib/scoring";
 import { ARCHETYPES } from "../data/archetypes";
 import type { RankingProfile } from "../lib/scoring";
-import { MOST_COMFORTABLE_LENS_DESCRIPTION, RANKING_OPTIONS } from "../lib/ranking-options";
+import { MOST_COMFORTABLE_LENS_DESCRIPTION, RANKING_OPTIONS, rankingOptionLabel } from "../lib/ranking-options";
+import { RANKING_MONTH_NAMES } from "../lib/ranking-calendar";
 import {
   LIVE_FIT_GROWABILITY_FLOORS,
   LIVE_FIT_PRESETS,
@@ -24,6 +25,7 @@ import { scenarioMeta } from "../lib/climate-projection";
 import {
   Check,
   Compass,
+  Home,
   Search,
   X,
 } from "lucide-react";
@@ -42,9 +44,6 @@ function countLiveSignals(filters: FilterState): number {
   ].filter(v => v != null).length;
 }
 
-function rankingOptionLabel(id: RankingProfile): string {
-  return RANKING_OPTIONS.find(option => option.id === id)?.label ?? id.replace(/-/g, " ");
-}
 
 const COUNTRY_LABELS: Record<Country, string> = {
   USA: "U.S.",
@@ -146,6 +145,22 @@ interface Props {
   onClearAll?: () => void;
   /** Taller archetype scroller inside the mobile filter dialog. */
   variant?: "dock" | "sheet";
+  /**
+   * Shown beside "Rank by" after the ranking was switched automatically, with
+   * an Undo that puts the previous ranking back.
+   */
+  rankingNotice?: { message: string; onUndo: () => void } | null;
+  /** One-line prompt under the search box (e.g. how to find a home base). */
+  searchPrompt?: string | null;
+  onDismissSearchPrompt?: () => void;
+  /** Enter in the search box with a non-empty query: open the first ranked result. */
+  onSearchSubmit?: (input: HTMLInputElement) => void;
+  /** ArrowDown in the search box: move focus to the first result. Returns true when focus moved. */
+  onSearchArrowDown?: () => boolean;
+  /** 0–11 month the `best-this-month` ranking reads; names the label ("Best in February"). */
+  rankingMonth?: number;
+  /** Shows the month selector beside "Rank by" while the month ranking is active. */
+  onRankingMonthChange?: (monthIndex: number) => void;
   scenario?: ScenarioId;
   onScenarioChange?: (next: ScenarioId) => void;
   /** A pinned collection or trip that limits the list, shown in the lens receipt. */
@@ -170,6 +185,13 @@ export const FilterBar = memo(function FilterBar({
   scenario = "now",
   onScenarioChange,
   lensScope,
+  rankingMonth,
+  onRankingMonthChange,
+  onSearchSubmit,
+  onSearchArrowDown,
+  rankingNotice,
+  searchPrompt,
+  onDismissSearchPrompt,
 }: Props) {
   const prose = useProse();
   const { temp } = useUnits();
@@ -178,7 +200,7 @@ export const FilterBar = memo(function FilterBar({
   const fitFinderTitleId = `${searchFieldId}-fit-finder-title`;
   const liveControlBaseId = `${searchFieldId}-live`;
   const searchPlaceholder = variant === "sheet" ? "Search places" : "Search places or regions";
-  const rankingLabel = RANKING_OPTIONS.find(opt => opt.id === ranking)?.label ?? ranking;
+  const rankingLabel = rankingOptionLabel(ranking, rankingMonth);
   const activeBundle = LIFESTYLE_BUNDLES.find(bundle => isBundleActive(bundle, ranking, filters)) ?? null;
   const toggleCountry = useCallback((c: Country) => {
     setFilters(f => {
@@ -269,6 +291,19 @@ export const FilterBar = memo(function FilterBar({
           value={filters.search ?? ""}
           onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
           onKeyDown={event => {
+            // Enter opens the top result; ArrowDown steps into the result list.
+            // Both skip IME composition so a candidate pick is not hijacked.
+            if (!event.nativeEvent.isComposing && !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
+              if (event.key === "Enter" && onSearchSubmit && event.currentTarget.value.trim().length > 0) {
+                event.preventDefault();
+                onSearchSubmit(event.currentTarget);
+                return;
+              }
+              if (event.key === "ArrowDown" && onSearchArrowDown) {
+                if (onSearchArrowDown()) event.preventDefault();
+                return;
+              }
+            }
             if (event.key !== "Escape" || event.currentTarget.value.length === 0) return;
             event.preventDefault();
             event.stopPropagation();
@@ -276,7 +311,12 @@ export const FilterBar = memo(function FilterBar({
           }}
           placeholder={searchPlaceholder}
           aria-label="Search places by name, region, climate type or Köppen code"
-          enterKeyHint="search"
+          enterKeyHint={onSearchSubmit ? "go" : "search"}
+          aria-describedby={
+            [searchPrompt ? `${searchFieldId}-prompt` : null, onSearchSubmit ? `${searchFieldId}-keys` : null]
+              .filter(Boolean)
+              .join(" ") || undefined
+          }
           autoComplete="off"
           className="bg-transparent text-[15px] text-ice placeholder:text-stone/65 outline-none flex-1 min-w-0"
         />
@@ -295,6 +335,33 @@ export const FilterBar = memo(function FilterBar({
           </button>
         )}
       </label>
+      {searchPrompt ? (
+        <p
+          id={`${searchFieldId}-prompt`}
+          role="status"
+          data-search-prompt
+          className="panel-thin !mt-2 flex items-center gap-2 px-3 py-2 text-xs leading-snug text-frost"
+        >
+          <Home className="h-3.5 w-3.5 shrink-0 text-stone" aria-hidden />
+          <span className="min-w-0 flex-1">{searchPrompt}</span>
+          {onDismissSearchPrompt ? (
+            <button
+              type="button"
+              onClick={onDismissSearchPrompt}
+              aria-label="Dismiss the home base tip"
+              title="Dismiss"
+              className="-my-1 -mr-1.5 flex min-h-9 min-w-9 shrink-0 items-center justify-center rounded-lg text-stone hover:text-ice [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
+            >
+              <X className="h-3.5 w-3.5" aria-hidden />
+            </button>
+          ) : null}
+        </p>
+      ) : null}
+      {onSearchSubmit ? (
+        <p id={`${searchFieldId}-keys`} className="sr-only">
+          Press Enter to open the first result{onSearchArrowDown ? ", or the Down arrow to move to the result list" : ""}.
+        </p>
+      ) : null}
 
       <LensReceipt
         rankingLabel={rankingLabel}
@@ -318,6 +385,8 @@ export const FilterBar = memo(function FilterBar({
             ranking={ranking}
             rankingLabel={rankingLabel}
             setRanking={setRanking}
+            rankingMonth={rankingMonth}
+            onRankingMonthChange={onRankingMonthChange}
           />
           {hasAny ? (
             <button
@@ -337,8 +406,28 @@ export const FilterBar = memo(function FilterBar({
           ranking={ranking}
           rankingLabel={rankingLabel}
           setRanking={setRanking}
+          rankingMonth={rankingMonth}
+          onRankingMonthChange={onRankingMonthChange}
         />
       )}
+
+      {rankingNotice ? (
+        <p
+          role="status"
+          data-ranking-notice
+          className="panel-thin flex flex-wrap items-center gap-x-2 gap-y-1 px-3 py-2 text-xs leading-snug text-frost"
+        >
+          <span className="min-w-0 flex-1 basis-40">{rankingNotice.message}</span>
+          <button
+            type="button"
+            onClick={rankingNotice.onUndo}
+            className="btn-ghost shrink-0 !px-2.5 !py-1 !text-xs [@media(pointer:coarse)]:min-h-11"
+            aria-label="Undo the ranking switch"
+          >
+            Undo
+          </button>
+        </p>
+      ) : null}
 
       <details
         className="tc-filter-sheet-details"
@@ -467,12 +556,18 @@ function RankByControl({
   ranking,
   rankingLabel,
   setRanking,
+  rankingMonth,
+  onRankingMonthChange,
 }: {
   rankingSelectId: string;
   ranking: RankingProfile;
   rankingLabel: string;
   setRanking: (r: RankingProfile) => void;
+  rankingMonth?: number;
+  onRankingMonthChange?: (monthIndex: number) => void;
 }) {
+  const monthSelectId = `${rankingSelectId}-month`;
+  const showMonth = ranking === "best-this-month" && rankingMonth != null && onRankingMonthChange != null;
   return (
     <div className="rank-menu">
       <label htmlFor={rankingSelectId} className="rank-menu__field">
@@ -486,11 +581,30 @@ function RankByControl({
             aria-describedby={`${rankingSelectId}-hint`}
           >
             {RANKING_OPTIONS.map(opt => (
-              <option key={opt.id} value={opt.id}>{opt.label}</option>
+              <option key={opt.id} value={opt.id}>{rankingOptionLabel(opt.id, rankingMonth)}</option>
             ))}
           </select>
         </span>
       </label>
+      {showMonth ? (
+        <label htmlFor={monthSelectId} className="rank-menu__field" data-rank-month>
+          <span className="rank-menu__label">Month</span>
+          <span className="rank-menu__select-wrap">
+            <select
+              id={monthSelectId}
+              value={rankingMonth}
+              onChange={event => onRankingMonthChange(Number(event.currentTarget.value))}
+              className="rank-menu__select"
+              aria-label="Month to rank by"
+              title="Rank by typical weather in this month (climate normals, not a forecast)"
+            >
+              {RANKING_MONTH_NAMES.map((name, index) => (
+                <option key={name} value={index}>{name}</option>
+              ))}
+            </select>
+          </span>
+        </label>
+      ) : null}
       <p id={`${rankingSelectId}-hint`} className="rank-menu__hint">
         The list and map are ordered by {rankingLabel}.
       </p>

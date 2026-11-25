@@ -388,7 +388,7 @@ describe("CompareView", () => {
     expect(screen.getByText("Coolest summer")).toBeInTheDocument();
     expect(screen.getByText("Mildest winter")).toBeInTheDocument();
     expect(screen.getByText("Best live-here fit")).toBeInTheDocument();
-    expect(screen.getByText("Top livability")).toBeInTheDocument();
+    expect(screen.queryByText("Top livability")).not.toBeInTheDocument();
     expect(screen.getByText("Lowest overall risk")).toBeInTheDocument();
     expect(screen.getByText("Best growability")).toBeInTheDocument();
     expect(screen.getAllByText("Live-here fit").length).toBeGreaterThan(0);
@@ -433,15 +433,15 @@ describe("CompareView", () => {
     expect(decisionRead).toBeInTheDocument();
     expect(within(decisionRead).getByText("Summary")).toBeInTheDocument();
     expect(screen.getByText("Next step")).toBeInTheDocument();
-    expect(screen.getByText("Broadest fit")).toBeInTheDocument();
+    expect(screen.getByText("Top priority score")).toBeInTheDocument();
     expect(within(screen.getByLabelText("Comparison summary")).getByText("Lowest risk")).toBeInTheDocument();
     expect(screen.getByText("Most comfortable")).toBeInTheDocument();
     expect(screen.getByText("Best for gardening")).toBeInTheDocument();
     expect(screen.getByLabelText("All places at a glance")).toBeInTheDocument();
     expect(screen.getByText("All places at a glance")).toBeInTheDocument();
     expect(screen.getByText("Role")).toBeInTheDocument();
-    expect(screen.getByText("Score")).toBeInTheDocument();
-    expect(screen.getByText("Visit")).toBeInTheDocument();
+    expect(screen.getAllByText("Priority score").length).toBeGreaterThan(0);
+    expect(screen.getByText("Best time to visit")).toBeInTheDocument();
     expect(screen.getByText("Check first")).toBeInTheDocument();
     expect(screen.getByText("Start here")).toBeInTheDocument();
     expect(screen.getByLabelText("How well sourced")).toBeInTheDocument();
@@ -456,7 +456,7 @@ describe("CompareView", () => {
     expect(checklist).toHaveTextContent("Tradeoff check");
     expect(checklist).toHaveTextContent("Hazard check");
     expect(checklist).toHaveTextContent("Daily life");
-    expect(checklist).toHaveTextContent("Source gap");
+    expect(checklist).toHaveTextContent("Sources to check");
     expect(checklist).toHaveTextContent("What to confirm for each place before booking a visit");
 
     fireEvent.click(screen.getByRole("button", { name: "Copy a link to this comparison" }));
@@ -537,7 +537,7 @@ describe("CompareView", () => {
   it("renders one finalist decision table row per compared place", () => {
     renderCompare({ onOpenPlace: vi.fn() });
 
-    const table = screen.getByRole("table", { name: "Role, score, best season and first caution for each compared place" });
+    const table = screen.getByRole("table", { name: "Role, priority score, best season and first caution for each compared place" });
     const rows = within(table).getAllByRole("row");
     expect(rows).toHaveLength(PLACES.slice(0, 4).length + 1);
     for (const place of PLACES.slice(0, 4)) {
@@ -589,11 +589,11 @@ describe("CompareView", () => {
     renderCompare();
 
     expect(screen.getByText("What the index rows mean")).toBeInTheDocument();
-    expect(screen.getByText("annual aridity")).toBeInTheDocument();
-    expect(screen.getByText("continentality")).toBeInTheDocument();
-    expect(screen.getByText("growing-season moisture")).toBeInTheDocument();
-    expect(screen.getByText("evaporative demand")).toBeInTheDocument();
-    expect(screen.getByText("precipitation to PET")).toBeInTheDocument();
+    expect(screen.getByText(/De Martonne aridity index/)).toBeInTheDocument();
+    expect(screen.getByText(/Conrad continentality index/)).toBeInTheDocument();
+    expect(screen.getByText("Selianinov hydrothermal coefficient")).toBeInTheDocument();
+    expect(screen.getByText(/Thornthwaite potential evapotranspiration/)).toBeInTheDocument();
+    expect(screen.getByText(/UNEP aridity index/)).toBeInTheDocument();
   });
 
   it("scopes remove controls to the compare dialog cards", () => {
@@ -658,8 +658,8 @@ describe("CompareView", () => {
     const lens = screen.getByLabelText("What the scores are based on");
     expect(lens).toHaveTextContent("What the scores use");
     expect(lens).toHaveTextContent("Fit scores here use Cool summers and Dry air");
-    expect(lens).toHaveTextContent("summer <= 72°F");
-    expect(lens).toHaveTextContent("fire <= elevated");
+    expect(lens).toHaveTextContent("summer ≤ 72°F");
+    expect(lens).toHaveTextContent("fire ≤ elevated");
     expect(lens).toHaveTextContent(/present-day normals/i);
     expect(lens).toHaveTextContent("for narrowing a list");
   });

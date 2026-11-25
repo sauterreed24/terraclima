@@ -13,7 +13,7 @@ import type { Place } from "../../types";
 import type { BestWindow } from "../../lib/best-months";
 import { formatVisitWindow, pickVisitWindow } from "../../lib/best-months";
 import { LIVE_FIT_PRESETS, type LiveFitAssessment, type LiveFitFilters } from "../../lib/live-fit";
-import type { LivabilityResult } from "../../lib/livability-score";
+import { SCORE_DEFINITIONS, type LivabilityResult } from "../../lib/livability-score";
 import type { PlaceVisualSignature } from "../../lib/place-visual-signature";
 import { fmtTemp, useProse, useUnits, type TempUnit } from "../../lib/units";
 import { BookmarkButton } from "../BookmarkButton";
@@ -50,11 +50,11 @@ function buildFitContextRead(
     .filter(preset => filters?.fitPresets?.has(preset.id))
     .map(preset => preset.label);
   const constraints = [
-    filters?.maxSummerHighC != null ? `summer <= ${fmtTemp(filters.maxSummerHighC, temp)}` : null,
-    filters?.minWinterLowC != null ? `winter >= ${fmtTemp(filters.minWinterLowC, temp)}` : null,
-    filters?.minGrowability != null ? `growability >= ${filters.minGrowability}` : null,
-    filters?.maxFireRisk != null ? `fire risk <= ${riskLabel(filters.maxFireRisk)}` : null,
-    filters?.maxOverallRisk != null ? `overall risk <= ${riskLabel(filters.maxOverallRisk)}` : null,
+    filters?.maxSummerHighC != null ? `summer ≤ ${fmtTemp(filters.maxSummerHighC, temp)}` : null,
+    filters?.minWinterLowC != null ? `winter ≥ ${fmtTemp(filters.minWinterLowC, temp)}` : null,
+    filters?.minGrowability != null ? `growability ≥ ${filters.minGrowability}` : null,
+    filters?.maxFireRisk != null ? `fire risk ≤ ${riskLabel(filters.maxFireRisk)}` : null,
+    filters?.maxOverallRisk != null ? `overall risk ≤ ${riskLabel(filters.maxOverallRisk)}` : null,
   ].filter(Boolean);
 
   const hasLiveFinderSignals = presetLabels.length > 0 || constraints.length > 0;
@@ -128,18 +128,29 @@ export function PlaceResidencyBrief({
     ? `Remove ${place.name} from Compare from the fit summary`
     : `Add ${place.name} to Compare from the fit summary`;
   const lanes = [
-    { label: "Live-here fit", value: liveFit.score, note: goodReason, tone: "glacier" },
+    // Live-here fit is the ring above; Livability (a near-duplicate a few
+    // points away) is in "Livability breakdown" below. The lanes show what
+    // the fit score does not: its leading contributor, place feel, and the
+    // weakest part of place feel.
     {
-      label: "Livability",
-      value: livability.score,
-      note: leadDriver ? `${leadDriver.label} is the leading contributor.` : "No single factor leads.",
-      tone: "sage",
+      label: leadDriver?.label ?? SCORE_DEFINITIONS.feltComfort.label,
+      value: leadDriver?.value ?? 0,
+      note: leadDriver ? "The largest contributor to this place's scores." : "No single factor leads.",
+      definition: `${leadDriver?.label ?? "This factor"}, 0–100, higher is better. ${leadDriver?.rationale ?? ""}`,
+      tone: "glacier",
     },
-    { label: "Place feel", value: visualSignature.feelScore, note: visualSignature.primaryLabel, tone: "aurora" },
+    {
+      label: SCORE_DEFINITIONS.placeFeel.label,
+      value: visualSignature.feelScore,
+      note: `${visualSignature.feelBand}: ${visualSignature.primaryLabel}`,
+      definition: SCORE_DEFINITIONS.placeFeel.definition,
+      tone: "aurora",
+    },
     {
       label: visualSignature.verify.label,
       value: Math.round(visualSignature.verify.value),
       note: describeSignatureVerification(visualSignature),
+      definition: `${visualSignature.verify.label}, 0–100, higher is better. The weakest part of place feel here.`,
       tone: "ochre",
     },
   ] as const;
@@ -164,6 +175,7 @@ export function PlaceResidencyBrief({
           className="residency-brief__score"
           style={{ ["--score-deg" as string]: `${Math.round(liveFit.score * 3.6)}deg` }}
           aria-label={`Live-here fit ${liveFit.score} out of 100`}
+          title={SCORE_DEFINITIONS.liveFit.definition}
         >
           <span className="font-mono-num">{liveFit.score}</span>
           <span>fit</span>
@@ -180,7 +192,7 @@ export function PlaceResidencyBrief({
         <div className="residency-brief__actions" aria-label={`Actions for ${place.name}`}>
           <div className="residency-brief__action-read">
             <span>Next step</span>
-            <p>Pin it to your shortlist, then compare it with others before planning a visit.</p>
+            <p>Save it to your shortlist, then compare it with others before planning a visit.</p>
           </div>
           <div className="residency-brief__action-buttons">
             {onBookmarkToggle ? (
@@ -239,10 +251,10 @@ export function PlaceResidencyBrief({
 
       <div className="residency-brief__lanes" aria-label={`${place.name} scores by area`}>
         {lanes.map(lane => (
-          <div key={lane.label} className="residency-brief__lane" data-tone={lane.tone} title={prose(lane.note)}>
+          <div key={lane.label} className="residency-brief__lane" data-tone={lane.tone} title={prose(lane.definition)}>
             <div className="residency-brief__lane-top">
               <span>{lane.label}</span>
-              <strong className="font-mono-num">{Math.round(lane.value)}</strong>
+              <strong className="font-mono-num">{Math.round(lane.value)}<span className="text-[10px] font-normal opacity-70">/100</span></strong>
             </div>
             <div className="residency-brief__track" aria-hidden>
               <span style={{ width: `${Math.max(0, Math.min(100, lane.value))}%` }} />

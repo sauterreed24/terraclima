@@ -245,7 +245,9 @@ export interface PlaceSearchFields {
   locality: string;
   /** Archetype labels, topographic drivers, biome and Köppen class. */
   classification: string;
-  /** The authored headline prose: short + immersive summary and why-distinct. */
+  /** The one-sentence summary and the why-distinct mechanism: what the place is about. */
+  headline: string;
+  /** The immersive summary paragraph. */
   summary: string;
   /** Other authored descriptive prose (fit lines, activities, experience copy, authored deep sections). */
   prose: string;
@@ -286,6 +288,16 @@ function runtimeNowMs(): number {
   return typeof performance !== "undefined" ? performance.now() : Date.now();
 }
 
+/**
+ * Join separately normalized parts. Each part keeps its own space padding, so
+ * parts are divided by a double space and a quoted phrase can never match
+ * across two unrelated values (an archetype label and the next one, say).
+ */
+function searchField(parts: readonly string[]): string {
+  const out = parts.map(normalizeSearchText).filter(part => part !== " ").join("");
+  return out || " ";
+}
+
 export function getPlaceSearchFields(place: Place): PlaceSearchFields {
   const cached = PLACE_SEARCH_FIELDS.get(place);
   if (cached !== undefined) return cached;
@@ -299,25 +311,22 @@ export function getPlaceSearchFields(place: Place): PlaceSearchFields {
   const fields: PlaceSearchFields = {
     name: normalizeSearchText(place.name),
     nameCore: normalizeSearchText(place.name.split(/\s*[(&—]|\s+and the\s+/i)[0] ?? place.name),
-    locality: normalizeSearchText([
+    locality: searchField([
       place.municipality ?? "",
       place.region,
       COUNTRY_SEARCH_ALIASES[place.country] ?? place.country,
       idSuffix,
       ...settlements.map(s => s.name),
-    ].join(" | ")),
-    classification: normalizeSearchText([
-      ...place.archetypes.map(a => `${a} ${ARCHETYPE_LABELS[a] ?? ""}`),
-      ...place.drivers.map(d => `${d} ${DRIVER_LABELS[d] ?? ""}`),
+    ]),
+    classification: searchField([
+      ...place.archetypes.flatMap(a => [a, ARCHETYPE_LABELS[a] ?? ""]),
+      ...place.drivers.flatMap(d => [d, DRIVER_LABELS[d] ?? ""]),
       place.biome,
       place.koppen,
-    ].join(" | ")),
-    summary: normalizeSearchText([
-      place.summaryShort ?? "",
-      place.summaryImmersive,
-      place.whyDistinct,
-    ].join(" | ")),
-    prose: normalizeSearchText([
+    ]),
+    headline: searchField([place.summaryShort ?? "", place.whyDistinct]),
+    summary: normalizeSearchText(place.summaryImmersive),
+    prose: searchField([
       place.reliefContext,
       ...place.relocationFit,
       ...place.travelFit,
@@ -333,10 +342,8 @@ export function getPlaceSearchFields(place: Place): PlaceSearchFields {
       ...(typeof history === "string" ? [history] : history ?? []),
       experience?.why ?? "",
       ...(place.deepSections ?? []).map(s => `${s.title} ${s.paragraphs.join(" ")}`),
-    ].join(" | ")),
-    crossReference: normalizeSearchText(
-      (place.nearbyContrasts ?? []).map(c => `${c.label} ${c.note}`).join(" | "),
-    ),
+    ]),
+    crossReference: searchField((place.nearbyContrasts ?? []).map(c => `${c.label} ${c.note}`)),
   };
   PLACE_SEARCH_FIELDS.set(place, fields);
   return fields;
@@ -351,8 +358,8 @@ export function getPlaceSearchText(place: Place): string {
   const cached = PLACE_SEARCH_TEXT.get(place);
   if (cached !== undefined) return cached;
   const f = getPlaceSearchFields(place);
-  const text = [f.name, f.locality, f.classification, f.summary, f.prose, f.crossReference]
-    .map(part => part.trim())
+  const text = [f.name, f.locality, f.classification, f.headline, f.summary, f.prose, f.crossReference]
+    .map(part => part.trim().replace(/ {2,}/g, " "))
     .filter(Boolean)
     .join(" ");
   PLACE_SEARCH_TEXT.set(place, text);

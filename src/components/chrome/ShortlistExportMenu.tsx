@@ -1,8 +1,12 @@
 import { memo, useCallback, useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { Download } from "lucide-react";
 import type { Place } from "../../types";
+import { PLACES_BY_ID, resolvePlaceId } from "../../data/places";
+import { loadPersistedRanking } from "../../lib/app-ranking-preference";
+import { parseAppSearch } from "../../lib/app-url";
 import { downloadBlobFile } from "../../lib/download-blob";
-import type { ShortlistExportFile } from "../../lib/shortlist-export";
+import { loadHomeBaseId } from "../../lib/home-base";
+import type { ExportContext, ShortlistExportFile } from "../../lib/shortlist-export";
 import { useFocusTrap } from "../../hooks/use-focus-trap";
 
 type ExportFormatId = "markdown" | "json" | "csv" | "geojson" | "ics";
@@ -19,20 +23,35 @@ const FORMATS: ReadonlyArray<{
     label: "Visit plan",
     hint: "Best months, data gaps and what to check, as text",
   },
-  { id: "json", label: "JSON", hint: "One record per place, for scripts" },
-  { id: "csv", label: "CSV", hint: "A table for spreadsheets" },
+  { id: "json", label: "JSON", hint: "Climate figures and scores per place, for scripts" },
+  { id: "csv", label: "CSV", hint: "Climate figures and scores, as a table for spreadsheets" },
   { id: "geojson", label: "GeoJSON", hint: "Map points for GIS and mapping tools" },
   { id: "ics", label: "Calendar (.ics)", hint: "Best months to visit, as calendar events" },
 ];
 const MENU_NAV_KEYS = new Set(["ArrowDown", "ArrowRight", "ArrowUp", "ArrowLeft", "Home", "End"]);
 
+/**
+ * What the export should know about the reader's session: the ranking they
+ * have active (URL first, then the saved preference) and their home base.
+ * Read at click time from the same sources the app shell uses, so the menu
+ * needs no extra props.
+ */
+function readExportSession(): Pick<ExportContext, "home" | "ranking"> {
+  const search = typeof window === "undefined" ? "" : window.location.search;
+  const homeId = resolvePlaceId(loadHomeBaseId());
+  return {
+    ranking: parseAppSearch(search).ranking ?? loadPersistedRanking(),
+    home: homeId ? PLACES_BY_ID[homeId] ?? null : null,
+  };
+}
+
 async function buildShortlistExport(format: ExportFormatId, places: readonly Place[]): Promise<ShortlistExportFile> {
   const exports = await import("../../lib/shortlist-export");
   switch (format) {
     case "markdown": return exports.exportShortlistAsMarkdown(places);
-    case "json": return exports.exportShortlistAsJSON(places);
-    case "csv": return exports.exportShortlistAsCSV(places);
-    case "geojson": return exports.exportShortlistAsGeoJSON(places);
+    case "json": return exports.exportShortlistAsJSON(places, readExportSession());
+    case "csv": return exports.exportShortlistAsCSV(places, readExportSession());
+    case "geojson": return exports.exportShortlistAsGeoJSON(places, readExportSession());
     case "ics": return exports.exportShortlistAsICS(places);
   }
 }

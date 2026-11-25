@@ -280,8 +280,8 @@ function pickCounterweight(
 ): CounterweightRead | null {
   const rankedSignals: CounterweightRead[] = [
     { place: lowestRisk.place, label: "Lower risk", preference: "overall risk is the deciding constraint" },
-    { place: comfort.place, label: "Comfort", preference: "comfort matters more than the overall score" },
-    { place: garden.place, label: "Garden", preference: "gardening matters more than the overall score" },
+    { place: comfort.place, label: "Comfort", preference: "comfort matters more than the priority score" },
+    { place: garden.place, label: "Garden", preference: "gardening matters more than the priority score" },
     { place: longestSeason.place, label: "Longest season", preference: "more easy months matter most" },
     { place: livedEase.place, label: "Cost & access", preference: "cost and access are the deciding constraint" },
   ];
@@ -316,7 +316,7 @@ function buildScoutSequence(
   append(scoutStep(
     "Start here",
     primary,
-    `Highest ${lensRead} score. Read this profile first.`,
+    `Highest ${lensRead}. Read this profile first.`,
   ));
 
   const counterweightProfile = counterweight ? byId.get(counterweight.place.id) : undefined;
@@ -402,7 +402,7 @@ function buildVerificationChecklist(
       id: "scout-window",
       label: "When to visit",
       place: primary.place,
-      action: `Start with ${visit.visitWindow}; use that season to see whether it lives up to its ${lensRead} score.`,
+      action: `Start with ${visit.visitWindow}; use that season to see whether it lives up to its ${lensRead}.`,
       proof: "Confirm heat, rain, smoke, daylight, and lodging logistics against the profile before fixing dates.",
       tone: "book",
     },
@@ -440,14 +440,14 @@ function buildVerificationChecklist(
   const sourceGaps = sourceGapLabels(weakestEvidence.place);
   items.push({
     id: "source-gap",
-    label: "Source gap",
+    label: "Sources to check",
     place: weakestEvidence.place,
     action: sourceGaps.length
-      ? `Source-check ${weakestEvidence.place.name} before planning travel or a move around it.`
+      ? `Check the sources for ${weakestEvidence.place.name} before planning travel or a move around it.`
       : `Keep ${possessive(weakestEvidence.place.name)} sources in mind.`,
     proof: sourceGaps.length
       ? `Verify ${sourceGaps.slice(0, 3).join(", ")} before booking.`
-      : "No major gaps in the sources. Still check hazards for the exact location, and logistics.",
+      : "The entry is well sourced. Still check hazards for the exact location, and logistics.",
     tone: sourceGaps.length >= 3 ? "source" : sourceGaps.length > 0 ? "verify" : "book",
   });
 
@@ -470,7 +470,7 @@ export function buildCompareDecisionRead(
   const livedEase = pickProfile(profiles, profile => profile.livedEase);
   const highestRisk = pickProfile(profiles, profile => profile.riskLoad);
   const counterweight = pickCounterweight(primary, runnerUp, lowestRisk, comfort, garden, longestSeason, livedEase);
-  const lensRead = lens === DEFAULT_COMPARISON_LENS ? "overall" : comparisonLensLabel(lens).toLowerCase();
+  const lensRead = lens === DEFAULT_COMPARISON_LENS ? "priority score" : `priority score for ${comparisonLensLabel(lens).toLowerCase()}`;
   const scoutSequence = buildScoutSequence(profiles, primary, counterweight, runnerUp, highestRisk, lensRead);
   const tableRows = buildDecisionTableRows(profiles, primary, counterweight, scoutSequence, lens);
   const verificationChecklist = buildVerificationChecklist(profiles, primary, counterweight, highestRisk, lensRead);
@@ -501,24 +501,24 @@ export function buildCompareDecisionRead(
     tableRows,
     lanes: [
       {
-        label: lens === DEFAULT_COMPARISON_LENS ? "Broadest fit" : `${comparisonLensLabel(lens)} fit`,
+        label: "Top priority score",
         place: primary.place,
         value: `${compareLensScore(primary, lens)}/100`,
         detail: lens === DEFAULT_COMPARISON_LENS
-          ? "Live-here fit, livability, felt comfort, cost and access, gardening and low risk, combined."
-          : `Scored for the ${comparisonLensLabel(lens).toLowerCase()} priority.`,
+          ? "Balanced priority: live-here fit, livability, felt comfort, cost and access, gardening and low risk, combined. 0–100, higher is better."
+          : `Scored for the ${comparisonLensLabel(lens).toLowerCase()} priority. 0–100, higher is better.`,
       },
       {
         label: "Lowest risk",
         place: lowestRisk.place,
         value: `${lowestRisk.riskLoad}/100`,
-        detail: "Overall hazard risk; lower is safer.",
+        detail: "Overall risk, 0–100: the average of nine hazard ratings. Lower is better.",
       },
       {
         label: "Most comfortable",
         place: comfort.place,
         value: `${comfort.feltComfort}/100`,
-        detail: "How comfortable the temperature, humidity and sky feel.",
+        detail: "Felt comfort, 0–100: how the temperature, humidity and sky feel. Higher is better.",
       },
       {
         label: "Best for gardening",

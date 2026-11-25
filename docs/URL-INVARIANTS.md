@@ -13,6 +13,7 @@ Executable checks live in [`src/lib/app-url.ts`](../src/lib/app-url.ts), [`src/l
 | `a` | Archetype ids, comma-separated | Filtered to known archetypes when validator provided |
 | `q` | Search string | Trimmed for round-trip |
 | `r` | Ranking profile | Default **`most-unique`** is never written; other profiles (including `live-fit`) are written when active |
+| `m` | Month for the **Best in <Month>** ranking, `1`..`12` | Integers 1-12 only; read and written only with `r=best-this-month`; omitted when it equals the current calendar month (so a bare `r=best-this-month` link always means "this month") |
 | `cmp` | Compare set, comma-separated place ids | Only known ids; **max 4** (`COMPARE_LIMIT`) |
 | `theme` | Color theme override: `light`, `dark` | `auto` (the implicit default) is never written; unknown values dropped |
 | `scn` | Climate-scenario layer: `ssp245`, `ssp585` | `now` (the implicit default) is never written; unknown values dropped |
@@ -40,9 +41,9 @@ Omitted when unset (clear-all / empty state): `fit`, `sh`, `wl`, `grow`, `fire`,
 
 Six curated bundles live in [`src/lib/lifestyle-bundles.ts`](../src/lib/lifestyle-bundles.ts). Applying a bundle from the **Goals** dock in the FilterBar sets **`r`** (ranking profile) and the Goals and Must-haves fields above (`fit`, `sh`, `wl`, `grow`, `fire`, `risk`) in one shot. Explorer hero quick-picks are discovery lenses (Most unique, Hidden gems, Cool summers, Fog & marine, Another country, Visit now) and do **not** auto-apply lifestyle bundles.
 
-**Auto live-fit sort:** When Goals or Must-haves are active (any preset or numeric/risk cap) but no lifestyle bundle is fully active and **`r`** is not `live-fit`, Explorer switches ranking to **`live-fit`** so the list sorts with `rankLiveFit()`. That auto-switch is **transient**: it does not overwrite the persisted ranking preference. On apply, App snapshots the prior ranking + whether it was URL-explicit; when the last Goal or Must-have clears via chip dismiss, that snapshot is restored (so a shared `?r=most-comfortable` returns after the constraint, instead of only `localStorage`). Explicit Rank-by / lifestyle-bundle choices still persist and cancel the snapshot. Lens Receipt may note when display ranking and live-fit sort diverge.
+**Auto live-fit sort:** When Goals or Must-haves are active (any preset or numeric/risk cap) but no lifestyle bundle is fully active and **`r`** is not `live-fit`, Explorer switches ranking to **`live-fit`** so the list sorts with `rankLiveFit()`. That auto-switch is **transient**: it does not overwrite the persisted ranking preference. On apply, App snapshots the prior ranking + whether it was URL-explicit; when the last Goal or Must-have clears via chip dismiss, that snapshot is restored (so a shared `?r=most-comfortable` returns after the constraint, instead of only `localStorage`). Explicit Rank-by / lifestyle-bundle choices still persist and cancel the snapshot. The switch is announced beside **Rank by** ("Ranking switched to Live-here fit because a must-have is on") with an **Undo** that restores the snapshot and keeps the must-haves; after Undo the auto-switch stays off until the last Goal or Must-have clears (in-memory only, not in the URL). Lens Receipt may note when display ranking and live-fit sort diverge.
 
-**Clear all / Reset Explorer:** Lens Receipt / FilterBar Clear all and empty-state Reset Explorer share App’s `clearAllFilters` — empty `FilterState`, clear curated `col`, and leave auto-applied `live-fit` for the pre-constraint snapshot when one exists (otherwise the discovery default / stored non-live-fit preference). A full Explorer reset always exits a stuck live-fit lens (auto, URL, or menu) so the atlas returns to discovery; chip-by-chip dismiss keeps an explicitly chosen live-fit ranking.
+**Clear all / Reset the atlas:** Lens Receipt / FilterBar Clear all and empty-state **Reset the atlas** share App’s `clearAllFilters` — empty `FilterState`, clear curated `col`, and leave auto-applied `live-fit` for the pre-constraint snapshot when one exists (otherwise the discovery default / stored non-live-fit preference). A full Explorer reset always exits a stuck live-fit lens (auto, URL, or menu) so the atlas returns to discovery; chip-by-chip dismiss keeps an explicitly chosen live-fit ranking.
 
 **Lens Receipt chips:** Each active explorer signal renders as a dismissible chip; removing one field uses a functional `setFilters` update (search, country, archetype, presets, and caps are independent).
 
@@ -69,6 +70,23 @@ The home base ([`src/lib/home-base.ts`](../src/lib/home-base.ts)) is a sticky pr
 - Countries and archetypes are sorted for stable URLs.
 - The interface shows US units only. `temp=` and `dist=` from older links are ignored and dropped from the address bar.
 - History flag `tcPlace` on pushState indicates "opened place in-app" so **Back** closes the panel instead of leaving the site.
+
+## History: which actions push an entry
+
+The URL-sync effect in `App.tsx` decides between `pushState` and `replaceState`.
+
+| Action | History | Entry flags |
+|--------|---------|-------------|
+| Open a profile (card, map, list, search Enter, Surprise me) | **push** | `tcPlace`, `tcDepth: 1` |
+| Hop from one open profile to another (climate twins, nearby) | **push** | `tcPlace`, `tcDepth` + 1 |
+| Open Compare | **push** | `tcCompare` (plus `tcPlace`/`tcDepth` + 1 over an in-app profile) |
+| Switch top-level view (Atlas / Trips / Collections / Learn) | **push** | none |
+| Search text, filters, Goals / Must-haves, ranking, month, climate layer, theme, compare picks, compare lens, home base | **replace** | keeps the entry's flags |
+
+- **Browser Back/Forward** restores state from the target entry's query string. One exception keeps a selection from being lost: when Back/Forward leaves an open profile or an open Compare, the **compare set as it is now** is carried onto the target entry (phones close overlays with Back, and picks made inside must survive).
+- **Closing a profile in-app** (X, Esc, scrim) goes back `tcDepth` entries to the page the profile chain was opened from and removes **only `p`**: compare picks, home base, and anything else changed while the profile was open are written onto that entry. A deep-linked or reloaded profile (no `tcPlace`) closes in place with `replaceState`.
+- **Closing Compare in-app** goes back one entry when the current entry has `tcCompare`, again keeping every other piece of state; otherwise it closes in place (`cmpopen=0` for a 2+ set). Opening a profile from inside Compare pushes the profile over the Compare entry, so Back from that profile returns to Compare.
+- Reload always restores from the URL; the first sync after load uses `replaceState` and clears the in-app flags.
 
 ## Compare cap
 

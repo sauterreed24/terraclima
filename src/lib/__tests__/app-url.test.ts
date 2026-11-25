@@ -412,3 +412,38 @@ describe("history writers", () => {
       .not.toContain("cmpopen");
   });
 });
+
+describe("month param (m) for the month ranking", () => {
+  const ce = () => true;
+  const base = { view: "explorer" as const, placeId: null, collectionId: null, collectionExists: ce };
+
+  it("parses m=1..12 into a 0-11 month index and rejects everything else", () => {
+    expect(parseAppSearch("?r=best-this-month&m=2").month).toBe(1);
+    expect(parseAppSearch("?r=best-this-month&m=12").month).toBe(11);
+    expect(parseAppSearch("?r=best-this-month&m=01").month).toBe(0);
+    for (const bad of ["0", "13", "-1", "2.5", "feb", "", "1e1", "123"]) {
+      expect(parseAppSearch(`?r=best-this-month&m=${bad}`).month).toBeUndefined();
+    }
+  });
+
+  it("only validates a month alongside the month ranking", () => {
+    expect(validatedStateFromSearch("?r=best-this-month&m=8", {}, {}).month).toBe(7);
+    expect(validatedStateFromSearch("?r=best-this-month", {}, {}).month).toBeNull();
+    expect(validatedStateFromSearch("?r=coolest-summers&m=8", {}, {}).month).toBeNull();
+    expect(validatedStateFromSearch("?m=8", {}, {}).month).toBeNull();
+  });
+
+  it("writes m after r only for the month ranking and omits a null month", () => {
+    expect(formatAppRelativeUrl({ ...base, ranking: "best-this-month", month: 1 })).toBe("/?r=best-this-month&m=2");
+    expect(formatAppRelativeUrl({ ...base, ranking: "best-this-month", month: null })).toBe("/?r=best-this-month");
+    expect(formatAppRelativeUrl({ ...base, ranking: "coolest-summers", month: 1 })).toBe("/?r=coolest-summers");
+    expect(formatAppRelativeUrl({ ...base, ranking: "best-this-month", month: 12 })).toBe("/?r=best-this-month");
+  });
+
+  it("round-trips every month", () => {
+    for (let month = 0; month < 12; month += 1) {
+      const url = formatAppRelativeUrl({ ...base, ranking: "best-this-month", month });
+      expect(validatedStateFromSearch(url.slice(url.indexOf("?")), {}, {}).month).toBe(month);
+    }
+  });
+});

@@ -57,6 +57,7 @@ export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { on
           <Kbds keys={[CMD_KEY_LABEL, "K"]} /> <span className="text-frost">Atlas: focus search (also works from inside any text input)</span>
           <Kbds keys={["F"]} />        <span className="text-frost">Atlas: open filter sheet (narrow screens only)</span>
           <Kbds keys={["R"]} />        <span className="text-frost">Surprise me: open a random place from the current list</span>
+          <Kbds keys={["V"]} />        <span className="text-frost">Open Compare, once you have added a place to it</span>
           <Kbds keys={["B"]} />        <span className="text-frost">Pin or unpin the open place to your shortlist</span>
           <Kbds keys={["H"]} />        <span className="text-frost">Set or clear the open place as your home base. Cards and profiles then show how each place differs from it</span>
           <Kbds keys={["Esc"]} />      <span className="text-frost">Close the open panel: shortcuts, Compare, filters, menu or a place profile. In the search box, clear the text</span>

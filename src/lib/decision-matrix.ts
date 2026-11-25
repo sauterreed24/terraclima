@@ -80,7 +80,7 @@ function bestForLine(place: Place, comfortScore: number, riskEase: number, feelS
     { label: "distinctive terrain", value: place.scores.microclimateUniqueness },
   ].sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))[0]!;
 
-  const audience = place.relocationFit[0] ? titleCase(place.relocationFit[0]) : "Climate scouts";
+  const audience = place.relocationFit[0] ? titleCase(place.relocationFit[0]) : "Climate-minded movers";
   return `${audience}; ${topSignal.label} is the edge.`;
 }
 

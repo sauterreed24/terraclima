@@ -29,8 +29,8 @@ const AXIS_META: Record<PlaceFeelComponentKey, SignatureAxisMeta> = {
     rgb: "227, 166, 59",
   },
   scoutingClarity: {
-    label: "Scouting clarity",
-    shortLabel: "Clarity",
+    label: "How well documented",
+    shortLabel: "Sourcing",
     color: "#ad8cff",
     rgb: "173, 140, 255",
   },
@@ -39,7 +39,7 @@ const AXIS_META: Record<PlaceFeelComponentKey, SignatureAxisMeta> = {
 const FEEL_DASH: Record<ReturnType<typeof scorePlaceFeel>["band"], string> = {
   Exceptional: "none",
   Easy: "6 2.5",
-  Textured: "3 2.5",
+  Mixed: "3 2.5",
   Demanding: "1.6 3.2",
   Hard: "1 4",
 };
@@ -77,7 +77,7 @@ export function getPlaceVisualSignature(place: Place): PlaceVisualSignature {
     feelScore: feel.score,
     strength,
     verify,
-    mapLabel: `${feel.band} ${feel.score} | ${strength.shortLabel}`,
+    mapLabel: `${feel.band} place feel, ${feel.score}/100`,
     mapAccentColor: strength.color,
     mapAccentRgb: strength.rgb,
     mapDash: FEEL_DASH[feel.band],

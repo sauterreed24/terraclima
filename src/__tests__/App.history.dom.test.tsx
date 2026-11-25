@@ -108,13 +108,34 @@ async function openFirstCard(): Promise<HTMLElement> {
 }
 
 describe("App history: profiles, compare and navigation", () => {
+  let originalMatchMedia: typeof window.matchMedia;
+
   beforeEach(() => {
+    // Desktop layout: the filter dock (and its search box) is on the page.
+    originalMatchMedia = window.matchMedia;
+    window.matchMedia = vi.fn().mockImplementation((query: string) => {
+      const minWidth = query.match(/\(min-width:\s*(\d+)px\)/)?.[1];
+      const maxWidth = query.match(/\(max-width:\s*(\d+)px\)/)?.[1];
+      return {
+        matches: (minWidth ? 1440 >= Number(minWidth) : true) && (maxWidth ? 1440 <= Number(maxWidth) : true),
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      };
+    }) as unknown as typeof window.matchMedia;
     window.localStorage.clear();
-    window.history.replaceState(null, "", "/");
+    // Push (not replace) so forward entries left by an earlier test are
+    // truncated and `history.length` deltas are meaningful.
+    window.history.pushState(null, "", "/");
   });
 
   afterEach(() => {
     cleanup();
+    window.matchMedia = originalMatchMedia;
     window.localStorage.clear();
     window.history.replaceState(null, "", "/");
   });
@@ -230,5 +251,115 @@ describe("App history: profiles, compare and navigation", () => {
     expect(params().get("q")).toBe("seq");
     await historyForward();
     expect(params().get("v")).toBe("learn");
+  }, TIMEOUT_MS);
+
+  it("ranks by a chosen month, names it, writes m= and restores it from the URL", async () => {
+    const thisMonth = new Date().getMonth();
+    const other = (thisMonth + 6) % 12;
+    const names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    renderApp();
+    const grid = await screen.findByTestId("place-grid-stub", {}, { timeout: TIMEOUT_MS });
+    expect(screen.queryByLabelText("Month to rank by")).not.toBeInTheDocument();
+
+    const rankBy = screen.getAllByLabelText("Rank by")[0]!;
+    fireEvent.change(rankBy, { target: { value: "best-this-month" } });
+    const month = await screen.findByLabelText("Month to rank by", {}, { timeout: TIMEOUT_MS });
+    expect((month as HTMLSelectElement).value).toBe(String(thisMonth));
+    await waitFor(() => expect(params().get("r")).toBe("best-this-month"));
+    expect(params().get("m")).toBeNull();
+    expect(grid.getAttribute("data-reference-month")).toBe(String(thisMonth));
+    const firstNow = grid.getAttribute("data-first-id");
+
+    fireEvent.change(month, { target: { value: String(other) } });
+    await waitFor(() => expect(params().get("m")).toBe(String(other + 1)));
+    await waitFor(() => expect(grid.getAttribute("data-reference-month")).toBe(String(other)));
+    await waitFor(() => expect(grid.getAttribute("data-first-id")).not.toBe(firstNow));
+    expect(rankBy.querySelector('option[value="best-this-month"]')?.textContent).toBe(`Best in ${names[other]}`);
+
+    // Back to the current month drops the param again.
+    fireEvent.change(month, { target: { value: String(thisMonth) } });
+    await waitFor(() => expect(params().get("m")).toBeNull());
+    cleanup();
+
+    // Reload-style hydration from a shared link.
+    window.history.replaceState(null, "", `/?r=best-this-month&m=${other + 1}`);
+    renderApp();
+    const restored = await screen.findByLabelText("Month to rank by", {}, { timeout: TIMEOUT_MS });
+    expect((restored as HTMLSelectElement).value).toBe(String(other));
+    expect(screen.getByTestId("place-grid-stub").getAttribute("data-reference-month")).toBe(String(other));
+    expect(params().get("m")).toBe(String(other + 1));
+  }, TIMEOUT_MS);
+
+  it("opens the first ranked result on Enter in the search box and ignores an empty query", async () => {
+    renderApp();
+    const grid = await screen.findByTestId("place-grid-stub", {}, { timeout: TIMEOUT_MS });
+    const search = screen.getAllByLabelText("Search places by name, region, climate type or Köppen code")[0]! as HTMLInputElement;
+    search.focus();
+
+    fireEvent.keyDown(search, { key: "Enter" });
+    await settle(60);
+    expect(openProfileId()).toBeNull();
+
+    fireEvent.change(search, { target: { value: "sequim" } });
+    // Enter straight after typing waits for the deferred ranking to settle.
+    fireEvent.keyDown(search, { key: "Enter" });
+    await screen.findByTestId("place-detail-mock", {}, { timeout: TIMEOUT_MS });
+    expect(openProfileId()).toBe("sequim-wa");
+    expect(grid.getAttribute("data-first-id")).toBe("sequim-wa");
+    expect(params().get("q")).toBe("sequim");
+
+    // Closing returns to the search box with the query intact.
+    fireEvent.click(screen.getByRole("button", { name: "Close profile" }));
+    await settle();
+    expect(params().get("q")).toBe("sequim");
+    await waitFor(() => expect(document.activeElement).toBe(search));
+  }, TIMEOUT_MS);
+
+  it("moves focus from the search box to the first result on ArrowDown and opens Compare with V", async () => {
+    window.history.replaceState(null, "", "/?cmp=sequim-wa,port-townsend-wa&cmpopen=0");
+    renderApp();
+    await screen.findByTestId("place-grid-stub", {}, { timeout: TIMEOUT_MS });
+    const search = screen.getAllByLabelText("Search places by name, region, climate type or Köppen code")[0]! as HTMLInputElement;
+    search.focus();
+    fireEvent.keyDown(search, { key: "ArrowDown" });
+    expect(document.activeElement).toBe(screen.getAllByRole("button", { name: /^Open card / })[0]);
+
+    fireEvent.keyDown(search, { key: "v" });
+    expect(screen.queryByTestId("compare-view-mock")).not.toBeInTheDocument();
+    fireEvent.keyDown(window, { key: "v" });
+    expect(await screen.findByTestId("compare-view-mock", {}, { timeout: TIMEOUT_MS })).toBeInTheDocument();
+  }, TIMEOUT_MS);
+
+  it("announces the automatic switch to Live-here fit and lets the reader undo it", async () => {
+    window.history.replaceState(null, "", "/?r=coolest-summers&fit=dry-air");
+    renderApp();
+    await screen.findByTestId("place-grid-stub", {}, { timeout: TIMEOUT_MS });
+    await waitFor(() => expect(params().get("r")).toBe("live-fit"));
+    const notice = (await screen.findAllByRole("status")).find(el => el.hasAttribute("data-ranking-notice"))!;
+    expect(notice.textContent).toContain("Ranking switched to Live-here fit because a must-have is on.");
+    expect(notice.textContent).toContain("Coolest summers");
+
+    fireEvent.click(screen.getByRole("button", { name: "Undo the ranking switch" }));
+    await waitFor(() => expect(params().get("r")).toBe("coolest-summers"));
+    expect(params().get("fit")).toBe("dry-air");
+    expect(document.querySelector("[data-ranking-notice]")).toBeNull();
+    // It stays undone: the must-have does not re-trigger the switch.
+    await settle(80);
+    expect(params().get("r")).toBe("coolest-summers");
+  }, TIMEOUT_MS);
+
+  it("explains Find home base where the focus lands", async () => {
+    renderApp();
+    await screen.findByTestId("place-grid-stub", {}, { timeout: TIMEOUT_MS });
+    fireEvent.click(screen.getByRole("button", { name: /then set it as your home base/ }));
+    const prompt = await waitFor(() => {
+      const el = document.querySelector("[data-search-prompt]");
+      expect(el).not.toBeNull();
+      return el!;
+    });
+    expect(prompt.textContent).toContain("Search for the place nearest where you live, open it, then choose Set home.");
+    expect(document.activeElement).toBe(
+      screen.getAllByLabelText("Search places by name, region, climate type or Köppen code")[0],
+    );
   }, TIMEOUT_MS);
 });
