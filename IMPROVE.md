@@ -7,7 +7,7 @@ Read this first each session. Keep sections short; condense old rounds.
 - **Who:** people scouting where to relocate or travel by climate; curious readers of landscapes.
 - **Main jobs:** (1) find a named place and read its profile; (2) narrow the atlas by goals / must-haves and trust the list; (3) save finalists and compare them; (4) set a home base and read differences; (5) take the list away (export, share link) and come back to it later, on any device, even offline.
 - **Run:** `npm ci`, `npm run dev` (or `npm run build && npm run preview`).
-- **Evaluate:** `npm run eval` (builds, ≈1 min) · `npm run eval -- --no-build` · `--full` adds the Vitest suite (≈2.5 min) · results in `eval/results/latest.json` (gitignored). Full repo gate: `npm run quality:check`.
+- **Evaluate:** `npm run eval` (builds, ≈3 min; `--only=search,jobs,data,recover,speed,accuracy`) · `npm run eval -- --no-build` · `--full` adds the Vitest suite (≈2.5 min) · results in `eval/results/latest.json` (gitignored). Full repo gate: `npm run quality:check`.
 - **Docs that matter:** `docs/IMPROVEMENT-CONTEXT.md` (architecture + manual QA), `docs/URL-INVARIANTS.md` (URL contract), `docs/CLIMATE-DATA-V2.md` (data pipeline), `CHANGELOG.md` (user-facing change log, plain language).
 
 ## Constraints (never break)
@@ -19,28 +19,30 @@ Read this first each session. Keep sections short; condense old rounds.
 - Accessibility: focus traps, roving tabindex on the map, 44px touch targets, reduced motion.
 - `npm run quality:check` must pass; CHANGELOG gets a plain-language entry for user-visible changes.
 
-## Scorecard (measured by `npm run eval`)
-| id | check | target | baseline (start of session 1) | after round 1 | after round 2 |
+## Scorecard (measured by `npm run eval`; all rows measured)
+| id | check | target | session-1 start | end of round 2 | end of round 3 |
 |----|-------|--------|------|------|------|
-| S1a | search: intended place on top, tuning set | ≥ 95% | 38/44 | 43/44 | 72/74 (set grew: old held-out joined it) |
-| S1b | same, **held-out** set — never tune on it; misses not printed | ≥ 90% | 24/30 (set 1) | 27/30 (set 1, now retired) | 28/29 (set 2; 26/29 before round 2) |
-| S2a–e | find (≤2), must-have list = independent reference, save+compare (≤5), home base (≤2), export JSON (≤2) | done, steps ≤ target | 2/exact/5/2/2 | same | same |
-| S2f | carry saved places to another browser (export there, import here; its own saves kept) | done ≤ 4 | impossible | impossible | 4 steps |
+| S1a | search: intended place on top, tuning set | ≥ 95% | 38/44 | 72/74 | 75/77 (3 review cases added) |
+| S1b | same, **held-out** set 2 (misses not printed) | ≥ 90% | — | 28/29 | 28/29 |
+| S2a–f | find (≤2), must-have list = reference, save+compare (≤5), home base (≤2), export (≤2), move saved places to another browser (≤4) | done, steps ≤ target | 2/exact/5/2/2/impossible | …/4 | same |
 | S3a | saved items lost (reload, 61st save, two tabs) | 0 | 11 | 0 | 0 |
-| S3c | a second open tab shows saves made in the first | yes | no | yes | yes |
-| S4a | stays usable: bad link, corrupt storage, storage blocked, offline reload, offline profile reopen, failed code chunk, failed site-history file (no retry storm) | all | 4/6 | 6/6 | 7/7 (7th added from review: failed on round-1 code) |
-| S5a | first ranked card, desktop, ms median [min–max] | ≤ 1500 | 626–674 | 591–638 | 566–603 [556–641] |
-| S5b | first ranked card, phone 1.6 Mbps + 4× CPU, ms | ≤ 8000 | 6169–6227 | 6078–6194 | 6054–6477 [6034–6689] |
-| S5c | first-load JS, KiB gzip | ≤ 747 | 740 | 740 | 742 |
-| S5d | first profile open, slow phone, ms to its climate figures | ≤ 3000 | 4032 | 1837–1927 | 1801–2087 |
+| S3c | second tab shows the first tab's saves | yes | no | yes | yes |
+| S3d | offline cache drops an old build's file after a visit | dropped | — | kept | dropped |
+| S4a | stays usable: bad link, corrupt storage, storage blocked, offline reload, offline profile reopen, failed code chunk, failed history file (no storm), history file fails once then loads, offline after a new deploy's file list | all | 4/6 | 7/7 | 9/9 (2 scenarios added from review, both failed first) |
+| S5a | first ranked card, desktop, ms median | ≤ 1500 | ~650 | ~600 | 560–584 |
+| S5b | first ranked card, phone 1.6 Mbps + 4× CPU, ms | ≤ 8000 | ~6200 | ~6100 | 6004–6336 |
+| S5c | first-load JS, KiB gzip | ≤ 747 | 740 | 742 | 742 |
+| S5d | first profile open, slow phone, ms | ≤ 3000 | 4032 | ~1850 | 1844–1907 |
 | S5e | first profile open, KB gzip downloaded | ≤ 250 | 676 | 125 | 125 |
 | S6a | console/page errors across all tasks | 0 | 0 | 0 | 0 |
-| S7a | figures shown or exported that differ from the climate records (conversion written in the evaluator): export of all 226 with a home base; cards, profiles and Compare for 8 seeded places | 0 | — | — | 96 of 1875 at round-3 start (Compare added after: 0 of 1920 after fixes) |
-| S7b | same, HELD-OUT seed (8 places) | 0 | — | — | 5 of 71 at round-3 start |
+| S7a | figures on screen / in exports that differ from the climate records (conversion written in the evaluator): export of all 226 with a home base, cards + profiles + Compare for 8 seeded places | 0 | — | 96 of 1875 | 0 of 2048 |
+| S7b | same, HELD-OUT seed | 0 | — | 5 of 71 | 0 of 114 |
+| S8a | places badged "High confidence" whose climate data is not high | 0 | — | 133 | 0 |
+| S8b | profiles that misstate how their figures were checked (seeded + held-out) | 0 + 0 | — | 13 + 14 | 0 + 0 |
 
-All numbers measured by the evaluator. Noise: non-timing rows identical across two runs; timing medians move ≈ ±50 ms desktop, ±200 ms throttled.
-Proven to fail on a broken build: S7 (summer months shifted Jun–Aug → Jul–Sep: 458 of 1920 and 24 of 114 flagged); S2b (filter loosened 1 °C → "shown 105 vs ref 91"); S4a's 7th scenario and its unit test fail on round-1 code; S3c's DOM test fails without the storage listener. The rest failed on the baseline itself.
-Next bar to raise: S5b (6.1 s on a slow phone is almost all the 740 KiB corpus; needs the corpus split — Decisions for me) and a held-out set 3 once set 2 has been seen.
+Noise: non-timing rows identical across two runs; timing medians move ≈ ±50 ms desktop, ±250 ms throttled.
+Proven to fail on a broken build: S7 (summer months shifted → 458 of 1920); S2b (filter loosened 1 °C → 105 vs 91). Every other row failed on the code before its fix.
+Next bar: S5b (first card on a slow phone, 6.0 s) needs Decision 1; a held-out search set 3; S7 sample could grow (16 profiles per run now).
 
 ## Checks for a human (cannot be scripted here)
 - Look and layout on a real phone (iOS Safari, Android Chrome), both themes.
@@ -48,12 +50,11 @@ Next bar to raise: S5b (6.1 s on a slow phone is almost all the 740 KiB corpus; 
 - Offline: install to home screen, airplane mode next day, open the app.
 
 ## Backlog (top first)
-1. Corpus split (Decision 1): first load is 742 KiB gzip; profile-only fields (citations, deep sections, confidence and climate-change notes) are ~30 % of the corpus.
-2. Service-worker runtime cache never prunes old deploys' hashed files (pre-existing; round 1 adds first-visit files). Prune entries absent from the current build that are older than N days; must not drop current lazy chunks cached for offline.
-3. Evidence panel: the "Reviewed" date now shows only once the panel is opened (all 226 receipts share one date, 2026-08-10); could ship that one date in the profile chunk.
-4. Search misses still open: "big island" (Hilo 3rd), "smoky mountains" (AND rule drops Gatlinburg on the common word "mountains"; a plural rule alone made it worse).
-5. Hop to a place in another site-history file shows the loading fallback for one ~50 KB download; could prefetch on card hover.
-6. Creel and other Tier C grid-only places: station data unreachable from this environment.
+1. Corpus split (Decision 1).
+2. Search misses still open: "big island" (Hilo 3rd), "smoky mountains" (AND rule drops Gatlinburg on the common word "mountains"). "mt" alone puts Mount Washington first (its locality really says "Mt Washington"); Montana places follow.
+3. Evidence "Reviewed" date shows only once the panel opens (Decision 3).
+4. Hop to a place in another site-history file shows the loading fallback for one ~50 KB download; prefetch on card hover/focus.
+5. Data the app cannot check from here: Creel and other grid-only places (station services unreachable from this environment). Now labelled "grid estimate" on the profile.
 
 ## Alternatives (strong ideas not taken yet)
 - Corpus split (numbers first, prose lazily per profile) to cut first-load JS by roughly half. Large refactor touching search (prose tiers) and the budget script. Round 1's site-history split shows the pattern works (registry + id index + `use`).
@@ -62,14 +63,15 @@ Next bar to raise: S5b (6.1 s on a slow phone is almost all the 740 KiB corpus; 
 - Plural/"-ies" search variants: no measured gain; "smoky mountains" went from no result to three wrong ones. Revisit together with relaxing the AND rule for common words.
 - Share saved places by link (`?saved=`) instead of / besides file import: one tap for a partner, but adds a URL param and a "these are someone else's places" flow (Decision 2).
 
-## Strategy (kinds of change → kept / tried, both rounds)
-- Data-safety bug fixes: 3/3 (cap, two tabs, full-list message). Cheap, clear wins.
-- Error recovery / offline: 2/2 (+ a latent unhandled rejection). Real-browser failure tests found what unit tests could not.
-- Performance on the action path (lazy profile data): 2/2, biggest user-visible gain (4.0 → 1.8 s). Measure bytes per action, not only first load.
-- Search accuracy: 2/4 versions kept (broad rules lost to narrow ones each time: 7-letter budget, plurals).
-- Workflow / portability (import): 1/1.
-- Independent review: found 1 crash-class bug and 3 search regressions my own break-tests missed. Keep it every round; give the reviewer the diff, not the reasoning.
-- Candidate choice: weight toward action-path performance and failure-mode testing next; search is at target and its gains are now small.
+## Strategy (kinds of change → kept / tried, sessions 1–2)
+- Data-safety fixes: 4/4 (cap, two tabs, full-list message, alias duplicate on import).
+- Error recovery / offline: 5/5, but 2 of them were fixes to my own round-1/3 changes found by review. New async/caching code needs a failure scenario *and* a review before it counts.
+- Accuracy of shown figures (new in round 3): 4/4 (export rounding ×2, chip label, confidence claims). The S7/S8 checks found 230+ wrong or overstated figures that 1,400 unit tests missed. Highest yield per hour this session.
+- Performance on the action path: 2/2 (profile 4.0 → 1.8 s).
+- Search: 4/6 versions kept; broad rules keep losing to narrow ones.
+- Workflow / portability: 1/1 (import).
+- Independent review: 2 runs, 9 real defects, all in my own changes. Keep it every round, on the diff only.
+- Next session: weight toward accuracy/trust checks (extend S7 to Best-this-month, climate twins, scenario 2050 numbers) and failure scenarios; search is near its ceiling.
 
 ## Playbook
 - Chromium: `/opt/pw-browsers/chromium` with `playwright-core` (do not `playwright install`).
@@ -82,16 +84,19 @@ Next bar to raise: S5b (6.1 s on a slow phone is almost all the 740 KiB corpus; 
 - Before trusting a new check, sabotage the code it guards and see it fail.
 - Break-test every new async loader with the file *blocked*, not only offline-after-caching: a resolved-null promise that is dropped makes React's `use` refetch forever. (round 2, from review; provisional)
 - Gate commits on the test command's exit code: `vitest … | grep … && git commit` committed a failing test once. (round 2)
-- Entry-chunk budget is tight (113.5 KB): put new feature logic and its messages in a module loaded on first use. (provisional)
+- Entry-chunk budget is tight (113.5 KB): put new feature logic and its messages in a module loaded on first use. (confirmed round 3: the climate-data-basis helper fit only because it lives with the profile)
+- Read screen figures with `innerText` (keeps line breaks; labels come back uppercased by CSS) and Compare from table cells, never by splitting text: `textContent` glued "100/100" to "47%" and produced false failures twice. (round 3)
+- Accuracy references are computed in the evaluator from `records.json`, never by importing the app's helpers; otherwise a shared bug passes both sides. (round 3)
+- A cache-pruning or caching change needs an "update lands while the old page is cached" scenario: pruning against the new list blanked the next offline open. (round 3, from review)
 
 ## Log
-- 2026-11-25 · round 2 · kept: fresh held-out search set (bar raised); state/province/Mexican-state abbreviations + whole-word tie-break for typo matches (tuning 70→72/74, held-out 26→28/29); import saved places from an export (S2f impossible→4 steps); fixes from independent review: failed site-history load looped forever (S4a 6/7→7/7), abbreviations only next to another word ("mt" = Montana again), full-list message. Rejected: plural variants (worse on "smoky mountains"). Repo entry-chunk ceiling raised 113.0→113.5 KB for the import menu item after moving its logic to a lazy module (total first-load budget unchanged). Round gain: smaller than round 1 (one new capability, +2 held-out queries, one serious bug removed); next gains need the corpus split.
-- 2026-11-25 · round 1 · kept: saved-place cap → no eviction (S3a 11→0); offline first-visit caching + ignoreVary (S4a 4/6→6/6); search abbreviations + dropped-letter rule (S1a 38→43, held-out 24→27); two-tab sync (S3c no→yes); per-file site history (S5d 4.0→1.8 s, S5e 676→241 KB); receipts on panel open (S5e 241→125 KB). Rejected: typo budget 2 for all 7-letter tokens (2/23 new false positives); posting CACHE_URLS at SW ready (+50–70 ms desktop first card in 2/3 A/B pairs → deferred to idle, now within noise); site-history registry in the entry chunk (+4 KiB first load, entry over budget → own lazy chunk). Round gain: every scorecard row at target; largest user-visible gain is profile open on slow phones.
+- 2026-11-25 · round 3 · new focus: are the numbers people read right. Added S7 (figures vs records, independent conversion, seeded + held-out) and S8 (confidence claims). Kept: export humidity/sunshine differences from unrounded values (S7a 96→5; review then caught station sunshine still rounded → 0); card chip "Summer humidity" (S7a 5→0, S7b 5→0); figures basis on profiles + two ratings + badge needs both (S8a 133→0, S8b 27→0); offline-cache pruning (S3d kept→dropped). From the independent review of rounds 2–3, all fixed with a failing check first: pruning blanked the next offline open after a deploy (now keeps previous build + cached page's files); history retry not shown; "qro"/"grand marais mi" search; alias duplicate on import. Rejected/deferred: showing the sunshine estimate in Compare (conflicts with a documented rule → Decision 4); switching the chip to annual humidity (would change what home-base compares). Round gain: large on trust (230+ wrong or overstated figures removed), none on speed.
+- Rounds 1–2 (condensed): saved-place cap and two-tab sync; offline first visit; search abbreviations, state codes, dropped-letter typos; per-file site history and lazy receipts (profile 4.0→1.8 s); import saved places; review fix for a history retry storm. Rejected: 7-letter typo budget 2, plural variants, CACHE_URLS at SW ready, registry in entry chunk.
 - 2026-11-25 · check fix · throttled runs (S5b, S5d) now block the service worker: its own fetches bypass page-level throttling, which made a profile open look like 1.8 s instead of 4.0 s. S5d's first selector also matched "climate normals" outside the profile.
 - 2026-11-25 · session 1 · created IMPROVE.md and `eval/` (search query sets, browser jobs, data safety, recovery, speed).
 
 ## Decisions for me
 1. **Split the corpus so first load carries only what the list and map need** (recommended). ~30 % of the 742 KiB is profile-only text (citations, deep sections, confidence and climate-change notes). Expected: first ranked card on a slow phone from ~6.1 s toward ~4.5 s. Cost: the authored place files or a build step change shape; search over those fields would load lazily. Round 1's site-history split is the proven pattern.
 2. **Share saved places by link** (`?saved=a,b,c` → "Add these 5 places to your saved places?"). Import from a file is done; a link is one tap for a partner but adds a URL parameter to the documented contract.
-4. **Sunshine where no station records it**: Compare and profiles say "no data", while rankings ("Sunniest winters") and exports use an estimate from solar energy (mean error ≈ 9 points, basis labelled). The code has an explicit rule against showing that series as sunshine. Recommendation: show it in Compare as "~74% est." so finalists are not blank on a figure the app already ranks by; or keep "no data" and say in Compare that the ranking uses an estimate.
 3. **Evidence "Reviewed" date**: accept that it shows only after opening the panel (saves 120 KB per first profile), or ship the single review date with the profile.
+4. **Sunshine where no station records it**: Compare and profiles say "no data", while rankings ("Sunniest winters") and exports use an estimate from solar energy (mean error ≈ 9 points, basis labelled). The code has an explicit rule against showing that series as sunshine. Recommendation: show it in Compare as "~74% est." so finalists are not blank on a figure the app already ranks by; or keep "no data" and say in Compare that the ranking uses an estimate.
