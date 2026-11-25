@@ -12,7 +12,7 @@ export function PlaceAtAGlance({ place, anchorId }: { place: Place; anchorId: st
       buildAtAGlanceTiles(
         place,
         mm => fmtPrecip(mm, dist),
-        dC => fmtDelta(dC, temp, { signed: false }),
+        dC => fmtDelta(dC, temp, { digits: 0, signed: false }),
         temp,
       ),
     [place, dist, temp],

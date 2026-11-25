@@ -31,7 +31,8 @@ import {
   type ComparisonLensId,
 } from "../lib/compare-workbench";
 import { buildCompareCandidateSwapInsight, buildCompareCoachRecommendations, weakestLensProfile } from "../lib/compare-workbench-coach";
-import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
+import { buildHomeBaseComparison, pickHomeDeltaChips } from "../lib/home-base";
+import { formatHomeDelta } from "./place-detail/home-delta-format";
 import { COMPARE_LIMIT } from "../lib/app-url";
 import type { ShareStatus } from "../lib/app-constants";
 import { useFocusTrap } from "../hooks/use-focus-trap";
@@ -164,8 +165,8 @@ export function CompareView({
     const lowestRisk = decisionProfiles.reduce((best, profile) => profile.riskLoad < best.riskLoad ? profile : best, decisionProfiles[0]);
     const bestGrowability = places.reduce((best, place) => place.scores.growability > best.scores.growability ? place : best, places[0]);
     return [
-      { label: "Coolest summer", place: coolestSummer, value: fmtTemp(meanSummerHigh(coolestSummer), temp, { digits: 1 }) },
-      { label: "Mildest winter", place: mildestWinter, value: fmtTemp(meanJanLow(mildestWinter), temp, { digits: 1 }) },
+      { label: "Coolest summer", place: coolestSummer, value: fmtTemp(meanSummerHigh(coolestSummer), temp) },
+      { label: "Mildest winter", place: mildestWinter, value: fmtTemp(meanJanLow(mildestWinter), temp) },
       { label: "Best live-here fit", place: bestLiveFit.place, value: `${bestLiveFit.liveFitScore}/100` },
       { label: "Top livability", place: topLivability.place, value: `${topLivability.livabilityScore}/100` },
       { label: "Lowest overall risk", place: lowestRisk.place, value: `${lowestRisk.riskLoad}/100` },
@@ -1093,8 +1094,8 @@ export function CompareView({
                     <Row label="Selianinov HTC" value={bio ? bioclimRow(bio.selianinov, v => v.toFixed(2), prose) : "—"} wide />
                     <Row label="UNEP P/PET" value={bio ? bioclimRow(bio.unepAridity, v => v.toFixed(2), prose) : "—"} wide />
                     <Row label="Thornthwaite PET" value={bio ? prose(`${Math.round(bio.thornthwaitePet.value)} mm`) : "—"} />
-                    <Row label="Summer high" value={fmtTemp(meanSummerHigh(p), temp, { digits: 1 })} />
-                    <Row label="Winter low" value={fmtTemp(meanJanLow(p), temp, { digits: 1 })} />
+                    <Row label="Summer high" value={fmtTemp(meanSummerHigh(p), temp)} />
+                    <Row label="Winter low" value={fmtTemp(meanJanLow(p), temp)} />
                     <Row label="Annual precip" value={fmtPrecip(getAnnualPrecipMm(p), dist)} />
                     <Row label="Sunshine" value={observedSunshinePct(p) == null ? "—" : `${observedSunshinePct(p)}%`} />
                     <Row label="Frost-free" value={`${p.climate.frostFreeDays ?? "—"} d`} />
@@ -1239,8 +1240,8 @@ function buildGroupedComparisonRows(
       const profile = decisionById.get(place.id);
       return profile ? `${compareLensScore(profile, lens)}/100` : "no score";
     })),
-    row("Comfort", "Summer high", places.map(place => fmtTemp(meanSummerHigh(place), tempUnit, { digits: 1 }))),
-    row("Comfort", "Winter low", places.map(place => fmtTemp(meanJanLow(place), tempUnit, { digits: 1 }))),
+    row("Comfort", "Summer high", places.map(place => fmtTemp(meanSummerHigh(place), tempUnit))),
+    row("Comfort", "Winter low", places.map(place => fmtTemp(meanJanLow(place), tempUnit))),
     row("Comfort", "Felt comfort", places.map(place => decisionScore(place, profile => profile.feltComfort))),
     row("Comfort", "Humidity", places.map(meanHumidity)),
     row("Seasonality", "Koppen", places.map(place => place.koppen)),
@@ -1311,7 +1312,7 @@ function HomeDeltaStrip({ place, home }: { place: Place; home: Place }) {
               data-tone={signal.tone}
               title={`${signal.label}: ${signal.descriptor} than home. ${signal.basis}`}
             >
-              {signal.shortLabel} <span className="font-mono-num">{formatHomeDeltaValue(signal, temp, dist)}</span>
+              {signal.shortLabel} <span className="font-mono-num">{formatHomeDelta(signal, temp, dist)}</span>
             </span>
           ))
         )}

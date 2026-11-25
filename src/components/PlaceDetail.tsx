@@ -795,7 +795,7 @@ function DetailBody({
         c => fmtTemp(c, temp),
         m => fmtElev(m, dist),
         mm => fmtPrecip(mm, dist),
-        c => fmtDelta(c, temp, { signed: false }),
+        c => fmtDelta(c, temp, { digits: 0, signed: false }),
         temp,
       ),
     [place, temp, dist],
@@ -1314,7 +1314,7 @@ function DetailBody({
             <KeyValue label="Frost-free days (est.)" value={`${place.climate.frostFreeDays ?? "—"}`} />
             <KeyValue label="Hardiness zone" value={place.climate.hardinessZone ?? place.growability.hardinessZone ?? "—"} />
             <KeyValue label="Chill hours (est.)" value={`${place.climate.chillHours ?? "—"}`} />
-            <KeyValue label="Summer day-to-night swing" value={place.climate.diurnalSummerC != null ? fmtDelta(place.climate.diurnalSummerC, temp, { signed: false }) : "—"} />
+            <KeyValue label="Summer day-to-night swing" value={place.climate.diurnalSummerC != null ? fmtDelta(place.climate.diurnalSummerC, temp, { digits: 0, signed: false }) : "—"} />
             <KeyValue label="Biome" value={prose(place.biome)} />
           </div>
           <MicroclimateFingerprint place={place} />
@@ -1443,7 +1443,7 @@ function DetailBody({
             />
             <KeyValue
               label="Annual temperature range"
-              value={fmtDelta(geospatial.annualThermalAmplitudeC, temp, { signed: false })}
+              value={fmtDelta(geospatial.annualThermalAmplitudeC, temp, { digits: 0, signed: false })}
             />
             <KeyValue
               label="Terrain exposure index"

@@ -1,9 +1,9 @@
+import { formatHomeDelta } from "./home-delta-format";
 import { useMemo } from "react";
 import { Home } from "lucide-react";
 import type { Place, ScenarioId } from "../../types";
 import {
   buildHomeBaseComparison,
-  formatHomeDeltaValue,
   type HomeDeltaSignal,
 } from "../../lib/home-base";
 import { CLIMATE_NORMALS_PERIOD } from "../../lib/atlas-metadata";
@@ -145,7 +145,7 @@ function DeltaTile({
             {signal.direction === "higher" ? "▲" : "▼"}
           </span>
         )}
-        <span>{similar ? "similar" : formatHomeDeltaValue(signal, temp, dist)}</span>
+        <span>{similar ? "similar" : formatHomeDelta(signal, temp, dist)}</span>
       </div>
       <div className="mt-1">
         <span className="chip" data-tone={signal.tone}>{signal.descriptor}</span>

@@ -8,7 +8,8 @@ import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtSnow, useProse } from "../lib
 import { getBioclimCardSignal, getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
 import { getVisitWindow, type BestWindow } from "../lib/best-months";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
-import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
+import { buildHomeBaseComparison, pickHomeDeltaChips } from "../lib/home-base";
+import { formatHomeDelta } from "./place-detail/home-delta-format";
 import { ArrowRight, Droplets, Home, Leaf, Sun } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
 import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
@@ -469,7 +470,7 @@ export const PlaceCard = memo(function PlaceCard({
                         title={`${signal.label}: ${signal.descriptor} than home. ${signal.basis}`}
                       >
                         {signal.shortLabel}{" "}
-                        <span className="font-mono-num">{formatHomeDeltaValue(signal, temp, dist)}</span>
+                        <span className="font-mono-num">{formatHomeDelta(signal, temp, dist)}</span>
                       </span>
                     ))
                   );
