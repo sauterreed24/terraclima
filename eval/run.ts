@@ -379,7 +379,8 @@ function stats(xs: number[]) {
   return { median: s[Math.floor(s.length / 2)]!, min: s[0]!, max: s[s.length - 1]! };
 }
 async function timeToFirstCard(browser: Browser, throttle: boolean): Promise<number> {
-  const ctx = await newCtx(browser, throttle ? { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } : {});
+  // Throttling is per page; a service worker's own fetches would bypass it, so throttled runs block the worker.
+  const ctx = await newCtx(browser, throttle ? { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, serviceWorkers: "block" } : {});
   const page = await ctx.newPage();
   if (throttle) {
     const cdp = await ctx.newCDPSession(page);
@@ -410,6 +411,31 @@ async function sectionSpeed(browser: Browser) {
   const f = stats(fast); const s = stats(slow);
   record("S5a", "first ranked card, desktop (ms, median [min–max])", `${f.median} [${f.min}–${f.max}]`, "<= 1500", f.median <= 1500, fast);
   record("S5b", "first ranked card, phone on 1.6 Mbps + 4x CPU (ms)", `${s.median} [${s.min}–${s.max}]`, "<= 8000", s.median <= 8000, slow);
+  // First profile open: bytes fetched and time until its climate figures show, throttled phone.
+  const opens: number[] = []; let openKb = 0;
+  for (let i = 0; i < Math.max(3, Math.ceil(RUNS / 2)); i++) {
+    const ctx = await newCtx(browser, { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, serviceWorkers: "block" });
+    const page = await ctx.newPage();
+    await page.goto(BASE + "/"); await firstCard(page, 60000);
+    await page.waitForTimeout(1500);
+    const cdp = await ctx.newCDPSession(page);
+    await cdp.send("Network.enable");
+    await cdp.send("Network.emulateNetworkConditions", { offline: false, latency: 150, downloadThroughput: (1.6 * 1024 * 1024) / 8, uploadThroughput: (750 * 1024) / 8 });
+    await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+    const fetched = new Set<string>();
+    page.on("requestfinished", r => { const m = r.url().match(/\/(assets\/[^?#]+)$/); if (m) fetched.add(m[1]!); });
+    const t0 = Date.now();
+    await page.locator(CARD).first().click();
+    await page.getByRole("dialog").getByText(/Climate normals/i).first().waitFor({ timeout: 60000 });
+    opens.push(Date.now() - t0);
+    await page.waitForTimeout(4000); // let follow-up downloads finish
+    // gzip size of what was fetched: what a phone downloads from GitHub Pages.
+    openKb = Math.round([...fetched].reduce((n, f) => n + (existsSync(join(ROOT, "dist", f)) ? gzipSync(readFileSync(join(ROOT, "dist", f))).length : 0), 0) / 1024);
+    await ctx.close();
+  }
+  const o = stats(opens);
+  record("S5d", "first profile open, phone 1.6 Mbps + 4x CPU (ms to climate figures)", `${o.median} [${o.min}–${o.max}]`, "<= 3000", o.median <= 3000, opens);
+  record("S5e", "first profile open: KB gzip downloaded", openKb, "<= 250", openKb <= 250);
   const kb = initialJsGzip();
   record("S5c", "first-load JavaScript (KB gzip)", kb, "<= 747", kb <= 747);
 }

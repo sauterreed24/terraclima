@@ -31,6 +31,8 @@ Read this first each session. Keep sections short; condense old rounds.
 | S5a | first ranked card, desktop, ms (median [min–max], 5 runs) | ≤ 1500 | 626–674 [579–728] | |
 | S5b | first ranked card, phone 1.6 Mbps + 4× CPU, ms | ≤ 8000 | 6169–6227 [6012–6523] | |
 | S5c | first-load JS, KiB gzip | ≤ 747 | 740 | |
+| S5d | first profile open, phone 1.6 Mbps + 4× CPU, ms until its climate figures show | ≤ 3000 | 4032 [4027–4045] (added mid-round) | |
+| S5e | first profile open, KB gzip downloaded | ≤ 250 | 676 (added mid-round) | |
 | S6a | console/page errors across all tasks | 0 | 0 | |
 
 Noise: non-timing rows identical across two runs. Timing medians move ≈ ±50 ms (desktop) and ±150 ms (throttled) between runs; smaller changes are noise.
@@ -60,6 +62,7 @@ Proven to fail on a broken build: S2b (filter loosened by 1 °C → "shown 105 v
 - `searchPlaces` + `runScenarioRanking` give the exact app order in Node — test search there, not in the browser.
 
 ## Log
+- 2026-11-25 · check fix · throttled runs (S5b, S5d) now block the service worker: its own fetches bypass page-level throttling, which made a profile open look like 1.8 s instead of 4.0 s. S5d's first selector also matched "climate normals" outside the profile.
 - 2026-11-25 · session 1 · created IMPROVE.md and `eval/` (search query sets, browser jobs, data safety, recovery, speed).
 
 ## Decisions for me
