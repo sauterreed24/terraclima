@@ -28,6 +28,7 @@ import { composePlaceExperience } from "../lib/place-overview";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { withSiteHistoryDeepSections } from "../data/site-history/apply";
 import { siteHistoryThenable } from "../data/site-history/registry";
+import { climateDataBasis } from "../lib/climate-data-basis";
 import { clearDossierHash } from "../lib/dossier-url-hash";
 import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
@@ -403,6 +404,7 @@ function DetailHeader({
   const janLow = meanJanLow(place);
   const annualP = getAnnualPrecipMm(place);
   const fourthStat = fourthHeroStat(place);
+  const dataBasis = climateDataBasis(place);
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
   const lede = useMemo(() => composePlaceExperience(place).lede, [place]);
   const hero = useMemo(() => getPlaceHeroMedia(place.id), [place.id]);
@@ -654,6 +656,8 @@ function DetailHeader({
       <div className="text-[10px] uppercase tracking-wider text-stone-readable mt-4 flex items-center gap-1.5">
         <Calendar className="w-3 h-3 shrink-0" aria-hidden />
         Climate normals · <span className="font-mono-num">{CLIMATE_NORMALS_PERIOD}</span>
+        {" · "}
+        <span title={dataBasis.detail} data-basis={dataBasis.status}>{dataBasis.label}</span>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-1.5">
         <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />} label="Summer high" value={fmtTemp(summerHigh, temp)} />

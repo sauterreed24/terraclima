@@ -6,6 +6,7 @@ All notable changes to Terraclima are tracked here.
 
 ### Figures you can check against the source
 
+- **How each place's figures were checked:** the profile's climate figures now say whether they are station-checked (55 places), checked with caveats (45), or a grid estimate with no station near enough to check (126). The Evidence panel shows two ratings, sources and climate data, and the "High confidence" badge appears only when both are high. It used to show for 133 places whose figures were never checked against a station, because it rated only the written sources. Compare gains a "Climate figures" row.
 - **Offline copy stays small:** after each update the app kept the previous version's files in its offline copy as well, so it grew with every release. Files the current version no longer uses are now removed (only when online). A browser short of space can clear a whole site's storage, saved places included, so a smaller footprint protects them.
 - **Exports with a home base:** the humidity and sunshine differences were sometimes a whole point off, because both sides were rounded before subtracting (−7 where the records give −6.2). They now come from the unrounded values.
 - **Cards with a home base:** the "Humidity" difference is now labelled "Summer humidity", which is what it measures (June–August, as in the profile). Next to the card's own year-round humidity it read as a yearly difference: Zacatecas showed "+17 pts" against Flagstaff, while its yearly humidity is less than 2 points higher.

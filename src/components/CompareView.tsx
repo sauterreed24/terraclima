@@ -6,6 +6,7 @@ import { scenarioMeta } from "../lib/climate-projection";
 import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm, RISK_VALUE } from "../lib/climate-metrics";
+import { climateDataBasis } from "../lib/climate-data-basis";
 import { hasSourcedSkySeries, observedSunshinePct, sunshineDisplayValue } from "../lib/hero-glance";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
@@ -1275,6 +1276,7 @@ function buildGroupedComparisonRows(
     row("Garden/land", "Soil drainage", places.map(place => place.soil.drainage)),
     row("Evidence", "Profile depth", places.map(place => place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index")),
     row("Evidence", "Confidence", places.map(place => place.confidence)),
+    row("Evidence", "Climate figures", places.map(place => climateDataBasis(place).label)),
     row("Evidence", "Web sources", places.map(httpsCitations)),
     row("Evidence", "In-depth chapters", places.map(place => `${researchedChapterCount(place)}`)),
   ];

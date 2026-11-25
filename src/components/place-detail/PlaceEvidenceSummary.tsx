@@ -8,6 +8,7 @@ import {
   type EvidenceClass,
 } from "../../lib/evidence-summary";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "../../data/generated/climate-v2";
+import { climateDataBasis } from "../../lib/climate-data-basis";
 import { loadResearchReceipts } from "../../data/generated/research";
 import { groupClaimsByScope, sourcesForClaim } from "../../lib/research/claim-scope";
 import { safeExternalHref } from "../../lib/safe-url";
@@ -87,8 +88,15 @@ export function PlaceEvidenceSummary({
           </span>
         </span>
         <span className="tc-evidence-summary__toggle-meta">
-          <span className="tc-evidence-summary__pill" data-tone="ice">
-            {summary.confidence} confidence
+          <span className="tc-evidence-summary__pill" data-tone="ice" title="How well the written profile is sourced">
+            Sources: {summary.confidence}
+          </span>
+          <span
+            className="tc-evidence-summary__pill"
+            data-tone={place.climateDataConfidence === "high" ? "ice" : "ochre"}
+            title={climateDataBasis(place).detail}
+          >
+            Climate data: {place.climateDataConfidence ?? "pending"}
           </span>
           <span className="tc-evidence-summary__pill" data-tone="sage">
             {summary.completenessLabel} coverage
@@ -120,6 +128,7 @@ export function PlaceEvidenceSummary({
                 {" "}
                 Climate-data confidence ({place.climateDataConfidence ?? "pending"}) reflects grid
                 validation status — grid-only places cannot inherit high climate confidence from citation count.
+                {" "}{climateDataBasis(place).detail}
                 Completeness ({summary.completenessLabel}) only describes optional field coverage
                 — {summary.completenessNote}
               </p>

@@ -27,6 +27,7 @@ import { chromium, type Browser, type BrowserContext, type Page } from "playwrig
 import { PLACES } from "../src/data/places";
 import { runScenarioRanking } from "../src/lib/climate-processor";
 import RECORDS from "../src/data/generated/climate-v2/records.json" with { type: "json" };
+import { assessLiveFit } from "../src/lib/live-fit";
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const args = process.argv.slice(2);
@@ -689,6 +690,31 @@ async function sectionAccuracy(browser: Browser) {
   const heldP = await profileErrs(9001);
   checked += tune.n; errs.push(...tune.out);
   const held = { out: [...heldP.out, ...cardHeld.out, ...cmpHeld.out], n: heldP.n + cardHeld.n + cmpHeld.n };
+  // S8 confidence claims: a visible "High confidence" must not sit on figures that were never
+  //    checked against a station, and the profile must say how its figures were checked.
+  const status = new Map((RECORDS as Array<{ placeId: string; validation: { status: string }; climateDataConfidence?: string }>).map(r => [r.placeId, r]));
+  const overclaim = PLACES.filter(p => assessLiveFit(p).badges.includes("High confidence") && status.get(p.id)?.climateDataConfidence !== "high").map(p => p.id);
+  record("S8a", "places badged 'High confidence' whose climate data is not high (all 226)", overclaim.length, "0", overclaim.length === 0, overclaim.slice(0, 20));
+  const basisErrs = async (seed: number) => {
+    const out: string[] = [];
+    const c5 = await newCtx(browser);
+    for (const p of sample(PLACES, 8, seed)) {
+      const pg = await open(c5, `/?p=${p.id}`);
+      await pg.getByRole("dialog").getByText(/Climate normals/i).first().waitFor({ timeout: 15000 });
+      const t = (await pg.getByRole("dialog").innerText()).replace(/\s+/g, " ");
+      const st = status.get(p.id)?.validation.status;
+      const said = /CLIMATE NORMALS · [^·]+ · (STATION-CHECKED|CHECKED, WITH CAVEATS|GRID ESTIMATE)/i.exec(t)?.[1]?.toLowerCase();
+      const want = st === "validated" ? "station-checked" : st === "reviewed-exception" ? "checked, with caveats" : "grid estimate";
+      if (said !== want) out.push(`${p.id}: figures basis shown "${said ?? "none"}", records say ${st}`);
+      if (status.get(p.id)?.climateDataConfidence !== "high" && /High confidence/.test(t)) out.push(`${p.id}: "High confidence" shown, climate data ${status.get(p.id)?.climateDataConfidence}`);
+      await pg.close();
+    }
+    await c5.close();
+    return out;
+  };
+  const b1 = await basisErrs(11); const b2 = await basisErrs(9001);
+  record("S8b", "profiles that misstate how their figures were checked (8 seeded + 8 HELD-OUT)", `${b1.length} + ${b2.length}`, "0 + 0", b1.length + b2.length === 0, [...b1, ...b2]);
+  for (const e of [...b1, ...b2].slice(0, 6)) console.log(`        ${e}`);
   record("S7a", "figures that differ from the climate records (export of all places; cards, profiles and Compare for 8 seeded places)", `${errs.length} of ${checked}`, "0", errs.length === 0, { errors: errs.slice(0, 60), checkedByKind: kinds });
   console.log(`        checked: ${Object.entries(kinds).map(([k, v]) => `${k} ${v}`).join(" · ")}`);
   record("S7b", "same, cards, profiles and Compare for a HELD-OUT seed (8 places)", `${held.out.length} of ${held.n}`, "0", held.out.length === 0, held.out);
