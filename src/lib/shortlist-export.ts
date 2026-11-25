@@ -116,10 +116,15 @@ function annualSnowIn(place: Place): number | null {
 
 /** Share of possible sunshine: the station series where the place has one, else the solar-resource estimate. */
 function sunshine(place: Place): { pct: number; basis: "station" | "estimated" } | null {
+  const raw = sunshineRaw(place);
+  return raw == null ? null : { pct: raw.basis === "estimated" ? round(raw.pct) : raw.pct, basis: raw.basis };
+}
+
+function sunshineRaw(place: Place): { pct: number; basis: "station" | "estimated" } | null {
   const station = observedSunshinePct(place);
   if (station != null) return { pct: station, basis: "station" };
   const estimate = meanAnnualSunshinePct(place);
-  return estimate == null ? null : { pct: round(estimate), basis: "estimated" };
+  return estimate == null ? null : { pct: estimate, basis: "estimated" };
 }
 
 const summerHighF = (p: Place) => round(cToF(meanSummerHigh(p)), 1);
@@ -178,15 +183,21 @@ const PERIOD_COLUMNS: readonly ExportColumn[] = [
   { csv: "climate_normals_period", json: "climateNormalsPeriod", about: "Years the climate averages cover.", value: () => CLIMATE_NORMALS_PERIOD },
 ];
 
-/** Place minus home base; blank where either side has no value. Present only when a home base is set. */
+/**
+ * Place minus home base; blank where either side has no value. Present only when a home base is set.
+ * Tenths-rounded figures (temperature, precipitation, snow) subtract their exported values, so the
+ * columns add up. Humidity and sunshine export as whole points, so their differences use the
+ * unrounded values: rounding both sides first can put a difference a whole point off
+ * (39.4 − 45.6 is −6, not 39 − 46 = −7).
+ */
 const HOME_COLUMNS: readonly ExportColumn[] = [
   { csv: "home_base", json: "homeBase", about: "The home base the vs-home columns compare against.", value: (_p, env) => env.home?.name ?? null },
   { csv: "summer_high_vs_home_f", json: "summerHighVsHomeF", about: "Summer high minus home's, °F (positive = hotter).", value: vsHome(summerHighF, 1) },
   { csv: "winter_low_vs_home_f", json: "winterLowVsHomeF", about: "Winter low minus home's, °F (positive = milder nights).", value: vsHome(winterLowF, 1) },
   { csv: "annual_precip_vs_home_in", json: "annualPrecipVsHomeIn", about: "Annual precipitation minus home's, inches.", value: vsHome(annualPrecipIn, 1) },
   { csv: "annual_snow_vs_home_in", json: "annualSnowVsHomeIn", about: "Annual snowfall minus home's, inches (blank unless both record snowfall).", value: vsHome(annualSnowIn, 1) },
-  { csv: "humidity_vs_home_pct", json: "humidityVsHomePct", about: "Mean humidity minus home's, percentage points.", value: vsHome(p => orNull(meanAnnualHumidityPct(p)), 0) },
-  { csv: "sunshine_vs_home_pct", json: "sunshineVsHomePct", about: "Sunshine share minus home's, percentage points.", value: vsHome(p => sunshine(p)?.pct ?? null, 0) },
+  { csv: "humidity_vs_home_pct", json: "humidityVsHomePct", about: "Mean humidity minus home's, percentage points.", value: vsHome(meanAnnualHumidityPct, 0) },
+  { csv: "sunshine_vs_home_pct", json: "sunshineVsHomePct", about: "Sunshine share minus home's, percentage points.", value: vsHome(p => sunshineRaw(p)?.pct ?? null, 0) },
   { csv: "livability_vs_home", json: "livabilityVsHome", about: "Livability score minus home's, points.", value: vsHome(p => scoreLivability(p).score, 0) },
 ];
 

@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Figures you can check against the source
+
+- **Exports with a home base:** the humidity and sunshine differences were sometimes a whole point off, because both sides were rounded before subtracting (−7 where the records give −6.2). They now come from the unrounded values.
+
 ### Saved places that stay put
 
 - **Offline:** the atlas now opens with no connection after one visit, as promised. The files of the first visit loaded before the offline helper started and were never kept, so a reload on a plane showed a blank page. A profile you read while online also reopens offline.
