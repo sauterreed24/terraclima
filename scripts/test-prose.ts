@@ -104,7 +104,7 @@ const cases: Case[] = [
   // --- Regression: explicit delta phrasings used by computed score notes ---
   { input: "Annual range 25\u00b0C",
     expect: ["45\u00b0F"], reject: ["77\u00b0F"] },
-  { input: "Night recovery is strong: summer diurnal swing of 14\u00b0C lifts sleep quality.",
+  { input: "Nights cool off well: a summer day-to-night swing of 14\u00b0C helps sleep.",
     expect: ["25\u00b0F"], reject: ["57\u00b0F"] },
   // --- Regression: chinook "raised temperatures by N\u00b0C" must be DELTA ---
   { input: "Chinooks have raised winter temperatures by 20\u201330\u00b0C in hours",

@@ -1,8 +1,51 @@
 import { describe, expect, it } from "vitest";
 import { PLACES, PLACES_BY_ID } from "../../data/places";
-import { LIVE_FIT_PRESETS, assessLiveFit, liveFitFilterPass, rankLiveFit, type LiveFitPresetId } from "../live-fit";
+import { DRY_AIR_MAX_HUMIDITY_PCT, DRY_AIR_MAX_SUMMER_DEW_POINT_C, LIVE_FIT_PRESET_BY_ID, LIVE_FIT_PRESETS, assessLiveFit, meanSummerDewPointC, liveFitFilterPass, rankLiveFit, type LiveFitPresetId } from "../live-fit";
 import { makeClimate, makePlace } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
+import { meanAnnualHumidityPct, meanSummerHumidityPct } from "../climate-metrics";
+
+describe("dry-air must-have", () => {
+  const dryAir = { fitPresets: new Set<LiveFitPresetId>(["dry-air"]) };
+
+  it("fails Mazamitla, a summer-rain highland the profile shows as humid in summer", () => {
+    const place = PLACES_BY_ID["mazamitla-mx"]!;
+    expect(liveFitFilterPass(place, dryAir)).toBe(false);
+    expect(assessLiveFit(place, dryAir).reasons.join(" ")).not.toMatch(/Dry air match/);
+  });
+
+  it.each(["yuma-az", "bishop-ca", "santa-fe-nm"])("passes %s", id => {
+    const place = PLACES_BY_ID[id]!;
+    expect(liveFitFilterPass(place, dryAir)).toBe(true);
+  });
+
+  it("passes exactly the places at or below every stated ceiling", () => {
+    for (const place of PLACES) {
+      const annual = meanAnnualHumidityPct(place);
+      const summer = meanSummerHumidityPct(place);
+      const dewPoint = meanSummerDewPointC(place);
+      const expected = annual != null && summer != null && dewPoint != null &&
+        annual <= DRY_AIR_MAX_HUMIDITY_PCT &&
+        summer <= DRY_AIR_MAX_HUMIDITY_PCT &&
+        dewPoint <= DRY_AIR_MAX_SUMMER_DEW_POINT_C;
+      // Half-point rounding at the pass line is the only tolerated slack.
+      const nearLine = [annual, summer].some(v => v != null && Math.abs(v - DRY_AIR_MAX_HUMIDITY_PCT) < 0.25) ||
+        (dewPoint != null && Math.abs(dewPoint - DRY_AIR_MAX_SUMMER_DEW_POINT_C) < 0.15);
+      if (!nearLine) expect(liveFitFilterPass(place, dryAir), place.id).toBe(expected);
+    }
+  });
+
+  it("does not pass a place with no humidity series", () => {
+    const place = makePlace({ climate: makeClimate({ humidity: undefined }) });
+    expect(liveFitFilterPass(place, dryAir)).toBe(false);
+  });
+
+  it("states the thresholds in its description", () => {
+    const description = LIVE_FIT_PRESET_BY_ID["dry-air"].description;
+    expect(description).toContain(`${DRY_AIR_MAX_HUMIDITY_PCT}%`);
+    expect(description).toContain(`${DRY_AIR_MAX_SUMMER_DEW_POINT_C}°C`);
+  });
+});
 
 describe("live-fit scoring", () => {
   it("keeps presets unique and stable for URL serialization", () => {
@@ -116,7 +159,7 @@ describe("live-fit scoring", () => {
   it("surfaces a caution when lived-reality coverage is missing", () => {
     const unrated = makePlace({ id: "unrated-live-reality", liveSignals: undefined });
     const fit = assessLiveFit(unrated);
-    expect(fit.cautions.some(c => c.includes("Lived indicators are not source-backed yet"))).toBe(true);
+    expect(fit.cautions.some(c => c.includes("There is no sourced cost and access data yet"))).toBe(true);
   });
 
   it("keeps missing lived-reality coverage visible even when other cautions are saturated", () => {
@@ -132,7 +175,7 @@ describe("live-fit scoring", () => {
     });
     const fit = assessLiveFit(saturated);
     expect(fit.cautions.length).toBeLessThanOrEqual(3);
-    expect(fit.cautions.some(c => c.includes("Lived indicators are not source-backed yet"))).toBe(true);
+    expect(fit.cautions.some(c => c.includes("There is no sourced cost and access data yet"))).toBe(true);
   });
 
   it("rewards a longer livable season when peak-season temperatures tie", () => {

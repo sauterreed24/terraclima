@@ -52,6 +52,10 @@ export interface KeyboardShortcutDeps {
    * search is cleared as a final convenience instead of being a no-op.
    */
   searchInputId?: string;
+  /** Number of places queued for Compare; `V` opens Compare when it is above zero. */
+  compareCount?: number;
+  /** Opens Compare (the `V` shortcut, "versus"; `C` already switches to Collections). */
+  openCompare?: () => void;
   /** Called by the Esc-clear-search convenience. Should reset filters.search to "". */
   clearSearch?: () => void;
 }
@@ -168,6 +172,12 @@ export function useKeyboardShortcuts(deps: KeyboardShortcutDeps): void {
         case "t": case "T": d.setView("trips"); break;
         case "c": case "C": d.setView("collections"); break;
         case "l": case "L": d.setView("learn"); break;
+        case "v": case "V": {
+          if (!d.openCompare || (d.compareCount ?? 0) === 0) break;
+          e.preventDefault();
+          d.openCompare();
+          break;
+        }
         case "/": {
           e.preventDefault();
           d.setView("explorer");

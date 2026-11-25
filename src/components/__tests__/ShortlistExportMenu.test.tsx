@@ -5,6 +5,7 @@ import { PLACES } from "../../data/places";
 import { downloadBlobFile } from "../../lib/download-blob";
 import { ShortlistExportMenu } from "../chrome/ShortlistExportMenu";
 
+import { HOME_BASE_STORAGE_KEY } from "../../lib/home-base";
 vi.mock("../../lib/download-blob", () => ({
   downloadBlobFile: vi.fn(),
 }));
@@ -35,15 +36,15 @@ describe("ShortlistExportMenu", () => {
     expect(items[0]).toHaveFocus();
     expect(items.map(item => item.textContent)).toEqual([
       "Visit planBest months, data gaps and what to check, as text",
-      "JSONOne record per place, for scripts",
-      "CSVA table for spreadsheets",
+      "JSONClimate figures and scores per place, for scripts",
+      "CSVClimate figures and scores, as a table for spreadsheets",
       "GeoJSONMap points for GIS and mapping tools",
       "Calendar (.ics)Best months to visit, as calendar events",
     ]);
     expect(items.map(item => item.getAttribute("aria-label"))).toEqual([
       "Visit plan: Best months, data gaps and what to check, as text",
-      "JSON: One record per place, for scripts",
-      "CSV: A table for spreadsheets",
+      "JSON: Climate figures and scores per place, for scripts",
+      "CSV: Climate figures and scores, as a table for spreadsheets",
       "GeoJSON: Map points for GIS and mapping tools",
       "Calendar (.ics): Best months to visit, as calendar events",
     ]);
@@ -108,7 +109,7 @@ describe("ShortlistExportMenu", () => {
     expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
-  it("downloads the Markdown scout plan when chosen", async () => {
+  it("downloads the Markdown visit plan when chosen", async () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
     fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
     fireEvent.click(screen.getByRole("menuitem", { name: /^Visit plan/i }));
@@ -121,8 +122,30 @@ describe("ShortlistExportMenu", () => {
     const [body, filename, mimeType] = vi.mocked(downloadBlobFile).mock.calls[0]!;
     expect(body).toContain("# Terraclima visit plan");
     expect(body).toContain(PLACES[0]!.name);
-    expect(filename).toMatch(/^terraclima-scout-plan-.*\.md$/);
+    expect(filename).toMatch(/^terraclima-visit-plan-.*\.md$/);
     expect(mimeType).toBe("text/markdown");
+  });
+
+  it("exports the CSV with the session's active ranking and home base", async () => {
+    const home = PLACES[3]!;
+    window.localStorage.setItem(HOME_BASE_STORAGE_KEY, JSON.stringify(home.id));
+    window.history.replaceState(null, "", "?r=coolest-summers");
+    try {
+      render(<ShortlistExportMenu places={[PLACES[0]!]} />);
+      fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
+      fireEvent.click(screen.getByRole("menuitem", { name: /^CSV/i }));
+      await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledOnce(), { timeout: 5000 });
+      const [body] = vi.mocked(downloadBlobFile).mock.calls[0]!;
+      const [header, row] = body.replace(/^\uFEFF/, "").split("\r\n");
+      expect(header).toContain("summer_high_f");
+      expect(header).toContain("ranking_rank");
+      expect(header).toContain("summer_high_vs_home_f");
+      expect(row).toContain("Coolest summers");
+      expect(row).toContain(home.name.includes(",") ? `"${home.name}"` : home.name);
+    } finally {
+      window.localStorage.removeItem(HOME_BASE_STORAGE_KEY);
+      window.history.replaceState(null, "", window.location.pathname);
+    }
   });
 
   it("starts the JSON export from pointer down on a format item", async () => {
@@ -180,7 +203,7 @@ describe("ShortlistExportMenu", () => {
 
     fireEvent.click(screen.getByRole("menuitem", { name: /^CSV/i }));
     await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledTimes(1), { timeout: 5000 });
-    expect(vi.mocked(downloadBlobFile).mock.calls[0]![2]).toBe("text/csv");
+    expect(vi.mocked(downloadBlobFile).mock.calls[0]![2]).toBe("text/csv;charset=utf-8");
 
     fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
     fireEvent.click(screen.getByRole("menuitem", { name: /^GeoJSON/i }));

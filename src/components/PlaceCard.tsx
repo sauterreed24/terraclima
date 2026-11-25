@@ -6,12 +6,13 @@ import { observedSunshinePct, precipHeroLabel } from "../lib/hero-glance";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtSnow, useProse } from "../lib/units";
 import { getBioclimCardSignal, getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
-import { getBestMonths, pickVisitWindow, type BestWindow } from "../lib/best-months";
+import { getVisitWindow, type BestWindow } from "../lib/best-months";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
-import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
+import { buildHomeBaseComparison, pickHomeDeltaChips } from "../lib/home-base";
+import { formatHomeDelta } from "./place-detail/home-delta-format";
 import { ArrowRight, Droplets, Home, Leaf, Sun } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
-import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
+import { describeHumanComfort, SCORE_DEFINITIONS } from "../lib/livability-score";
 import { effectiveAccessRemoteness, effectiveHousingPressure } from "../lib/research/lived-indicators";
 import { getPlaceVisualSignature } from "../lib/place-visual-signature";
 import type { RankingProfile } from "../lib/scoring";
@@ -131,9 +132,7 @@ export const PlaceCard = memo(function PlaceCard({
   // residency brief and climate-tourism read lead with.
   const topWindow = useMemo(() => {
     if (compact) return null;
-    const windows = getBestMonths(place, temp);
-    const resonant = resonantWindow ? windows.find(w => w.kind === "good" && w.id === resonantWindow) : undefined;
-    return resonant ?? pickVisitWindow(windows);
+    return getVisitWindow(place, temp, resonantWindow ?? null);
   }, [place, compact, temp, resonantWindow]);
 
   const corpusTeaser = useMemo(() => (compact ? "" : getCorpusCardTeaser(place)), [place, compact]);
@@ -141,10 +140,6 @@ export const PlaceCard = memo(function PlaceCard({
   const liveFit = useMemo(
     () => (compact || !screeningScores ? null : assessLiveFit(place, liveFitFilters)),
     [place, compact, screeningScores, liveFitFilters],
-  );
-  const livabilityResult = useMemo(
-    () => (compact || !screeningScores ? null : scoreLivability(place)),
-    [place, compact, screeningScores],
   );
   const homeComparison = useMemo(
     () => (compact || !homePlace ? null : buildHomeBaseComparison(homePlace, place)),
@@ -275,7 +270,7 @@ export const PlaceCard = memo(function PlaceCard({
             </div>
             <p className="text-caption-strong text-stone mt-1 leading-snug">
               {place.region}
-              <span className="text-stone/70"> · </span>
+              <span className="text-stone"> · </span>
               {place.country === "USA" ? "United States" : place.country === "Canada" ? "Canada" : "Mexico"}
             </p>
             {compact ? (
@@ -285,11 +280,11 @@ export const PlaceCard = memo(function PlaceCard({
               </p>
             ) : (
               <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 text-[11px] text-stone-readable max-w-md">
-                <dt className="text-stone-readable/85">Climate type</dt>
-                <dd className="text-frost truncate">{primaryArchetype?.label ?? "—"}</dd>
-                <dt className="text-stone-readable/85">Elevation</dt>
+                <dt className="text-stone-readable">Climate type</dt>
+                <dd className="text-frost">{primaryArchetype?.label ?? "—"}</dd>
+                <dt className="text-stone-readable">Elevation</dt>
                 <dd><span className="font-mono-num text-frost">{fmtElev(place.elevationM, dist)}</span></dd>
-                <dt className="text-stone-readable/85" title="Köppen class: a standard letter code for climate type, from temperature and rainfall">Köppen</dt>
+                <dt className="text-stone-readable" title="Köppen class: a standard letter code for climate type, from temperature and rainfall">Köppen</dt>
                 <dd className="font-mono-num text-frost">{place.koppen}</dd>
               </dl>
             )}
@@ -323,34 +318,30 @@ export const PlaceCard = memo(function PlaceCard({
         {visualSignature ? (
           <dl
             className="place-card__signature-band"
-            style={{ ["--signature-rgb" as string]: visualSignature.mapAccentRgb }}
+            // Three equal columns: the climate type that used to lead this band
+            // is already in the card header, and four columns clipped the labels.
+            style={{ ["--signature-rgb" as string]: visualSignature.mapAccentRgb, gridTemplateColumns: "repeat(3, minmax(0, 1fr))" }}
             aria-label={`${place.name} place feel`}
           >
-            <div>
-              <dt>Signature</dt>
-              <dd title={prose(visualSignature.primaryBlurb)}>
-                <span className="place-card__signature-value">{visualSignature.primaryLabel}</span>
-              </dd>
-            </div>
-            <div>
-              <dt>Feel</dt>
-              <dd title={`Place-feel score ${visualSignature.feelScore}/100`}>
+            <div style={{ gridColumn: "auto" }}>
+              <dt>{SCORE_DEFINITIONS.placeFeel.label}</dt>
+              <dd style={SIGNATURE_DD_STYLE} title={SCORE_DEFINITIONS.placeFeel.definition}>
                 <span className="place-card__signature-value">{visualSignature.feelBand}</span>
-                <span className="place-card__signature-score font-mono-num">{visualSignature.feelScore}</span>
+                <span className="place-card__signature-score font-mono-num">{visualSignature.feelScore}/100</span>
               </dd>
             </div>
             <div>
-              <dt>Leads with</dt>
-              <dd title={prose(visualSignature.strength.rationale)}>
+              <dt>Strongest</dt>
+              <dd style={SIGNATURE_DD_STYLE} title={`${visualSignature.strength.label}, the strongest part of place feel, 0–100, higher is better. ${prose(visualSignature.strength.rationale)}`}>
                 <span className="place-card__signature-value">{visualSignature.strength.shortLabel}</span>
-                <span className="place-card__signature-score font-mono-num">{Math.round(visualSignature.strength.value)}</span>
+                <span className="place-card__signature-score font-mono-num">{Math.round(visualSignature.strength.value)}/100</span>
               </dd>
             </div>
             <div>
-              <dt>Verify</dt>
-              <dd title={prose(visualSignature.verify.rationale)}>
+              <dt>Weakest</dt>
+              <dd style={SIGNATURE_DD_STYLE} title={`${visualSignature.verify.label}, the weakest part of place feel, 0–100, higher is better. ${prose(visualSignature.verify.rationale)}`}>
                 <span className="place-card__signature-value">{visualSignature.verify.shortLabel}</span>
-                <span className="place-card__signature-score font-mono-num">{Math.round(visualSignature.verify.value)}</span>
+                <span className="place-card__signature-score font-mono-num">{Math.round(visualSignature.verify.value)}/100</span>
               </dd>
             </div>
           </dl>
@@ -371,7 +362,7 @@ export const PlaceCard = memo(function PlaceCard({
             <Stat label="Summer high" value={fmtTemp(summerHighC, temp)} tone="ochre" />
             <Stat label="Winter low" value={fmtTemp(janLowC, temp)} tone="glacier" />
             <Stat label={precipHeroLabel(place)} value={fmtPrecip(annualP, dist)} tone="sage" />
-            <Stat label="Uniqueness" value={place.scores.microclimateUniqueness.toString()} tone="ice" />
+            <Stat label={SCORE_DEFINITIONS.uniqueness.label} value={`${place.scores.microclimateUniqueness}/100`} tone="ice" title={SCORE_DEFINITIONS.uniqueness.definition} />
           </div>
 
           {/* Extended stats row: sunshine, humidity, frost-free days */}
@@ -381,28 +372,28 @@ export const PlaceCard = memo(function PlaceCard({
                 <span className="place-card__ext-stat" title="Share of daylight hours with sun, averaged over the year">
                   <Sun className="w-3 h-3 shrink-0" aria-hidden style={{ color: "#c4a020" }} />
                   <span className="font-mono-num">{sunshinePct}%</span>
-                  <span className="text-stone-readable/60">sunshine</span>
+                  <span className="text-stone-readable">sunshine</span>
                 </span>
               )}
               {avgHumidity != null && (
                 <span className="place-card__ext-stat" title="Average relative humidity over the year">
                   <Droplets className="w-3 h-3 shrink-0" aria-hidden style={{ color: "#1a8fa8" }} />
                   <span className="font-mono-num">{avgHumidity}%</span>
-                  <span className="text-stone-readable/60">humidity</span>
+                  <span className="text-stone-readable">humidity</span>
                 </span>
               )}
               {frostFreeDays != null && (
                 <span className="place-card__ext-stat" title="Approximate days a year between the last spring frost and the first fall frost">
                   <Leaf className="w-3 h-3 shrink-0" aria-hidden style={{ color: "#3d8f55" }} />
                   <span className="font-mono-num">{frostFreeDays}</span>
-                  <span className="text-stone-readable/60">frost-free days</span>
+                  <span className="text-stone-readable">frost-free days</span>
                 </span>
               )}
             </div>
           )}
 
           {bioclimSignal ? (
-            <div className="place-card__bioclim-row" aria-label="Aridity and continentality class">
+            <div className="place-card__bioclim-row" aria-label="Moisture and seasonal temperature swing">
               <span className="chip place-card__bioclim-chip" data-tone={bioclimSignal.tone} title={prose(bioclimSignal.title)}>
                 <Droplets className="w-3 h-3 shrink-0" aria-hidden />
                 <span>{bioclimSignal.label}</span>
@@ -427,9 +418,9 @@ export const PlaceCard = memo(function PlaceCard({
                   <strong>{MONTH_NAMES[referenceMonth]}</strong>
                   {" "}
                   <span className="font-mono-num">{fmtTemp(monthHigh, temp)}</span>
-                  <span className="text-stone-readable/70"> highs · </span>
+                  <span className="text-stone-readable"> highs · </span>
                   <span className="font-mono-num">{fmtPrecip(monthPrecip, dist)}</span>
-                  {monthSnow && monthSnow > 0.5 ? <span className="text-stone-readable/70"> · {fmtSnow(monthSnow, dist)} snow</span> : null}
+                  {monthSnow && monthSnow > 0.5 ? <span className="text-stone-readable"> · {fmtSnow(monthSnow, dist)} snow</span> : null}
                 </span>
               </div>
             );
@@ -471,7 +462,7 @@ export const PlaceCard = memo(function PlaceCard({
                         title={`${signal.label}: ${signal.descriptor} than home. ${signal.basis}`}
                       >
                         {signal.shortLabel}{" "}
-                        <span className="font-mono-num">{formatHomeDeltaValue(signal, temp, dist)}</span>
+                        <span className="font-mono-num">{formatHomeDelta(signal, temp, dist)}</span>
                       </span>
                     ))
                   );
@@ -481,39 +472,20 @@ export const PlaceCard = memo(function PlaceCard({
           ) : null}
         </div>
 
-        {/* Livability score bar */}
-        {!compact && livabilityResult ? (
-          <div className="place-card__livability-bar mt-3">
-            <div className="flex items-center justify-between gap-2 mb-1">
-              <span className="text-caption">Livability</span>
-              <span className="font-mono-num text-xs text-frost">{Math.round(livabilityResult.score)}<span className="text-stone-readable/60">/100</span></span>
+        {/* One living score per card. Livability sat here as a second bar a few
+            points from Live-here fit; it now lives in the profile's
+            "Livability breakdown", and the card keeps only the fit score with
+            its cost and access figures. */}
+        {liveFit ? (
+          <div className="place-card__live-fit-panel mt-3 rounded-lg px-3 py-2" title={SCORE_DEFINITIONS.liveFit.definition}>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-caption">{SCORE_DEFINITIONS.liveFit.label}</span>
+              <span className="font-mono-num text-sm text-ice">{liveFit.score}/100</span>
             </div>
-            <div className="place-card__livability-bar__track">
-              <div
-                className="place-card__livability-bar__fill"
-                style={{ width: `${livabilityResult.score}%` }}
-                role="progressbar"
-                aria-valuenow={Math.round(livabilityResult.score)}
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-label={`Livability score: ${Math.round(livabilityResult.score)}/100`}
-              />
-            </div>
-            {livabilityResult.components.length > 0 && (
-              <div className="place-card__livability-components mt-1.5">
-                {livabilityResult.components.slice(0, 3).map(c => (
-                  <span key={c.key} className="place-card__livability-component" title={`${c.label}: ${Math.round(c.value)}/100`}>
-                    <span
-                      className="place-card__livability-component__dot"
-                      style={{ background: c.value >= 70 ? "#3d8f55" : c.value >= 50 ? "#e89b20" : "#e05030" }}
-                      aria-hidden
-                    />
-                    {c.label}
-                    <span className="font-mono-num text-frost">{Math.round(c.value)}</span>
-                  </span>
-                ))}
-              </div>
-            )}
+            <p className="text-[11px] leading-snug text-frost mt-1">{prose(liveFit.reasons[0] ?? "No single strength stands out.")}</p>
+            {liveFit.cautions.length > 0 ? (
+              <p className="text-[10px] leading-snug text-stone-readable mt-1">Watch: {prose(liveFit.cautions[0])}</p>
+            ) : null}
             {comfortRead ? (
               <p className="text-[10px] leading-snug text-stone-readable mt-1.5 line-clamp-2" title={prose(comfortRead.summary)}>
                 {prose(comfortRead.summary)}
@@ -529,7 +501,7 @@ export const PlaceCard = memo(function PlaceCard({
                   if (value == null) return null;
                   const tone = value <= 35 ? "#3d8f55" : value <= 60 ? "#e89b20" : "#e05030";
                   return (
-                    <span key={axis.key} className="place-card__livability-component" title={`${axis.label} difficulty (0 easy, 100 severe): ${Math.round(value)}/100${place.liveSignals?.note ? ` · ${prose(place.liveSignals.note)}` : ""}`}>
+                    <span key={axis.key} className="place-card__livability-component" title={`${axis.label} difficulty, 0–100, lower is easier: ${Math.round(value)}/100${place.liveSignals?.note ? ` · ${prose(place.liveSignals.note)}` : ""}`}>
                       <span className="place-card__livability-component__dot" style={{ background: tone }} aria-hidden />
                       {axis.label}
                       <span className="font-mono-num text-frost">{Math.round(value)}</span>
@@ -537,19 +509,6 @@ export const PlaceCard = memo(function PlaceCard({
                   );
                 })}
               </div>
-            ) : null}
-          </div>
-        ) : null}
-
-        {liveFit ? (
-          <div className="place-card__live-fit-panel mt-3 rounded-lg px-3 py-2">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-caption">Live-here fit</span>
-              <span className="font-mono-num text-sm text-ice">{liveFit.score}/100</span>
-            </div>
-            <p className="text-[11px] leading-snug text-frost mt-1">{prose(liveFit.reasons[0] ?? "No single strength stands out.")}</p>
-            {liveFit.cautions.length > 0 ? (
-              <p className="text-[10px] leading-snug text-stone-readable mt-1">Watch: {prose(liveFit.cautions[0])}</p>
             ) : null}
           </div>
         ) : null}
@@ -616,9 +575,12 @@ export const PlaceCard = memo(function PlaceCard({
   );
 });
 
-function Stat({ label, value, tone }: { label: string; value: string; tone: string }) {
+/** Lets a score chip drop under its label instead of clipping it on a narrow card. */
+const SIGNATURE_DD_STYLE = { flexWrap: "wrap", rowGap: "0.15rem", whiteSpace: "normal" } as const;
+
+function Stat({ label, value, tone, title }: { label: string; value: string; tone: string; title?: string }) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col" title={title}>
       <span className="text-caption">{label}</span>
       <span className="font-mono-num text-sm place-card__stat-value" data-tone={tone}>{value}</span>
     </div>

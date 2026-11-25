@@ -78,15 +78,15 @@ describe("compare finalist verdict", () => {
     expect(read?.nextAction).toContain("Open Broad Town's profile first");
     expect(read?.scoutSequence.map(step => step.label)).toEqual(["Start here", "Counterweight", "Risk check"]);
     expect(read?.scoutSequence.map(step => step.place.name)).toEqual(["Broad Town", "Quiet Basin", "Heat Bluff"]);
-    expect(read?.scoutSequence[0].visitWindow).toContain("Gardening window");
-    expect(read?.scoutSequence[0].why).toContain("Highest overall score");
+    expect(read?.scoutSequence[0].visitWindow).toContain("Outdoor comfort");
+    expect(read?.scoutSequence[0].why).toContain("Highest priority score");
     expect(read?.scoutSequence[2].caveat).toContain("Overall risk: 42/100");
     expect(read?.verificationChecklist.map(item => item.label)).toEqual([
       "When to visit",
       "Tradeoff check",
       "Hazard check",
       "Daily life",
-      "Source gap",
+      "Sources to check",
     ]);
     expect(read?.verificationChecklist[0]).toMatchObject({
       place: broad.place,
@@ -102,7 +102,7 @@ describe("compare finalist verdict", () => {
     });
     expect(read?.verificationChecklist[3].proof).toContain("70/100 cost-and-access score");
     expect(read?.verificationChecklist[4].proof).toContain("second web source");
-    expect(read?.lanes.map(lane => lane.label)).toEqual(["Broadest fit", "Lowest risk", "Most comfortable", "Best for gardening"]);
+    expect(read?.lanes.map(lane => lane.label)).toEqual(["Top priority score", "Lowest risk", "Most comfortable", "Best for gardening"]);
     expect(read?.tableRows.map(row => row.role)).toEqual(["Start here", "Counterweight", "Risk check"]);
     expect(read?.tableRows.map(row => row.place.name)).toEqual(["Broad Town", "Quiet Basin", "Heat Bluff"]);
     expect(read?.tableRows[0]).toMatchObject({

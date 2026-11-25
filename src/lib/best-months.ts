@@ -250,3 +250,24 @@ export function pickVisitWindow(windows: readonly BestWindow[]): BestWindow | nu
   const order: BestWindow["id"][] = ["outdoor", "dry", "crisp", "snow", "garden"];
   return order.map(id => good.find(w => w.id === id)).find((w): w is BestWindow => Boolean(w)) ?? good[0] ?? null;
 }
+
+/**
+ * The one answer to "when is the best time to visit?" for a place. Every
+ * surface (card, profile brief, tourism read, Compare, the visit-next step)
+ * calls this, so they cannot disagree. `resonant` lets a ranking that is
+ * about a specific window (for example gardening) lead with that window.
+ */
+export function getVisitWindow(
+  place: Place,
+  displayTemp: TempUnit = "F",
+  resonant: BestWindow["id"] | null = null,
+): BestWindow | null {
+  const windows = getBestMonths(place, displayTemp);
+  const match = resonant ? windows.find(w => w.kind === "good" && w.id === resonant) : undefined;
+  return match ?? pickVisitWindow(windows);
+}
+
+/** One spelling for the visit window wherever it is written as a single line. */
+export function formatVisitWindow(window: BestWindow): string {
+  return `${window.label}: ${window.range}`;
+}

@@ -1,4 +1,5 @@
 import type { RankingProfile } from "./scoring";
+import { RANKING_MONTH_NAMES, isMonthIndex } from "./ranking-calendar";
 
 /** Concise first-viewport explanation for the existing comfort ranking. */
 export const MOST_COMFORTABLE_LENS_SUMMARY =
@@ -41,3 +42,15 @@ export const RANKING_OPTIONS: { id: RankingProfile; label: string }[] = [
 
 /** Ids in UI order — use for `localStorage` validation and equality checks. */
 export const ALL_RANKING_PROFILES: readonly RankingProfile[] = RANKING_OPTIONS.map(o => o.id);
+
+/**
+ * Visible label for a ranking. `best-this-month` names its month ("Best in
+ * February") whenever the caller knows which month the ranking is reading;
+ * the static "Best this month" remains the fallback for month-less contexts.
+ */
+export function rankingOptionLabel(id: RankingProfile, referenceMonth?: number | null): string {
+  if (id === "best-this-month" && isMonthIndex(referenceMonth)) {
+    return `Best in ${RANKING_MONTH_NAMES[referenceMonth]}`;
+  }
+  return RANKING_OPTIONS.find(option => option.id === id)?.label ?? id.replace(/-/g, " ");
+}

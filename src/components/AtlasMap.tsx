@@ -69,6 +69,7 @@ import {
   type AtlasClusterItem,
 } from "../lib/atlas-map-cluster";
 import { layoutAtlasMapPins } from "../lib/atlas-map-pin-layout";
+import { separateClustersFromPins } from "../lib/atlas-map-cluster-separation";
 import { defaultRankBadgeOffset, layoutRankBadges } from "../lib/atlas-map-rank-badges";
 import { placeMapSecondaryLine, truncateMapTitle } from "../lib/atlas-map-label";
 import { computePinLabelModes, type MapPinLabelMode, type MapScreenRect } from "../lib/atlas-map-label-visibility";
@@ -131,6 +132,56 @@ const COUNTRY_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [
   [-56, -26], [56, -26], [-56, 26], [56, 26],
   [0, -48], [0, 48], [-112, -12], [112, -12], [-112, 14], [112, 14],
 ];
+/** Small slides tried around each alternate (non-primary) country seat. */
+const COUNTRY_LABEL_SEAT_NUDGES: readonly (readonly [number, number])[] = (() => {
+  const out: [number, number][] = [];
+  for (let dx = -40; dx <= 40; dx += 8) {
+    for (let dy = -24; dy <= 24; dy += 8) out.push([dx, dy]);
+  }
+  // Nearest slides first; ties prefer staying on the seat's own line.
+  return out.sort((a, b) => Math.hypot(a[0], a[1] * 1.5) - Math.hypot(b[0], b[1] * 1.5));
+})();
+/**
+ * Country-name seats in preference order (lon/lat). The first is the classic
+ * centred seat; the rest sit over quieter parts of the country so a name can
+ * step out from under a pin-dense region instead of disappearing.
+ */
+const COUNTRY_LABEL_SEATS: readonly {
+  id: string;
+  label: string;
+  /** Scales how far the name may slide from a seat (small countries: less). */
+  slide: number;
+  /** Whether the wide classic slides around the primary seat stay on land. */
+  wideSlides: boolean;
+  seats: readonly (readonly [number, number])[];
+}[] = [
+  {
+    id: "usa",
+    label: "UNITED STATES",
+    slide: 1,
+    wideSlides: true,
+    seats: [[-98.0, 40.5], [-100.5, 46.2], [-99.5, 43.5], [-87.0, 33.2], [-100.0, 36.5], [-92.5, 38.5], [-106.5, 43.2], [-98.5, 33.0]],
+  },
+  {
+    id: "canada",
+    label: "CANADA",
+    slide: 1,
+    wideSlides: true,
+    seats: [[-98.0, 58.0], [-108.0, 56.5], [-88.0, 52.5], [-112.0, 61.5], [-74.0, 53.5]],
+  },
+  {
+    id: "mexico",
+    label: "MÉXICO",
+    slide: 0.45,
+    wideSlides: false,
+    seats: [[-102.0, 23.5], [-105.0, 27.6], [-103.3, 25.6], [-106.8, 29.6], [-100.5, 21.6], [-99.6, 26.0]],
+  },
+];
+/** Tighter fallback setting for a country name: less tracking, one size down. */
+const COUNTRY_LABEL_COMPACT_SCALE = 0.92;
+const COUNTRY_LABEL_COMPACT_TRACKING_EM = 0.16;
+/** A country name may sit partly behind pins only up to this share of its length. */
+const COUNTRY_LABEL_MAX_COVER = 0.3;
 const OCEAN_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0], [0, -22], [0, 22], [-48, 0], [48, 0]];
 const SEA_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0], [0, -13], [0, 13]];
 const STATIC_LABEL_CANDIDATES: readonly (readonly [number, number])[] = [[0, 0]];
@@ -397,7 +448,7 @@ export const AtlasMap = memo(function AtlasMap({
   featuredIds = [],
   featuredLabel,
   onEmptyRecovery,
-  emptyRecoveryLabel = "Reset Explorer",
+  emptyRecoveryLabel = "Reset the atlas",
   bookmarkIds,
   onToggleBookmark,
   onMapEngaged,
@@ -443,6 +494,10 @@ export const AtlasMap = memo(function AtlasMap({
   const legendToggleRef = useRef<HTMLButtonElement>(null);
   const legendPanelRef = useRef<HTMLDialogElement>(null);
   const legendCloseBtnRef = useRef<HTMLButtonElement>(null);
+  const controlColumnRef = useRef<HTMLDivElement>(null);
+  const keyPopoverRef = useRef<HTMLDivElement>(null);
+  /** Extra right inset (px) that opens the desktop Key beside the control column on short stages. */
+  const [keyPopoverInset, setKeyPopoverInset] = useState(0);
   const [dims, setDims] = useState({ width: widthProp, height: heightProp, measured: false });
 
   useLayoutEffect(() => {
@@ -908,15 +963,20 @@ export const AtlasMap = memo(function AtlasMap({
   // zoom level. Positions projected once; the parent pan/zoom `<g>` moves
   // them so they always stay tied to the land.
   const countryLabels = useMemo(() => {
-    const anchors: { id: string; label: string; lonLat: [number, number] }[] = [
-      { id: "usa",    label: "UNITED STATES", lonLat: [-98.0, 40.5] },
-      { id: "canada", label: "CANADA",        lonLat: [-98.0, 58.0] },
-      { id: "mexico", label: "MÉXICO",        lonLat: [-102.0, 23.5] },
-    ];
-    const out: { id: string; label: string; x: number; y: number }[] = [];
-    for (const a of anchors) {
-      const xy = projection(a.lonLat);
-      if (xy) out.push({ id: a.id, label: a.label, x: xy[0], y: xy[1] });
+    const out: {
+      id: string; label: string; x: number; y: number; slide: number; wideSlides: boolean;
+      altSeats: { dx: number; dy: number }[];
+    }[] = [];
+    for (const a of COUNTRY_LABEL_SEATS) {
+      const xy = projection(a.seats[0] as [number, number]);
+      if (!xy) continue;
+      // Alternate seats as map-unit offsets from the primary anchor.
+      const altSeats: { dx: number; dy: number }[] = [{ dx: 0, dy: 0 }];
+      for (const seat of a.seats.slice(1)) {
+        const alt = projection(seat as [number, number]);
+        if (alt) altSeats.push({ dx: alt[0] - xy[0], dy: alt[1] - xy[1] });
+      }
+      out.push({ id: a.id, label: a.label, x: xy[0], y: xy[1], slide: a.slide, wideSlides: a.wideSlides, altSeats });
     }
     return out;
   }, [projection]);
@@ -1086,7 +1146,7 @@ export const AtlasMap = memo(function AtlasMap({
     }),
     [clusterSourcePoints, clusterEnabled, settledView, clusterRadiusPx, protectedClusterIds],
   );
-  const clusterItems = useMemo(
+  const rawClusterItems = useMemo(
     () => renderItems.filter((item): item is AtlasClusterItem<{ place: Place; x: number; y: number; id: string }> => item.kind === "cluster"),
     [renderItems],
   );
@@ -1118,7 +1178,7 @@ export const AtlasMap = memo(function AtlasMap({
     });
   }, [markerPointsAll, coarsePointer, settledView, width, height, selectedId]);
 
-  const laidOutMarkerPoints = useMemo<RenderedClusterPoint[]>(() => {
+  const basePinLayout = useMemo(() => {
     const baseMaxOffset = coarsePointer ? MOBILE_PIN_MAX_OFFSET_PX : DESKTOP_PIN_MAX_OFFSET_PX;
     // Mid-zoom is where highland stacks hurt most: give the collision pass more
     // room once clustering has released pins but labels still compete.
@@ -1139,7 +1199,7 @@ export const AtlasMap = memo(function AtlasMap({
       },
     );
 
-    const basePins = layout.pins.map(pin => ({
+    return layout.pins.map(pin => ({
       ...pin.point,
       x: pin.x,
       y: pin.y,
@@ -1151,6 +1211,41 @@ export const AtlasMap = memo(function AtlasMap({
       screenX: pin.screenX,
       screenY: pin.screenY,
     }));
+  }, [markerPoints, settledView, coarsePointer, selectedId, featuredRankById]);
+
+  // Featured and selected places are drawn on their own (and are excluded
+  // from every cluster's count), but a neighbouring cluster's centroid can
+  // still land under the glyph and hide its number. Slide the cluster badge
+  // clear — the pin keeps its true seat. Settled-view work only.
+  const clusterItems = useMemo(() => {
+    if (rawClusterItems.length === 0) return rawClusterItems;
+    const pins = basePinLayout.flatMap(pt => {
+      const rank = featuredRankById.get(pt.place.id);
+      const isSelected = pt.place.id === selectedId;
+      if (!rank && !isSelected) return [];
+      return [{ x: pt.x, y: pt.y, r: markerPinRadius(pt.place, isSelected, false) * 1.45 + 2.5 }];
+    });
+    if (pins.length === 0) return rawClusterItems;
+    const moved = separateClustersFromPins(
+      rawClusterItems.map(cluster => ({
+        id: cluster.id,
+        x: cluster.x,
+        y: cluster.y,
+        r: clusterVisualForCount(cluster.points.length).innerR,
+      })),
+      pins,
+      settledView.k,
+      { gapPx: 3, maxOffsetPx: coarsePointer ? 34 : 30 },
+    );
+    if (moved.size === 0) return rawClusterItems;
+    return rawClusterItems.map(cluster => {
+      const seat = moved.get(cluster.id);
+      return seat ? { ...cluster, x: seat.x, y: seat.y } : cluster;
+    });
+  }, [rawClusterItems, basePinLayout, featuredRankById, selectedId, settledView.k, coarsePointer]);
+
+  const laidOutMarkerPoints = useMemo<RenderedClusterPoint[]>(() => {
+    const basePins = basePinLayout;
 
     const featuredForBadges = basePins
       .map(pt => {
@@ -1172,6 +1267,13 @@ export const AtlasMap = memo(function AtlasMap({
       layoutRankBadges(featuredForBadges, {
         minSpacingPx: coarsePointer ? 22 : 20,
         proximityPx: coarsePointer ? 64 : 56,
+        // Rank badges also keep off the neighbouring cluster counts.
+        obstacles: clusterItems.map(cluster => ({
+          x: cluster.x * settledView.k + settledView.x,
+          y: cluster.y * settledView.k + settledView.y,
+          r: clusterVisualForCount(cluster.points.length).innerR,
+        })),
+        badgeRadiusPx: 10,
       }).map(badge => [badge.id, badge]),
     );
 
@@ -1184,7 +1286,7 @@ export const AtlasMap = memo(function AtlasMap({
         badgeFanned: badge?.fanned,
       };
     });
-  }, [markerPoints, settledView, coarsePointer, selectedId, featuredRankById]);
+  }, [basePinLayout, clusterItems, settledView, coarsePointer, featuredRankById]);
 
   const pinLabelModes = useMemo(
     () => computePinLabelModes(laidOutMarkerPoints, settledView, selectedId, hoverId, {
@@ -1246,10 +1348,15 @@ export const AtlasMap = memo(function AtlasMap({
     const k = settledView.k;
     const obstacles: MapLabelObstacle[] = [];
     for (const cluster of clusterItems) {
-      obstacles.push({ x: cluster.x, y: cluster.y, r: clusterVisualForCount(cluster.points.length).outerR + 4 });
+      const visual = clusterVisualForCount(cluster.points.length);
+      obstacles.push({ x: cluster.x, y: cluster.y, r: visual.outerR + 4, solidR: visual.innerR + 1 });
     }
     for (const pt of markerRenderOrder) {
-      obstacles.push({ x: pt.x, y: pt.y, r: featuredRankById.has(pt.place.id) ? 24 : 12 });
+      const featured = featuredRankById.has(pt.place.id);
+      obstacles.push({ x: pt.x, y: pt.y, r: featured ? 24 : 12, solidR: featured ? 13 : 8 });
+      if (featured && pt.badgeDx != null && pt.badgeDy != null) {
+        obstacles.push({ x: pt.x + pt.badgeDx / k, y: pt.y + pt.badgeDy / k, r: 11, solidR: 10 });
+      }
     }
     // Seats may only wander as far as the land is wide on screen, so a
     // country name never drifts out to sea on a phone-sized map.
@@ -1261,15 +1368,34 @@ export const AtlasMap = memo(function AtlasMap({
     const requests: MapLabelRequest[] = [];
     for (const cl of countryLabels) {
       const labelW = estimateMapLabelWidth(cl.label, COUNTRY_LABEL_FONT_PX * letterScale, COUNTRY_LABEL_TRACKING_EM, 0.7);
+      const compactW = estimateMapLabelWidth(
+        cl.label,
+        COUNTRY_LABEL_FONT_PX * letterScale * COUNTRY_LABEL_COMPACT_SCALE,
+        COUNTRY_LABEL_COMPACT_TRACKING_EM,
+        0.7,
+      );
       // A name wider than its country has no honest seat — leave it out.
-      const fits = labelW <= landSpanPx * (cl.id === "mexico" ? 0.5 : 0.95);
+      const roomPx = landSpanPx * (cl.id === "mexico" ? 0.5 : 0.95);
+      // Classic seat and its slides first, then the quieter alternate seats
+      // (each with a few short slides), all as pixel offsets from the anchor.
+      const candidates: (readonly [number, number])[] = cl.wideSlides
+        ? COUNTRY_LABEL_CANDIDATES.map(([dx, dy]) => [dx * reach, dy * reach] as const)
+        : [];
+      const slide = reach * cl.slide;
+      for (const seat of cl.altSeats) {
+        for (const [dx, dy] of COUNTRY_LABEL_SEAT_NUDGES) {
+          candidates.push([seat.dx * k + dx * slide, seat.dy * k + dy * slide] as const);
+        }
+      }
       requests.push({
         id: `country:${cl.id}`,
         x: cl.x,
         y: cl.y,
-        halfW: fits ? labelW / 2 : Number.POSITIVE_INFINITY,
+        halfW: labelW <= roomPx ? labelW / 2 : Number.POSITIVE_INFINITY,
+        compactHalfW: compactW <= roomPx ? compactW / 2 : undefined,
+        maxCover: COUNTRY_LABEL_MAX_COVER,
         halfH: 8,
-        candidates: COUNTRY_LABEL_CANDIDATES.map(([dx, dy]) => [dx * reach, dy * reach] as const),
+        candidates,
       });
     }
     for (const label of physicalLabels) {
@@ -2008,6 +2134,23 @@ export const AtlasMap = memo(function AtlasMap({
     window.addEventListener("keydown", onKey, true);
     return () => window.removeEventListener("keydown", onKey, true);
   }, [legendOpen, closeLegend]);
+  // On a short stage the Key (anchored above its button, bottom-right) would
+  // grow up over the zoom / fit column. When the two would meet, open the Key
+  // beside the column instead so every control stays visible and clickable;
+  // the Key keeps its own scroll. Measured only while the Key is open.
+  const showRetryBorders = Boolean(topoError && !topo);
+  useLayoutEffect(() => {
+    if (!legendOpen || coarsePointer) {
+      setKeyPopoverInset(0);
+      return;
+    }
+    const column = controlColumnRef.current;
+    const popover = keyPopoverRef.current;
+    if (!column || !popover) return;
+    const columnBottom = column.offsetTop + column.offsetHeight;
+    const collides = column.offsetHeight > 0 && popover.offsetTop < columnBottom + 8;
+    setKeyPopoverInset(collides ? Math.round(column.offsetWidth) + 8 : 0);
+  }, [legendOpen, coarsePointer, width, height, showScrollEscape, showRetryBorders]);
   const mapHasPins = pts.length > 0;
   const canZoomIn = view.k < MAX_ZOOM - 1e-3;
   const canZoomOut = view.k > MIN_ZOOM + 1e-3;
@@ -2480,6 +2623,11 @@ export const AtlasMap = memo(function AtlasMap({
           <g pointerEvents="none" opacity={Math.max(0, Math.min(0.9, 1.15 - view.k * 0.42))}>
             {countryLabels.map(cl => {
               const seat = backgroundLabelPlacement.get(`country:${cl.id}`);
+              // Clear seat: full strength. Partly behind pins (within the
+              // cover budget): dimmed so the pins read first. Otherwise hidden.
+              const seatOpacity = !seat || seat.clear ? 1 : seat.cover != null ? 0.72 : 0;
+              const fontPx = (smallMapLettering ? COUNTRY_LABEL_FONT_PX * 0.88 : COUNTRY_LABEL_FONT_PX)
+                * (seat?.compact ? COUNTRY_LABEL_COMPACT_SCALE : 1);
               return (
               <g
                 key={cl.id}
@@ -2487,7 +2635,8 @@ export const AtlasMap = memo(function AtlasMap({
                 data-atlas-inv-scale-host=""
                 data-country-label={cl.id}
                 className="map-country-label"
-                style={{ opacity: seat && !seat.clear ? 0 : 1 }}
+                data-label-seat={seatOpacity === 0 ? "hidden" : seat && !seat.clear ? "partial" : "clear"}
+                style={{ opacity: seatOpacity }}
               >
                 <g data-atlas-inv-scale="" transform={`scale(${1 / view.k})`}>
                 <text
@@ -2495,8 +2644,8 @@ export const AtlasMap = memo(function AtlasMap({
                   y={seat?.dy ?? 0}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fontSize={smallMapLettering ? COUNTRY_LABEL_FONT_PX * 0.88 : COUNTRY_LABEL_FONT_PX}
-                  letterSpacing={`${COUNTRY_LABEL_TRACKING_EM}em`}
+                  fontSize={fontPx}
+                  letterSpacing={`${seat?.compact ? COUNTRY_LABEL_COMPACT_TRACKING_EM : COUNTRY_LABEL_TRACKING_EM}em`}
                   fontWeight={600}
                   fill="rgba(236,244,252,0.8)"
                   fontFamily="var(--font-sans), system-ui, sans-serif"
@@ -2803,7 +2952,7 @@ export const AtlasMap = memo(function AtlasMap({
       {/* Zoom + interaction controls — all map-control affordances grouped in the
           top-right column. Scroll-escape toggle leads when touch can trap page
           scroll (coarse primary or hybrid fine+touch). */}
-      <div data-map-hud="" className="absolute top-3 right-3 flex flex-col items-end gap-1.5 z-[3]">
+      <div ref={controlColumnRef} data-map-hud="" className="absolute top-3 right-3 flex flex-col items-end gap-1.5 z-[3]">
         {showScrollEscape ? (
           <button
             type="button"
@@ -2872,7 +3021,12 @@ export const AtlasMap = memo(function AtlasMap({
         role="group"
         id={legendPanelId}
         aria-label="Map key"
+        ref={keyPopoverRef}
+        data-key-placement={keyPopoverInset > 0 ? "beside-controls" : "corner"}
         className="map-key-popover map-chrome-panel absolute bottom-16 right-3 z-[4] max-w-[18.5rem] px-3 py-2.5 pointer-events-auto text-[10px] leading-relaxed space-y-2.5"
+        style={keyPopoverInset > 0
+          ? { right: `calc(0.75rem + ${keyPopoverInset}px)`, maxWidth: `min(18.5rem, calc(100% - 1.5rem - ${keyPopoverInset}px))` }
+          : undefined}
       >
         <div className="flex items-center justify-between gap-2">
           <div className="text-[9px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Map key</div>

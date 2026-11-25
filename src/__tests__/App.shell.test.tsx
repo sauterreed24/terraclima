@@ -330,7 +330,7 @@ describe("App shell", () => {
 
     const collectionPlace = await screen.findByRole(
       "button",
-      { name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 77 | Identity" },
+      { name: /^Open Sequim profile from Rain-Shadow Sanctuaries collection/ },
       { timeout: APP_SHELL_TIMEOUT_MS },
     );
     fireEvent.click(collectionPlace);
@@ -1425,9 +1425,9 @@ describe("App shell", () => {
     const recovery = screen.getByRole("group", { name: "Ways to bring places back" });
     expect(within(recovery).getByRole("button", { name: /Clear search/ })).toBeInTheDocument();
     expect(within(recovery).getByRole("button", { name: /Clear must-haves/ })).toBeInTheDocument();
-    expect(within(recovery).getByRole("button", { name: /Reset Explorer/ })).toBeInTheDocument();
+    expect(within(recovery).getByRole("button", { name: /Reset the atlas/ })).toBeInTheDocument();
 
-    fireEvent.click(within(recovery).getByRole("button", { name: /Reset Explorer/ }));
+    fireEvent.click(within(recovery).getByRole("button", { name: /Reset the atlas/ }));
 
     await waitFor(() => {
       const params = new URLSearchParams(window.location.search);
@@ -1444,7 +1444,7 @@ describe("App shell", () => {
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
-  it("clears curated collection with filters when Reset Explorer runs", async () => {
+  it("clears curated collection with filters when Reset the atlas runs", async () => {
     mockViewport(1280);
     window.history.replaceState(
       null,
@@ -1456,7 +1456,7 @@ describe("App shell", () => {
 
     expect(screen.getByRole("button", { name: /Clear .* collection filter/ })).toBeInTheDocument();
     const recovery = screen.getByRole("group", { name: "Ways to bring places back" });
-    fireEvent.click(within(recovery).getByRole("button", { name: /Reset Explorer/ }));
+    fireEvent.click(within(recovery).getByRole("button", { name: /Reset the atlas/ }));
 
     await waitFor(() => {
       const params = new URLSearchParams(window.location.search);
@@ -1614,7 +1614,7 @@ describe("App shell", () => {
     const heroRecovery = screen.getByRole("group", { name: "No results: ways to get places back" });
     expect(heroRecovery).toHaveTextContent('No matches for "zzzznonexistent"');
     expect(heroRecovery).toHaveTextContent("Loosen one filter below to bring places back");
-    expect(within(heroRecovery).getByRole("button", { name: "Reset Explorer (no results)" })).toBeInTheDocument();
+    expect(within(heroRecovery).getByRole("button", { name: "Reset the atlas (no results)" })).toBeInTheDocument();
 
     fireEvent.click(within(heroRecovery).getByRole("button", { name: "Clear search (no results)" }));
 

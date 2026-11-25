@@ -50,6 +50,19 @@ describe("layoutRankBadges", () => {
     expect(result[0]!.dx !== ne.dx || result[0]!.dy !== ne.dy).toBe(true);
   });
 
+  it("moves a badge off a neighbouring cluster count", () => {
+    const pin = { id: "solo", screenX: 100, screenY: 100, rank: 1, pinRadiusPx: 5.4 };
+    const ne = defaultRankBadgeOffset(5.4);
+    const cluster = { x: 100 + ne.dx, y: 100 + ne.dy, r: 13 };
+    const [badge] = layoutRankBadges([pin], { obstacles: [cluster], badgeRadiusPx: 10 });
+    expect(badge!.fanned).toBe(true);
+    const dist = Math.hypot(100 + badge!.dx - cluster.x, 100 + badge!.dy - cluster.y);
+    expect(dist).toBeGreaterThanOrEqual(23);
+    // A cluster well away from the default seat changes nothing.
+    const [untouched] = layoutRankBadges([pin], { obstacles: [{ x: 300, y: 300, r: 13 }] });
+    expect(untouched).toEqual({ id: "solo", dx: ne.dx, dy: ne.dy, fanned: false });
+  });
+
   it("is deterministic for the same dense cluster", () => {
     const pins = [
       { id: "alpha", screenX: 50, screenY: 50, rank: 1, pinRadiusPx: 7.2, crowded: true },

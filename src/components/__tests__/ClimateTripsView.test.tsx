@@ -115,7 +115,8 @@ describe("ClimateTripsView", () => {
 
   it("names tourism pick profile buttons by place", () => {
     const { container, onOpenPlace } = renderClimateTripsView();
-    const pickCard = screen.getAllByText("Tourism appeal")[0].closest(".climate-trip-pick-card");
+    const pickCard = container.querySelector(".climate-trip-pick-card");
+    expect(pickCard).toHaveTextContent(/Visit appeal \d+\/100/);
     const profileButtons = Array.from(
       container.querySelectorAll<HTMLButtonElement>("button[aria-label*=' profile (']"),
     );

@@ -32,9 +32,10 @@ function renderPlaceCard({
 describe("PlaceCard overlay warmup", () => {
   it("surfaces the computed bioclimatic card signature", () => {
     renderPlaceCard();
-    const bioclim = screen.getByLabelText("Aridity and continentality class");
+    const bioclim = screen.getByLabelText("Moisture and seasonal temperature swing");
 
-    expect(bioclim.textContent).toMatch(/oceanic|continental/);
+    expect(bioclim.textContent).toMatch(/seasonal swing$/);
+    expect(bioclim.textContent).not.toMatch(/oceanic|continental|mediterranean/i);
   });
 
   it("surfaces ranking evidence near the top of the card and describes the open target", () => {
@@ -83,7 +84,8 @@ describe("PlaceCard overlay warmup", () => {
       </UnitProvider>,
     );
 
-    expect(screen.getByText("Livability")).toBeInTheDocument();
+    // One living score per card: Livability moved to the profile breakdown.
+    expect(screen.queryByText("Livability")).not.toBeInTheDocument();
     expect(screen.getByText("Live-here fit")).toBeInTheDocument();
     expect(screen.getByLabelText(`${place.name} place feel`)).toBeInTheDocument();
     expect(screen.getByLabelText("Why this place ranks here")).toHaveTextContent("Check first");

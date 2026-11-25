@@ -4,6 +4,31 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Search that forgives typos, a Compare bar, a month picker, honest labels
+
+- **Search:**
+  - Every word you type has to match, so "santa fe" no longer returns every Santa.
+  - Exact name matches come first, then regions, then text matches.
+  - Small typos still find the place ("flagstaf", "albuquerqe").
+  - Enter opens the first result. Phones get a search field of their own.
+- **Getting around:**
+  - Closing a profile returns you to the list where you left it, and the browser Back button steps through profiles, Compare and trips.
+  - A bar at the bottom shows the places picked for Compare and opens it. `V` opens it from the keyboard.
+  - "Best this month" has a month picker, so you can plan for any month.
+  - When a filter change switches the ranking, a notice says so and offers Undo.
+- **Labels and scores:**
+  - The dry-air must-have requires humidity of 50% or lower over the year and in summer, plus a low summer dew point. Humid highland towns no longer pass.
+  - Moisture chips read "fairly dry" or "moderately moist". Boulder is no longer "Mediterranean".
+  - Cards, profiles and Compare show the same best time to visit.
+  - Each score has one name and one definition everywhere. Risk uses a single 0–100 scale.
+  - Ranking notes say "Seasonal swing" and "Growing season", with the published index name in brackets.
+- **Exports:**
+  - Calendar files open in Apple, Google and Outlook calendars: one event per good stretch, dated to its next occurrence.
+  - CSV, JSON and GeoJSON carry the climate, risk and score columns. CSV opens cleanly in Excel.
+- **Dark theme:** the score rows and the Helps and Hurts boxes in a profile kept pale fills that hid their text. They now use dark fills. Section eyebrows and chapter numbers have more contrast in both themes.
+- **Place writing:** the remaining templated lines are rewritten. The expanded summaries live in the place files, which brought first-load size back under its ceiling (756 KB; it had reached 787 KB).
+- **Stylesheet:** 429 lines of unused rules removed. A before-and-after comparison of 99 screen states found no visual change; some phone states in dark theme were not covered.
+
 ### Rankings that score what they name, a clearer map, plainer words
 
 - **Rankings:**

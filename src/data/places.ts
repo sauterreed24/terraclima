@@ -3,7 +3,7 @@
 // ============================================================
 
 import type { Citation, Place } from "../types";
-import { mergeDeepSections } from "../lib/place-appendix-sections";
+import { ARCHETYPE_LABELS, DRIVER_LABELS } from "../types";
 import { applyClimateV2Overlay } from "../lib/climate-v2/overlay";
 import { sanitizeLivedSignals } from "../lib/research/lived-indicators";
 import { PLACES_USA } from "./places.usa";
@@ -12,7 +12,6 @@ import { PLACES_MEXICO } from "./places.mexico";
 import { TIER_C_POLISH, TIER_C_POLISH_SOURCES } from "./places.tier-c-polish";
 import { TIER_C_INDICATORS } from "./places.tier-c-indicators";
 import { EXPERIENCE_AUTHORED } from "./places.experience-authored";
-import { SUMMARY_IMMERSIVE_POLISH } from "./places.summary-polish";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "./generated/climate-v2";
 import housingPressureJson from "./generated/research/housing-pressure-by-id.json";
 import citationsOverlayJson from "./generated/research/citations-overlay.json";
@@ -166,20 +165,6 @@ function applyExperienceAuthored(p: Place): Place {
   };
 }
 
-/**
- * Expand a short summaryImmersive (under the ~80-150 word target band) with
- * additional place-grounded sentences. Only applies when the authored
- * summaryImmersive still matches the text this expansion was written
- * against, so a later hand-edit of the base copy is never silently
- * clobbered by a stale generated expansion.
- */
-function applySummaryPolish(p: Place): Place {
-  const polish = SUMMARY_IMMERSIVE_POLISH[p.id];
-  if (!polish) return p;
-  if (p.summaryImmersive !== polish.original) return p;
-  return { ...p, summaryImmersive: polish.expanded };
-}
-
 export const PLACES: Place[] = [
   ...POLISHED_USA,
   ...POLISHED_CANADA,
@@ -187,7 +172,7 @@ export const PLACES: Place[] = [
 ].map(p =>
   applyResearch(
     applyLivedIndicators(
-      applyClimateV2(applySummaryPolish(applyExperienceAuthored(p))),
+      applyClimateV2(applyExperienceAuthored(p)),
     ),
   ),
 );
@@ -218,14 +203,65 @@ export function foldDiacritics(input: string): string {
 }
 
 /**
+ * Fold text into the space-padded token form the search matcher tests
+ * against: accents and case folded, apostrophes dropped ("Coeur d'Alene" →
+ * "coeur dalene"), every other non-alphanumeric run a single space. The
+ * leading/trailing space lets `" " + token` test a word prefix and
+ * `" " + token + " "` a whole word with one `includes`.
+ */
+export function normalizeSearchText(input: string): string {
+  const folded = foldDiacritics(input)
+    .replace(/['’ʼ]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+  return folded ? ` ${folded} ` : " ";
+}
+
+/**
+ * Per-place search text, split by how strongly a hit says "this is the place
+ * you meant". Every field is in {@link normalizeSearchText} form.
+ */
+export interface PlaceSearchFields {
+  /** Display name. */
+  name: string;
+  /** Name without its parenthetical / "& the …" qualifier ("Oaxaca City (Valles Centrales)" → "oaxaca city"). */
+  nameCore: string;
+  /** Municipality, region (state / province), country and its aliases, and the towns inside the zone. */
+  locality: string;
+  /** Archetype labels, topographic drivers, biome and Köppen class. */
+  classification: string;
+  /** The one-sentence summary and the why-distinct mechanism: what the place is about. */
+  headline: string;
+  /** The immersive summary paragraph. */
+  summary: string;
+  /** Other authored descriptive prose (fit lines, activities, experience copy, authored deep sections). */
+  prose: string;
+  /** Mentions of OTHER places (nearby contrasts). Lowest tier: never outranks the place itself. */
+  crossReference: string;
+}
+
+const COUNTRY_SEARCH_ALIASES: Record<Place["country"], string> = {
+  USA: "USA United States of America US",
+  Canada: "Canada",
+  Mexico: "Mexico",
+};
+
+/**
  * Runtime indexes.
  *
  * Annual precipitation stays eager because it is a small numeric lookup used
  * across cards, ranking, and detail panels. Full-prose search text is lazy:
- * building it walks derived deep sections for every place, so doing that at
+ * building it folds every authored paragraph for every place, so doing that at
  * module initialization hurts cold Explorer load even when the user never
  * searches. App warms it opportunistically after first paint.
+ *
+ * Deliberately NOT indexed: citations / research receipts, confidence notes,
+ * settlement populations and the derived deep sections that
+ * `mergeDeepSections` generates from structured fields. That boilerplate is
+ * near-identical across the atlas, so it made every common word match
+ * everywhere.
  */
+const PLACE_SEARCH_FIELDS = new WeakMap<Place, PlaceSearchFields>();
 const PLACE_SEARCH_TEXT = new WeakMap<Place, string>();
 export const PLACE_ANNUAL_PRECIP: Record<string, number> = {};
 
@@ -237,38 +273,80 @@ function runtimeNowMs(): number {
   return typeof performance !== "undefined" ? performance.now() : Date.now();
 }
 
+/**
+ * Join separately normalized parts. Each part keeps its own space padding, so
+ * parts are divided by a double space and a quoted phrase can never match
+ * across two unrelated values (an archetype label and the next one, say).
+ */
+function searchField(parts: readonly string[]): string {
+  const out = parts.map(normalizeSearchText).filter(part => part !== " ").join("");
+  return out || " ";
+}
+
+export function getPlaceSearchFields(place: Place): PlaceSearchFields {
+  const cached = PLACE_SEARCH_FIELDS.get(place);
+  if (cached !== undefined) return cached;
+
+  // "boulder-co" → "co": lets "boulder co" / "sequim wa" work without a state-abbreviation table.
+  const idSuffix = /-([a-z]{2})$/.exec(place.id)?.[1] ?? "";
+  const settlements = place.settlementsWithinZone ?? [];
+  const activities = place.thingsToDo ?? [];
+  const experience = place.experience;
+  const history = experience?.history;
+  const fields: PlaceSearchFields = {
+    name: normalizeSearchText(place.name),
+    nameCore: normalizeSearchText(place.name.split(/\s*[(&—]|\s+and the\s+/i)[0] ?? place.name),
+    locality: searchField([
+      place.municipality ?? "",
+      place.region,
+      COUNTRY_SEARCH_ALIASES[place.country] ?? place.country,
+      idSuffix,
+      ...settlements.map(s => s.name),
+    ]),
+    classification: searchField([
+      ...place.archetypes.flatMap(a => [a, ARCHETYPE_LABELS[a] ?? ""]),
+      ...place.drivers.flatMap(d => [d, DRIVER_LABELS[d] ?? ""]),
+      place.biome,
+      place.koppen,
+    ]),
+    headline: searchField([place.summaryShort ?? "", place.whyDistinct]),
+    summary: normalizeSearchText(place.summaryImmersive),
+    prose: searchField([
+      place.reliefContext,
+      ...place.relocationFit,
+      ...place.travelFit,
+      place.whoWouldLove,
+      place.whoMightNot,
+      ...settlements.map(s => s.note ?? ""),
+      ...activities.map(a => `${a.label} ${a.note ?? ""}`),
+      experience?.feel ?? "",
+      ...Object.values(experience?.seasons ?? {}),
+      experience?.travelerFit ?? "",
+      experience?.residentFit ?? "",
+      experience?.texture ?? "",
+      ...(typeof history === "string" ? [history] : history ?? []),
+      experience?.why ?? "",
+      ...(place.deepSections ?? []).map(s => `${s.title} ${s.paragraphs.join(" ")}`),
+    ]),
+    crossReference: searchField((place.nearbyContrasts ?? []).map(c => `${c.label} ${c.note}`)),
+  };
+  PLACE_SEARCH_FIELDS.set(place, fields);
+  return fields;
+}
+
+/**
+ * Everything the search index holds for a place as one folded string, best
+ * tier first. Matching goes through {@link getPlaceSearchFields} (see
+ * `src/lib/place-search.ts`); this flat form is for diagnostics and tests.
+ */
 export function getPlaceSearchText(place: Place): string {
   const cached = PLACE_SEARCH_TEXT.get(place);
   if (cached !== undefined) return cached;
-
-  const deepIdx = mergeDeepSections(place).map(s => `${s.title} ${s.paragraphs.join(" ")}`).join(" ");
-  const settlementsIdx = (place.settlementsWithinZone ?? [])
-    .map(s => `${s.name} ${s.role} ${s.population ?? ""} ${s.note ?? ""}`)
+  const f = getPlaceSearchFields(place);
+  const text = [f.name, f.locality, f.classification, f.headline, f.summary, f.prose, f.crossReference]
+    .map(part => part.trim().replace(/ {2,}/g, " "))
+    .filter(Boolean)
     .join(" ");
-  const activitiesIdx = (place.thingsToDo ?? [])
-    .map(a => `${a.label} ${a.kind} ${a.season ?? ""} ${a.note ?? ""}`)
-    .join(" ");
-  const citationsIdx = place.citations.map(c => `${c.label} ${c.kind} ${c.note ?? ""}`).join(" ");
-  const text = foldDiacritics(
-    place.name + " " +
-    place.region + " " +
-    (place.municipality ?? "") + " " +
-    place.archetypes.join(" ") + " " +
-    place.drivers.join(" ") + " " +
-    place.koppen + " " +
-    (place.summaryShort ?? "") +
-    " " + place.summaryImmersive +
-    " " + place.whyDistinct +
-    " " + place.relocationFit.join(" ") +
-    " " + place.travelFit.join(" ") +
-    " " + place.whoWouldLove +
-    " " + place.whoMightNot +
-    " " + (place.confidenceNotes ?? "") +
-    " " + settlementsIdx +
-    " " + activitiesIdx +
-    " " + citationsIdx +
-    " " + deepIdx,
-  );
   PLACE_SEARCH_TEXT.set(place, text);
   return text;
 }
@@ -281,7 +359,7 @@ export function warmPlaceSearchIndex(
   const start = runtimeNowMs();
   let i = Math.max(0, startIndex);
   while (i < places.length) {
-    getPlaceSearchText(places[i]!);
+    getPlaceSearchFields(places[i]!);
     i += 1;
     if (runtimeNowMs() - start >= budgetMs) break;
   }

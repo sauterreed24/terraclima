@@ -1,7 +1,7 @@
 import type { Place, ScenarioId } from "../types";
 import { scenarioMeta } from "./climate-projection";
 import { ARCHETYPE_LABELS } from "../types";
-import { getBestMonths } from "./best-months";
+import { getVisitWindow } from "./best-months";
 import {
   annualComfortMonthCount,
   avgRisk,
@@ -294,7 +294,7 @@ function buildScoutNextStep(
 ): ExplorerScoutBrief["nextStep"] {
   const leaderRow = decisionRows.find(row => row.place.id === leader.place.id);
   const runnerUp = decisionRows.find(row => row.place.id !== leader.place.id)?.place;
-  const firstWindow = getBestMonths(leader.place).find(window => window.kind === "good");
+  const firstWindow = getVisitWindow(leader.place);
   const watch = leaderRow?.watch
     ? `First caveat: ${lowerFirst(trimTerminalPunctuation(leaderRow.watch))}.`
     : "First caveat: read the risk and practical sections.";
@@ -501,7 +501,7 @@ export function buildExplorerScoutBrief(
       {
         label: "Place feel",
         value: formatRange(places.map(placeFeelScore), "/100"),
-        detail: "A combined score for comfort, ease of daily life, character and how well documented the place is",
+        detail: "Comfort, ease of daily life, character and how well documented the place is, 0–100; higher is better",
       },
       {
         label: "Precip range",
@@ -509,9 +509,9 @@ export function buildExplorerScoutBrief(
         detail: "Lowest to highest annual precipitation among the top places",
       },
       {
-        label: "Avg risk",
+        label: "Overall risk",
         value: formatRange(places.map(place => avgRisk(place) * 20), "/100"),
-        detail: "Average hazard risk; lower is safer",
+        detail: "The average of nine hazard ratings, 0–100; lower is better",
       },
       {
         label: "Most common type",

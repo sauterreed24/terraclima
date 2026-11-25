@@ -47,7 +47,7 @@ export function PlaceEvidenceSummary({
   const exportDossierData = () => {
     downloadBlobFile(
       JSON.stringify({ place, researchReceipt: receipt ?? null }, null, 2),
-      `${place.id}-dossier.json`,
+      `${place.id}-profile.json`,
       "application/json",
     );
   };
@@ -119,7 +119,10 @@ export function PlaceEvidenceSummary({
               {(() => {
                 const shift = CLIMATE_V2_OVERLAY_BY_ID[place.id]?.recentShift;
                 if (!shift) return null;
-                const pct = (n: number) => `${n > 0 && toFixedClean(n, 1) !== "0.0" ? "+" : ""}${toFixedClean(n, 1)}%`;
+                const pct = (n: number) => `${Math.round(n) > 0 ? "+" : ""}${toFixedClean(n, 0)}%`;
+                // The one place a tenth of a degree is kept: a shift between two
+                // 30-year averages is usually under one degree, so whole degrees
+                // would print "+0°" for a real change.
                 const deg = (c: number) => fmtDelta(c, temp, { digits: 1, signed: true });
                 return (
                   <p className="tc-evidence-summary__body mt-2">

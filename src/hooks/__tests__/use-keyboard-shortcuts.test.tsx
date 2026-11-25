@@ -424,3 +424,48 @@ describe("useKeyboardShortcuts — listener is stable across prop changes", () =
     expect(setView).toHaveBeenCalledWith("trips");
   });
 });
+
+describe("useKeyboardShortcuts — compare (V) shortcut", () => {
+  afterEach(() => cleanup());
+
+  it("opens Compare only when places are queued", () => {
+    const openCompare = vi.fn();
+    const { rerender } = render(<MountShortcuts {...defaults({ compareCount: 0, openCompare })} />);
+    fireEvent.keyDown(window, { key: "v" });
+    expect(openCompare).not.toHaveBeenCalled();
+
+    rerender(<MountShortcuts {...defaults({ compareCount: 2, openCompare })} />);
+    fireEvent.keyDown(window, { key: "v" });
+    fireEvent.keyDown(window, { key: "V" });
+    expect(openCompare).toHaveBeenCalledTimes(2);
+  });
+
+  it("stays out of the way of overlays, modifiers and text entry, and leaves C for Collections", () => {
+    const openCompare = vi.fn();
+    const setView = vi.fn();
+    const { rerender } = render(
+      <>
+        <input data-testid="text-input" />
+        <MountShortcuts {...defaults({ compareCount: 2, openCompare, setView })} />
+      </>,
+    );
+    fireEvent.keyDown(window, { key: "v", ctrlKey: true });
+    const input = screen.getByTestId("text-input");
+    input.focus();
+    fireEvent.keyDown(input, { key: "v" });
+    expect(openCompare).not.toHaveBeenCalled();
+
+    fireEvent.keyDown(window, { key: "c" });
+    expect(setView).toHaveBeenCalledWith("collections");
+    expect(openCompare).not.toHaveBeenCalled();
+
+    rerender(
+      <>
+        <input data-testid="text-input" />
+        <MountShortcuts {...defaults({ compareCount: 2, openCompare, selectedId: "sequim-wa" })} />
+      </>,
+    );
+    fireEvent.keyDown(window, { key: "v" });
+    expect(openCompare).not.toHaveBeenCalled();
+  });
+});

@@ -200,8 +200,8 @@ describe("PlaceDetail residency fit context", () => {
     expect(context).toHaveTextContent("Mexico / Southwest goal (Dry highland options)");
     expect(context).toHaveTextContent("Best shoulder seasons");
     expect(context).toHaveTextContent("Scored for Mild winters + Dry air");
-    expect(context).toHaveTextContent("summer <= 79°F");
-    expect(context).toHaveTextContent("winter >= 23°F");
+    expect(context).toHaveTextContent("summer ≤ 79°F");
+    expect(context).toHaveTextContent("winter ≥ 23°F");
   });
 
   it("names the active ranking lens for your must-have limits", () => {
@@ -222,7 +222,7 @@ describe("PlaceDetail residency fit context", () => {
     const context = screen.getByLabelText("What this score is based on");
     expect(context).toHaveTextContent("Live-here fit ranking");
     expect(context).toHaveTextContent("Scored for your must-have limits");
-    expect(context).toHaveTextContent("overall risk <= Moderate");
+    expect(context).toHaveTextContent("overall risk ≤ Moderate");
   });
 
   it("does not add context clutter to plain direct dossiers", () => {
@@ -557,10 +557,10 @@ describe("PlaceDetail bioclimatic edge reads", () => {
 
     const edgeNote = screen.getByText("Not defined here").closest(".tc-accent-panel");
     expect(edgeNote).not.toBeNull();
-    expect(edgeNote!).toHaveTextContent("Selianinov HTC cannot be calculated here");
+    expect(edgeNote!).toHaveTextContent("Growing-season moisture (Selianinov coefficient) cannot be calculated here");
     expect(edgeNote!).toHaveTextContent("The other indices still apply");
-    expect(screen.getByText("Conrad")).toBeInTheDocument();
-    expect(screen.getByText("UNEP aridity")).toBeInTheDocument();
+    expect(screen.getByText("Seasonal swing (Conrad continentality index)")).toBeInTheDocument();
+    expect(screen.getByText("Rain vs evaporation (UNEP aridity index)")).toBeInTheDocument();
   });
 });
 
@@ -852,11 +852,11 @@ describe("PlaceDetail archetype field guide", () => {
     fireEvent.click(primaryChip);
 
     const guide = screen.getByRole("region", { name: /Eternal-Spring Highland climates/i });
-    expect(guide).toHaveTextContent(/4,900 and 8,200 ft/);
-    expect(guide).toHaveTextContent(/72–79°F/);
-    expect(guide).toHaveTextContent(/46–57°F/);
+    // Source reads "between about 1200 and 2700 m" and "roughly 20–30°C".
+    expect(guide).toHaveTextContent(/3,900 and 8,900 ft/);
+    expect(guide).toHaveTextContent(/68–86°F/);
     expect(guide).not.toHaveTextContent(/°C/);
-    expect(guide).not.toHaveTextContent(/\b1500 and 2500 m\b/);
+    expect(guide).not.toHaveTextContent(/\b1200 and 2700 m\b/);
   });
 });
 

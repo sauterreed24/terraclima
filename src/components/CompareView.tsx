@@ -9,7 +9,8 @@ import { meanJanLow, meanSummerHigh, getAnnualPrecipMm, RISK_VALUE } from "../li
 import { hasSourcedSkySeries, observedSunshinePct, sunshineDisplayValue } from "../lib/hero-glance";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
-import { computeBioclim, type BioclimIndex } from "../lib/bioclim";
+import { computeBioclim, CONRAD_GLOSS, DE_MARTONNE_GLOSS, type BioclimIndex } from "../lib/bioclim";
+import { SCORE_DEFINITIONS } from "../lib/livability-score";
 import {
   LIVE_FIT_PRESET_BY_ID,
   LIVE_FIT_PRESETS,
@@ -31,7 +32,8 @@ import {
   type ComparisonLensId,
 } from "../lib/compare-workbench";
 import { buildCompareCandidateSwapInsight, buildCompareCoachRecommendations, weakestLensProfile } from "../lib/compare-workbench-coach";
-import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
+import { buildHomeBaseComparison, pickHomeDeltaChips } from "../lib/home-base";
+import { formatHomeDelta } from "./place-detail/home-delta-format";
 import { COMPARE_LIMIT } from "../lib/app-url";
 import type { ShareStatus } from "../lib/app-constants";
 import { useFocusTrap } from "../hooks/use-focus-trap";
@@ -160,14 +162,14 @@ export function CompareView({
     const coolestSummer = places.reduce((best, place) => meanSummerHigh(place) < meanSummerHigh(best) ? place : best, places[0]);
     const mildestWinter = places.reduce((best, place) => meanJanLow(place) > meanJanLow(best) ? place : best, places[0]);
     const bestLiveFit = decisionProfiles.reduce((best, profile) => profile.liveFitScore > best.liveFitScore ? profile : best, decisionProfiles[0]);
-    const topLivability = decisionProfiles.reduce((best, profile) => profile.livabilityScore > best.livabilityScore ? profile : best, decisionProfiles[0]);
     const lowestRisk = decisionProfiles.reduce((best, profile) => profile.riskLoad < best.riskLoad ? profile : best, decisionProfiles[0]);
     const bestGrowability = places.reduce((best, place) => place.scores.growability > best.scores.growability ? place : best, places[0]);
     return [
-      { label: "Coolest summer", place: coolestSummer, value: fmtTemp(meanSummerHigh(coolestSummer), temp, { digits: 1 }) },
-      { label: "Mildest winter", place: mildestWinter, value: fmtTemp(meanJanLow(mildestWinter), temp, { digits: 1 }) },
+      { label: "Coolest summer", place: coolestSummer, value: fmtTemp(meanSummerHigh(coolestSummer), temp) },
+      { label: "Mildest winter", place: mildestWinter, value: fmtTemp(meanJanLow(mildestWinter), temp) },
+      // Livability is a near-duplicate of live-here fit; it stays in each
+      // place's full figures below instead of taking a second headline slot.
       { label: "Best live-here fit", place: bestLiveFit.place, value: `${bestLiveFit.liveFitScore}/100` },
-      { label: "Top livability", place: topLivability.place, value: `${topLivability.livabilityScore}/100` },
       { label: "Lowest overall risk", place: lowestRisk.place, value: `${lowestRisk.riskLoad}/100` },
       { label: "Best growability", place: bestGrowability, value: `${bestGrowability.scores.growability}/100` },
     ];
@@ -610,10 +612,10 @@ export function CompareView({
                           <span className="compare-workbench__candidate-read" aria-label={`${candidate.place.name} candidate read`}>
                             <span>
                               <strong>{compareLensScore(candidateProfile, activeComparisonLens)}/100</strong>
-                              <em>{activeComparisonLensLabel}</em>
+                              <em title={SCORE_DEFINITIONS.priority.definition}>{activeComparisonLensLabel} priority score</em>
                             </span>
                             <span>{candidateProfile.easyMonths}/12 easy months</span>
-                            <span>{candidateProfile.riskLoad}/100 overall risk</span>
+                            <span title={SCORE_DEFINITIONS.overallRisk.definition}>{candidateProfile.riskLoad}/100 overall risk</span>
                           </span>
                         ) : null}
                         {candidateInsight ? (
@@ -820,19 +822,19 @@ export function CompareView({
                 <div className="compare-finalist-table" aria-label="All places at a glance">
                   <div className="compare-finalist-table__head">
                     <span className="compare-finalist-table__kicker">All places at a glance</span>
-                    <span className="compare-finalist-table__copy">Role, score, best season and first caution for each place.</span>
+                    <span className="compare-finalist-table__copy">Role, priority score, best season and first caution for each place. Scores run 0–100; higher is better, except overall risk, where lower is better.</span>
                   </div>
                   <div className="compare-finalist-table__scroll" aria-label="Scrollable finalist decision table">
                     <table>
-                      <caption className="sr-only">Role, score, best season and first caution for each compared place</caption>
+                      <caption className="sr-only">Role, priority score, best season and first caution for each compared place</caption>
                       <thead>
                         <tr>
                           <th scope="col">Role</th>
                           <th scope="col">Place</th>
-                          <th scope="col">Score</th>
-                          <th scope="col">Fit</th>
-                          <th scope="col">Risk</th>
-                          <th scope="col">Visit</th>
+                          <th scope="col" title={SCORE_DEFINITIONS.priority.definition}>{SCORE_DEFINITIONS.priority.label}</th>
+                          <th scope="col" title={SCORE_DEFINITIONS.liveFit.definition}>{SCORE_DEFINITIONS.liveFit.label}</th>
+                          <th scope="col" title={SCORE_DEFINITIONS.overallRisk.definition}>{SCORE_DEFINITIONS.overallRisk.label}</th>
+                          <th scope="col">Best time to visit</th>
                           <th scope="col">Check first</th>
                         </tr>
                       </thead>
@@ -888,7 +890,7 @@ export function CompareView({
                     >
                       <div className="compare-evidence-readiness__card-head">
                         <span>{row.label}</span>
-                        <strong>{row.score}/100</strong>
+                        <strong title={SCORE_DEFINITIONS.sourcing.definition}>{SCORE_DEFINITIONS.sourcing.label} {row.score}/100</strong>
                       </div>
                       {onOpenPlace ? (
                         <button
@@ -1032,28 +1034,31 @@ export function CompareView({
                 </>
               )}
             </p>
-            <details className="compare-bioclim-key lg:hidden">
+            {/* The rows are labelled in plain words; this key names the published
+                index behind each one. Open to every width: tooltips do not exist
+                on touch screens. */}
+            <details className="compare-bioclim-key">
               <summary>What the index rows mean</summary>
               <dl>
                 <div>
-                  <dt>De Martonne</dt>
-                  <dd>annual aridity</dd>
+                  <dt>Moisture</dt>
+                  <dd>De Martonne aridity index: yearly rain and snow against temperature</dd>
                 </div>
                 <div>
-                  <dt>Conrad</dt>
-                  <dd>continentality</dd>
+                  <dt>Seasonal swing</dt>
+                  <dd>Conrad continentality index: winter-to-summer temperature range</dd>
                 </div>
                 <div>
-                  <dt>Selianinov HTC</dt>
-                  <dd>growing-season moisture</dd>
+                  <dt>Growing-season moisture</dt>
+                  <dd>Selianinov hydrothermal coefficient</dd>
                 </div>
                 <div>
-                  <dt>Thornthwaite PET</dt>
-                  <dd>evaporative demand</dd>
+                  <dt>Evaporative demand</dt>
+                  <dd>Thornthwaite potential evapotranspiration (PET)</dd>
                 </div>
                 <div>
-                  <dt>UNEP P/PET</dt>
-                  <dd>precipitation to PET</dd>
+                  <dt>Rain vs evaporation</dt>
+                  <dd>UNEP aridity index: precipitation divided by PET</dd>
                 </div>
               </dl>
             </details>
@@ -1085,33 +1090,34 @@ export function CompareView({
 
                   <MicroclimateFingerprint place={p} size={220} compactLabels />
 
-                  <div className="grid grid-cols-2 gap-2 mt-3 text-sm tc-compare-stats">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-2 gap-y-0 lg:gap-2 mt-3 text-sm tc-compare-stats">
                     <Row label="Elevation" value={fmtElev(p.elevationM, dist)} />
                     <Row label="Köppen class" value={p.koppen} wide />
-                    <Row label="De Martonne" value={bio ? bioclimRow(bio.deMartonne, v => v.toFixed(1), prose) : "—"} wide />
-                    <Row label="Conrad" value={bio ? bioclimRow(bio.conrad, v => v.toFixed(1), prose) : "—"} wide />
-                    <Row label="Selianinov HTC" value={bio ? bioclimRow(bio.selianinov, v => v.toFixed(2), prose) : "—"} wide />
-                    <Row label="UNEP P/PET" value={bio ? bioclimRow(bio.unepAridity, v => v.toFixed(2), prose) : "—"} wide />
-                    <Row label="Thornthwaite PET" value={bio ? prose(`${Math.round(bio.thornthwaitePet.value)} mm`) : "—"} />
-                    <Row label="Summer high" value={fmtTemp(meanSummerHigh(p), temp, { digits: 1 })} />
-                    <Row label="Winter low" value={fmtTemp(meanJanLow(p), temp, { digits: 1 })} />
+                    <Row label="Moisture" title={`De Martonne aridity index. ${DE_MARTONNE_GLOSS}`} value={bio ? bioclimRow(bio.deMartonne, v => v.toFixed(1), prose) : "—"} wide />
+                    <Row label="Seasonal swing" title={`Conrad continentality index. ${CONRAD_GLOSS}`} value={bio ? bioclimRow(bio.conrad, v => v.toFixed(1), prose) : "—"} wide />
+                    <Row label="Growing-season moisture" title="Selianinov hydrothermal coefficient: rain in the growing season compared with its warmth; higher is wetter." value={bio ? bioclimRow(bio.selianinov, v => v.toFixed(2), prose) : "—"} wide />
+                    <Row label="Rain vs evaporation" title="UNEP aridity index: yearly precipitation divided by potential evapotranspiration; higher is wetter." value={bio ? bioclimRow(bio.unepAridity, v => v.toFixed(2), prose) : "—"} wide />
+                    <Row label="Evaporative demand" title="Thornthwaite potential evapotranspiration: how much water the air could take up in a year." value={bio ? prose(`${Math.round(bio.thornthwaitePet.value)} mm`) : "—"} />
+                    <Row label="Summer high" value={fmtTemp(meanSummerHigh(p), temp)} />
+                    <Row label="Winter low" value={fmtTemp(meanJanLow(p), temp)} />
                     <Row label="Annual precip" value={fmtPrecip(getAnnualPrecipMm(p), dist)} />
                     <Row label="Sunshine" value={observedSunshinePct(p) == null ? "—" : `${observedSunshinePct(p)}%`} />
                     <Row label="Frost-free" value={`${p.climate.frostFreeDays ?? "—"} d`} />
                     <Row label="Hardiness" value={p.growability.hardinessZone ?? p.climate.hardinessZone ?? "—"} />
                     <Row label="Chill hours" value={`${p.climate.chillHours ?? "—"}`} />
-                    <Row label="Live-here fit" value={`${decision.liveFitScore}/100`} />
-                    <Row label="Livability" value={`${decision.livabilityScore}/100`} />
-                    <Row label="Felt comfort" value={`${decision.feltComfort}/100`} />
-                    <Row label="Feels-like, warmest months (UTCI*)" value={`${fmtTemp(utci.warmSeasonApparentHighC, temp, { digits: 0 })} (${utci.warmSeasonLabel}) · ${utci.score}/100`} wide />
+                    <Row label={SCORE_DEFINITIONS.liveFit.label} title={SCORE_DEFINITIONS.liveFit.definition} value={`${decision.liveFitScore}/100`} />
+                    <Row label={SCORE_DEFINITIONS.livability.label} title={SCORE_DEFINITIONS.livability.definition} value={`${decision.livabilityScore}/100`} />
+                    <Row label={SCORE_DEFINITIONS.feltComfort.label} title={SCORE_DEFINITIONS.feltComfort.definition} value={`${decision.feltComfort}/100`} />
+                    <Row label={SCORE_DEFINITIONS.overallRisk.label} title={SCORE_DEFINITIONS.overallRisk.definition} value={`${decision.riskLoad}/100`} />
+                    <Row label="Feels-like, warmest months*" title="Estimated from air temperature and humidity, in the style of the Universal Thermal Climate Index (UTCI). The score is 0–100; higher is less heat strain." value={`${fmtTemp(utci.warmSeasonApparentHighC, temp, { digits: 0 })} (${utci.warmSeasonLabel}) · ${utci.score}/100`} wide />
                     <Row label="Easy months" value={`${decision.easyMonths}/12`} />
                     <Row label="Cost & access" value={`${decision.livedEase}/100`} />
-                    <Row label="Uniqueness" value={p.scores.microclimateUniqueness.toString()} />
+                    <Row label={SCORE_DEFINITIONS.uniqueness.label} title={SCORE_DEFINITIONS.uniqueness.definition} value={`${p.scores.microclimateUniqueness}/100`} />
                     <Row label="Terrain signal" value={`${geo.geospatialSignalScore}/100`} />
                     <Row label="Satellite visibility" value={`${geo.eoObservabilityScore}/100`} />
-                    <Row label="Hidden gem" value={p.scores.hiddenGem.toString()} />
-                    <Row label="Resilience" value={p.scores.resilience.toString()} />
-                    <Row label="Growability" value={p.scores.growability.toString()} />
+                    <Row label={SCORE_DEFINITIONS.hiddenGem.label} title={SCORE_DEFINITIONS.hiddenGem.definition} value={`${p.scores.hiddenGem}/100`} />
+                    <Row label={SCORE_DEFINITIONS.resilience.label} title={SCORE_DEFINITIONS.resilience.definition} value={`${p.scores.resilience}/100`} />
+                    <Row label={SCORE_DEFINITIONS.growability.label} title={SCORE_DEFINITIONS.growability.definition} value={`${p.scores.growability}/100`} />
                   </div>
 
                   {homePlace ? (
@@ -1130,7 +1136,7 @@ export function CompareView({
               </div>
             </div>
             <p className="text-caption text-stone-readable mt-2 px-1 leading-snug">
-              * Feels-like (UTCI-style) is a warm-season heat-and-humidity strain screen from air temperature and relative humidity only — no wind, solar, or radiant-temperature inputs. Not a true UTCI value.
+              * Feels-like is estimated for the warmest months from air temperature and humidity only, with no wind or sun. It follows the idea of the Universal Thermal Climate Index (UTCI) but is not a true UTCI value. Every score here runs 0–100 and higher is better, except overall risk, where lower is better.
             </p>
             </div>
             </div>
@@ -1204,7 +1210,7 @@ function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenc
         chapterCountLabel(chapters),
         hasLiveSignals ? "cost and access data" : "no cost or access data",
       ],
-      gaps: gaps.length ? gaps : ["No major gaps"],
+      gaps: gaps.length ? gaps : ["Nothing important is missing"],
       action,
     };
   }).sort((a, b) => a.score - b.score || a.place.name.localeCompare(b.place.name) || a.place.id.localeCompare(b.place.id));
@@ -1239,11 +1245,11 @@ function buildGroupedComparisonRows(
       const profile = decisionById.get(place.id);
       return profile ? `${compareLensScore(profile, lens)}/100` : "no score";
     })),
-    row("Comfort", "Summer high", places.map(place => fmtTemp(meanSummerHigh(place), tempUnit, { digits: 1 }))),
-    row("Comfort", "Winter low", places.map(place => fmtTemp(meanJanLow(place), tempUnit, { digits: 1 }))),
+    row("Comfort", "Summer high", places.map(place => fmtTemp(meanSummerHigh(place), tempUnit))),
+    row("Comfort", "Winter low", places.map(place => fmtTemp(meanJanLow(place), tempUnit))),
     row("Comfort", "Felt comfort", places.map(place => decisionScore(place, profile => profile.feltComfort))),
     row("Comfort", "Humidity", places.map(meanHumidity)),
-    row("Seasonality", "Koppen", places.map(place => place.koppen)),
+    row("Seasonality", "Köppen", places.map(place => place.koppen)),
     row("Seasonality", "Easy months", places.map(place => {
       const profile = decisionById.get(place.id);
       return profile ? `${profile.easyMonths}/12` : "no score";
@@ -1267,7 +1273,7 @@ function buildGroupedComparisonRows(
     row("Garden/land", "Hardiness", places.map(place => place.growability.hardinessZone ?? place.climate.hardinessZone ?? "no data")),
     row("Garden/land", "Elevation", places.map(place => fmtElev(place.elevationM, distUnit))),
     row("Garden/land", "Soil drainage", places.map(place => place.soil.drainage)),
-    row("Evidence", "Tier", places.map(place => place.tier)),
+    row("Evidence", "Profile depth", places.map(place => place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index")),
     row("Evidence", "Confidence", places.map(place => place.confidence)),
     row("Evidence", "Web sources", places.map(httpsCitations)),
     row("Evidence", "In-depth chapters", places.map(place => `${researchedChapterCount(place)}`)),
@@ -1311,7 +1317,7 @@ function HomeDeltaStrip({ place, home }: { place: Place; home: Place }) {
               data-tone={signal.tone}
               title={`${signal.label}: ${signal.descriptor} than home. ${signal.basis}`}
             >
-              {signal.shortLabel} <span className="font-mono-num">{formatHomeDeltaValue(signal, temp, dist)}</span>
+              {signal.shortLabel} <span className="font-mono-num">{formatHomeDelta(signal, temp, dist)}</span>
             </span>
           ))
         )}
@@ -1377,27 +1383,27 @@ function buildCompareLensReceipt(
     chips.push({ label: "Must-haves", value: joinReadable(presetLabels.slice(0, 3)) });
   }
   if (filters?.maxSummerHighC != null) {
-    const value = `summer <= ${fmtTemp(filters.maxSummerHighC, tempUnit)}`;
+    const value = `summer ≤ ${fmtTemp(filters.maxSummerHighC, tempUnit)}`;
     thresholds.push(value);
     chips.push({ label: "Max summer high", value });
   }
   if (filters?.minWinterLowC != null) {
-    const value = `winter >= ${fmtTemp(filters.minWinterLowC, tempUnit)}`;
+    const value = `winter ≥ ${fmtTemp(filters.minWinterLowC, tempUnit)}`;
     thresholds.push(value);
     chips.push({ label: "Min winter low", value });
   }
   if (filters?.minGrowability != null) {
-    const value = `growability >= ${filters.minGrowability}/100`;
+    const value = `growability ≥ ${filters.minGrowability}/100`;
     thresholds.push(value);
     chips.push({ label: "Min growability", value });
   }
   if (filters?.maxFireRisk) {
-    const value = `fire <= ${RISK_LABELS[filters.maxFireRisk]}`;
+    const value = `fire ≤ ${RISK_LABELS[filters.maxFireRisk]}`;
     thresholds.push(value);
     chips.push({ label: "Max fire risk", value });
   }
   if (filters?.maxOverallRisk) {
-    const value = `risk <= ${RISK_LABELS[filters.maxOverallRisk]}`;
+    const value = `risk ≤ ${RISK_LABELS[filters.maxOverallRisk]}`;
     thresholds.push(value);
     chips.push({ label: "Max overall risk", value });
   }
@@ -1434,12 +1440,12 @@ function buildSinglePlaceGuide(profile: CompareDecisionProfile | undefined) {
   };
 }
 
-function Row({ label, value, wide = false }: { label: string; value: string; wide?: boolean }) {
+function Row({ label, value, wide = false, title }: { label: string; value: string; wide?: boolean; title?: string }) {
   const columns = wide
-    ? "col-span-2 grid-cols-[minmax(0,0.45fr)_minmax(0,1.55fr)]"
+    ? "lg:col-span-2 grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:grid-cols-[minmax(0,0.45fr)_minmax(0,1.55fr)]"
     : "grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]";
   return (
-    <div className={`grid ${columns} items-baseline gap-2 py-1 border-b last:border-0 border-[rgba(71,90,122,0.3)]`}>
+    <div className={`grid ${columns} items-baseline gap-2 py-1 border-b last:border-0 border-[rgba(71,90,122,0.3)]`} title={title}>
       <span className="min-w-0 text-stone text-xs uppercase tracking-wide leading-snug">{label}</span>
       <span className="min-w-0 text-frost font-mono-num text-right leading-snug break-words">{value}</span>
     </div>

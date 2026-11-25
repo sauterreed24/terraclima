@@ -12,7 +12,7 @@ describe("place visual signatures", () => {
     expect(signature.feelScore).toBeLessThanOrEqual(100);
     expect(signature.strength.value).toBeGreaterThanOrEqual(signature.verify.value);
     expect(signature.mapLabel).toContain(signature.feelBand);
-    expect(signature.mapLabel).toContain(signature.strength.shortLabel);
+    expect(signature.mapLabel).toContain(`place feel, ${signature.feelScore}/100`);
     expect(signature.mapAccentRgb).toMatch(/^\d+, \d+, \d+$/);
   });
 

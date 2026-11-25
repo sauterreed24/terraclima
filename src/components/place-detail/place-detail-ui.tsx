@@ -108,14 +108,17 @@ export function ScorePill({
   label,
   value,
   tone,
+  definition,
 }: {
   label: string;
   value: number;
   tone: "glacier" | "sage" | "ochre" | "ember";
+  /** One plain sentence: what goes into the score, its scale and direction. */
+  definition?: string;
 }) {
   const c: Record<string, string> = { glacier: "#8cc8e0", sage: "#c6dcbd", ochre: "#f0d29c", ember: "#d37c5b" };
   return (
-    <div className="panel-thin p-3">
+    <div className="panel-thin p-3" title={definition}>
       <div className="text-[10px] uppercase tracking-wider text-stone">{label}</div>
       <div className="flex items-baseline gap-2">
         <span className="score-pill__value font-mono-num text-xl" data-tone={tone}>{value}</span>

@@ -7,7 +7,7 @@
 import type { Place } from "../types";
 import { PLACES, PLACE_ANNUAL_PRECIP } from "../data/places";
 import { getAnnualPrecipMm, meanSummerHigh, meanJanLow, summerDiurnalC } from "./climate-metrics";
-import { computeBioclim } from "./bioclim";
+import { computeBioclim, CONRAD_GLOSS, DE_MARTONNE_GLOSS } from "./bioclim";
 import { gddForUnit, type TempUnit } from "./units";
 
 function sortAsc(a: number[]): number[] {
@@ -233,26 +233,26 @@ export function getCorpusSynthesisLines(place: Place, displayTemp: TempUnit = "F
   const out: { label: string; value: string }[] = [
     {
       label: "Wetness vs full atlas (annual mean)",
-      value: `Wetter than ${pct99(r.wetterThanAtlasShare)} of stops · drier than ${pct99(r.drierThanAtlasShare)} of stops (ties possible)`,
+      value: `Wetter than ${pct99(r.wetterThanAtlasShare)} of places · drier than ${pct99(r.drierThanAtlasShare)} of places (ties possible)`,
     },
     {
       label: "Summer mean high vs full atlas (Jun–Aug blend)",
-      value: `Cooler than ${pct99(r.coolerSummersThanAtlasShare)} of stops; hotter than ${pct99(rest(r.coolerSummersThanAtlasShare))}`,
+      value: `Cooler than ${pct99(r.coolerSummersThanAtlasShare)} of places; hotter than ${pct99(rest(r.coolerSummersThanAtlasShare))}`,
     },
     {
       label: "Winter mean low vs full atlas (Dec–Feb blend)",
-      value: `Milder than ${pct99(r.milderWintersThanAtlasShare)} of stops; colder than ${pct99(rest(r.milderWintersThanAtlasShare))}`,
+      value: `Milder than ${pct99(r.milderWintersThanAtlasShare)} of places; colder than ${pct99(rest(r.milderWintersThanAtlasShare))}`,
     },
     {
       label: "Elevation & diurnal (same atlas set)",
-      value: `Higher ground than ${pct99(r.higherElevationThanAtlasShare)} · larger summer diurnal than ${pct99(r.largerDiurnalThanAtlasShare)} of stops`,
+      value: `Higher ground than ${pct99(r.higherElevationThanAtlasShare)} · larger summer diurnal than ${pct99(r.largerDiurnalThanAtlasShare)} of places`,
     },
   ];
   if (r.gddAboveShare != null) {
     const gddLabel = displayTemp === "F" ? "Growing-degree signal (GDD, base 50°F)" : "Growing-degree signal (GDD, base 10°C)";
     out.push({
       label: gddLabel,
-      value: `More degree-days than ${pct99(r.gddAboveShare)} of stops with GDD filled`,
+      value: `More degree-days than ${pct99(r.gddAboveShare)} of places with growing-degree data`,
     });
   }
   return out;
@@ -274,13 +274,13 @@ export function getCorpusContextPanelRows(
   const pr = PLACE_ANNUAL_PRECIP[place.id];
   const di = summerDiurnalC(place);
   const rows: CorpusPanelRow[] = [
-    { metric: "Mean Jun–Aug high (normal)", you: fmtT(jh), context: `Cooler summers than ${pct(r.coolerSummersThanAtlasShare)} of atlas stops` },
-    { metric: "Mean winter low (Dec–Feb)", you: fmtT(jl), context: `Milder mid-winter than ${pct(r.milderWintersThanAtlasShare)} of atlas stops` },
-    { metric: "Annual precip (atlas field)", you: fmtP(pr), context: `Wetter than ${pct(r.wetterThanAtlasShare)} of atlas stops` },
-    { metric: "Site elevation", you: fmtE(place.elevationM), context: `Higher than ${pct(r.higherElevationThanAtlasShare)} of stops` },
-    { metric: "High-season diurnal (July proxy)", you: fmtD(di), context: `Larger swing than ${pct(r.largerDiurnalThanAtlasShare)} of stops` },
+    { metric: "Mean Jun–Aug high (normal)", you: fmtT(jh), context: `Cooler summers than ${pct(r.coolerSummersThanAtlasShare)} of atlas places` },
+    { metric: "Mean winter low (Dec–Feb)", you: fmtT(jl), context: `Milder mid-winter than ${pct(r.milderWintersThanAtlasShare)} of atlas places` },
+    { metric: "Annual precip (atlas field)", you: fmtP(pr), context: `Wetter than ${pct(r.wetterThanAtlasShare)} of atlas places` },
+    { metric: "Site elevation", you: fmtE(place.elevationM), context: `Higher than ${pct(r.higherElevationThanAtlasShare)} of places` },
+    { metric: "High-season diurnal (July proxy)", you: fmtD(di), context: `Larger swing than ${pct(r.largerDiurnalThanAtlasShare)} of places` },
     { metric: "Resilience / grow / uniqueness (scores)", you: `${place.scores.resilience} / ${place.scores.growability} / ${place.scores.microclimateUniqueness}`,
-      context: `Resilience above ${pct(r.higherResilienceShare)} · grow above ${pct(r.higherGrowabilityShare)} · uniqueness above ${pct(r.higherUniquenessShare)} of stops`,
+      context: `Resilience above ${pct(r.higherResilienceShare)} · grow above ${pct(r.higherGrowabilityShare)} · uniqueness above ${pct(r.higherUniquenessShare)} of places`,
     },
   ];
   if (place.climate.frostFreeDays != null) {
@@ -288,8 +288,8 @@ export function getCorpusContextPanelRows(
       metric: "Frost-free days (est.)",
       you: `${place.climate.frostFreeDays} d`,
       context: r.frostAboveShare != null
-        ? `Longer season than ${pct(r.frostAboveShare)} of stops with data`
-        : "Compare within stops that report frost-free days",
+        ? `Longer season than ${pct(r.frostAboveShare)} of places with data`
+        : "Compare within places that report frost-free days",
     });
   }
   if (place.climate.gdd10 != null) {
@@ -298,8 +298,8 @@ export function getCorpusContextPanelRows(
       metric: gddMetric,
       you: Math.round(gddForUnit(place.climate.gdd10, displayTemp)).toLocaleString("en-US"),
       context: r.gddAboveShare != null
-        ? `More heat units than ${pct(r.gddAboveShare)} of stops with GDD`
-        : "Among stops with GDD filled",
+        ? `More heat units than ${pct(r.gddAboveShare)} of places with growing-degree data`
+        : "Among places with growing-degree data",
     });
   }
   return rows;
@@ -309,7 +309,7 @@ export function getCorpusContextPanelRows(
 
 export interface PlaceBioclimRanks {
   /** Share of corpus places with a *smaller* De Martonne value than this place
-   *  (i.e. this place is wetter-per-degree than that share of stops). */
+   *  (i.e. this place is wetter-per-degree than that share of places). */
   deMartonneAboveShare: number | null;
   /** Share with a smaller Conrad index (this place is more continental). */
   conradAboveShare: number;
@@ -368,15 +368,6 @@ export function getPlaceBioclimRanks(place: Place): PlaceBioclimRanks {
   return ranks;
 }
 
-function shortConradClass(cls: string): string {
-  switch (cls) {
-    case "extreme-oceanic": return "strongly oceanic";
-    case "sub-continental": return "mildly continental";
-    case "extreme-continental": return "strongly continental";
-    default: return cls;
-  }
-}
-
 function bioclimTone(cls: string | null, conrad: number): BioclimCardSignal["tone"] {
   if (!cls) return conrad >= 50 ? "aurora" : "ice";
   if (cls === "hyperarid" || cls === "arid") return "ember";
@@ -394,24 +385,22 @@ export function getBioclimCardSignal(place: Place): BioclimCardSignal | null {
     return null;
   }
 
-  // Plain words on the card ("Very humid · continental"); the index values
-  // (Conrad K, De Martonne, PET) stay in the hover title for readers who want them.
-  const conradShort = shortConradClass(b.conrad.class);
-  const waterLabel = b.deMartonne.value !== null ? b.deMartonne.classLabel : "Frozen-year";
+  // Plain words on the card ("Moist · small seasonal swing"): the first half
+  // is how wet the climate is, the second how far temperature swings through
+  // the year. The published index names and values stay in the hover title.
+  const swingLabel = b.conrad.classLabel.toLowerCase().replace(/ swing$/, " seasonal swing");
+  const waterLabel = b.deMartonne.value !== null ? b.deMartonne.classLabel : "Frozen year";
   const titleParts = [
     b.deMartonne.value !== null
-      ? `De Martonne ${b.deMartonne.value.toFixed(1)} (${b.deMartonne.classLabel})`
-      : "De Martonne undefined: mean annual temperature ≤ −10°C",
-    `Conrad K ${b.conrad.value.toFixed(1)} (${b.conrad.classLabel})`,
-    `Thornthwaite PET ${Math.round(b.thornthwaitePet.value)} mm/yr`,
+      ? `Moisture: ${b.deMartonne.classLabel.toLowerCase()} (De Martonne aridity index ${b.deMartonne.value.toFixed(1)}). ${DE_MARTONNE_GLOSS}`
+      : "Moisture: not defined (De Martonne aridity index needs a mean annual temperature above −10°C).",
+    `Seasonal temperature swing: ${b.conrad.classLabel.toLowerCase().replace(/ swing$/, "")} (Conrad continentality index ${b.conrad.value.toFixed(1)}). ${CONRAD_GLOSS}`,
+    "This describes rain and temperature, not how humid the air feels.",
   ];
-  if (b.selianinov.value !== null) {
-    titleParts.push(`Selianinov HTC ${b.selianinov.value.toFixed(2)} (${b.selianinov.classLabel})`);
-  }
 
   const signal: BioclimCardSignal = {
-    label: `${waterLabel} · ${conradShort}`,
-    title: titleParts.join("; "),
+    label: `${waterLabel} · ${swingLabel}`,
+    title: titleParts.join(" "),
     tone: bioclimTone(b.deMartonne.value !== null ? b.deMartonne.class : null, b.conrad.value),
   };
   PLACE_BIOCLIM_CARD_SIGNAL_CACHE.set(place, signal);
@@ -423,7 +412,7 @@ export function getCorpusMapHint(place: Place): string {
   const cached = PLACE_CORPUS_MAP_HINT_CACHE.get(place);
   if (cached) return cached;
   const r = getPlaceCorpusRanks(place);
-  const hint = `Water year wetter than ${pct(r.wetterThanAtlasShare)} of atlas stops; Jun-Aug mean high cooler than ${pct(r.coolerSummersThanAtlasShare)} of stops.`;
+  const hint = `Water year wetter than ${pct(r.wetterThanAtlasShare)} of atlas places; Jun-Aug mean high cooler than ${pct(r.coolerSummersThanAtlasShare)} of places.`;
   PLACE_CORPUS_MAP_HINT_CACHE.set(place, hint);
   return hint;
 }

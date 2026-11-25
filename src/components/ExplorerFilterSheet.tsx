@@ -44,6 +44,17 @@ type Props = {
   lensScope?: LensScope | null;
   onOpenChange?: (open: boolean) => void;
   projecting?: boolean;
+  /** 0–11 month the month ranking reads, and its setter (month selector beside "Rank by"). */
+  rankingMonth?: number;
+  onRankingMonthChange?: (monthIndex: number) => void;
+  rankingNotice?: { message: string; onUndo: () => void } | null;
+  searchPrompt?: string | null;
+  onDismissSearchPrompt?: () => void;
+  /** Live count of places matching the current filters, for the "Show n places" button. */
+  resultCount?: number;
+  resultsPending?: boolean;
+  /** Enter in the sheet's search box: open the first ranked result. */
+  onSearchSubmit?: (input: HTMLInputElement) => void;
 };
 
 const RISK_SUMMARY_LABELS = {
@@ -87,7 +98,7 @@ function summarizeActiveExplorerLens(
 
 export const ExplorerFilterSheet = memo(
   forwardRef<ExplorerFilterSheetHandle, Props>(function ExplorerFilterSheet(
-    { searchInputId, filters, setFilters, ranking, setRanking, onClearAll, footer, detailOpen, scenario, onScenarioChange, lensScope, onOpenChange, projecting },
+    { searchInputId, filters, setFilters, ranking, setRanking, onClearAll, footer, detailOpen, scenario, onScenarioChange, lensScope, onOpenChange, projecting, rankingMonth, onRankingMonthChange, onSearchSubmit, rankingNotice, searchPrompt, onDismissSearchPrompt, resultCount, resultsPending },
     ref,
   ) {
     const dialogRef = useRef<HTMLDialogElement>(null);
@@ -296,8 +307,33 @@ export const ExplorerFilterSheet = memo(
               scenario={scenario}
               onScenarioChange={onScenarioChange}
               lensScope={lensScope}
+              rankingMonth={rankingMonth}
+              onRankingMonthChange={onRankingMonthChange}
+              onSearchSubmit={onSearchSubmit}
+              rankingNotice={rankingNotice}
+              searchPrompt={searchPrompt}
+              onDismissSearchPrompt={onDismissSearchPrompt}
             />
             {footer ? <div className="mt-3 space-y-0">{footer}</div> : null}
+            {resultCount != null ? (
+              <div
+                data-filter-sheet-apply
+                className="tc-surface-elevated sticky bottom-[-1.2rem] z-[3] -mx-[1.1rem] -mb-[1.2rem] mt-3 border-t tc-border-warm px-[1.1rem] pt-2.5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]"
+              >
+                <button
+                  type="button"
+                  onClick={close}
+                  className="btn-primary min-h-[46px] w-full justify-center !text-sm"
+                  aria-busy={resultsPending || undefined}
+                >
+                  <span aria-live="polite" aria-atomic="true">
+                    {resultCount === 0
+                      ? "No places match. Show the list"
+                      : `Show ${resultCount} ${resultCount === 1 ? "place" : "places"}`}
+                  </span>
+                </button>
+              </div>
+            ) : null}
           </div>
         </dialog>
       </>

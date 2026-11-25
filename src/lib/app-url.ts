@@ -13,6 +13,8 @@
  *   cmpopen "0" when a compare set of 2+ is queued but the Compare dialog is
  *           closed (absent: a 2+ set opens Compare, as shared links expect)
  *   r       ranking profile
+ *   m       month for the "best in <month>" ranking, 1..12 (omitted for the
+ *           current calendar month; only written with r=best-this-month)
  *   fit     live-fit preset ids, comma-separated
  *   sh      max mean Jun-Aug high (C)
  *   wl      min mean Dec-Feb low (C)
@@ -29,6 +31,7 @@ import type { Country, MicroclimateArchetype, RiskLevel, ScenarioId } from "../t
 import type { RankingProfile } from "./scoring";
 import { DEFAULT_RANKING } from "./app-ranking-preference";
 import { ALL_RANKING_PROFILES } from "./ranking-options";
+import { isMonthIndex, monthIndexFromParam } from "./ranking-calendar";
 import type { ThemePreference } from "./theme";
 import { isThemePreference } from "./theme";
 import {
@@ -59,6 +62,8 @@ export interface ParsedAppUrl {
   search: string;
   compareIds: string[];
   ranking: RankingProfile | null;
+  /** 0–11 month index from `m=1..12`. */
+  month: number | null;
   fitPresets: LiveFitPresetId[];
   maxSummerHighC: number | null;
   minWinterLowC: number | null;
@@ -135,6 +140,8 @@ export function parseAppSearch(search: string): Partial<ParsedAppUrl> {
   if (params.get("cmpopen") === "0") out.compareClosed = true;
   const r = params.get("r");
   if (r && RANKING_VALUES.has(r)) out.ranking = r as RankingProfile;
+  const month = monthIndexFromParam(params.get("m"));
+  if (month != null) out.month = month;
   const fit = params.get("fit");
   if (fit) {
     out.fitPresets = fit
@@ -163,8 +170,24 @@ export function parseAppSearch(search: string): Partial<ParsedAppUrl> {
   return out;
 }
 
-/** `tcPlace: true` means this history entry was created by opening a place in-app — browser Back should close the panel. */
-export type AppHistoryState = { tcPlace?: boolean } | null;
+/**
+ * Flags stored on in-app history entries.
+ * - `tcPlace`: the entry was created by opening a place in-app, so browser
+ *   Back closes the panel instead of leaving the site.
+ * - `tcDepth`: how many in-app entries sit between this profile entry and the
+ *   page it was opened from (1 for the first profile, +1 per profile-to-profile
+ *   hop or Compare opened over it). Closing the profile goes back that far.
+ * - `tcCompare`: the entry was created by opening Compare in-app, so closing
+ *   Compare goes back one entry instead of leaving a duplicate behind.
+ */
+export type AppHistoryState = { tcPlace?: boolean; tcDepth?: number; tcCompare?: boolean } | null;
+
+/** Depth of an in-app profile entry (0 when the entry was not opened in-app). */
+export function historyPlaceDepth(state: AppHistoryState | undefined): number {
+  if (!state?.tcPlace) return 0;
+  const depth = state.tcDepth;
+  return typeof depth === "number" && Number.isInteger(depth) && depth >= 1 ? depth : 1;
+}
 
 /**
  * Full canonical state used to format URLs. The `*Exists` callbacks are
@@ -184,6 +207,11 @@ export interface AppUrlState {
   /** Compare dialog is closed while a 2+ set is queued (written as cmpopen=0). */
   compareClosed?: boolean;
   ranking?: RankingProfile | null;
+  /**
+   * 0–11 month index for the `best-this-month` ranking. Callers pass null for
+   * the current calendar month so `m` stays out of the URL by default.
+   */
+  month?: number | null;
   fitPresets?: readonly string[];
   maxSummerHighC?: number | null;
   minWinterLowC?: number | null;
@@ -231,6 +259,10 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
     (state.ranking !== DEFAULT_RANKING || hasLiveFitSpecificState(state))
   ) {
     params.set("r", state.ranking);
+  }
+  // The month only means something to the month ranking.
+  if (state.ranking === "best-this-month" && isMonthIndex(state.month)) {
+    params.set("m", String(state.month + 1));
   }
   const fitPresets = state.fitPresets ?? [];
   if (fitPresets.length > 0) {
@@ -306,6 +338,8 @@ export interface ValidatedAppState {
   search: string;
   compareIds: string[];
   ranking: RankingProfile | null;
+  /** 0–11 month index chosen for the month ranking; null means the current month. */
+  month: number | null;
   fitPresets: LiveFitPresetId[];
   maxSummerHighC: number | null;
   minWinterLowC: number | null;
@@ -352,6 +386,7 @@ export function validatedStateFromSearch(
     search: search_,
     compareIds,
     ranking: p.ranking ?? null,
+    month: p.ranking === "best-this-month" ? p.month ?? null : null,
     fitPresets: p.fitPresets ?? [],
     maxSummerHighC: p.maxSummerHighC ?? null,
     minWinterLowC: p.minWinterLowC ?? null,
@@ -383,6 +418,7 @@ export function readInitialAppState(
       search: "",
       compareIds: [],
       ranking: null,
+      month: null,
       fitPresets: [],
       maxSummerHighC: null,
       minWinterLowC: null,

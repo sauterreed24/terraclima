@@ -3,6 +3,7 @@ import { Gauge, MapPinned, ShieldAlert, Sparkles } from "lucide-react";
 import type { Place } from "../../types";
 import { scorePlaceFeel } from "../../lib/place-feel";
 import { useProse } from "../../lib/units";
+import { SCORE_DEFINITIONS } from "../../lib/livability-score";
 
 function toneFor(value: number): "sage" | "ice" | "ember" {
   if (value >= 74) return "sage";
@@ -24,7 +25,7 @@ export function PlaceFeelRead({ place, anchorId }: { place: Place; anchorId: str
       <div className="place-score-details__body">
       <div className="grid lg:grid-cols-[13rem_1fr] gap-3">
         <div className="panel-thin p-4">
-          <div className="text-[10px] uppercase tracking-wider text-stone">Place-feel score</div>
+          <div className="text-[10px] uppercase tracking-wider text-stone" title={SCORE_DEFINITIONS.placeFeel.definition}>{SCORE_DEFINITIONS.placeFeel.label}</div>
           <div className="font-mono-num text-4xl text-ice mt-1">
             {feel.score}<span className="text-sm text-stone">/100</span>
           </div>
@@ -39,7 +40,7 @@ export function PlaceFeelRead({ place, anchorId }: { place: Place; anchorId: str
             <article key={component.key} className="panel-thin p-4">
               <div className="flex items-center justify-between gap-3">
                 <div className="text-[10px] uppercase tracking-wider text-stone">{component.label}</div>
-                <div className="font-mono-num text-sm text-ice tabular-nums">{Math.round(component.value)}</div>
+                <div className="font-mono-num text-sm text-ice tabular-nums">{Math.round(component.value)}<span className="text-[10px] text-stone">/100</span></div>
               </div>
               <div className="mt-2 h-2 rounded-full bg-[rgba(200,170,140,0.22)] overflow-hidden" aria-hidden>
                 <div

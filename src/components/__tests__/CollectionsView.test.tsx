@@ -26,9 +26,9 @@ describe("CollectionsView", () => {
     expect(within(firstCard as HTMLElement).getByText("25 places")).toBeInTheDocument();
     expect(
       within(firstCard as HTMLElement).getByRole("button", {
-        name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 77 | Identity",
+        name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy place feel, 77/100",
       }),
-    ).toHaveAttribute("title", "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 77 | Identity");
+    ).toHaveAttribute("title", "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy place feel, 77/100");
     expect((firstCard as HTMLElement).querySelectorAll(".collection-spectrum__bar").length).toBeGreaterThan(3);
     expect(container.querySelector(".collection-place-chip__dot")).not.toBeNull();
 
@@ -37,7 +37,7 @@ describe("CollectionsView", () => {
     expect(pinButton).toHaveAttribute("title", "Filter the Explorer to Rain-Shadow Sanctuaries");
     fireEvent.click(pinButton);
     const placeButton = within(firstCard as HTMLElement).getByRole("button", {
-      name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 77 | Identity",
+      name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy place feel, 77/100",
     });
     fireEvent.click(placeButton);
 
@@ -54,8 +54,8 @@ describe("CollectionsView", () => {
     expect(labels.every(label => label?.startsWith("Open "))).toBe(true);
     expect(new Set(labels).size).toBe(labels.length);
     expect(labels).toEqual(expect.arrayContaining([
-      expect.stringMatching(/^Open Port Townsend profile from Rain-Shadow Sanctuaries collection: .+ \| .+$/),
-      expect.stringMatching(/^Open Port Townsend profile from Gap & Gorge Wind Corridors collection: .+ \| .+$/),
+      expect.stringMatching(/^Open Port Townsend profile from Rain-Shadow Sanctuaries collection: .+ place feel, \d+\/100$/),
+      expect.stringMatching(/^Open Port Townsend profile from Gap & Gorge Wind Corridors collection: .+ place feel, \d+\/100$/),
       expect.stringMatching(/^Open Durango \(Colorado .* US\) profile from Monsoon-Edge Landscapes collection: /),
       expect.stringMatching(/^Open Durango \(Victoria de Durango .* Durango .* MX\) profile from Monsoon-Edge Landscapes collection: /),
     ]));

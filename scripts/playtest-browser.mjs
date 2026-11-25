@@ -196,7 +196,7 @@ async function main() {
           await page.waitForTimeout(350);
           const empty = page.locator(".tc-empty-results");
           if (await empty.count()) {
-            const reset = empty.getByRole("button", { name: /Reset Explorer|Clear search/i }).first();
+            const reset = empty.getByRole("button", { name: /Reset the atlas|Clear search/i }).first();
             if (await reset.count()) await reset.click();
             await page.waitForTimeout(200);
           } else {

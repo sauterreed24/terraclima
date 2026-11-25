@@ -3,7 +3,8 @@
 // ============================================================
 
 import type { Place, MicroclimateArchetype, RiskLevel } from "../types";
-import { PLACES, foldDiacritics, getPlaceSearchText } from "../data/places";
+import { PLACES } from "../data/places";
+import { searchPlaces } from "./place-search";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 import { CORPUS_MEAN_HUMIDITY } from "./atlas-corpus-stats";
 import {
@@ -369,23 +370,23 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
       case "most-continental": {
         const bio = computeBioclim(p);
         if (!bio || bio.conrad.value == null) return { place: p, score: 0, note: "Bioclim unavailable" };
-        return { place: p, score: Math.max(0, bio.conrad.value), note: `Conrad K ${bio.conrad.value.toFixed(1)} · ${bio.conrad.classLabel}` };
+        return { place: p, score: Math.max(0, bio.conrad.value), note: `Seasonal swing: ${bio.conrad.classLabel.toLowerCase()} (Conrad index ${bio.conrad.value.toFixed(0)})` };
       }
       case "driest-growing-season": {
         const bio = computeBioclim(p);
         if (!bio) return { place: p, score: 0, note: "Bioclim unavailable" };
         if (bio.selianinov.value == null) {
-          return { place: p, score: 0, note: "No growing season; Selianinov HTC undefined." };
+          return { place: p, score: 0, note: "No growing season, so there is no growing-season moisture figure." };
         }
         const s = Math.max(0, 100 - bio.selianinov.value * 40);
-        return { place: p, score: s, note: `Selianinov HTC ${bio.selianinov.value.toFixed(2)} · ${bio.selianinov.classLabel}` };
+        return { place: p, score: s, note: `Growing season: ${bio.selianinov.classLabel.toLowerCase()} (Selianinov index ${bio.selianinov.value.toFixed(2)})` };
       }
       case "lowest-evaporative-demand": {
         const bio = computeBioclim(p);
         if (!bio) return { place: p, score: 0, note: "Bioclim unavailable" };
         const pet = bio.thornthwaitePet.value;
         const s = Math.max(0, 100 - pet / 20);
-        return { place: p, score: s, note: `Thornthwaite PET ${Math.round(pet)} mm/yr` };
+        return { place: p, score: s, note: `Evaporative demand ${Math.round(pet)} mm/yr (Thornthwaite estimate)` };
       }
       case "mediterranean-like": {
         // Csb (warm-summer Mediterranean — coastal CA, Pacific NW pockets) is the
@@ -494,7 +495,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const costPenalty = cost != null ? Math.max(0, (cost - 50)) * 0.18 : 0;
         const accessPenalty = access != null ? Math.max(0, (access - 45)) * 0.24 : 0;
         const s = Math.max(0, Math.min(100, winterScore + summerScore + riskScore + growScore + sunBonus + livedBonus + feelBonus - costPenalty - accessPenalty));
-        return { place: p, score: s, note: `Mild all-year · grow ${p.scores.growability}/100 · avg risk ${avgRisk(p).toFixed(1)}` };
+        return { place: p, score: s, note: `Mild all-year · grow ${p.scores.growability}/100 · overall risk ${Math.round(avgRisk(p) * 20)}/100` };
       }
     }
   });
@@ -617,10 +618,19 @@ export function hasNonSearchExplorerFilters(filters: FilterState): boolean {
   );
 }
 
+/**
+ * Apply every Explorer filter. Search is field-weighted and tiered (see
+ * `src/lib/place-search.ts`): a blank / whitespace query filters nothing; a
+ * query keeps only places every token matches, falling back to typo-tolerant
+ * name / region matching when nothing matches exactly. Output keeps the input
+ * order — use {@link orderBySearchMatch} (or `runScenarioRanking`, which
+ * calls it) to put the best match first.
+ */
 export function applyFilters(places: Place[], f: FilterState): Place[] {
-  // Precompute the diacritic-folded query once, not per-place. The search
-  // index is built with the same fold so "san jose" matches "San José".
-  const q = f.search ? foldDiacritics(f.search.trim()) : "";
+  // Search runs over the whole pool, before the other filters, so a term's
+  // distinctiveness does not shift as country / archetype chips are toggled.
+  const search = searchPlaces(places, f.search);
+  const hasSearch = search.mode !== "none";
   const hasCountries = f.countries.size > 0;
   const hasArchetypes = f.archetypes.size > 0;
 
@@ -629,10 +639,26 @@ export function applyFilters(places: Place[], f: FilterState): Place[] {
     if (hasCountries && !f.countries.has(p.country)) continue;
     if (hasArchetypes && !p.archetypes.some(a => f.archetypes.has(a))) continue;
     if (!liveFitFilterPass(p, f)) continue;
-    if (q) {
-      if (!getPlaceSearchText(p).includes(q)) continue;
-    }
+    if (hasSearch && !search.rankByPlace.has(p)) continue;
     out.push(p);
   }
   return out;
+}
+
+/**
+ * Re-order ranked rows for an active search: match tier first, the incoming
+ * (ranking) order second, so the place the user named is always on top. With
+ * a blank query the rows are returned unchanged. `pool` must be the same pool
+ * `applyFilters` searched.
+ */
+export function orderBySearchMatch<T extends { place: Place }>(
+  rows: readonly T[],
+  pool: readonly Place[],
+  query: string | null | undefined,
+): T[] {
+  const search = searchPlaces(pool, query);
+  if (search.mode === "none") return rows as T[];
+  const rank = (row: T) => search.rankByPlace.get(row.place) ?? Number.MAX_SAFE_INTEGER;
+  // Array.prototype.sort is stable, so ties keep the ranking order.
+  return [...rows].sort((a, b) => rank(a) - rank(b));
 }

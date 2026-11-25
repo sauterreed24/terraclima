@@ -66,13 +66,13 @@ export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionPr
     {
       label: "Night cooling",
       value: `${Math.round(sleep.sleepRecoveryScore)}/100`,
-      note: `${sleep.label}: low ${precisionTemp(sleep.lowC, temp)} with ${fmtDelta(sleep.highC - sleep.lowC, temp, { signed: false })} day-night spread.`,
+      note: `${sleep.label}: low ${precisionTemp(sleep.lowC, temp)} with ${fmtDelta(sleep.highC - sleep.lowC, temp, { digits: 0, signed: false })} day-night spread.`,
       tone: "aurora",
     },
     {
-      label: "Heat or cold stress (UTCI*)",
+      label: "Heat or cold stress*",
       value: `${utci.score}/100`,
-      note: `${utci.bandLabel}; feels-like ${utci.warmSeasonLabel} ${precisionTemp(utci.warmSeasonApparentHighC, temp)}. *Approximate: no wind or direct-sun data.`,
+      note: `${utci.bandLabel}; feels-like ${utci.warmSeasonLabel} ${precisionTemp(utci.warmSeasonApparentHighC, temp)}. *0–100, higher is less strain. Estimated in the style of the Universal Thermal Climate Index (UTCI), without wind or direct-sun data.`,
       tone: "ochre",
     },
   ] as const;

@@ -37,7 +37,7 @@ describe("buildExplorerScoutBrief", () => {
       "Easy months",
       "Place feel",
       "Precip range",
-      "Avg risk",
+      "Overall risk",
       "Most common type",
     ]);
     expect(brief!.metrics.find(metric => metric.label === "Summer highs")!.value).toMatch(/°C$/);
@@ -156,7 +156,7 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.decisionRows.map(row => row.place.id)).toEqual(["comfort-town", "risk-cove", "garden-ridge"]);
     expect(brief!.decisionRows[0].decisionCue).toContain("Watch");
     expect(brief!.nextStep.action).toContain("Comfort Town");
-    expect(brief!.nextStep.detail).toContain("Gardening window");
+    expect(brief!.nextStep.detail).toContain("Outdoor comfort");
     expect(brief!.nextStep.detail).toContain("First caveat:");
     expect(brief!.nextStep.detail).toContain("Risk Cove");
     expect(brief!.advisorRead.why).toContain("1 of 6 priorities");

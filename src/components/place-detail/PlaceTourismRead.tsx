@@ -3,6 +3,7 @@ import { Calendar, Compass, Home, Leaf, MapPin, Route, ShieldAlert, Sprout, Tren
 import type { Place } from "../../types";
 import { getClimateTourismProfile } from "../../lib/climate-tourism";
 import { useProse } from "../../lib/units";
+import { SCORE_DEFINITIONS } from "../../lib/livability-score";
 
 export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: string }) {
   const prose = useProse();
@@ -18,10 +19,12 @@ export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: 
         When to come, what to see and what to check if you visit to try the climate. These are suggestions from climate averages; confirm lodging, roads and closures yourself.
       </p>
 
-      <div className="grid md:grid-cols-3 gap-2 mb-4">
-        <TourismScore label="Tourism appeal" value={profile.scores.tourismAppeal} note={profile.scoreNotes.tourismAppeal} />
-        <TourismScore label="Would I live here?" value={profile.scores.wouldLiveHere} note={profile.scoreNotes.wouldLiveHere} />
-        <TourismScore label="Long-term climate & land" value={profile.scores.climateLandOptionality} note={profile.scoreNotes.climateLandOptionality} />
+      {/* Two scores, not three: the old "Would I live here?" tile was a second
+          living score a point or two from Live-here fit, which the fit summary
+          above already leads with. */}
+      <div className="grid md:grid-cols-2 gap-2 mb-4">
+        <TourismScore label={SCORE_DEFINITIONS.visitAppeal.label} definition={SCORE_DEFINITIONS.visitAppeal.definition} value={profile.scores.tourismAppeal} note={profile.scoreNotes.tourismAppeal} />
+        <TourismScore label={SCORE_DEFINITIONS.longTermLand.label} definition={SCORE_DEFINITIONS.longTermLand.definition} value={profile.scores.climateLandOptionality} note={profile.scoreNotes.climateLandOptionality} />
       </div>
 
       <div className="grid md:grid-cols-2 gap-3">
@@ -80,15 +83,15 @@ export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: 
       </div>
 
       <div className="panel-warm p-3 mt-3 text-[12px] text-stone-readable leading-relaxed">
-        Travel and lodging cues are static and carry no paid placement. The climate/land score is a screening signal, not financial advice, not a real estate valuation, not a parcel-level recommendation, and not a recommendation to buy. Hazard reads are atlas-grade screens; local official maps and sources matter.
+        Travel and lodging cues are static and carry no paid placement. The long-term climate and land score is a rough guide, not financial advice, not a real estate valuation, not a parcel-level recommendation, and not a recommendation to buy. Hazard reads are atlas-grade screens; local official maps and sources matter.
       </div>
     </section>
   );
 }
 
-function TourismScore({ label, value, note }: { label: string; value: number; note: string }) {
+function TourismScore({ label, definition, value, note }: { label: string; definition: string; value: number; note: string }) {
   return (
-    <div className="panel-thin p-3">
+    <div className="panel-thin p-3" title={definition}>
       <div className="flex items-center justify-between gap-2">
         <div className="text-[10px] uppercase tracking-wide text-stone leading-tight">{label}</div>
         <TrendingUp className="w-3.5 h-3.5 text-glacier-700 shrink-0" aria-hidden />

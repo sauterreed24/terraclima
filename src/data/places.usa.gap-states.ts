@@ -25,7 +25,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["thermal-belt", "mild-winter-foothills", "piedmont-transition"],
     drivers: ["elevation-lapse-rate", "aspect-slope", "cold-air-drainage"],
     summaryShort: "Some of Alabama’s coolest summer afternoons — a plateau town where elevation buys genuine relief from Gulf humidity below.",
-    summaryImmersive: "Mentone sits on the same Appalachian escarpment that runs into Georgia and Tennessee, but here the state’s stereotypical swelter finally breaks. Westerly storm systems ride the plateau edge; thermal belts and coves on the scarp produce sharp spring frost contrasts that orchardists still map by hand. It is one of the few places in Alabama where true four-season gardening feels honest.",
+    summaryImmersive: "Mentone sits at about 550 m on the edge of Lookout Mountain in northeast Alabama, about 280 m above the valley to the west. The height takes a few degrees off the Alabama summer: afternoons average about 29°C and nights about 18°C. Winter is mild, with afternoons near 10°C, nights around freezing and a little snow. The plateau edge catches rain from passing storms, and about 1640 mm falls in a year, with the most from December to March. Summer camps have operated here for a century, and DeSoto Falls and Little River Canyon are nearby. Severe thunderstorms, tornadoes and flash floods are the main risks.",
     whyDistinct: "Plateau elevation (~550 m) in the subtropical Gulf air mass produces lapse-rate cooling and orographic cloud caps on moist flow — a discrete mountain microclimate inside a state better known for torrid lowlands.",
     climate: {
       tempHighC: [9, 11, 16, 21, 25, 28, 29, 29, 26, 21, 15, 11],
@@ -65,7 +65,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["cold-air-pool", "frost-hollow", "lake-effect-snowbelt"],
     drivers: ["cold-air-drainage", "lake-effect", "polar-jet-exposure"],
     summaryShort: "Connecticut’s unofficial cold pole — deep winter snow and spring frosts that arrive later than along I-91.",
-    summaryImmersive: "Norfolk collects cold air on clear nights the way a bowl collects water. Lake-effect streamers from Lake Ontario occasionally reach this far southeast when flow aligns; more often it is simply elevation and rural exposure. Summers are mild and short; the town is a cultural bridge between New England ski country and the Hudson Valley.",
+    summaryImmersive: "Norfolk sits at about 430 m in the hills of northwest Connecticut and calls itself the Icebox of Connecticut. It is higher than nearly every other town in the state, and on clear nights cold air settles into its hollows. Winter afternoons hover just above freezing and nights average about −9°C, with about 230 cm of snow, more than double what falls on the coast. Summer is mild, with afternoons near 25°C and cool nights, which has drawn summer residents and a chamber music festival for more than a century. About 1470 mm of precipitation falls in a year. Spring is late and the growing season is short.",
     whyDistinct: "High elevation + inland position + enclosed topography = systematically colder minima than coastal Connecticut or the Hartford basin — a textbook small-scale cold pool.",
     climate: {
       tempHighC: [0, 2, 7, 13, 19, 23, 26, 25, 21, 14, 8, 3],
@@ -105,7 +105,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["cool-summer-maritime", "hurricane-coast"],
     drivers: ["sea-breeze", "hurricane-track", "marine-layer"],
     summaryShort: "Delaware’s gentlest summers — bay and ocean breezes cap heat while humidity stays classically Mid-Atlantic.",
-    summaryImmersive: "Lewes sits where the bay’s huge tidal prism organizes daily wind: onshore flow on warm afternoons, land breezes at night, and periodic nor’easters that reshape coastal dunes. It lacks the elevation microclimates of the Appalachians but exemplifies estuarine moderation in a mostly flat state.",
+    summaryImmersive: "Lewes stands where Delaware Bay opens to the Atlantic, behind the dunes of Cape Henlopen. Water on two sides evens out the seasons. Summer afternoons average about 29°C, with a sea breeze on most warm days and humid nights near 19°C. Winter is mild, with afternoons near 9°C, nights around freezing and about 40 cm of snow. About 1180 mm of precipitation falls evenly through the year. Spring warms slowly because the bay is cold, and autumn stays mild for the same reason. The town is only a few metres above sea level, and flooding from nor'easters and hurricanes is the main risk, growing as the sea rises.",
     whyDistinct: "Shallow-mixed Delaware Bay + Atlantic fetch produces a hybrid maritime regime rare inland on the Delmarva Peninsula.",
     climate: {
       tempHighC: [6, 7, 11, 16, 21, 26, 29, 28, 25, 19, 14, 9],
@@ -146,7 +146,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["mild-winter-foothills", "thermal-belt", "cloud-forest"],
     drivers: ["orographic-lift", "elevation-lapse-rate", "aspect-slope"],
     summaryShort: "A Georgia mountain town where July afternoons stay closer to the upper 20s than the low 30s — rare in the Deep South.",
-    summaryImmersive: "Clayton is far enough south to feel subtropical in spring, but elevation and orographic cloudiness on moist southerly flow keep midsummer heat human. Waterfalls and north-facing coves stay shockingly cool; south-facing ridges open to sun for viticulture experiments. The contrast with Atlanta’s heat island is not subtle — it is a different regional climate at the same latitude band.",
+    summaryImmersive: "Clayton lies at about 590 m in the northeast corner of Georgia, at the foot of the Blue Ridge. Moist air from the Gulf is forced up the mountain front, and about 1810 mm of rain falls in a year, which makes this one of the wettest parts of Georgia. Elevation and cloud keep summer afternoons near 29°C, a few degrees below Atlanta, and nights cool to about 17°C. Winter is mild, with afternoons near 11°C, nights around freezing and a little snow. Waterfalls and shaded north-facing coves stay cool all summer. Heavy rain is the main risk, bringing floods and landslides on steep ground.",
     whyDistinct: "Orographic enhancement + escarpment elevation produces a montane island climate inside the humid subtropical belt — one of the strongest latitude–elevation decouplings in the Southeast.",
     climate: {
       tempHighC: [11, 13, 17, 22, 26, 29, 30, 29, 26, 22, 16, 12],
@@ -186,7 +186,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["driftless-relief", "river-valley-moderation", "cold-air-pool"],
     drivers: ["aspect-slope", "river-moderation", "cold-air-drainage"],
     summaryShort: "Steep bluffs and coulees in a corner of Illinois that glaciers missed — sharp frost and microclimates on a few miles’ scale.",
-    summaryImmersive: "Galena’s postcard hills are not decorative; they organize cold drainage, spring phenology, and wind exposure in ways flat corn country cannot. The Mississippi moderates some winter cold but also supplies moisture for lake-effect-like cloud streets when synoptic flow aligns. It is a microclimate laboratory squeezed into a tourist town.",
+    summaryImmersive: "Galena lies among steep hills and bluffs near the Mississippi River in the northwest corner of Illinois. This is the Driftless Area, which the glaciers that flattened the rest of the state did not cover. On clear nights cold air drains into the valleys, so frost dates and spring bloom differ between the valley floors, the slopes and the ridge tops. Summer is warm and humid, with afternoons near 28°C. Winter is cold, with afternoons around freezing, nights near −10°C and about 105 cm of snow. About 980 mm of precipitation falls in a year, with the most in June and July. The Galena River has flooded the old town many times, and floodgates now protect it.",
     whyDistinct: "Driftless topography inside Illinois’ glaciated plain is geographically rare; elevation + aspect produce repeatable local climate gradients documented in Midwest agronomy literature.",
     climate: {
       tempHighC: [-2, 0, 6, 14, 20, 26, 28, 27, 23, 16, 8, 1],
@@ -226,7 +226,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["lake-effect-snowbelt", "lake-moderated", "humidity-refuge"],
     drivers: ["lake-effect", "sea-breeze", "continentality"],
     summaryShort: "Chicago’s breezy eastern cousin — lake-effect snow in winter, sweater-weather June, and moderated midsummer peaks.",
-    summaryImmersive: "Beverly Shores is where continental air masses first feel the thermal mass of Lake Michigan: delayed spring warming, abundant winter cloud when cold air crosses open water, and frequent afternoon wind shifts on stable summer days. The microclimate supports boreal relicts and rare orchids in protected swales — a biogeographic fingerprint of the lake.",
+    summaryImmersive: "Beverly Shores sits among the dunes at the southern end of Lake Michigan, inside Indiana Dunes National Park. The lake delays spring, cools summer afternoons with an onshore breeze and keeps autumn mild. In winter, cold north winds crossing the open water bring lake-effect cloud and about 190 cm of snow a year. Summer afternoons average about 27°C and winter nights about −6°C, and about 1000 mm of precipitation falls through the year. The dunes, wet hollows and oak woods lie within walking distance of each other, and the cool, damp hollows hold northern plants and orchids that are rare elsewhere in Indiana. Severe thunderstorms are the main weather risk.",
     whyDistinct: "Southern-lake snowbelt + dune topography creates sharp local contrasts between exposed dunes, sheltered swales, and backshore forest within walking distance.",
     climate: {
       tempHighC: [1, 2, 6, 12, 18, 24, 27, 26, 22, 15, 8, 3],
@@ -308,7 +308,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["cold-air-pool", "lake-effect-snowbelt", "mild-winter-foothills"],
     drivers: ["lake-effect", "elevation-lapse-rate", "cold-air-drainage"],
     summaryShort: "Maryland’s winter — snowier and colder than Baltimore imagines — with ridge-valley frost contrasts that rival West Virginia.",
-    summaryImmersive: "Oakland is the anchor of Garrett County, where Pittsburgh television markets and lake-effect snow belts overlap. Deep Creek Lake adds local moisture and modifies breezes; ridges catch upslope snow on northwesterly flow. Summer is mild and prized by Mid-Atlantic escapees; spring is late and fickle for growers.",
+    summaryImmersive: "Oakland sits at about 750 m on the Allegheny Plateau in Garrett County, the highest and coldest part of Maryland. Northwest winds that have crossed the Great Lakes are forced up the plateau and drop their snow here, about 230 cm in an average winter. Winter afternoons average about 3°C and nights about −7°C. Summer is mild, with afternoons near 25°C and nights near 14°C, and Deep Creek Lake nearby draws visitors from Washington and Baltimore. About 1410 mm of precipitation falls in a year. Spring comes late, and frost can catch gardens in May. Winter driving and heating costs are the things to weigh.",
     whyDistinct: "High elevation + Great Lakes moisture channel + enclosed valleys = disproportionate snow and cold for the Mid-Atlantic seaboard.",
     climate: {
       tempHighC: [1, 3, 8, 14, 19, 23, 25, 24, 20, 14, 8, 4],
@@ -348,7 +348,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["cold-air-pool", "piedmont-transition", "lake-effect-snowbelt"],
     drivers: ["polar-jet-exposure", "lake-effect", "orographic-lift", "cold-air-drainage"],
     summaryShort: "Cool summers and crisp winters west of Boston’s marine bubble — elevation and inland position create a continental Berkshires climate.",
-    summaryImmersive: "Pittsfield sits in a valley network that channels winter cold and summer thunderstorms along frontal boundaries. It is not as harsh as Vermont’s Northeast Kingdom, but it is dramatically different from Cape Cod on the same state license plate. Fall color and spring mud season are serious social calendars.",
+    summaryImmersive: "Pittsfield lies at about 320 m in the Housatonic valley of the Berkshires, between the Taconic Range and the Berkshire plateau. It is well inland and well above sea level, so winter is colder and snowier than in eastern Massachusetts. Afternoons average about 1°C and nights about −9°C, and about 190 cm of snow falls. Summer is mild, with afternoons near 26°C and cool nights near 13°C. About 1280 mm of precipitation falls in a year, with the most in June and July, when thunderstorms follow the valleys. Autumn colour peaks in early October. Spring is slow and muddy, and the frost-free season is about five months.",
     whyDistinct: "Inland elevation + New England storm-track dynamics = stronger seasonality than coastal Massachusetts, with occasional lake-enhanced snow on northwesterly flow.",
     climate: {
       tempHighC: [0, 2, 6, 13, 19, 24, 27, 25, 21, 14, 8, 3],
@@ -388,7 +388,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["hurricane-coast", "humidity-refuge"],
     drivers: ["sea-breeze", "hurricane-track", "marine-layer"],
     summaryShort: "Live oaks and sea breezes — the gentlest heat in Mississippi, traded for humidity and hurricane exposure.",
-    summaryImmersive: "Ocean Springs inherits the same humid subtropical core as the Deep South, but the Sound’s daily heat capacity knocks a few degrees off afternoon peaks relative to inland Hattiesburg. Summer nights stay warm; winter cold fronts are brief and often moderated by returning onshore flow. It is not a dry climate — it is a maritime one.",
+    summaryImmersive: "Ocean Springs sits under live oaks on the Mississippi Sound, across the bay from Biloxi. The shallow water takes a little heat off summer afternoons, which average about 32°C, but nights stay warm and humid at about 23°C. Winter is mild, with afternoons near 18°C and nights near 7°C; cold fronts pass quickly and frost is light. About 1750 mm of rain falls in a year, with the most in June and July, and thunderstorms build on most summer afternoons. The serious risk is hurricane storm surge. Katrina's surge in 2005 destroyed much of the waterfront here, and insurance costs reflect it.",
     whyDistinct: "Shallow shelf water + urban tree canopy + lower inland elevation buffering = measurably milder frost regime than counties 30 km north.",
     climate: {
       tempHighC: [16, 17, 20, 24, 28, 31, 32, 32, 30, 26, 21, 17],
@@ -427,7 +427,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["limestone-karst", "river-valley-moderation", "canyon-sheltered"],
     drivers: ["karst-infiltration", "river-moderation", "cold-air-drainage"],
     summaryShort: "Spring water at near-constant temperatures threads through humid Ozark summers — a natural cooling network in dissected terrain.",
-    summaryImmersive: "Eminence is the gateway to some of the clearest spring rivers in the Lower 48. Groundwater upwelling holds near-stable temperatures year-round; in summer, paddlers experience cold pools and fog banks at confluences that would not exist in a non-karst landscape. The hills are modest in elevation but enormous in hydrologic complexity.",
+    summaryImmersive: "Eminence sits in the Ozark hills of southern Missouri, where the Jacks Fork meets the Current River. Both rivers are fed by large springs that come out of the limestone at about 14°C all year. On summer mornings that cold water lays fog along the valleys and cools the air beside the river, while the ridges above are hot. Summer afternoons average about 31°C and winter nights about −4°C. About 1210 mm of rain falls in a year, with the most in April and May. The rivers rise fast after heavy rain, and flooding is the main hazard. The town is small and a long drive from a city.",
     whyDistinct: "Large spring discharge and karst topography create localized cold-air pooling and persistent riparian humidity — a hydrogeologic microclimate superimposed on humid continental summers.",
     climate: {
       tempHighC: [6, 9, 15, 21, 26, 30, 32, 32, 28, 22, 14, 8],
@@ -466,7 +466,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["sky-island-refuge", "high-desert-escape", "basin-inversion"],
     drivers: ["elevation-lapse-rate", "inversion", "rain-shadow"],
     summaryShort: "A dramatic summer swing away from the Las Vegas heat island — conifer forest and snow at Mojave Desert latitudes.",
-    summaryImmersive: "The Spring Mountains rise abruptly from the basin floor where subsidence and dryness dominate. Upslope flow brings cloud and occasional thunderstorms; winter storms deliver real snowpack. The inversion that traps smog and heat below also isolates the high elevations as a climatic refuge — a pattern documented in mountain–basin meteorology worldwide.",
+    summaryImmersive: "Mount Charleston is a small community at about 2300 m in the Spring Mountains, less than an hour's drive from Las Vegas. The range rises straight from the Mojave Desert to peaks above 3000 m, and its upper slopes carry pine, fir and ancient bristlecone pine. Summer afternoons average about 25°C, about 15°C cooler than the city below. Winter brings about 255 cm of snow, with afternoons near 6°C and nights near −5°C. About 520 mm of precipitation falls in a year, most of it in winter, with thunderstorms in July and August. Wildfire is the main risk, and flash floods have damaged the canyon roads.",
     whyDistinct: "Extreme vertical climate gradient across a short horizontal distance: Mojave desert basins to subalpine forest in tens of kilometres — one of the steepest usable lapse-rate transects in the US.",
     experience: {
       feel: "Mount Charleston feels like an impossible cool island floating above Las Vegas. Drive 45 minutes and 2,000 m up from the Mojave furnace and you reach conifer forest, bristlecones, and snow — summer afternoons near 25°C while the basin below bakes past 40°C.",
@@ -554,7 +554,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["hurricane-coast", "cool-summer-maritime"],
     drivers: ["sea-breeze", "hurricane-track", "marine-layer"],
     summaryShort: "The Mid-Atlantic’s most maritime resort climate — moderated peaks, persistent humidity, and nor’easter drama.",
-    summaryImmersive: "Cape May is a classic barrier-style energy balance problem: water on three sides, low elevation, and tree canopy that knits humidity into every summer afternoon. Autumn can deliver warm ocean swimming while inland New Jersey cools; winter alternates between mild marine air and biting Arctic outbreaks when continental highs wedge behind the Appalachians.",
+    summaryImmersive: "Cape May stands at the southern tip of New Jersey, with Delaware Bay on one side and the Atlantic on the other. Water on three sides slows every change of season. Spring is cool and late, summer afternoons average about 29°C with a sea breeze and humid nights, and the ocean stays warm enough for swimming into September. Winter is mild for the region, with afternoons near 8°C and nights near −1°C, though Arctic air breaks through a few times a season. About 1140 mm of precipitation falls evenly through the year. The town is barely above sea level, and coastal flooding from nor'easters and hurricanes is the main risk.",
     whyDistinct: "Triple-water exposure + narrow landmass = stronger diurnal sea-breeze modulation than mainland New Jersey at the same latitude.",
     climate: {
       tempHighC: [5, 6, 9, 14, 19, 24, 28, 27, 24, 18, 12, 8],
@@ -603,7 +603,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["lake-effect-snowbelt", "lake-moderated", "humidity-refuge"],
     drivers: ["lake-effect", "sea-breeze", "continentality"],
     summaryShort: "Ohio’s snowiest shoreline resorts — June can feel like the Pacific Northwest until lake heat builds.",
-    summaryImmersive: "Geneva-on-the-Lake inherits the full Great Lakes curriculum: delayed leaf-out, abundant winter cloud, and sharp mesoscale snow bands that can bury the strip while Columbus stays dry. Summer is warm and humid with lake breezes; thunderstorms propagate along lake-outflow boundaries.",
+    summaryImmersive: "Geneva-on-the-Lake is a small resort town on the Lake Erie shore of northeast Ohio. The lake governs the seasons. Spring arrives late, because the water is still cold. Summer afternoons average about 27°C and are cooled by a lake breeze. Autumn stays mild long enough to ripen the wine grapes grown just inland. From November to January, cold winds crossing the open lake bring bands of heavy snow, and about 240 cm falls in an average winter. Winter afternoons average about 3°C and nights about −5°C. About 1070 mm of precipitation falls in a year. The snow can be intense for a day or two and then stop a few kilometres down the road.",
     whyDistinct: "Eastern Erie fetch orientation + land-lake temperature contrast = maximized lake-effect potential for Ohio’s north coast.",
     climate: {
       tempHighC: [1, 2, 6, 12, 18, 24, 26, 25, 22, 15, 9, 4],
@@ -643,7 +643,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["piedmont-transition", "river-valley-moderation", "humidity-refuge"],
     drivers: ["orographic-lift", "aspect-slope", "continentality", "river-moderation"],
     summaryShort: "Wetter, hillier, and more forested than almost anywhere else in Oklahoma — a southeastern climate island in the Plains.",
-    summaryImmersive: "Broken Bow and the Mountain Fork corridor punch above the surrounding plains in annual precipitation and forest cover. Upslope flow ahead of Gulf lows enhances rainfall; reservoirs and rivers add local moisture. Summers remain hot, but canopy and shade produce perceptible relief compared to open pasture.",
+    summaryImmersive: "Broken Bow lies in the foothills of the Ouachita Mountains in the southeast corner of Oklahoma, in pine and oak forest that the rest of the state lacks. Moist air from the Gulf is lifted over the hills, and about 1400 mm of rain falls in a year, with the most in April and May. Summer is hot and humid, with afternoons near 33°C and nights near 21°C, though the forest shade and the cold water of the Mountain Fork River give some relief. Winter is mild, with afternoons near 13°C and nights close to freezing. Flooding, summer heat and severe thunderstorms are the main risks.",
     whyDistinct: "Ouachita topography in a predominantly flat state creates orographic and land-cover feedbacks that are climatologically distinct from Oklahoma City or the Panhandle.",
     climate: {
       tempHighC: [12, 14, 18, 23, 27, 31, 34, 34, 30, 24, 17, 13],
@@ -682,7 +682,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["hyper-maritime", "cool-summer-maritime", "hurricane-coast"],
     drivers: ["marine-layer", "sea-breeze", "hurricane-track"],
     summaryShort: "Narrow annual temperature range for the latitude — fog, wind, and moderate summers that feel more maritime than mainland Rhode Island.",
-    summaryImmersive: "Block Island is small enough that every road is within a mile of water. That geometry means marine air dominates; heat waves are muted relative to Hartford or even Providence. Winter storms are oceanic and windy; summer is mild with persistent humidity. The island’s conservation lands preserve a rare Atlantic coastal grassland–heath mosaic tuned to salt spray.",
+    summaryImmersive: "Block Island lies about 15 km off the Rhode Island coast, and no part of it is far from the sea. The ocean holds summer afternoons to about 25°C when the mainland is several degrees hotter, and keeps winter nights near −3°C. Summer air is humid and often foggy. Winter storms arrive with strong wind. About 1230 mm of precipitation falls fairly evenly through the year. Much of the island is protected land: open moors, shrub thickets and coastal grassland shaped by wind and salt spray. Coastal storms and erosion of the bluffs are the main hazards, and everything arrives by ferry or small plane.",
     whyDistinct: "Complete island exposure + low relief = maximized maritime moderation within southern New England — a classic case study in coastal boundary-layer climate.",
     climate: {
       tempHighC: [4, 4, 7, 11, 16, 21, 24, 24, 21, 15, 10, 7],
@@ -730,7 +730,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["chinook-corridor", "high-desert-escape", "cold-air-pool"],
     drivers: ["chinook-foehn", "polar-jet-exposure", "aspect-slope", "cold-air-drainage"],
     summaryShort: "Where winter temperatures can spike 11–17°C in minutes when downslope winds replace arctic air — a textbook High Plains foehn.",
-    summaryImmersive: "Spearfish sits at a canyon mouth where stable westerly flow can descend and warm adiabatically, replacing dense cold air in the valley with dramatic speed. Such events are studied in synoptic meteorology courses because they are so readable on surface traces. Summer is warm and stormy on the Plains edge; winter is a story of wind and rapid change rather than monolithic cold.",
+    summaryImmersive: "Spearfish sits at about 1110 m at the mouth of Spearfish Canyon, on the northern edge of the Black Hills. It holds a world record: on 22 January 1943 a chinook raised the temperature by 27°C in two minutes. Such warm winds, coming down off the hills, break up the winter many times a season. Winter afternoons average about 4°C and nights about −9°C. The hills also wring out moisture, and the town gets about 610 mm of precipitation and about 245 cm of snow a year, far more than the plains to the north. Summer afternoons average about 29°C, with thunderstorms. Wildfire and drought are the main risks.",
     whyDistinct: "Documented extreme chinook temperature rises + ecotone position between montane forest and High Plains = one of the most meteorologically legible towns in the Great Plains.",
     experience: {
       feel: "Spearfish feels like the Great Plains learning to breathe — a canyon mouth at the Black Hills edge where chinook winds can replace arctic cold with warm downslope air in minutes, and winter becomes a story of wind and rapid change rather than monolithic freeze.",
@@ -812,7 +812,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     archetypes: ["frost-hollow", "cold-air-pool", "basin-inversion"],
     drivers: ["cold-air-drainage", "inversion", "aspect-slope"],
     summaryShort: "A meteorological celebrity: a nearly circular basin that traps cold air so effectively it can rival much higher Appalachians for frost timing.",
-    summaryImmersive: "Burkes Garden is a geomorphic sink surrounded by continuous ridges. On clear, calm nights, katabatic drainage fills the bowl with dense air that cannot easily exit; the result is systematically lower minima than surrounding slopes at similar elevation. Agronomists and orchardists treat the floor and rim as different climates; atmospheric scientists use the basin as an eastern analog to western basin cold pools.",
+    summaryImmersive: "Burkes Garden is an oval basin at about 920 m in the mountains of southwest Virginia, enclosed by one continuous ridge with a single gap. On clear, calm nights cold air drains off the ridge and fills the bowl, so the valley floor is colder at dawn than the slopes around it and frost comes later in spring and earlier in autumn. Summer is cool for Virginia, with afternoons near 26°C and nights near 14°C. Winter afternoons average about 6°C and nights about −5°C, with about 150 cm of snow. The basin is pasture and hay land with few services, and about 1270 mm of precipitation falls in a year.",
     whyDistinct: "Basin geometry + radiative cooling + limited ventilation = extreme nocturnal stratification — a documented natural laboratory for cold-pool processes in humid eastern terrain.",
     experience: {
       feel: "Burkes Garden feels like a meteorological sinkhole — a nearly circular Appalachian basin where katabatic drainage fills the bowl with dense cold air on clear nights, making the floor systematically colder than the rim at the same elevation and turning agronomists into microclimate cartographers.",

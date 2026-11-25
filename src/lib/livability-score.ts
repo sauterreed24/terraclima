@@ -281,8 +281,8 @@ export interface LivedRealityCoverage {
 const COMPONENT_LABEL: Record<ComponentKey, string> = {
   resilience: "Climate resilience",
   thermalComfort: "Felt comfort",
-  atmosphericEase: "Atmospheric ease",
-  hazardCushion: "Hazard cushion",
+  atmosphericEase: "Air and sky",
+  hazardCushion: "Low hazard",
   growability: "Growability",
   precipModeration: "Moderate rain and snow",
   livedFriction: "Cost and access",
@@ -669,27 +669,27 @@ export function describeHumanComfort(p: Place): HumanComfortNarrative {
   const strengths: string[] = [];
   const frictions: string[] = [];
 
-  if (felt >= 82) pushLimited(strengths, `${months}/12 months feel broadly usable, not just one perfect shoulder season.`);
-  else if (months <= 5) pushLimited(frictions, `Only ${months}/12 months clear the easy day-night-precip screen.`);
+  if (felt >= 82) pushLimited(strengths, `${months} of 12 months are comfortable, not just a short spring or autumn.`);
+  else if (months <= 5) pushLimited(frictions, `Only ${months} of 12 months are comfortable by day and night without heavy rain.`);
 
   if (summer >= 82 && summerHigh <= 30) pushLimited(strengths, `Summer heat is restrained enough for normal afternoon routines (${toFixedClean(summerHigh, 1)}°C mean high).`);
-  else if (summer < 55) pushLimited(frictions, `Summer heat load is a dominant constraint (${toFixedClean(summerHigh, 1)}°C mean high).`);
+  else if (summer < 55) pushLimited(frictions, `Summer heat is the main limit on comfort (${toFixedClean(summerHigh, 1)}°C mean high).`);
 
-  if (winter >= 82 && winterLow >= -6) pushLimited(strengths, `Winter lows stay within a manageable daily-life band (${toFixedClean(winterLow, 1)}°C mean).`);
+  if (winter >= 82 && winterLow >= -6) pushLimited(strengths, `Winter lows stay manageable for daily life (${toFixedClean(winterLow, 1)}°C mean).`);
   else if (winter < 55) pushLimited(frictions, `Winter cold is not cosmetic; it changes transport, housing, and outdoor rhythm (${toFixedClean(winterLow, 1)}°C mean low).`);
 
-  if (diurnal >= 12 && summerHigh < 34) pushLimited(strengths, `Night recovery is strong: summer diurnal swing of ${Math.round(diurnal)}°C lifts sleep quality.`);
-  if (sky >= 70) pushLimited(strengths, "Sky and light support outdoor time rather than just mild thermometer readings.");
-  if (atmosphere >= 76) pushLimited(strengths, "Wind, humidity, smoke, and solar load combine into an easy atmospheric read.");
+  if (diurnal >= 12 && summerHigh < 34) pushLimited(strengths, `Nights cool off well: a summer day-to-night swing of ${Math.round(diurnal)}°C helps sleep.`);
+  if (sky >= 70) pushLimited(strengths, "Clear skies and good light make outdoor time pleasant, beyond what the temperatures show.");
+  if (atmosphere >= 76) pushLimited(strengths, "Wind, humidity, smoke and sun are all easy here.");
 
-  if (sky < 45) pushLimited(frictions, "Fog, low sun, or damp sky cuts into the lived feel even when temperatures look mild.");
+  if (sky < 45) pushLimited(frictions, "Fog, low sun or damp skies make it feel less comfortable than the mild temperatures suggest.");
   if (wind < 55) pushLimited(frictions, "Wind exposure is strong enough to affect walking, patios, sleep noise, and perceived cold.");
-  if (muggy < 55) pushLimited(frictions, "Humidity or arid-air stress changes how the heat feels on skin and during sleep.");
-  if (air < 55) pushLimited(frictions, "Smoke, fire, drought dust, or heat-event air quality lowers the comfort ceiling.");
-  if (solar < 55) pushLimited(frictions, "Sun angle, altitude, or desert radiant load makes shade and timing matter.");
+  if (muggy < 55) pushLimited(frictions, "Air that is too humid or too dry changes how heat feels on the skin and during sleep.");
+  if (air < 55) pushLimited(frictions, "Smoke, dust or poor air on hot days lowers comfort.");
+  if (solar < 55) pushLimited(frictions, "Strong sun, from altitude or desert glare, makes shade and time of day matter.");
 
-  if (strengths.length === 0) pushLimited(strengths, "The comfort case is balanced rather than spectacular; read the component bars.");
-  if (frictions.length === 0) pushLimited(frictions, "No single atmospheric drag dominates the comfort read.");
+  if (strengths.length === 0) pushLimited(strengths, "Comfort is even across the board, with no standout strength.");
+  if (frictions.length === 0) pushLimited(frictions, "No single problem with air or sky stands out.");
 
   const headline = `${comfortBand(score)} human comfort (${Math.round(score)}/100)`;
   const summary = `${strengths[0]} ${frictions[0]}`;
@@ -808,27 +808,27 @@ export function precipModerationScore(p: Place): number {
 function makeRationale(p: Place, key: ComponentKey, value: number): string {
   switch (key) {
     case "resilience":
-      return `Curator resilience ${Math.round(p.scores.resilience)}/100`;
+      return `Editor's resilience rating ${Math.round(p.scores.resilience)}/100`;
     case "thermalComfort": {
       const sh = meanSummerHigh(p);
       const jl = meanJanLow(p);
-      return `Summer ${toFixedClean(sh, 1)}°C · winter ${toFixedClean(jl, 1)}°C · ${annualComfortMonthCount(p)}/12 easy months · sky ${Math.round(skyComfortScore(p))}/100 · curator ${Math.round(p.scores.comfort)}/100 → felt comfort ${Math.round(value)}/100`;
+      return `Summer ${toFixedClean(sh, 1)}°C · winter ${toFixedClean(jl, 1)}°C · ${annualComfortMonthCount(p)}/12 easy months · sky ${Math.round(skyComfortScore(p))}/100 · editor's rating ${Math.round(p.scores.comfort)}/100 → felt comfort ${Math.round(value)}/100`;
     }
     case "atmosphericEase":
       return `Sky ${Math.round(skyComfortScore(p))}/100 | wind ${Math.round(windExposureScore(p))}/100 | humidity ${Math.round(mugginessScore(p))}/100 | air ${Math.round(airQualityComfortScore(p))}/100 | solar ${Math.round(solarComfortScore(p))}/100`;
     case "hazardCushion":
-      return `Risk: mean ${avgRisk(p).toFixed(2)} · max ${maxRisk(p).toFixed(0)}/5 → cushion ${Math.round(value)}/100`;
+      return `Overall risk ${Math.round(avgRisk(p) * 20)}/100 (lower is better) · worst single hazard ${maxRisk(p).toFixed(0)} of 5 → low-hazard score ${Math.round(value)}/100`;
     case "growability":
       return `Growability ${Math.round(p.scores.growability)}/100`;
     case "precipModeration": {
       const ann = getAnnualPrecipMm(p);
-      return `Annual precip ${ann.toFixed(0)} mm → moderation ${Math.round(value)}/100`;
+      return `Annual precip ${ann.toFixed(0)} mm → rainfall score ${Math.round(value)}/100 (best in the middle)`;
     }
     case "livedFriction": {
       const dom = dominantLivedFriction(p);
       if (!dom) return `Lived reality unrated → conservative screening ${Math.round(value)}/100`;
       const axis = dom.axis === "cost" ? "Housing pressure" : "Access remoteness";
-      return `${axis} ${Math.round(dom.value)}/100 (lower is easier) → lived comfort ${Math.round(value)}/100`;
+      return `${axis} ${Math.round(dom.value)}/100 (lower is easier) → cost and access score ${Math.round(value)}/100`;
     }
     case "placeFeel": {
       const drag = dominantPlaceFeelDrag(p);
@@ -925,3 +925,91 @@ export function livabilityPercentiles(pool: Place[]): { p25: number; p50: number
 
 export const LIVABILITY_COMPONENT_KEYS = COMPONENT_KEYS;
 export const LIVABILITY_COMPONENT_LABELS = COMPONENT_LABEL;
+
+// ------------------------------------------------------------------
+// Score names and definitions
+// ------------------------------------------------------------------
+
+export interface ScoreDefinition {
+  /** The one name this score carries everywhere it is shown. */
+  label: string;
+  /** One plain sentence: what goes into it, its scale, and which direction is good. */
+  definition: string;
+}
+
+/**
+ * Every distinct score in the interface, with the single name it is shown
+ * under and a one-line definition for a tooltip or caption. Views import
+ * these instead of spelling their own label, so the same number cannot be
+ * called "Balanced", "overall score" and "Broadest fit" in one screen.
+ */
+export const SCORE_DEFINITIONS = {
+  liveFit: {
+    label: "Live-here fit",
+    definition: "Live-here fit, 0–100, higher is better. Felt comfort, comfortable months, air and sky, hazards, resilience, growing conditions, cost and access, and place feel, weighted toward any must-haves you set.",
+  },
+  livability: {
+    label: "Livability",
+    definition: "Livability, 0–100, higher is better. Felt comfort, air and sky, hazards, resilience, growing conditions, rainfall, cost and access, and place feel. It ignores your must-haves, so it is the same for every reader.",
+  },
+  feltComfort: {
+    label: "Felt comfort",
+    definition: "Felt comfort, 0–100, higher is better. How the temperature feels through the year: summer highs, winter lows, the number of comfortable months and how clear the sky is.",
+  },
+  editorComfort: {
+    label: "Editor's comfort rating",
+    definition: "Editor's comfort rating, 0–100, higher is better. A hand-set rating of year-round comfort. Felt comfort is the calculated version and is the one used in rankings.",
+  },
+  placeFeel: {
+    label: "Place feel",
+    definition: "Place feel, 0–100, higher is better. Comfort on the skin, ease of daily life, how distinct the place is, and how well it is documented.",
+  },
+  overallRisk: {
+    label: "Overall risk",
+    definition: "Overall risk, 0–100, lower is better. The average of nine hazard ratings: wildfire, flood, drought, extreme heat, extreme cold, smoke, storm, landslide and coastal.",
+  },
+  priority: {
+    label: "Priority score",
+    definition: "Priority score, 0–100, higher is better. Live-here fit, livability, felt comfort, cost and access, growing conditions and overall risk, weighted for the priority chosen in Compare (Balanced unless you change it).",
+  },
+  visitAppeal: {
+    label: "Visit appeal",
+    definition: "Visit appeal, 0–100, higher is better. How distinct and little-known the climate is, how much there is to do, how clear the good seasons are, and how low the hazards are.",
+  },
+  longTermLand: {
+    label: "Long-term climate and land",
+    definition: "Long-term climate and land, 0–100, higher is better. Resilience to climate change, growing conditions, soil, terrain and hazards, for someone thinking about land rather than a visit.",
+  },
+  uniqueness: {
+    label: "Uniqueness",
+    definition: "Uniqueness, 0–100, higher is more unusual. An editor's rating of how much the local climate differs from the region around it.",
+  },
+  hiddenGem: {
+    label: "Hidden gem",
+    definition: "Hidden gem, 0–100, higher is less known. An editor's rating of how much the place offers compared with how well known it is.",
+  },
+  resilience: {
+    label: "Resilience",
+    definition: "Resilience, 0–100, higher is better. An editor's rating of how well the local climate should hold up as the wider climate warms.",
+  },
+  growability: {
+    label: "Growability",
+    definition: "Growability, 0–100, higher is better. An editor's rating of how well gardens and crops do: season length, soil, water and frost.",
+  },
+  sourcing: {
+    label: "Sourcing",
+    definition: "Sourcing, 0–100, higher is better. How well the entry is backed: confidence level, number of web sources, in-depth chapters, and whether cost, humidity and sunshine data exist.",
+  },
+} as const satisfies Record<string, ScoreDefinition>;
+
+export type ScoreId = keyof typeof SCORE_DEFINITIONS;
+
+/** "Overall risk 24/100" — the one way a named score is written inline. */
+export function formatNamedScore(id: ScoreId, value: number): string {
+  return `${SCORE_DEFINITIONS[id].label} ${Math.round(value)}/100`;
+}
+
+/** Overall risk on the 0–100 scale every surface uses (lower is better). */
+export function overallRiskScore(place: Place): number {
+  return Math.round(avgRisk(place) * 20);
+}

@@ -5,6 +5,7 @@ import { PLACES, PLACES_BY_ID } from "../data/places";
 import { getClimateTourismProfile, type ClimateTourismProfile } from "../lib/climate-tourism";
 import { COMPARE_LIMIT } from "../lib/app-url";
 import { useProse } from "../lib/units";
+import { SCORE_DEFINITIONS } from "../lib/livability-score";
 
 interface Props {
   onOpenPlace: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
@@ -149,8 +150,12 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
                     <div className="text-[11px] text-stone mt-0.5">{theme.placeIds.length} stops</div>
                   </div>
                   {top ? (
-                    <span className="chip shrink-0" data-tone={scoreTone(top.profile.scores.tourismAppeal)}>
-                      {top.profile.scores.tourismAppeal}/100
+                    <span
+                      className="chip shrink-0"
+                      data-tone={scoreTone(top.profile.scores.tourismAppeal)}
+                      title={`${SCORE_DEFINITIONS.visitAppeal.definition} This is the score of the top stop, ${top.place.name}.`}
+                    >
+                      {SCORE_DEFINITIONS.visitAppeal.label} {top.profile.scores.tourismAppeal}/100
                     </span>
                   ) : null}
                 </div>
@@ -273,17 +278,17 @@ function TourismPickCard({
           <div className="text-xs text-stone">{place.region}, {place.country}</div>
           <h3 className="font-atlas text-xl text-ice leading-tight">{place.name}</h3>
         </div>
-        <span className="chip shrink-0" data-tone={scoreTone(profile.scores.tourismAppeal)}>
-          {profile.scores.tourismAppeal}/100
+        <span className="chip shrink-0" data-tone={scoreTone(profile.scores.tourismAppeal)} title={SCORE_DEFINITIONS.visitAppeal.definition}>
+          {SCORE_DEFINITIONS.visitAppeal.label} {profile.scores.tourismAppeal}/100
         </span>
       </div>
 
       <p className="text-sm text-frost leading-relaxed">{prose(profile.climateStory)}</p>
 
-      <div className="grid grid-cols-3 gap-2">
-        <ScoreMini label="Tourism appeal" value={profile.scores.tourismAppeal} />
-        <ScoreMini label="Live here" value={profile.scores.wouldLiveHere} />
-        <ScoreMini label="Climate & land" value={profile.scores.climateLandOptionality} />
+      {/* Visit appeal is in the chip above; the old "Live here" tile was a
+          second living score next to the profile's Live-here fit. */}
+      <div className="grid grid-cols-1 gap-2">
+        <ScoreMini label={SCORE_DEFINITIONS.longTermLand.label} definition={SCORE_DEFINITIONS.longTermLand.definition} value={profile.scores.climateLandOptionality} />
       </div>
 
       <div className="grid gap-2 text-[12px] text-stone-readable">
@@ -333,11 +338,11 @@ function TourismPickCard({
   );
 }
 
-function ScoreMini({ label, value }: { label: string; value: number }) {
+function ScoreMini({ label, definition, value }: { label: string; definition: string; value: number }) {
   return (
-    <div className="panel-thin p-2">
+    <div className="panel-thin p-2 flex items-baseline justify-between gap-2" title={definition}>
       <div className="text-[10px] uppercase tracking-wide text-stone leading-tight">{label}</div>
-      <div className="font-mono-num text-lg text-ice">{value}</div>
+      <div className="font-mono-num text-lg text-ice">{value}<span className="text-xs text-stone">/100</span></div>
     </div>
   );
 }
