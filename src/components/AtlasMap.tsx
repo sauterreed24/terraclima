@@ -1502,7 +1502,6 @@ export const AtlasMap = memo(function AtlasMap({
           : label.kind === "ocean" ? OCEAN_LABEL_CANDIDATES : SEA_LABEL_CANDIDATES,
       });
     }
-    (globalThis as any).__lbl = { requests, obstacles, k, landSpanPx, reach, res: Array.from(placeMapLabels(requests, obstacles, k)) }; // TEMPDEBUG
     return placeMapLabels(requests, obstacles, k);
   }, [settledView, width, height, clusterItems, markerRenderOrder, featuredRankById, countryLabels, physicalLabels, projection, smallMapLettering]);
 
