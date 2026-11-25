@@ -23,6 +23,9 @@ All notable changes to Terraclima are tracked here.
   - **Bishop snowfall:** 14 cm a year (Bishop Airport). It read 45 cm.
   - **Lone Pine rainfall:** 186 mm a year, down from 255 mm. Lone Pine has no long-record gauge, so the grid is scaled against Independence, 25 km up the same valley floor. This is a new, narrower kind of correction (a "regional stand-in": within 30 km and 100 m, rainfall only), and the place's data confidence reads moderate, not high.
   - **Creel:** unchanged. No GHCN station near it has usable years, and Mexico's weather service could not be reached. Its grid winters still look several degrees warm against the authored figures.
+- **Map fit:** the default view keeps the southernmost pins above the "Top ranked" bar, and a country name is never drawn under a map control.
+- **Profile on phones:** the back-to-top button appears only while you scroll back up, so it no longer sits on the text you are reading.
+- **Export files:** named `terraclima-saved-places-…` (were `terraclima-shortlist-…`).
 - **Tooling:** `station-normals.ts` prints nearby stations' monthly means including snowfall. The station-check workflow has a `normals` mode and an opt-in job that commits a reviewed regeneration to its branch (never `main`).
 
 ### Search that forgives typos, a Compare bar, a month picker, honest labels

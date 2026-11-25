@@ -211,7 +211,7 @@ const COUNTRY_LABEL_OFFSHORE_SEATS: Record<string, readonly (readonly [number, n
 const COUNTRY_LABEL_OFFSHORE_NUDGES: readonly (readonly [number, number])[] = (() => {
   const out: [number, number][] = [];
   for (let t = 0; t <= 64; t += 8) {
-    for (const d of [0, 8, -8, 16, -16]) out.push([t, d]);
+    for (const d of [0, 8, -8, 16, -16, 32, -32, 48, -48]) out.push([t, d]);
   }
   return out;
 })();
@@ -556,10 +556,16 @@ export const AtlasMap = memo(function AtlasMap({
   const height = dims.height;
   const mapMeasured = dims.measured;
   const compactMapChrome = coarsePointer || width < 760;
-  const safeArea = useMemo<MapSafeArea>(
-    () => atlasSafeAreaForChrome(compactMapChrome),
-    [compactMapChrome],
-  );
+  // Height the collapsed readout bar takes at the bottom of the stage, so the
+  // default fit keeps the southernmost pins above it.
+  const [readoutInset, setReadoutInset] = useState(0);
+  const safeArea = useMemo<MapSafeArea>(() => {
+    const base = atlasSafeAreaForChrome(compactMapChrome);
+    if (readoutInset <= base.bottom) return base;
+    // On a phone the bar sits mid-stage above the scale and Key row; clearing
+    // all of it would shrink the map, so only nudge the fit upward there.
+    return { ...base, bottom: width < 480 ? Math.min(readoutInset, base.bottom + 40) : readoutInset };
+  }, [compactMapChrome, readoutInset, width]);
 
   useEffect(() => {
     if (!showScrollEscape) {
@@ -1444,7 +1450,9 @@ export const AtlasMap = memo(function AtlasMap({
       )).filter(([dx, dy]) => {
         const sx = cl.x * k + dx + settledView.x;
         const sy = cl.y * k + dy + settledView.y;
-        return sx >= tightHalfW && sx <= width - tightHalfW && sy >= 76 && sy <= height - (smallMapLettering ? 150 : 64);
+        if (!(sx >= tightHalfW && sx <= width - tightHalfW && sy >= 76 && sy <= height - (smallMapLettering ? 150 : 64))) return false;
+        // Never under a control: the stacked name is about 40px tall.
+        return !hudRects.some(h => sx + tightHalfW > h.left && sx - tightHalfW < h.right && sy + 22 > h.top && sy - 22 < h.bottom);
       });
       requests.push({
         id: `country:${cl.id}`,
@@ -1480,7 +1488,7 @@ export const AtlasMap = memo(function AtlasMap({
       });
     }
     return placeMapLabels(requests, obstacles, k);
-  }, [settledView, width, height, clusterItems, markerRenderOrder, featuredRankById, countryLabels, physicalLabels, projection, smallMapLettering]);
+  }, [settledView, width, height, clusterItems, markerRenderOrder, featuredRankById, countryLabels, physicalLabels, projection, smallMapLettering, hudRects]);
 
   const rankTrailTone =
     clusterEnabled || settledView.k < 1.35
@@ -1521,7 +1529,13 @@ export const AtlasMap = memo(function AtlasMap({
       });
     });
     setHudRects(prev => sameScreenRects(prev, next) ? prev : next);
-  }, [width, height]);
+    const readout = (shell.parentElement ?? shell).querySelector<HTMLElement>(".map-atlas-readout");
+    if (readout && !atlasReadoutExpanded) {
+      const r = readout.getBoundingClientRect();
+      const inset = r.height > 2 ? Math.ceil(((svgRect.bottom - r.top) * sy + (width < 480 ? 10 : 26)) / 8) * 8 : 0;
+      setReadoutInset(prev => (prev === inset ? prev : inset));
+    }
+  }, [width, height, atlasReadoutExpanded]);
   useLayoutEffect(() => {
     measureHud();
   }, [measureHud, atlasReadoutExpanded, legendOpen, atlasMapReadout?.headline]);

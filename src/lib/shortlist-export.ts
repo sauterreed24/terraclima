@@ -258,7 +258,7 @@ export function exportShortlistAsJSON(
   );
   return {
     body,
-    filename: `terraclima-shortlist-${stampSlug(ctx.generatedAt)}.json`,
+    filename: `terraclima-saved-places-${stampSlug(ctx.generatedAt)}.json`,
     mimeType: "application/json",
   };
 }
@@ -277,7 +277,7 @@ export function exportShortlistAsCSV(
   const body = CSV_BOM + [header, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n") + "\r\n";
   return {
     body,
-    filename: `terraclima-shortlist-${stampSlug(ctx.generatedAt)}.csv`,
+    filename: `terraclima-saved-places-${stampSlug(ctx.generatedAt)}.csv`,
     mimeType: "text/csv;charset=utf-8",
   };
 }
@@ -308,7 +308,7 @@ export function exportShortlistAsGeoJSON(
   );
   return {
     body,
-    filename: `terraclima-shortlist-${stampSlug(ctx.generatedAt)}.geojson`,
+    filename: `terraclima-saved-places-${stampSlug(ctx.generatedAt)}.geojson`,
     // RFC 7946 registered type.
     mimeType: "application/geo+json",
   };
@@ -436,7 +436,7 @@ export function exportShortlistAsICS(
   lines.push("END:VCALENDAR");
   return {
     body: lines.map(foldIcsLine).join("\r\n") + "\r\n",
-    filename: `terraclima-shortlist-${stampSlug(ctx.generatedAt)}.ics`,
+    filename: `terraclima-saved-places-${stampSlug(ctx.generatedAt)}.ics`,
     mimeType: "text/calendar",
   };
 }
