@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T05:18:28.933Z",
+  "generatedAt": "2026-11-25T18:58:47.483Z",
   "placeCount": 226,
   "generatedCount": 226,
   "missing": [],
@@ -278,7 +278,7 @@
       "daymetHigh": 35.7,
       "authoredLow": -2.33,
       "daymetLow": 0.97,
-      "validation": "reviewed-exception"
+      "validation": "validated"
     },
     {
       "id": "gatlinburg-tn",
@@ -702,7 +702,7 @@
     },
     {
       "id": "ensenada-mx",
-      "name": "Ensenada (Valle de Guadalupe)",
+      "name": "Ensenada",
       "country": "Mexico",
       "dHigh": 0.73,
       "dLow": 2.83,
@@ -843,14 +843,6 @@
       "validation": "grid-only"
     },
     {
-      "id": "lone-pine-ca",
-      "name": "Lone Pine (Owens Valley)",
-      "biasPct": 60.6,
-      "authored": 159,
-      "daymet": 255.3,
-      "validation": "reviewed-exception"
-    },
-    {
       "id": "mount-charleston-nv",
       "name": "Mount Charleston (Spring Mountains)",
       "biasPct": 37.1,
@@ -916,7 +908,7 @@
     },
     {
       "id": "ensenada-mx",
-      "name": "Ensenada (Valle de Guadalupe)",
+      "name": "Ensenada",
       "biasPct": -32.1,
       "authored": 292,
       "daymet": 198.3,
@@ -953,8 +945,8 @@
   "exactSolarArrayDupGroups": 0,
   "unexplained": [],
   "validationCounts": {
-    "validated": 55,
+    "validated": 56,
     "gridOnly": 126,
-    "reviewedException": 45
+    "reviewedException": 44
   }
 }

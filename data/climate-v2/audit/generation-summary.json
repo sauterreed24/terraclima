@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18",
+  "generatedAt": "2026-11-25",
   "placeCount": 226,
   "elevOutliers": [
     {
@@ -16,9 +16,9 @@
     }
   ],
   "validationCounts": {
-    "validated": 55,
+    "validated": 56,
     "gridOnly": 126,
-    "reviewedException": 45
+    "reviewedException": 44
   },
-  "manifestHash": "9c8a37406f312b6e316536f07e9413763dbb31cdb833b1c1ca30866bc5035529"
+  "manifestHash": "4bb767f223376c2441cb08aea05977c311e41db3ddfe6cfbfe855e1eda0aa810"
 }
