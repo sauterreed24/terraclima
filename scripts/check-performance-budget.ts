@@ -201,6 +201,18 @@ for (const [stem, count] of stemCounts) {
   }
 }
 
+// The service worker removes cached files that are not on this list, so a
+// built file missing from it would be dropped from the offline cache.
+const FILE_LIST = join(DIST, "asset-manifest.json");
+if (!existsSync(FILE_LIST)) {
+  violations.push("dist/asset-manifest.json is missing (written by the build-file-list plugin in vite.config.ts)");
+} else {
+  const listed = new Set((JSON.parse(readFileSync(FILE_LIST, "utf8")) as { files: string[] }).files);
+  for (const file of readdirSync(ASSETS)) {
+    if (!listed.has(`assets/${file}`)) violations.push(`assets/${file} is not in asset-manifest.json; the service worker would drop it`);
+  }
+}
+
 if (violations.length > 0) {
   throw new Error(["Performance budget failed:", ...violations].join("\n"));
 }

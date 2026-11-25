@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 
 const COLD_HTML_PRELOAD_CHUNK_STEMS = [
@@ -20,6 +20,22 @@ const REVISIONED_PLACE_DATA_CHUNKS = new Set([
   "places-canada",
   "places-mexico",
 ]);
+
+/**
+ * Writes `asset-manifest.json`: every file this build puts under assets/
+ * (workers included, which Vite's own manifest leaves out). The service worker
+ * drops cached files of earlier deploys that are not on it (public/sw.js).
+ */
+function buildFileList(): Plugin {
+  return {
+    name: "terraclima-build-file-list",
+    apply: "build",
+    generateBundle(_options, bundle) {
+      const files = Object.keys(bundle).filter(name => name.startsWith("assets/")).sort();
+      this.emitFile({ type: "asset", fileName: "asset-manifest.json", source: `${JSON.stringify({ files }, null, 1)}\n` });
+    },
+  };
+}
 
 function vitePublicBase(): string {
   const raw = process.env.VITE_BASE_PATH?.trim();
@@ -54,7 +70,7 @@ export default defineConfig({
   /** GitHub Project Pages: set `VITE_BASE_PATH=/repo-name/` when building (see `build:pages` script). */
   base: vitePublicBase(),
 
-  plugins: [react()],
+  plugins: [react(), buildFileList()],
 
   server: {
     port: 5173,

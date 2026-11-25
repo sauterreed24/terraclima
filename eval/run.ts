@@ -316,6 +316,28 @@ async function sectionData(browser: Browser) {
     if (dropped.length) notes.push(`61st save dropped ${dropped.length} earlier saved place(s)`);
     await ctx.close();
   }
+  // D4 the offline cache does not keep old deploys' files forever (storage pressure can clear
+  //    the whole site, saved places included): a stale build file is dropped after a visit.
+  {
+    const ctx = await newCtx(browser);
+    const page = await open(ctx); await firstCard(page);
+    await page.evaluate(async () => { await navigator.serviceWorker?.ready; });
+    await page.evaluate(async url => {
+      const keys = await caches.keys();
+      const name = keys.find(k => k.endsWith("-runtime")) ?? "terraclima-v1-runtime";
+      await (await caches.open(name)).put(url, new Response("// old build", { headers: { "content-type": "text/javascript" } }));
+    }, new URL("/assets/index-0ld0ld0l.js", BASE).href);
+    await page.reload(); await firstCard(page);
+    const still = await page.evaluate(async url => {
+      for (let i = 0; i < 60; i++) {
+        if (!(await caches.match(url))) return false;
+        await new Promise(r => setTimeout(r, 250));
+      }
+      return true;
+    }, new URL("/assets/index-0ld0ld0l.js", BASE).href);
+    record("S3d", "offline cache drops an old build's file after a visit", still ? "kept" : "dropped", "dropped", !still);
+    await ctx.close();
+  }
   // D3 two tabs saving different places keep both, and each tab shows both
   {
     const ctx = await newCtx(browser);

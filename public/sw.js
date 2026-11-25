@@ -70,9 +70,38 @@ self.addEventListener("message", event => {
   // The page lists the build files it loaded before this worker controlled it
   // (the whole first visit). Cache them so the app opens offline next time.
   if (event.data && event.data.type === "CACHE_URLS" && Array.isArray(event.data.urls)) {
-    event.waitUntil(cacheLoadedAssets(event.data.urls));
+    event.waitUntil(cacheLoadedAssets(event.data.urls).then(pruneOldBuilds));
   }
 });
+
+/**
+ * Drop cached build files that the current deploy no longer ships. Hashed
+ * names change with every deploy, so without this the cache grows with each
+ * visit after an update; under storage pressure a browser may then clear the
+ * whole site, saved places included. Needs the network (the manifest is
+ * fetched fresh); offline, nothing is removed.
+ */
+async function pruneOldBuilds() {
+  let manifest;
+  try {
+    const response = await fetch(new URL("asset-manifest.json", self.registration.scope).href, { cache: "no-store" });
+    if (!response.ok) return;
+    manifest = await response.json();
+  } catch {
+    return;
+  }
+  const current = new Set();
+  for (const file of Array.isArray(manifest && manifest.files) ? manifest.files : []) {
+    if (typeof file === "string") current.add(new URL(file, self.registration.scope).pathname);
+  }
+  // A manifest without the build's own files is not trusted to prune with.
+  if (current.size < 5) return;
+  const cache = await caches.open(RUNTIME_CACHE);
+  for (const request of await cache.keys()) {
+    const path = new URL(request.url).pathname;
+    if (path.includes("/assets/") && !current.has(path)) await cache.delete(request);
+  }
+}
 
 async function cacheLoadedAssets(urls) {
   const cache = await caches.open(RUNTIME_CACHE);
