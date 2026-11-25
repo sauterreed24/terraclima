@@ -35,6 +35,8 @@ Read this first each session. Keep sections short; condense old rounds.
 | S5d | first profile open, slow phone, ms to its climate figures | ≤ 3000 | 4032 | 1837–1927 | 1801–2087 |
 | S5e | first profile open, KB gzip downloaded | ≤ 250 | 676 | 125 | 125 |
 | S6a | console/page errors across all tasks | 0 | 0 | 0 | 0 |
+| S7a | figures shown or exported that differ from the climate records (independent conversion): export of all 226 with a home base, cards + profiles of 8 seeded places | 0 | — | — | 96 of 1875 (added round 3) |
+| S7b | same, cards + profiles of a HELD-OUT seed (8 places) | 0 | — | — | 5 of 71 (added round 3) |
 
 All numbers measured by the evaluator. Noise: non-timing rows identical across two runs; timing medians move ≈ ±50 ms desktop, ±200 ms throttled.
 Proven to fail on a broken build: S2b (filter loosened 1 °C → "shown 105 vs ref 91"); S4a's 7th scenario and its unit test fail on round-1 code; S3c's DOM test fails without the storage listener. The rest failed on the baseline itself.

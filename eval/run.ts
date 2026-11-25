@@ -5,7 +5,7 @@
  *   npm run eval -- --no-build   # reuse dist/
  *   npm run eval -- --full       # also run the Vitest suite (≈2.5 min)
  *   npm run eval -- --runs=7     # load-time samples (default 5)
- *   npm run eval -- --only=search,speed   # sections: search jobs data recover speed
+ *   npm run eval -- --only=search,speed   # sections: search jobs data recover speed accuracy
  *
  * Sections (scorecard rows in IMPROVE.md):
  *   S1 search    realistic queries → intended place on top (tuning + held-out sets)
@@ -13,6 +13,8 @@
  *   S3 data      saved places, home base and compare survive reloads, many saves, bad storage, two tabs
  *   S4 recover   bad links, offline reload, failed code chunk, storage blocked: app stays usable
  *   S5 speed     time to first ranked card (fast + throttled phone), first-load JS gzip
+ *   S7 accuracy  figures on cards, profiles, "vs home" chips and exports = the climate records,
+ *                converted here independently (seeded profile sample + a held-out seed set)
  *
  * Writes eval/results/latest.json. Timing rows vary run to run; every other row must
  * match exactly between two runs.
@@ -24,6 +26,7 @@ import { join } from "node:path";
 import { chromium, type Browser, type BrowserContext, type Page } from "playwright-core";
 import { PLACES } from "../src/data/places";
 import { runScenarioRanking } from "../src/lib/climate-processor";
+import RECORDS from "../src/data/generated/climate-v2/records.json" with { type: "json" };
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const args = process.argv.slice(2);
@@ -35,6 +38,14 @@ const opt = (n: string, d: number) => {
 const RUNS = opt("--runs", 5);
 const ONLY = args.find(a => a.startsWith("--only="))?.split("=")[1]?.split(",") ?? null;
 const want = (section: string) => !ONLY || ONLY.includes(section);
+/** Seeded sample (mulberry32) so a run is repeatable; the held-out seed is never tuned against. */
+function sample<T>(xs: readonly T[], n: number, seed: number): T[] {
+  let a = seed >>> 0;
+  const rand = () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const pool = [...xs]; const out: T[] = [];
+  while (out.length < n && pool.length) out.push(pool.splice(Math.floor(rand() * pool.length), 1)[0]!);
+  return out;
+}
 const PORT = opt("--port", 4199);
 const BASE = `http://127.0.0.1:${PORT}`;
 const NOW = Date.UTC(2026, 5, 15, 12); // fixed clock for ranking-dependent checks
@@ -473,6 +484,144 @@ async function sectionSpeed(browser: Browser) {
   record("S5c", "first-load JavaScript (KB gzip)", kb, "<= 747", kb <= 747);
 }
 
+
+// ---------------------------------------------------------------- S7 accuracy
+// Reference: the generated climate records, converted with formulas written here,
+// not imported from the app. A figure is wrong if it differs by more than rounding.
+type Rec = { tempHighC: number[]; tempLowC: number[]; annualPrecipMm: number; humidity: number[] | null; frostFreeDays: number };
+const REC = new Map<string, Rec>((RECORDS as Array<{ placeId: string; periods: Record<string, Rec> }>).map(r => [r.placeId, r.periods["rolling-1996-2025"]!]));
+const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length;
+const f = (c: number) => c * 9 / 5 + 32;
+const ref = (id: string) => {
+  const r = REC.get(id)!;
+  return {
+    summerHighF: f(avg([5, 6, 7].map(m => r.tempHighC[m]!))),
+    winterLowF: f(avg([11, 0, 1].map(m => r.tempLowC[m]!))),
+    precipIn: r.annualPrecipMm / 25.4,
+    humidityAnnual: r.humidity ? avg(r.humidity) : null,
+    humiditySummer: r.humidity ? avg([5, 6, 7].map(m => r.humidity![m]!)) : null,
+    frostFree: r.frostFreeDays,
+  };
+};
+function parseCsv(text: string): Array<Record<string, string>> {
+  const lines = text.replace(/^\uFEFF/, "").trim().split(/\r?\n/);
+  const split = (l: string) => { const out: string[] = []; let cur = ""; let q = false; for (const ch of l) { if (ch === '"') q = !q; else if (ch === "," && !q) { out.push(cur); cur = ""; } else cur += ch; } out.push(cur); return out; };
+  const head = split(lines[0]!);
+  return lines.slice(1).map(l => Object.fromEntries(split(l).map((v, i) => [head[i]!, v])));
+}
+async function sectionAccuracy(browser: Browser) {
+  console.log("\nS7 accuracy (shown figures = climate records, converted independently)");
+  const HOME = "flagstaff-az";
+  const errs: string[] = [];
+  let checked = 0;
+  const kinds: Record<string, number> = {};
+  const near = (label: string, shown: number, want: number, tol: number) => {
+    checked++;
+    const kind = label.replace(/^\S+ /, ""); kinds[kind] = (kinds[kind] ?? 0) + 1;
+    if (!(Math.abs(shown - want) <= tol)) errs.push(`${label}: shown ${shown}, records give ${want.toFixed(2)}`);
+  };
+  // (a) Export of every place, home base set.
+  const ctx = await newCtx(browser);
+  await ctx.addInitScript(([ids, home]) => {
+    if (!sessionStorage.getItem("seeded")) {
+      localStorage.setItem("terraclima.bookmarks.v1", JSON.stringify(ids));
+      localStorage.setItem("terraclima.home-base.v1", JSON.stringify(home));
+      sessionStorage.setItem("seeded", "1");
+    }
+  }, [PLACES.map(p => p.id), HOME] as const);
+  const page = await open(ctx); await firstCard(page);
+  const dl = page.waitForEvent("download", { timeout: 15000 });
+  await page.getByRole("button", { name: /^Export saved places/ }).first().click();
+  await page.getByRole("menuitem", { name: /^CSV/ }).first().click().catch(async () => { await page.getByRole("button", { name: /^CSV/ }).first().click(); });
+  const rows = parseCsv(readFileSync((await (await dl).path())!, "utf8"));
+  const h = ref(HOME);
+  for (const row of rows) {
+    const id = row.id!; const r = ref(id);
+    near(`${id} csv summer_high_f`, Number(row.summer_high_f), r.summerHighF, 0.06);
+    near(`${id} csv winter_low_f`, Number(row.winter_low_f), r.winterLowF, 0.06);
+    near(`${id} csv annual_precip_in`, Number(row.annual_precip_in), r.precipIn, 0.06);
+    if (r.humidityAnnual != null) near(`${id} csv humidity_pct`, Number(row.humidity_pct), r.humidityAnnual, 0.51);
+    near(`${id} csv frost_free_days`, Number(row.frost_free_days), r.frostFree, 0.51);
+    if (id !== HOME) {
+      near(`${id} csv summer_high_vs_home_f`, Number(row.summer_high_vs_home_f), r.summerHighF - h.summerHighF, 0.11);
+      near(`${id} csv winter_low_vs_home_f`, Number(row.winter_low_vs_home_f), r.winterLowF - h.winterLowF, 0.11);
+      if (r.humidityAnnual != null && h.humidityAnnual != null) near(`${id} csv humidity_vs_home_pct`, Number(row.humidity_vs_home_pct), r.humidityAnnual - h.humidityAnnual, 0.51);
+    }
+  }
+  const missing = PLACES.length - rows.length;
+  if (missing) errs.push(`export is missing ${missing} saved places`);
+  await ctx.close();
+  // (b) Cards: core numbers and labelled "vs home" chips, read the way their label says.
+  //     Each sampled place is found by name, so its own card is read.
+  const cardErrs = async (seed: number) => {
+    const out: string[] = []; let n = 0;
+    const c3 = await newCtx(browser);
+    await c3.addInitScript(home => { localStorage.setItem("terraclima.home-base.v1", JSON.stringify(home)); }, HOME);
+    for (const p of sample(PLACES.filter(x => x.id !== HOME), 8, seed)) {
+      const pg = await open(c3, `/?q=${encodeURIComponent(p.name)}`);
+      await firstCard(pg);
+      const text = await pg.locator(".place-card").first().innerText();
+      if (!text.toLowerCase().includes(p.name.toLowerCase())) { out.push(`${p.id} card: not found by name`); await pg.close(); continue; }
+      const r = ref(p.id);
+      const chk = (label: string, shown: number | null, want: number | null, tol = 0.51) => {
+        if (shown == null || want == null) return;
+        n++; const kind = `card ${label}`; kinds[kind] = (kinds[kind] ?? 0) + 1;
+        if (Math.abs(shown - want) > tol) out.push(`${p.id} card ${label}: shown ${shown}, records give ${want.toFixed(2)}`);
+      };
+      const num = (re: RegExp, t = text) => { const m = t.match(re); return m ? Number(m[1]!.replace(/[−–]/, "-").replace("+", "")) : null; };
+      chk("summer high", num(/SUMMER HIGH\s*(-?\d+)°F/i), r.summerHighF);
+      chk("winter low", num(/WINTER LOW\s*(-?\d+)°F/i), r.winterLowF);
+      chk("humidity", num(/(\d+)%\s*humidity/i), r.humidityAnnual);
+      chk("frost-free days", num(/(\d+)\s*frost-free days/i), r.frostFree);
+      const vs = text.slice(Math.max(0, text.search(/vs Flagstaff/i)));
+      chk("vs-home Summer", num(/\bSummer\s*([+\-−–]?\d+)°F/i, vs), r.summerHighF - h.summerHighF);
+      chk("vs-home Winter", num(/\bWinter\s*([+\-−–]?\d+)°F/i, vs), r.winterLowF - h.winterLowF);
+      // An unqualified "Humidity" reads like the card's own (annual) humidity figure.
+      chk('vs-home "Humidity"', num(/(?<!Summer\s)Humidity\s*([+\-−–]?\d+) pts/i, vs), r.humidityAnnual != null && h.humidityAnnual != null ? r.humidityAnnual - h.humidityAnnual : null);
+      chk('vs-home "Summer humidity"', num(/Summer\s+humidity\s*([+\-−–]?\d+) pts/i, vs), r.humiditySummer != null && h.humiditySummer != null ? r.humiditySummer - h.humiditySummer : null);
+      await pg.close();
+    }
+    await c3.close();
+    return { out, n };
+  };
+  const cardTune = await cardErrs(11);
+  const cardHeld = await cardErrs(9001);
+  checked += cardTune.n; errs.push(...cardTune.out);
+  // (c) Profiles: the climate figures at the top, for a seeded sample and a held-out seed.
+  const profileErrs = async (seed: number) => {
+    const out: string[] = []; let n = 0;
+    const c2 = await newCtx(browser);
+    for (const p of sample(PLACES, 8, seed)) {
+      const pg = await open(c2, `/?p=${p.id}`);
+      await pg.getByRole("dialog").getByText(/Climate normals/i).first().waitFor({ timeout: 15000 });
+      const t = (await pg.getByRole("dialog").innerText()).replace(/\s+/g, " ");
+      const r = ref(p.id);
+      const grab = (re: RegExp) => { const m = t.match(re); return m ? Number(m[1]!.replace(/[−–]/, "-").replace(/,/g, "")) : null; };
+      const pairs: Array<[string, number | null, number, number]> = [
+        ["summer high", grab(/SUMMER HIGH (-?\d+)°F/i), r.summerHighF, 0.51],
+        ["winter low", grab(/WINTER LOW (-?\d+)°F/i), r.winterLowF, 0.51],
+        ["yearly precip", grab(/(?:YEARLY RAIN|RAIN & SNOW) ([\d.]+) in/i), r.precipIn, r.precipIn >= 10 ? 0.51 : 0.051],
+      ];
+      for (const [label, shown, want, tol] of pairs) {
+        n++;
+        if (shown == null) out.push(`${p.id} profile ${label}: not found`);
+        else if (Math.abs(shown - want) > tol) out.push(`${p.id} profile ${label}: shown ${shown}, records give ${want.toFixed(2)}`);
+      }
+      await pg.close();
+    }
+    await c2.close();
+    return { out, n };
+  };
+  const tune = await profileErrs(11);
+  const heldP = await profileErrs(9001);
+  checked += tune.n; errs.push(...tune.out);
+  const held = { out: [...heldP.out, ...cardHeld.out], n: heldP.n + cardHeld.n };
+  record("S7a", "figures that differ from the climate records (export of all places; cards and profiles of 8 seeded places)", `${errs.length} of ${checked}`, "0", errs.length === 0, { errors: errs.slice(0, 60), checkedByKind: kinds });
+  console.log(`        checked: ${Object.entries(kinds).map(([k, v]) => `${k} ${v}`).join(" · ")}`);
+  record("S7b", "same, cards and profiles of a HELD-OUT seed (8 places)", `${held.out.length} of ${held.n}`, "0", held.out.length === 0, held.out);
+  for (const e of [...errs.slice(0, 12), ...held.out.slice(0, 5)]) console.log(`        ${e}`);
+}
+
 // ---------------------------------------------------------------- main
 async function main() {
   const started = Date.now();
@@ -485,6 +634,7 @@ async function main() {
     if (want("data")) await sectionData(browser);
     if (want("recover")) await sectionRecover(browser);
     if (want("speed")) await sectionSpeed(browser);
+    if (want("accuracy")) await sectionAccuracy(browser);
   } finally {
     await browser?.close();
     stopServer();
