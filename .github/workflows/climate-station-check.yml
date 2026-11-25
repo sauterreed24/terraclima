@@ -126,6 +126,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v6.0.2
+        with:
+          ref: ${{ github.ref_name }}
       - uses: actions/download-artifact@v4
         with:
           name: climate-v2
@@ -138,4 +140,9 @@ jobs:
           git add src/data/generated/climate-v2 data/climate-v2/manifest.json data/climate-v2/audit
           if git diff --cached --quiet; then echo "No change to commit"; exit 0; fi
           git commit -m "Regenerate Climate V2 assets with the reviewed station corrections"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          # The branch may have moved while this ran; the assets touch no other file.
+          for attempt in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep 10
+          done
+          exit 1
