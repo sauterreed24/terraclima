@@ -147,10 +147,10 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
         : status === "failed" ? "The download did not start. Try another format or browser."
           : "";
   const triggerLabel = disabled
-    ? "Pin a place to export your shortlist"
+    ? "Save a place to export it"
     : status === "preparing"
-      ? "Exporting shortlist"
-      : "Export shortlist";
+      ? "Exporting saved places"
+      : "Export saved places";
   const choosePlacement = useCallback((): MenuPlacement => {
     const trigger = triggerRef.current;
     if (!trigger || typeof window === "undefined") return "down";
@@ -268,7 +268,7 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
           ref={panelRef}
           id={menuId}
           role="menu"
-          aria-label="Export shortlist format"
+          aria-label="Export format for saved places"
           tabIndex={-1}
           className={`tc-shortlist-export__panel tc-shortlist-export__panel--${placement} tc-surface-glass panel-thin absolute right-0 sm:right-auto sm:left-0 z-20 min-w-[12.5rem] max-w-[calc(100vw-2rem)] p-2 flex flex-col gap-0.5 tc-shortlist-export__panel--open`}
           onKeyDown={onMenuKeyDown}

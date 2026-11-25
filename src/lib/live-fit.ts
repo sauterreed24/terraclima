@@ -482,7 +482,7 @@ function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): L
   if (place.settlementsWithinZone?.length) pushUnique(reasons, "Named towns inside the zone make the climate easier to picture on the ground.", 3);
   if (reasons.length === 0) pushUnique(reasons, "Balanced climate, risk, and terrain scores make it worth a closer look.", 3);
 
-  if (place.scores.tradeoff >= 65) pushUnique(cautions, "Tradeoffs are substantial; read the risk and fit sections before shortlisting.", 3);
+  if (place.scores.tradeoff >= 65) pushUnique(cautions, "Tradeoffs are substantial; read the risk and fit sections before you save it.", 3);
   if (RISK_VALUE[place.risks.wildfire.level] >= 3) pushUnique(cautions, `Wildfire risk is ${place.risks.wildfire.level}.`, 3);
   if (RISK_VALUE[place.risks.smoke.level] >= 3) pushUnique(cautions, `Smoke risk is ${place.risks.smoke.level}.`, 3);
   if (RISK_VALUE[place.risks.coastal.level] >= 3) pushUnique(cautions, `Coastal exposure is ${place.risks.coastal.level}.`, 3);
@@ -495,7 +495,7 @@ function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): L
   if (annualRange > 36) pushUnique(cautions, "Annual temperature range is large; expect harder seasonal swings.", 3);
   if (feel.score < 58) {
     const drag = dominantPlaceFeelDrag(place);
-    pushUnique(cautions, `Place feel is ${feel.band.toLowerCase()}; verify ${drag.label.toLowerCase()} before shortlisting.`, 3);
+    pushUnique(cautions, `Place feel is ${feel.band.toLowerCase()}; verify ${drag.label.toLowerCase()} before you save it.`, 3);
   }
 
   // Lived-friction cautions — surface housing pressure and access remoteness
@@ -516,10 +516,10 @@ function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): L
       pushUnique(reasons, "Housing cost and travel times are both easy here.", 3);
     }
     if (livedCoverage.confidence === "partial") {
-      pushPinnedUnique(cautions, "Cost and access data is partial; check housing cost, hospital access and transport before shortlisting.", 3);
+      pushPinnedUnique(cautions, "Cost and access data is partial; check housing cost, hospital access and transport before you save it.", 3);
     }
   } else {
-    pushPinnedUnique(cautions, "There is no sourced cost and access data yet; check housing cost, hospital access and transport before shortlisting.", 3);
+    pushPinnedUnique(cautions, "There is no sourced cost and access data yet; check housing cost, hospital access and transport before you save it.", 3);
   }
 
   // Marine-fog / low-sunshine caution

@@ -291,7 +291,7 @@ function pickCounterweight(
   return {
     place: runnerUp.place,
     label: "Runner-up",
-    preference: "a second all-around option is needed for the shortlist",
+    preference: "you want a second all-around option",
   };
 }
 

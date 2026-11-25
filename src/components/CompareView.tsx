@@ -47,7 +47,7 @@ type CandidateSortId = "curated" | "lens" | "risk" | "easy" | "name";
 
 const CANDIDATE_SOURCE_FILTERS: readonly { id: CandidateSourceFilter; label: string }[] = [
   { id: "all", label: "All" },
-  { id: "Shortlist", label: "Shortlist" },
+  { id: "Shortlist", label: "Saved" },
   { id: "Recent", label: "Recent" },
   { id: "Ranked", label: "Ranked" },
 ];
@@ -221,7 +221,7 @@ export function CompareView({
         place.region,
         place.country,
         ...place.archetypes,
-        candidate.source,
+        candidate.source === "Shortlist" ? "Saved" : candidate.source,
         candidate.note ?? "",
       ].join(" ").toLowerCase();
       return haystack.includes(query);
@@ -264,7 +264,7 @@ export function CompareView({
     : `${candidateTray.length} to choose from`;
   const candidateTrayHelper = candidateFinderActive
     ? "Places already in the comparison come first, then search matches."
-    : "From your shortlist, recently opened places and the current top of the ranking.";
+    : "From your saved places, recently opened places and the current top of the ranking.";
   const noInactiveCandidateMatches =
     candidateFinderActive && filteredInactiveCandidateTray.length === 0 && inactiveCandidateTray.length > 0;
   const coachRecommendations = useMemo(
@@ -605,7 +605,7 @@ export function CompareView({
                           </span>
                         </span>
                         <span className="compare-workbench__candidate-meta">
-                          <span>{candidate.source}</span>
+                          <span>{candidate.source === "Shortlist" ? "Saved" : candidate.source}</span>
                           <strong>{candidate.place.region}</strong>
                         </span>
                         {candidateProfile ? (

@@ -9,14 +9,14 @@ export function buildShortlistReadiness(count: number, compareLimit = COMPARE_LI
   if (count <= 0) return null;
   if (count === 1) {
     return {
-      label: "1 place pinned",
-      detail: "Pin a second place to compare. Export already works for this one.",
+      label: "1 place saved",
+      detail: "Save a second place to compare. Export already works for this one.",
     };
   }
   if (count > compareLimit) {
     return {
       label: "Ready to compare",
-      detail: `Compare the first ${compareLimit}. The visit plan export includes all ${count} pinned places.`,
+      detail: `Compare the first ${compareLimit}. The visit plan export includes all ${count} saved places.`,
     };
   }
   return {

@@ -93,8 +93,8 @@ The URL-sync effect in `App.tsx` decides between `pushState` and `replaceState`.
 - At most **4** ids in `cmp` and in memory (`Set` eviction drops oldest).
 - A shared URL with two or more valid `cmp` ids opens Compare immediately.
 - A shared URL with one valid `cmp` id saves that place to compare but does not auto-open Compare.
-- `clens` changes only the Compare decision/read lens and grouped score row; it does not transmit shortlist data.
-- Shortlist Workbench candidates stay local (bookmarks, recent places, current ranked leaders). Export still reads the full shortlist, not only the four active `cmp` slots.
+- `clens` changes only the Compare decision/read lens and grouped score row; it does not transmit saved places.
+- Compare workbench candidates stay local (saved places, recent places, current ranked leaders). Export still reads every saved place, not only the four active `cmp` slots.
 
 ## Regression vectors
 

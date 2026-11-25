@@ -1202,12 +1202,12 @@ export default function App() {
     const placeName = place?.name ?? "Place";
     if (pinned && ids.length === BOOKMARK_LIMIT) {
       setTransientFeedback(
-        `Pinned ${placeName}. The shortlist holds ${BOOKMARK_LIMIT} places, so the oldest pin was removed.`,
+        `Saved ${placeName}. You can save up to ${BOOKMARK_LIMIT} places, so the oldest one was removed.`,
       );
     } else if (pinned) {
-      setTransientFeedback(`Pinned ${placeName} to your shortlist.`);
+      setTransientFeedback(`Saved ${placeName}.`);
     } else {
-      setTransientFeedback(`Removed ${placeName} from your shortlist.`);
+      setTransientFeedback(`Removed ${placeName} from your saved places.`);
     }
   }, []);
 
@@ -1259,14 +1259,14 @@ export default function App() {
     setBookmarkIds(new Set(saved.ids));
     const savedCount = finalists.filter(id => saved.ids.includes(id)).length;
     if (saved.added.length === 0) {
-      setTransientFeedback(`These ${savedCount} top picks are already in your shortlist.`);
+      setTransientFeedback(`These ${savedCount} top picks are already in your saved places.`);
     } else if (saved.capped) {
       setTransientFeedback(
-        `Saved ${saved.added.length} new place${saved.added.length === 1 ? "" : "s"}. The shortlist holds ${BOOKMARK_LIMIT}, so only the top ${BOOKMARK_LIMIT} were kept.`,
+        `Saved ${saved.added.length} new place${saved.added.length === 1 ? "" : "s"}. You can save up to ${BOOKMARK_LIMIT}, so only the top ${BOOKMARK_LIMIT} were kept.`,
       );
     } else {
       setTransientFeedback(
-        `Saved ${saved.added.length} new place${saved.added.length === 1 ? "" : "s"}. ${savedCount} top picks are in your shortlist, ready to compare or export.`,
+        `Saved ${saved.added.length} new place${saved.added.length === 1 ? "" : "s"}. ${savedCount} top picks are in your saved places, ready to compare or export.`,
       );
     }
   }, []);
@@ -2178,7 +2178,7 @@ export default function App() {
                   <div className="text-xs uppercase tracking-wider text-stone">Curated</div>
                   <h1 className="font-atlas text-3xl text-ice text-depth-hero mt-0.5">Collections</h1>
                   <p className="text-sm text-frost mt-1 max-w-2xl">
-                    Hand-picked groups of places that share a kind of climate: rain shadows, sky islands, eternal springs, lake snowbelts and more. Pin one to show only its places on the map.
+                    Hand-picked groups of places that share a kind of climate: rain shadows, sky islands, eternal springs, lake snowbelts and more. Choose one to show only its places on the map.
                   </p>
                 </div>
                 <LazyRouteErrorBoundary routeLabel="Collections">
@@ -2712,7 +2712,7 @@ function ActiveTripRouteReceipt({
   return (
     <section
       className="fit-journey-receipt fit-journey-receipt--trip"
-      aria-label={`Trip pinned: ${theme.title}`}
+      aria-label={`Trip: ${theme.title}`}
     >
       <div className="fit-journey-receipt__main">
         <div className="fit-journey-receipt__head">
@@ -3117,7 +3117,7 @@ const HeroCard = memo(function HeroCard({
             <Sparkles className="w-3.5 h-3.5 tc-icon-ochre" aria-hidden />
             <span className="text-xs uppercase tracking-wider text-stone-readable">
               {active
-                ? active.kind === "trip" ? "Trip pinned" : "Collection pinned"
+                ? active.kind === "trip" ? "Showing one trip" : "Showing one collection"
                 : liveSignalCount > 0
                   ? `Must-haves · ${liveSignalCount} set`
                     : activeArchetypes.size > 0
@@ -3955,10 +3955,10 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
   );
   const shortlistPacketCounterweight = shortlistPacketCue?.counterweight ?? null;
   const shortlistPacketPrimaryLabel = shortlistPacketCue
-    ? `Open the first shortlist profile: ${shortlistPacketCue.primary.name}`
+    ? `Open the first saved place: ${shortlistPacketCue.primary.name}`
     : "";
   const shortlistPacketCounterweightLabel = shortlistPacketCounterweight
-    ? `Open the most different shortlist place: ${shortlistPacketCounterweight.name}`
+    ? `Open the most different saved place: ${shortlistPacketCounterweight.name}`
     : "";
   const recentPlaces = useMemo(
     () =>
@@ -3974,7 +3974,7 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
   const recentClearLabel = `Clear recently viewed list (${recentPlaces.length} ${recentPlaces.length === 1 ? "place" : "places"} shown)`;
   const pinnedCompareLabel = pinnedCompareIds.length === 1
     ? `Open Compare with ${pinnedPlaces[0]?.name ?? "this place"} and add a second place`
-    : `Compare ${pinnedCompareIds.length} places from your shortlist side by side`;
+    : `Compare ${pinnedCompareIds.length} places from your saved places side by side`;
 
   if (pinnedPlaces.length === 0 && recentPlaces.length === 0) return null;
 
@@ -3985,7 +3985,7 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
           <div className="hero-mini-rail__header flex items-center justify-between gap-2">
             <span id="hero-pinned-title" className="hero-mini-rail__title flex items-center gap-1.5">
               <BookmarkCheck className="w-3 h-3 text-ochre-700" aria-hidden />
-              Your shortlist · {pinnedPlaces.length}
+              Saved places · {pinnedPlaces.length}
             </span>
             <div className="hero-mini-rail__actions">
               {pinnedCompareIds.length > 0 ? (
@@ -4007,15 +4007,15 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
             </div>
           </div>
           {shortlistReadiness ? (
-            <p className="hero-mini-rail__readiness" aria-label="Shortlist status">
+            <p className="hero-mini-rail__readiness" aria-label="Saved places status">
               <span>{shortlistReadiness.label}</span>
               {shortlistReadiness.detail}
             </p>
           ) : null}
           {shortlistPacketCue ? (
-            <div className="hero-shortlist-packet" aria-label="Where to start in your shortlist">
+            <div className="hero-shortlist-packet" aria-label="Where to start in your saved places">
               <div className="hero-shortlist-packet__head">
-                <span>Your shortlist</span>
+                <span>Saved places</span>
                 <strong>Start with {shortlistPacketCue.primary.name}</strong>
               </div>
               <p className="hero-shortlist-packet__summary">
@@ -4052,11 +4052,11 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
             </div>
           ) : null}
           <p id="hero-pinned-rail-scroll-hint" className="sr-only">
-            Swipe or scroll horizontally to browse saved shortlist places; each place also has an unpin control.
+            Swipe or scroll horizontally to browse your saved places; each place also has a remove button.
           </p>
           <ul
             className="hero-mini-rail"
-            aria-label="Your shortlist. Select a place to open it, or × to remove it"
+            aria-label="Saved places. Select a place to open it, or × to remove it"
             aria-describedby="hero-pinned-rail-scroll-hint"
           >
             {pinnedPlaces.map((p, index) => {
@@ -4067,8 +4067,8 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
                     type="button"
                     className="hero-mini-rail__chip-open bg-transparent border-0 p-0 m-0 inline-flex items-center gap-1.5 cursor-pointer text-left min-w-0"
                     onClick={event => onOpenPlace(p.id, { trigger: event.currentTarget })}
-                    aria-label={`Open ${p.name} from your shortlist`}
-                    title={`Open ${p.name} from your shortlist`}
+                    aria-label={`Open ${p.name} from your saved places`}
+                    title={`Open ${p.name} from your saved places`}
                   >
                     <span className="hero-mini-rail__chip-name">{p.name}</span>
                     <span className="hero-mini-rail__chip-meta">{p.country === "USA" ? "US" : p.country === "Canada" ? "CA" : "MX"}</span>
@@ -4077,8 +4077,8 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
                     type="button"
                     className="hero-mini-rail__chip-remove bg-transparent border-0 cursor-pointer"
                     onClick={() => onRemovePinnedPlace(p.id, nextPinnedFocusId)}
-                    aria-label={`Unpin ${p.name} from your shortlist`}
-                    title={`Unpin ${p.name} from your shortlist`}
+                    aria-label={`Remove ${p.name} from your saved places`}
+                    title={`Remove ${p.name} from your saved places`}
                     data-shortlist-remove-id={p.id}
                   >
                     ×
@@ -4282,7 +4282,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
   const canSaveFinalists = brief.compareIds.length >= 2;
   const openLeaderLabel = `Open the top pick, ${brief.leader.place.name}`;
   const compareLeadersLabel = `Compare the top ${brief.compareIds.length} places from the summary`;
-  const saveFinalistsLabel = `Save the top ${brief.compareIds.length} places to your shortlist`;
+  const saveFinalistsLabel = `Save the top ${brief.compareIds.length} places to your saved places`;
   return (
     <section id="explorer-scout-brief" tabIndex={-1} className="scout-brief" aria-labelledby="explorer-scout-brief-title">
       <div className="scout-brief__head">
@@ -4508,10 +4508,10 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
   const leaderOpenLabel = `Open the top pick, ${brief.leader.place.name}`;
   const dossierLabel = `Open the profile for ${brief.leader.place.name}`;
   const compareLabel = `Compare the top ${brief.compareIds.length} places from the summary`;
-  const saveFinalistsLabel = `Save the top ${brief.compareIds.length} places to your shortlist`;
+  const saveFinalistsLabel = `Save the top ${brief.compareIds.length} places to your saved places`;
   const pinLabel = leaderPinned
-    ? `Unpin ${brief.leader.place.name} from your shortlist`
-    : `Pin ${brief.leader.place.name} to your shortlist`;
+    ? `Remove ${brief.leader.place.name} from your saved places`
+    : `Save ${brief.leader.place.name} to your saved places`;
   return (
     <section
       id="explorer-scout-brief"
@@ -4578,7 +4578,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
               title={pinLabel}
             >
               <BookmarkCheck className="w-3.5 h-3.5" aria-hidden />
-              {leaderPinned ? "Pinned" : "Pin"}
+              {leaderPinned ? "Saved" : "Save"}
             </button>
           </div>
           <div className="desktop-scout-board__advisor" aria-label="Bottom line">

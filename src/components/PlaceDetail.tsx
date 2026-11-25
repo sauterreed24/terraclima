@@ -1028,7 +1028,7 @@ function DetailBody({
                   {liveFit.cautions.map(c => <li key={c}>{prose(c)}</li>)}
                 </ul>
               ) : (
-                <p className="text-sm text-frost">No single warning stands out. Still read the risk, water and fit sections before shortlisting.</p>
+                <p className="text-sm text-frost">No single warning stands out. Still read the risk, water and fit sections before you save it.</p>
               )}
             </div>
           </div>

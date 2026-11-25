@@ -10,7 +10,7 @@ Terraclima helps you understand **how a place actually feels to live in or visit
 
 | If you are… | You can use Terraclima to… |
 |-------------|----------------------------|
-| **Thinking about relocating** | Shortlist towns by cool summers, mild winters, dry air, gardenability, low fire/smoke, coastal buffering, or overall comfort — then pin finalists, set a home base, and compare “vs home” deltas instead of raw averages. |
+| **Thinking about relocating** | Narrow down towns by cool summers, mild winters, dry air, gardenability, low fire/smoke, coastal buffering, or overall comfort — then save finalists, set a home base, and compare “vs home” deltas instead of raw averages. |
 | **Scouting a trip by climate** | Follow Climate Trips into fog belts, rain shadows, sky islands, orchard valleys, snowbelts, or places that feel climatically out of place — then open stop profiles for visit windows and field-check notes. |
 | **Curious about a specific landscape** | Open a place profile and read the mechanism: rain shadow, marine layer, cold-air pool, chinook corridor, sky island, frost hollow. The point is the *why*, not a forecast. |
 | **Comparing a few serious finalists** | Bookmark places, run Compare (up to four), export a Markdown scout plan or CSV / GeoJSON / ICS, and share a filtered atlas view with a partner or reviewer. |
@@ -22,7 +22,7 @@ It is free and public. Claims stay screening-grade and source-aware: citations a
 
 1. Open the [live atlas](https://sauterreed24.github.io/terraclima/). First sessions land on **Most unique** so you see distinctive microclimates right away — or try **Most comfortable**, a goal under **Goals**, or **Surprise me** / **R**.
 2. Tap or hover a map pin for a compact peek (name, archetype, one climate line). Open the place for the full field-guide profile: archetype, **Why this climate is different here**, seasons, risks, and practical scouting cards.
-3. When you get serious, set a **home base** (**H** or the **Set home** button in a profile) so cards and Compare show how each place differs from *your* climate. Pin keepers with the bookmark (**B**).
+3. When you get serious, set a **home base** (**H** or the **Set home** button in a profile) so cards and Compare show how each place differs from *your* climate. Save keepers with the bookmark button (**B**).
 4. Narrow with **Goals** and **Must-haves** in the filter panel, Collections, or Climate Trips. Use **Compare** and the **Top-picks summary** (More → Summary panels) when you are deciding.
 5. Press **?** for keyboard shortcuts. On phones, the map pans with one finger; tap **Scroll page** when you want the page to scroll normally again.
 
@@ -73,7 +73,7 @@ On a phone, navigation folds into a hamburger and filters into a bottom sheet; o
 
 Each **place profile** is a long-form field guide: opening story, a photograph of the place, at-a-glance facts, practical scouting cards, live-here reasons and cautions, seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, climate twins, settlements, things to do, citations, and confidence notes. The Overview leads with why the climate differs, nearby contrast, a short settlement history, and a season-by-season feel.
 
-**Home base (“vs home”):** pin any corpus place as home from its profile, **H**, or `?hb=`. Cards grow a compact delta strip; profiles add a **Versus your home base** section; Compare diffs finalists against home (with **Add home**). Deltas use the atlas's current normals (1996–2025); under a 2050 scenario, projected is compared to projected so timelines never mix. See [`src/lib/home-base.ts`](src/lib/home-base.ts).
+**Home base (“vs home”):** set any corpus place as home from its profile, **H**, or `?hb=`. Cards grow a compact delta strip; profiles add a **Versus your home base** section; Compare diffs finalists against home (with **Add home**). Deltas use the atlas's current normals (1996–2025); under a 2050 scenario, projected is compared to projected so timelines never mix. See [`src/lib/home-base.ts`](src/lib/home-base.ts).
 
 **Climate twins:** every profile answers *where else feels like here across the year?* — warmth, seasonal shape, maritime↔continental swing, moisture amount and timing, air (humidity/sun/diurnal), and shared terrain mechanism. **"Twin, but —"** steers toward milder winters, warmer, cooler, drier, or lower risk without letting unrelated climates jump the queue. See [`src/lib/climate-analog.ts`](src/lib/climate-analog.ts).
 
@@ -93,7 +93,7 @@ Each **place profile** is a long-form field guide: opening story, a photograph o
   - **Sunniest winters** uses the station sunshine record where a place has one, otherwise an estimate, and says which.
   - Rankings that would tie are ordered by the underlying measurement.
 - **Compare:** up to four places with a finalist verdict, scout sequence, comfort/livability rows, climate ribbons, and focus-managed modal behavior.
-- **Shortlist:** bookmarks persist in your browser (`localStorage`). Export Markdown scout plans or JSON / CSV / GeoJSON / ICS from [`src/lib/shortlist-export.ts`](src/lib/shortlist-export.ts). Copy/share the current filtered view (`navigator.share` where available, clipboard otherwise).
+- **Saved places:** they persist in your browser (`localStorage`). Export Markdown scout plans or JSON / CSV / GeoJSON / ICS from [`src/lib/shortlist-export.ts`](src/lib/shortlist-export.ts). Copy/share the current filtered view (`navigator.share` where available, clipboard otherwise).
 - **Recently viewed:** last ten profiles on this device. **Print** a profile for a paper-ready brief. Profiles show reading progress and a back-to-top control.
 - **Collections & Learn:** curated bundles and a glossary tying mechanisms (lapse rate, cold-air pooling, orographic lift, marine layer, foehn, thermal belts, karst) to real places.
 - **Units:** the corpus is authored in metric and the interface shows US units only (°F, inches, feet, miles), converted at render time by `localizeProse` and the formatters in [`units.ts`](src/lib/units.ts). There is no °C switch; `temp=` and `dist=` in older links are ignored and dropped from the address bar. CSV and JSON exports give elevation in feet.
@@ -106,7 +106,7 @@ The hero **Livability blend** mixes felt thermal comfort, atmospheric ease (sky/
 
 ### Keyboard shortcuts (high level)
 
-`E` / `T` / `C` / `L` switch views · `/` or `Ctrl/⌘+K` search · `F` mobile filters · `R` surprise place · `B` pin · `H` home base · `Esc` close / clear search · `?` help · map arrows / Home / End / `0` / `=` / `-` as above.
+`E` / `T` / `C` / `L` switch views · `/` or `Ctrl/⌘+K` search · `F` mobile filters · `R` surprise place · `B` save · `H` home base · `Esc` close / clear search · `?` help · map arrows / Home / End / `0` / `=` / `-` as above.
 
 ## Public release posture
 
@@ -135,7 +135,7 @@ Terraclima combines editorial research with deterministic analysis. It does **no
 - **Explainable scoring:** [`scoring.ts`](src/lib/scoring.ts), [`geospatial-analysis.ts`](src/lib/geospatial-analysis.ts), [`atlas-corpus-stats.ts`](src/lib/atlas-corpus-stats.ts).
 - **Verifiable Köppen class:** [`koppen.ts`](src/lib/koppen.ts) recomputes class from monthly normals and reconciles with the authored label; corpus gate errors on gross mislabels; Mediterranean-like ranking and analog family signals use the computed class.
 - **Bioclimatic indices:** [`bioclim.ts`](src/lib/bioclim.ts) — De Martonne, Conrad, Thornthwaite PET, Selianinov, UNEP P/PET — with percentiles, citations, Compare rows, and corpus invariants.
-- **Shortlist / practical / tourism synthesis:** [`explorer-scout-brief.ts`](src/lib/explorer-scout-brief.ts) (the **Top-picks summary**), [`decision-matrix.ts`](src/lib/decision-matrix.ts) (the **Side by side** table), [`practical-read.ts`](src/lib/practical-read.ts), [`climate-tourism.ts`](src/lib/climate-tourism.ts).
+- **Top picks / practical / tourism synthesis:** [`explorer-scout-brief.ts`](src/lib/explorer-scout-brief.ts) (the **Top-picks summary**), [`decision-matrix.ts`](src/lib/decision-matrix.ts) (the **Side by side** table), [`practical-read.ts`](src/lib/practical-read.ts), [`climate-tourism.ts`](src/lib/climate-tourism.ts).
 - **Validation:** [`sanity-check.ts`](scripts/sanity-check.ts), [`audit-corpus.ts`](scripts/audit-corpus.ts), [`test-prose.ts`](scripts/test-prose.ts), [`corpus-rank-gold.ts`](scripts/corpus-rank-gold.ts).
 - **Tests:** `src/lib/__tests__/` (including atlas fit/zoom/cluster/keyboard/touch math) and `src/__tests__/AtlasMap.dom.test.tsx` for real map DOM behavior.
 - **Accessibility:** focus traps on dialogs; live region for filtered counts; pins and clusters share one roving-tabindex; visible focus on map controls; `aria-pressed` / `aria-expanded` on toggles.
@@ -309,7 +309,7 @@ CI cannot fully exercise touch or real-device GPUs. After layout, map, nav, or o
 | **Nav** | Hamburger (under ~560px); closes cleanly | Explorer / Trips / Collections / Learn in the header |
 | **Filters** | Bottom “Filters & rank” sheet; **`F`** | Sticky dock (≥1024px) |
 | **Top-picks summary** | Stacks; Compare leaders opens without clipping | Readable between rank strip and livability lens |
-| **Climate Trips** | Cards fit; Compare top stops works | Pinning returns to Explorer; profiles open |
+| **Climate Trips** | Cards fit; Compare top stops works | Choosing a trip returns to Explorer; profiles open |
 | **Map gestures** | One-finger pan/pinch; **Scroll page** / **Use map** | A page scroll that passes over the map keeps scrolling the page; a wheel that starts over the map zooms it; pan stays bounded |
 | **List** | 12 places per batch; **Cards / Compact** switch; **Top** button | Same; scrollbar does not lurch while scrolling; intro panel does not collapse on its own |
 | **Map framing** | Fit/selection clear of chrome; rotate width↔height without losing the landmass | Dock-aware frame; tooltip/picker stay on the pin |

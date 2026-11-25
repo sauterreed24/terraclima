@@ -36,7 +36,7 @@ export function LearnMode({ onOpenPlace }: Props) {
           <li>Go to <span className="text-ice font-medium">Atlas</span> and open any place from the map or the card list.</li>
           <li>Read the profile from the top, or use <span className="text-ice font-medium">On this page</span> to jump to a section.</li>
           <li>Use <span className="text-ice font-medium">Search</span> and <span className="text-ice font-medium">Rank by</span> in the <span className="text-ice font-medium">Filters</span> panel (the side panel on desktop, the Filters button on a phone) to reorder or narrow the list. The map shows the same filtered set.</li>
-          <li>Save places to a shortlist, then open <span className="text-ice font-medium">Compare</span> to see up to four side by side.</li>
+          <li>Save places, then open <span className="text-ice font-medium">Compare</span> to see up to four side by side.</li>
           <li>Come back here for the terms (rain shadow, chinook and others). Each one links to example places; select one to open its profile.</li>
         </ol>
       </div>

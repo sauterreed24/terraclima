@@ -115,7 +115,7 @@ export function PlaceResidencyBrief({
     livability.drags
       .map(key => livability.components.find(component => component.key === key))
       .find(Boolean)?.rationale ??
-    "No single warning stands out. Still check risk, services and fit before shortlisting.";
+    "No single warning stands out. Still check risk, services and fit before you save it.";
   const cautionLabel = liveFit.cautions.length > 0 ? "Check in person" : `${visualSignature.verify.shortLabel} check`;
   const scoreBand =
     liveFit.score >= 82 ? "top candidate" :
@@ -192,7 +192,7 @@ export function PlaceResidencyBrief({
         <div className="residency-brief__actions" aria-label={`Actions for ${place.name}`}>
           <div className="residency-brief__action-read">
             <span>Next step</span>
-            <p>Save it to your shortlist, then compare it with others before planning a visit.</p>
+            <p>Save it to your saved places, then compare it with others before planning a visit.</p>
           </div>
           <div className="residency-brief__action-buttons">
             {onBookmarkToggle ? (

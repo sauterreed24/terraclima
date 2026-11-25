@@ -1,5 +1,5 @@
 // ============================================================
-// Terraclima — Place bookmarks (pinned places)
+// Terraclima — Place bookmarks (saved places)
 // ============================================================
 //
 // Lightweight localStorage layer for "pinned" places: a flat list of
@@ -72,7 +72,7 @@ export function hasBookmark(id: string): boolean {
  * Toggle a bookmark id and persist. Returns the new full list and
  * whether the id is now pinned. The id moves to the head of the list
  * when newly added — pinned-first ordering is the most useful default
- * for a "your shortlist" rail.
+ * for a "your saved places" rail.
  */
 export function toggleBookmark(id: string): { ids: string[]; pinned: boolean } {
   const storage = safeStorage();
