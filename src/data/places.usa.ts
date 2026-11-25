@@ -2966,7 +2966,7 @@ export const PLACES_USA: Place[] = [
         title: "Services, water and cost",
         paragraphs: [
           "Marfa has about 1,800 people. The nearest hospital is in Alpine, about 40 km east. The nearest airports with regular flights are at Midland–Odessa and El Paso, each about three hours' drive. Many repairs and most specialist appointments mean a day on the road.",
-          "The art world that followed Donald Judd to Marfa in the 1970s has pushed house prices far above local wages. Water comes from wells, and about 370 mm of rain falls in a year, most of it in thunderstorms from June to September. Weigh the house prices, the water supply and the drive to a doctor against the evenings.",
+          "The art world that followed Donald Judd to Marfa in the 1970s has pushed house prices far above local wages. Water comes from wells. The year's rain is about 370 mm, most of it from thunderstorms between June and September. Weigh the house prices, the water supply and the drive to a doctor against the evenings.",
         ],
       },
     ],

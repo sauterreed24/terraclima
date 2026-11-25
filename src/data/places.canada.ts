@@ -519,7 +519,7 @@ export const PLACES_CANADA: Place[] = [
         title: "Cool in a heat wave, exposed in a storm",
         paragraphs: [
           "Tofino stays cool when the rest of the region is hot. Even regional heat events arrive diluted by ocean air compared with inland Vancouver Island or the Lower Mainland.",
-          "The cool air comes with exposure to storms, erosion and tsunami. August afternoons average 19°C, and about 3000 mm of rain falls in a year.",
+          "The cool air comes with exposure to storms, erosion and tsunami. August afternoons average 19°C, and the year's rain comes to about 3000 mm.",
         ],
       },
     ],

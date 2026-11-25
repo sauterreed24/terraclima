@@ -993,7 +993,7 @@ export const PLACES_MEXICO: Place[] = [
       { label: "Town center food markets", kind: "food-drink", season: "weekends", note: "A practical anchor for repeated-life scouting." },
     ],
     deepSections: [
-      { id: "tapalpa-pine-plateau", title: "A cool pine plateau above warm Jalisco", paragraphs: ["Tapalpa sits on a pine-and-oak plateau in southern Jalisco, about 2020 m up. The road from the Sayula basin climbs roughly 700 m, and the air cools on the way up. Afternoons reach 23 to 29°C through the year and nights fall to 5 to 13°C, with light frost on some winter mornings.", "About 670 mm of the year's 840 mm falls from June to September and keeps the forest and the meadows green. Dirt roads turn to mud in those months. March to May is dry, and that is the season for forest fires."] },
+      { id: "tapalpa-pine-plateau", title: "A cool pine plateau above warm Jalisco", paragraphs: ["Tapalpa sits on a pine-and-oak plateau in southern Jalisco, about 2020 m up. The road from the Sayula basin climbs roughly 700 m, and the air cools on the way up. Afternoons reach 23 to 29°C through the year and nights fall to 5 to 13°C, with light frost on some winter mornings.", "June to September brings about 670 mm of rain, four fifths of the annual total, and keeps the forest and the meadows green. Dirt roads turn to mud in those months. March to May is dry, and that is the season for forest fires."] },
       { id: "tapalpa-cabin-siting", title: "Cabin climate depends on exposure", paragraphs: ["A sunny clearing, a lot under pines and the open edge of the plateau are three different places to live. The clearing warms quickly on a winter morning. The shaded lot stays cold and damp. The plateau edge has the views and takes the wind.", "Visit once on a busy weekend and once midweek, because the town is a different size on each. Look for morning sun, ground that drains, shelter from the wind and a short drive to the shops in town."] },
     ],
   },
@@ -1626,7 +1626,7 @@ export const PLACES_MEXICO: Place[] = [
     growability: { score: 46, growsWell: ["Apples", "Pears", "Beans", "Corn (Tarahumara landraces)"], tricky: ["Heat-loving crops"], homeGarden: "Short-season highland gardening; the Tarahumara grow staple varieties adapted to the altitude." },
     climateChange: { outlook2050: "Warmer; drier dry-season; fire regime shifting.", outlook2100: "Pine-oak belt migrating upslope; snow events rarer.", keyShifts: [{ variable: "Snow", direction: "down" }, { variable: "Fire weather", direction: "up" }, { variable: "Monsoon timing", direction: "mixed" }], resilienceNote: "The plateau is mountain-buffered but fire and water stress are rising." },
     risks: { wildfire: { level: "elevated", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "elevated", trend: "worsening" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "low", trend: "stable" }, landslide: { level: "moderate", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
-    nearbyContrasts: [{ label: "Batopilas (canyon floor, 495 m)", note: "Subtropical, palm-and-citrus climate about 80 km south and 1,800 m down; winter highs near 26°C while Creel's nights hover near freezing." }],
+    nearbyContrasts: [{ label: "Batopilas (canyon floor, 495 m)", note: "Subtropical, palm-and-citrus climate about 80 km south and 1,800 m down; winter afternoons there are warm enough for citrus while Creel's nights hover near freezing." }],
     scores: { hiddenGem: 82, microclimateUniqueness: 86, comfort: 54, resilience: 58, growability: 46, tradeoff: 60 },
     liveSignals: {
       costPressure: 38,
@@ -1664,7 +1664,7 @@ export const PLACES_MEXICO: Place[] = [
         title: "Monsoon relief, fire-season concern",
         paragraphs: [
           "Summer rains support pine-oak forest and Rarámuri agriculture, but the dry season can leave fuels receptive to fire. Climate change raises concern for longer dry spells, hotter fire weather, and shifting pine health.",
-          "This is a high-value Tier B entry precisely because it compresses forest, canyon, Indigenous land use, and climate risk into a terrain system that is easy to understand but hard to reduce to one station.",
+          "Forest, canyon, Rarámuri land use and fire risk all sit within a day's walk here, and no single weather station can stand for all of it.",
         ],
       },
     ],
