@@ -7929,7 +7929,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    color: #b07d2b;
+    color: #855a17;
     font-size: 0.64rem;
     font-weight: 700;
     letter-spacing: 0.13em;
@@ -8264,7 +8264,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    color: #b07d2b;
+    color: #855a17;
     font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -8916,7 +8916,7 @@
     font-family: var(--font-mono);
     font-size: 0.62rem;
     font-weight: 600;
-    color: rgba(90, 79, 71, 0.5);
+    color: rgba(90, 79, 71, 0.85);
     letter-spacing: 0.08em;
     min-width: 1.35rem;
   }
@@ -11271,7 +11271,7 @@ html[data-theme="dark"] .detail-dossier-chapter::before {
   background: linear-gradient(180deg, rgba(140, 160, 200, 0.32) 0%, rgba(140, 160, 200, 0.1) 100%);
 }
 html[data-theme="dark"] .detail-dossier-chapter-idx {
-  color: rgba(170, 182, 205, 0.6);
+  color: rgba(170, 182, 205, 0.85);
 }
 html[data-theme="dark"] .panel-field-story {
   background:
@@ -14155,5 +14155,37 @@ html[data-theme="dark"] .desktop-scout-board__score {
 @media (pointer: fine) {
   [data-place-detail] .tc-reading-nav-desktop .tc-reading-nav-nested-link {
     min-height: 2.15rem;
+  }
+}
+
+/* Dark theme: profile score rows and the Helps / Hurts boxes kept their
+   pale paper fills, which left light text on a light ground. */
+html[data-theme="dark"] .tc-livability-row {
+  background: var(--tc-inset-bg);
+  border-color: var(--tc-inset-border);
+}
+html[data-theme="dark"] .tc-livability-row__bar {
+  background: rgba(140, 160, 200, 0.22);
+}
+html[data-theme="dark"] .tc-livability-note--helps {
+  background: rgba(46, 96, 62, 0.34);
+  border-color: rgba(147, 211, 162, 0.36);
+}
+html[data-theme="dark"] .tc-livability-note--hurts {
+  background: rgba(120, 52, 34, 0.36);
+  border-color: rgba(255, 170, 140, 0.38);
+}
+html[data-theme="dark"] .tc-livability-note--hurts .tc-livability-note__label {
+  color: #ffb49c;
+}
+html[data-theme="dark"] .detail-zone-divider__eyebrow {
+  color: var(--color-ochre-500);
+}
+
+/* Touch screens: give the small text toggles a full-size tap area. */
+@media (pointer: coarse) {
+  .tc-hero-compact-toggle {
+    min-height: 44px;
+    padding-inline: 0.9rem;
   }
 }

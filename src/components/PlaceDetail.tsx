@@ -1083,14 +1083,14 @@ function DetailBody({
             {(livability.drivers.length > 0 || livability.drags.length > 0) ? (
               <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
                 {livability.drivers.length > 0 ? (
-                  <div className="rounded-lg border border-[rgba(61,143,85,0.28)] bg-[rgba(236,248,232,0.55)] px-3 py-2">
+                  <div className="tc-livability-note--helps rounded-lg border border-[rgba(61,143,85,0.28)] bg-[rgba(236,248,232,0.55)] px-3 py-2">
                     <div className="text-[10px] uppercase tracking-wider text-sage-700 mb-0.5">Helps</div>
                     <div className="text-frost">{livability.drivers.map(k => livability.components.find(c => c.key === k)?.label).filter(Boolean).join(" · ")}</div>
                   </div>
                 ) : null}
                 {livability.drags.length > 0 ? (
-                  <div className="rounded-lg border border-[rgba(232,90,50,0.28)] bg-[rgba(255,236,228,0.55)] px-3 py-2">
-                    <div className="text-[10px] uppercase tracking-wider text-ember-700 mb-0.5">Hurts</div>
+                  <div className="tc-livability-note--hurts rounded-lg border border-[rgba(232,90,50,0.28)] bg-[rgba(255,236,228,0.55)] px-3 py-2">
+                    <div className="tc-livability-note__label text-[10px] uppercase tracking-wider text-ember-700 mb-0.5">Hurts</div>
                     <div className="text-frost">{livability.drags.map(k => livability.components.find(c => c.key === k)?.label).filter(Boolean).join(" · ")}</div>
                   </div>
                 ) : null}
@@ -1116,7 +1116,7 @@ function DetailBody({
                 const level = value <= 35 ? "high" : value <= 60 ? "mid" : "low";
                 return (
                   <li key={axis.key} className="tc-livability-row tc-livability-row--signal" title={`${axis.label}: ${Math.round(value)}/100`}>
-                    <div className="tc-livability-row__label">{axis.label}<span className="block text-[10px] text-stone-readable font-normal">{axis.desc}</span></div>
+                    <div className="tc-livability-row__label">{axis.label}<span className="block text-[11px] text-stone-readable font-normal normal-case tracking-normal mt-0.5">{axis.desc}</span></div>
                     <div className="tc-livability-row__bar">
                       <div className="tc-livability-row__bar-fill" data-level={level} style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
                     </div>

@@ -414,7 +414,7 @@ async function main() {
   const HERO_SPOTS = [
     { id: "sequim-wa", label: "Sunshine", value: "50%" },
     { id: "yuma-az", label: "Sunshine", value: "92%" },
-    { id: "astoria-or", label: "Sunshine", value: "43%", overview: /storm-lashed port/i },
+    { id: "astoria-or", label: "Sunshine", value: "43%", overview: /Columbia River/i },
     { id: "bacalar-mx", label: "Humidity", value: "80%" },
     { id: "portal-az", label: "Sunshine", value: "79%", overview: /Paradise|Portal|Chiricahua/i },
   ];

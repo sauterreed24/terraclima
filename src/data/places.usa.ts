@@ -2447,7 +2447,7 @@ export const PLACES_USA: Place[] = [
     reliefContext: "Southern lip of the Columbia River estuary; mouth of the great river corridor.",
     biome: "Sitka spruce coast", koppen: "Cfb",
     archetypes: ["hyper-maritime", "cool-summer-maritime", "river-valley-moderation"], drivers: ["marine-layer", "river-moderation", "orographic-lift"],
-    summaryShort: "The cloudiest major US city — a cool, misty, river-mouth port with an astonishingly narrow annual temperature range.",
+    summaryShort: "One of the cloudiest towns in the lower 48: a cool, misty port at the mouth of the Columbia, with a narrow annual temperature range.",
     summaryImmersive: "Astoria stands at the mouth of the Columbia River, where the river, the Pacific and the Coast Range meet. The ocean holds the temperature in a narrow band: winter afternoons near 10°C, summer afternoons near 20°C. Rain is the main fact of life. About 1790 mm falls in a year, and November, December and January each bring about 275 mm, while July gets under 20 mm. Low cloud and fog are common even in summer, and winter storms come straight off the Pacific across the Columbia Bar. People who like a working port, big weather and green hills do well here. People who need sun do not.",
     whyDistinct: "River-mouth exposure to Pacific storms combined with marine layer and Coast Range orographic lift produces sustained cool wetness.",
     experience: {
