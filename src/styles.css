@@ -14226,3 +14226,9 @@ html[data-theme="dark"] .detail-zone-divider__eyebrow {
     font-size: 0.75rem;
   }
 }
+/* Phone profiles: collapsed sections stack as a tight list, not 40px apart. */
+@media (max-width: 640px) {
+  [data-place-detail] .place-score-details:has(+ .place-score-details) {
+    margin-block-end: 0.6rem;
+  }
+}

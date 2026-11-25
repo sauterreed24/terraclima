@@ -169,6 +169,23 @@ describe("mobile touch target CSS", () => {
     expectRule(".tc-hero-credit a", /display:\s*grid;[\s\S]*min-height:\s*2\.75rem;/);
   });
 
+  it("gives small text toggles a 44px tap area on touch screens", () => {
+    const coarse = styles.slice(styles.lastIndexOf("@media (pointer: coarse)"));
+    expect(coarse).toMatch(/\.detail-dossier-chapter-toggle,\s*\.place-geospatial-details__summary,\s*\[data-place-detail\] \.btn-primary\s*\{[^}]*min-height:\s*2\.75rem;/);
+    // The map readout chip stays slim: its More/Less control grows an invisible hit area instead.
+    expect(coarse).toMatch(/\.map-atlas-readout__expand\s*\{[^}]*position:\s*relative;/);
+    expect(coarse).toMatch(/\.map-atlas-readout__expand::after\s*\{[^}]*position:\s*absolute;[^}]*height:\s*2\.75rem;/);
+    // Active-filter chips: at least 12px text and a 36px+ row.
+    expect(coarse).toMatch(/\.lens-receipt__chip\s*\{[^}]*padding:\s*0\.62rem 0\.7rem;[^}]*font-size:\s*0\.75rem;/);
+  });
+
+  it("keeps Compare surfaces opaque over the page scrim", () => {
+    expect(styles).toMatch(/\.compare-workbench,\s*\.compare-decision-read,\s*\.compare-evidence-readiness,\s*\.compare-insight-strip\s*\{\s*background-color:\s*#fffdf8;/);
+    expectRule(".compare-diff-board", /background:\s*#fffdf8;/);
+    expect(styles).toMatch(/html\[data-theme="dark"\] \.compare-bioclim-key\s*\{\s*background:\s*#141c30;/);
+    expect(styles).not.toMatch(/\.compare-dialog__head\s*\{[^}]*backdrop-filter/);
+  });
+
   it("lets the compact Explorer intro scroll away instead of sticking over the list", () => {
     expect(styles).toMatch(
       /\.panel-hero\[data-compact="true"\]\s*\{[\s\S]*?position:\s*relative;[\s\S]*?top:\s*auto;/,

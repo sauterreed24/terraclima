@@ -95,7 +95,10 @@ export function stationValidation(c: StationCorrection): ClimateValidation {
   if (temps.length) parts.push("temperature");
   if (c.precipRatio !== undefined) parts.push(c.precipFromYear === undefined ? "precipitation" : `precipitation from ${c.precipFromYear}`);
   return {
-    status: "validated",
+    // A stand-in is a neighbour's gauge, not the place's own record, so it
+    // does not earn "validated" (and with it high data confidence).
+    status: c.regionalStandIn ? "reviewed-exception" : "validated",
+    ...(c.regionalStandIn ? { exceptionReason: "regional-stand-in" } : {}),
     stations: [{ ...c.station, monthCompletenessMin: 0.8 }],
     bias: {
       ...(temps.length ? { annualTempMaeC: round1(temps.reduce((a, v) => a + Math.abs(v), 0) / temps.length) } : {}),

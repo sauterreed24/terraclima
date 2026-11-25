@@ -51,8 +51,9 @@ export interface MapLabelRequest {
    * Smaller or re-shaped settings of the same lettering (one size down, a
    * two-line stack…), in preference order, for maps too small for the
    * compact one. Tried only after the full and compact settings found
-   * neither a clear nor a budgeted seat, so roomy maps never shrink a name:
-   * first every fallback for a clear seat, then every one within `maxCover`.
+   * neither a clear nor a budgeted seat, so roomy maps never shrink a name.
+   * A fallback only ever takes a clear seat — small lettering half under a
+   * badge is not worth drawing.
    */
   fallbacks?: readonly MapLabelFallback[];
 }
@@ -60,17 +61,9 @@ export interface MapLabelRequest {
 export interface MapLabelFallback {
   /** Echoed back as `MapLabelPlacement.variant` so the caller can draw it. */
   variant: string;
-  /** Skip this setting in the least-covered pass: it is only worth a clear seat. */
-  clearOnly?: boolean;
   /** Half extents of this setting in screen pixels (`halfH` defaults to the request's). */
   halfW: number;
   halfH?: number;
-  /**
-   * For a multi-line setting: each line's centre offset from the block
-   * centre, and one line's half height, so cover is measured per line.
-   */
-  lineOffsets?: readonly number[];
-  lineHalfH?: number;
   /** Own candidate offsets (a smaller setting can slide further); defaults to the request's. */
   candidates?: readonly (readonly [number, number])[];
 }
@@ -162,7 +155,7 @@ export function mapLabelCoverFraction(
  *
  * Each label tries, in order: a clear seat at full width, a clear seat at its
  * compact width, then (only with `maxCover`) the least-covered seat. A label
- * with `fallbacks` then repeats clear / least-covered over those settings.
+ * with `fallbacks` then tries each of those settings for a clear seat.
  */
 export function placeMapLabels(
   requests: readonly MapLabelRequest[],
@@ -206,18 +199,12 @@ export function placeMapLabels(
     // Least covered wins, with a mild pull toward earlier (preferred)
     // candidates so the name does not wander for a marginal gain.
     let bestScore = Number.POSITIVE_INFINITY;
-    const tryCovered = (
-      halfW: number, halfH: number, budget: number, flags: Partial<MapLabelPlacement>, seats: Seats = req.candidates,
-      lineOffsets: readonly number[] = [0], lineHalfH = halfH,
-    ) => {
-      const coverOf = (rect: ScreenRect) => lineOffsets.reduce(
-        (sum, off) => sum + mapLabelCoverFraction(rect.cx, rect.cy + off, halfW, lineHalfH, solidObstacles), 0,
-      ) / Math.max(1, lineOffsets.length);
-      const total = Math.max(1, seats.length);
-      seats.forEach(([dx, dy], index) => {
+    const tryCovered = (halfW: number, halfH: number, budget: number, flags: Partial<MapLabelPlacement>) => {
+      const total = Math.max(1, req.candidates.length);
+      req.candidates.forEach(([dx, dy], index) => {
         const rect = seatRect(dx, dy, halfW, halfH);
         if (placed.some(other => rectsOverlap(rect, other))) return;
-        const cover = coverOf(rect);
+        const cover = mapLabelCoverFraction(rect.cx, rect.cy, halfW, halfH, solidObstacles);
         if (cover > budget) return;
         const score = cover + (index / total) * 0.12;
         if (score < bestScore - 1e-9) {
@@ -237,11 +224,6 @@ export function placeMapLabels(
     if (!pick.seat && last && budget > 0) tryCovered(last.halfW, req.halfH, budget, lastFlags);
     for (const f of fallbacks) {
       if (!pick.seat) tryClear(f.halfW, f.halfH ?? req.halfH, { variant: f.variant }, f.candidates);
-    }
-    if (budget > 0) {
-      for (const f of fallbacks) {
-        if (!pick.seat && !f.clearOnly) tryCovered(f.halfW, f.halfH ?? req.halfH, budget, { variant: f.variant }, f.candidates, f.lineOffsets, f.lineHalfH);
-      }
     }
     if (pick.seat && pick.rect) {
       placed.push(pick.rect);

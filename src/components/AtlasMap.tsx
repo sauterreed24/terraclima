@@ -184,24 +184,14 @@ const COUNTRY_LABEL_COMPACT_TRACKING_EM = 0.16;
 const COUNTRY_LABEL_TIGHT_SCALE = 0.84;
 const COUNTRY_LABEL_TIGHT_TRACKING_EM = 0.08;
 const COUNTRY_LABEL_STACK_LEADING = 1.18;
-/**
- * Interior lon/lat boxes ([west, east, south, north]) gridded into extra
- * seats for the tight settings only: a small name can sit in a gap between
- * badges that the classic seats miss, and stays centred on its own land.
- */
-const COUNTRY_LABEL_FALLBACK_BOXES: Record<string, readonly (readonly [number, number, number, number])[]> = {
-  usa: [[-117, -90, 35, 46], [-90, -85, 35, 41], [-102, -96, 31, 35], [-90, -84, 32.5, 35]],
-  mexico: [[-105.5, -100, 21, 28.5], [-100, -98, 22, 25.5]],
-};
 /** Tight settings of a country name: one line, then (two words) stacked. */
 function countryLabelFallbacks(label: string, tightW: number, roomPx: number, fontPx: number) {
-  const out: { variant: string; halfW: number; halfH?: number; lineOffsets?: number[]; lineHalfH?: number }[] = [];
+  const out: { variant: string; halfW: number; halfH?: number }[] = [];
   if (tightW <= roomPx || !label.includes(" ")) out.push({ variant: "tight", halfW: tightW / 2 });
   const words = label.split(" ");
   if (words.length === 2) {
     const widest = Math.max(words[0]!.length, words[1]!.length) / label.length;
-    const lead = (fontPx * COUNTRY_LABEL_STACK_LEADING) / 2;
-    out.push({ variant: "stacked", halfW: (tightW * widest) / 2, halfH: 6 + lead, lineOffsets: [-lead, lead], lineHalfH: 6 });
+    out.push({ variant: "stacked", halfW: (tightW * widest) / 2, halfH: 6 + (fontPx * COUNTRY_LABEL_STACK_LEADING) / 2 });
   }
   return out;
 }
@@ -1009,7 +999,6 @@ export const AtlasMap = memo(function AtlasMap({
     const out: {
       id: string; label: string; x: number; y: number; slide: number; wideSlides: boolean;
       altSeats: { dx: number; dy: number }[];
-      gridSeats: { dx: number; dy: number }[];
       offshoreSeats: { dx: number; dy: number; ux: number; uy: number }[];
     }[] = [];
     for (const a of COUNTRY_LABEL_SEATS) {
@@ -1021,22 +1010,12 @@ export const AtlasMap = memo(function AtlasMap({
         const alt = projection(seat as [number, number]);
         if (alt) altSeats.push({ dx: alt[0] - xy[0], dy: alt[1] - xy[1] });
       }
-      const gridSeats: { dx: number; dy: number }[] = [];
-      for (const [w, e, s, n] of COUNTRY_LABEL_FALLBACK_BOXES[a.id] ?? []) {
-        for (let lon = w; lon <= e; lon += 1.5) {
-          for (let lat = s; lat <= n; lat += 1) {
-            const g = projection([lon, lat]);
-            if (g) gridSeats.push({ dx: g[0] - xy[0], dy: g[1] - xy[1] });
-          }
-        }
-      }
-      gridSeats.sort((p, q) => Math.hypot(p.dx, p.dy) - Math.hypot(q.dx, q.dy));
       const offshoreSeats: { dx: number; dy: number; ux: number; uy: number }[] = [];
       for (const [lon, lat, ux, uy] of COUNTRY_LABEL_OFFSHORE_SEATS[a.id] ?? []) {
         const o = projection([lon, lat]);
         if (o) offshoreSeats.push({ dx: o[0] - xy[0], dy: o[1] - xy[1], ux, uy });
       }
-      out.push({ id: a.id, label: a.label, x: xy[0], y: xy[1], slide: a.slide, wideSlides: a.wideSlides, altSeats, gridSeats, offshoreSeats });
+      out.push({ id: a.id, label: a.label, x: xy[0], y: xy[1], slide: a.slide, wideSlides: a.wideSlides, altSeats, offshoreSeats });
     }
     return out;
   }, [projection]);
@@ -1467,18 +1446,16 @@ export const AtlasMap = memo(function AtlasMap({
         const sy = cl.y * k + dy + settledView.y;
         return sx >= tightHalfW && sx <= width - tightHalfW && sy >= 76 && sy <= height - (smallMapLettering ? 150 : 64);
       });
-      const tightCandidates = candidates.concat(cl.gridSeats.map(seat => [seat.dx * k, seat.dy * k] as const));
       requests.push({
         id: `country:${cl.id}`,
         x: cl.x,
         y: cl.y,
         halfW: labelW <= roomPx ? labelW / 2 : Number.POSITIVE_INFINITY,
         compactHalfW: compactW <= roomPx ? compactW / 2 : undefined,
-        fallbacks: [
-          ...tightSettings.map(f => ({ ...f, candidates: tightCandidates })),
-          // The most compact setting again, clear of everything, just offshore.
-          ...tightSettings.slice(-1).map(f => ({ ...f, candidates: offshoreCandidates, clearOnly: true })),
-        ],
+        // Only the most compact setting may step offshore, after its land seats.
+        fallbacks: tightSettings.map((f, i) => (
+          i === tightSettings.length - 1 ? { ...f, candidates: candidates.concat(offshoreCandidates) } : f
+        )),
         maxCover: COUNTRY_LABEL_MAX_COVER,
         halfH: 8,
         candidates,
@@ -3554,7 +3531,7 @@ const Marker = memo(function Marker({
     onFocusLeave();
   }, [onFocusLeave]);
 
-  const pinHint = onToggleBookmark ? " Shift-click or press P to pin to shortlist." : "";
+  const pinHint = onToggleBookmark ? " Shift-click or press P to save it." : "";
   const ariaLabelBase =
     subLine.length > 0
       ? `${place.name}, ${subLine}. Open full profile.${pinHint}`

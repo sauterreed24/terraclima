@@ -77,6 +77,14 @@ describe("station correction", () => {
     expect(v.notes).toContain("temperature and precipitation corrected to GHCN-Daily USC00000001");
   });
 
+  it("does not call a regional stand-in validated", () => {
+    const standIn = { station: correction.station, reason: "x", precipRatio: 0.73, regionalStandIn: true };
+    const v = stationValidation(standIn);
+    expect(v.status).toBe("reviewed-exception");
+    expect(v.exceptionReason).toBe("regional-stand-in");
+    expect(v.stations).toHaveLength(1);
+  });
+
   it("keeps the reviewed corrections file well-formed", () => {
     const file = JSON.parse(
       readFileSync(new URL("../../../data/climate-v2/stations/station-bias.json", import.meta.url), "utf8"),
