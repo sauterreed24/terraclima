@@ -28,6 +28,11 @@ export interface StationCorrection {
    * station until the station stopped feeding it, then drifted.
    */
   precipFromYear?: number;
+  /**
+   * The nearest long-record gauge in the same valley, for a place with none
+   * of its own: allowed out to 30 km, precipitation only.
+   */
+  regionalStandIn?: boolean;
 }
 
 export interface StationCorrectionFile {
@@ -49,6 +54,9 @@ export function validateStationCorrection(placeId: string, c: StationCorrection)
   assertMonthly(c.tminDeltaC, `${placeId} tminDeltaC`);
   if ((c.tmaxDeltaC === undefined) !== (c.tminDeltaC === undefined)) {
     throw new Error(`${placeId}: tmaxDeltaC and tminDeltaC must be given together`);
+  }
+  if (c.regionalStandIn && (c.tmaxDeltaC !== undefined || c.precipRatio === undefined)) {
+    throw new Error(`${placeId}: a regional stand-in corrects precipitation only`);
   }
   if (c.precipRatio !== undefined && !(c.precipRatio >= 0.3 && c.precipRatio <= 3)) {
     throw new Error(`${placeId}: precipRatio ${c.precipRatio} outside 0.3–3`);

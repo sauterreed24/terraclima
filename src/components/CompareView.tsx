@@ -32,7 +32,7 @@ import {
   type ComparisonLensId,
 } from "../lib/compare-workbench";
 import { buildCompareCandidateSwapInsight, buildCompareCoachRecommendations, weakestLensProfile } from "../lib/compare-workbench-coach";
-import { buildHomeBaseComparison, pickHomeDeltaChips } from "../lib/home-base";
+import { buildHomeBaseComparison, homeBaseHeadline, pickHomeDeltaChips } from "../lib/home-base";
 import { formatHomeDelta } from "./place-detail/home-delta-format";
 import { COMPARE_LIMIT } from "../lib/app-url";
 import type { ShareStatus } from "../lib/app-constants";
@@ -1302,7 +1302,7 @@ function HomeDeltaStrip({ place, home }: { place: Place; home: Place }) {
   }
   const chips = pickHomeDeltaChips(comparison, 4);
   return (
-    <div className="mt-3" aria-label={`${place.name} versus home base ${home.name}`} title={prose(comparison.headline)}>
+    <div className="mt-3" aria-label={`${place.name} versus home base ${home.name}`} title={prose(homeBaseHeadline(comparison, temp))}>
       <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Vs home · {home.name}</div>
       <div className="flex flex-wrap gap-1">
         {chips.length === 0 ? (

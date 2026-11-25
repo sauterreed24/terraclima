@@ -103,3 +103,16 @@ jobs:
           tar czf /tmp/climate-v2.tgz src/data/generated/climate-v2 data/climate-v2/manifest.json data/climate-v2/audit
           base64 -w 0 /tmp/climate-v2.tgz | fold -w 6000 | sed 's/^/TGZ /'
           echo
+          # A compact patch of the same change (single-line JSON is split at
+          # record boundaries first), for small reviewed corrections.
+          : > /tmp/all.patch
+          for f in $(git diff --name-only); do
+            if [ "$(wc -l < "$f")" -le 1 ]; then
+              git show "HEAD:$f" | sed 's/},{/},\n{/g' > /tmp/a; sed 's/},{/},\n{/g' "$f" > /tmp/b
+            else
+              git show "HEAD:$f" > /tmp/a; cp "$f" /tmp/b
+            fi
+            diff -u --label "$f" --label "$f" /tmp/a /tmp/b >> /tmp/all.patch || true
+          done
+          gzip -9 -c /tmp/all.patch | base64 -w 0 | fold -w 6000 | sed 's/^/PATCH /'
+          echo

@@ -155,8 +155,8 @@ describe("buildHomeBaseComparison", () => {
       }),
     });
     const read = buildHomeBaseComparison(home, cooler);
-    expect(read.headline).toContain("7.0°C cooler");
-    expect(read.headline).toContain("5.0°C warmer");
+    expect(read.headline).toContain("7°C cooler");
+    expect(read.headline).toContain("5°C warmer");
     const localized = localizeProse(read.headline, "F");
     // Deltas must convert ×9/5 (7°C → 13°F), not via the absolute formula (7°C → 45°F).
     expect(localized).toContain("13°F cooler");

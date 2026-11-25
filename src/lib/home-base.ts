@@ -308,7 +308,8 @@ function annualSnowCm(p: Place): number | null {
 function tempPhrase(deltaC: number, spec: SignalSpec, noun: string): string {
   const abs = Math.abs(deltaC);
   const adj = deltaC > 0 ? spec.adjHigher : spec.adjLower;
-  return `${noun} ${abs.toFixed(1)}°C ${adj}`;
+  // Whole degrees, like every other "vs home" figure.
+  return `${noun} ${Math.round(abs)}°C ${adj}`;
 }
 
 function joinClauses(parts: readonly string[]): string {
@@ -449,6 +450,21 @@ export function buildHomeBaseComparison(home: Place, place: Place): HomeBaseComp
       : `Compared with ${home.name}: ${joinClauses(leading.map(s => s.phrase))}.`;
 
   return { home, place, isSame: false, signals: ordered, headline };
+}
+
+/**
+ * The headline with temperature differences in whole degrees of the reader's
+ * unit, rounded the same way as the tiles so the sentence and the tiles agree.
+ * Pass the result through `localizeProse` / `useProse` as before.
+ */
+export function homeBaseHeadline(comparison: HomeBaseComparison, temp: TempUnit): string {
+  let text = comparison.headline;
+  for (const s of comparison.signals) {
+    if (s.unit !== "C") continue;
+    const whole = fmtDelta(Math.abs(s.delta), temp, { digits: 0, signed: false });
+    text = text.replace(s.phrase, s.phrase.replace(/[\d.]+°C/, whole));
+  }
+  return text;
 }
 
 /** The compact chip set for cards and compare columns: strongest non-similar signals. */

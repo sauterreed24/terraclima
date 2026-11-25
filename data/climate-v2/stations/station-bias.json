@@ -4,7 +4,8 @@
   "Reviewed station corrections for the Daymet grid, applied by scripts/climate-data/generate.ts.",
   "Each delta is the mean station-minus-grid difference for that calendar month over every day both reported, 1991–2025 (scripts/climate-data/station-bias.ts); the precipitation ratio is station total ÷ grid total over the same days and scales every month alike.",
   "Selection: a GHCN-Daily station within 15 km and 100 m of elevation of the climate anchor with at least 15 usable years (11 for Marfa), a material gap (mean |ΔT| ≥ 1.2°C, a month ≥ 2°C, or rainfall off by more than 20%), and no disagreeing nearby station. Mexican and other places where nearby stations disagree keep the uncorrected grid.",
-  "precipFromYear limits the precipitation ratio to the years after a grid lost the station it tracked: Whitehorse matched Whitehorse A until 2012, then drifted half again too wet against its successor gauge, Whitehorse Auto (per-year paired totals in the diagnostics)."
+  "precipFromYear limits the precipitation ratio to the years after a grid lost the station it tracked: Whitehorse matched Whitehorse A until 2012, then drifted half again too wet against its successor gauge, Whitehorse Auto (per-year paired totals in the diagnostics).",
+  "Lone Pine is a reviewed regional stand-in (regionalStandIn): it has no long-record gauge of its own, and Independence, 25 km up the same Owens Valley floor, is the nearest. A stand-in may sit up to 30 km away, must be within 100 m of elevation, and corrects precipitation only. Independence measures 139 mm a year and Bishop Airport, farther up the valley, 133 mm; the uncorrected grid gave Lone Pine 255 mm."
  ],
  "period": "1991-2025",
  "corrections": {
@@ -1970,6 +1971,22 @@
     -0.4,
     -0.5
    ]
+  },
+  "lone-pine-ca": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00044232",
+    "name": "INDEPENDENCE",
+    "lat": 36.7981,
+    "lon": -118.2036,
+    "elevationM": 1211,
+    "distanceKm": 24.8,
+    "elevationDeltaM": 74,
+    "usableYears": 24
+   },
+   "regionalStandIn": true,
+   "reason": "Owens Valley floor station in the same Sierra rain shadow; the grid runs a third too wet on the valley floor. Regional stand-in: Lone Pine has no long-record gauge of its own, so only precipitation is corrected.",
+   "precipRatio": 0.73
   }
  }
 }

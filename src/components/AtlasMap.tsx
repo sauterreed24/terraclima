@@ -183,6 +183,18 @@ const COUNTRY_LABEL_COMPACT_TRACKING_EM = 0.16;
 /** Smallest setting, for maps where even the compact name finds no seat. */
 const COUNTRY_LABEL_TIGHT_SCALE = 0.84;
 const COUNTRY_LABEL_TIGHT_TRACKING_EM = 0.08;
+const COUNTRY_LABEL_STACK_LEADING = 1.18;
+/** Tight settings of a country name: one line, then (two words) stacked. */
+function countryLabelFallbacks(label: string, tightW: number, roomPx: number, fontPx: number) {
+  const out: { variant: string; halfW: number; halfH?: number }[] = [];
+  if (tightW <= roomPx) out.push({ variant: "tight", halfW: tightW / 2 });
+  const words = label.split(" ");
+  if (words.length === 2) {
+    const widest = Math.max(words[0]!.length, words[1]!.length) / label.length;
+    out.push({ variant: "stacked", halfW: (tightW * widest) / 2, halfH: 6 + (fontPx * COUNTRY_LABEL_STACK_LEADING) / 2 });
+  }
+  return out;
+}
 /** A country name may sit partly behind pins only up to this share of its length. */
 const COUNTRY_LABEL_MAX_COVER = 0.3;
 /** Last resort on crowded small maps: a faint name the pins sit on. */
@@ -1404,7 +1416,18 @@ export const AtlasMap = memo(function AtlasMap({
         y: cl.y,
         halfW: labelW <= roomPx ? labelW / 2 : Number.POSITIVE_INFINITY,
         compactHalfW: compactW <= roomPx ? compactW / 2 : undefined,
-        tightHalfW: tightW <= roomPx ? tightW / 2 : undefined,
+        // A smaller setting may slide further and still stay inside the
+        // envelope the compact name was allowed to occupy.
+        fallbacks: countryLabelFallbacks(cl.label, tightW, roomPx, COUNTRY_LABEL_FONT_PX * letterScale * COUNTRY_LABEL_TIGHT_SCALE)
+          .map(f => {
+            const sx = slide + Math.max(0, compactW / 2 - f.halfW) / 40;
+            return {
+              ...f,
+              candidates: cl.altSeats.flatMap(seat => COUNTRY_LABEL_SEAT_NUDGES.map(
+                ([dx, dy]) => [seat.dx * k + dx * sx, seat.dy * k + dy * slide] as const,
+              )),
+            };
+          }),
         maxCover: COUNTRY_LABEL_MAX_COVER,
         underlayMaxCover: COUNTRY_LABEL_UNDERLAY_MAX_COVER,
         halfH: 8,
@@ -2642,8 +2665,9 @@ export const AtlasMap = memo(function AtlasMap({
               // Past the budget (underlay): fainter still, a watermark under them.
               const seatOpacity = !seat || seat.clear ? 1 : seat.underlay ? 0.58 : seat.cover != null ? 0.72 : 0;
               const fontPx = (smallMapLettering ? COUNTRY_LABEL_FONT_PX * 0.88 : COUNTRY_LABEL_FONT_PX)
-                * (seat?.tight ? COUNTRY_LABEL_TIGHT_SCALE : seat?.compact ? COUNTRY_LABEL_COMPACT_SCALE : 1);
-              const trackingEm = seat?.tight
+                * (seat?.variant ? COUNTRY_LABEL_TIGHT_SCALE : seat?.compact ? COUNTRY_LABEL_COMPACT_SCALE : 1);
+              const lines = seat?.variant === "stacked" ? cl.label.split(" ") : [cl.label];
+              const trackingEm = seat?.variant
                 ? COUNTRY_LABEL_TIGHT_TRACKING_EM
                 : seat?.compact ? COUNTRY_LABEL_COMPACT_TRACKING_EM : COUNTRY_LABEL_TRACKING_EM;
               return (
@@ -2658,8 +2682,6 @@ export const AtlasMap = memo(function AtlasMap({
               >
                 <g data-atlas-inv-scale="" transform={`scale(${1 / view.k})`}>
                 <text
-                  x={seat?.dx ?? 0}
-                  y={seat?.dy ?? 0}
                   textAnchor="middle"
                   dominantBaseline="middle"
                   fontSize={fontPx}
@@ -2668,7 +2690,13 @@ export const AtlasMap = memo(function AtlasMap({
                   fill="rgba(236,244,252,0.8)"
                   fontFamily="var(--font-sans), system-ui, sans-serif"
                   style={{ paintOrder: "stroke fill", stroke: "rgba(30,46,72,0.72)", strokeWidth: 3, strokeLinejoin: "round" }}
-                >{cl.label}</text>
+                >{lines.map((line, i) => (
+                  <tspan
+                    key={line}
+                    x={seat?.dx ?? 0}
+                    y={(seat?.dy ?? 0) + (i - (lines.length - 1) / 2) * fontPx * COUNTRY_LABEL_STACK_LEADING}
+                  >{line}</tspan>
+                ))}</text>
                 </g>
               </g>
               );

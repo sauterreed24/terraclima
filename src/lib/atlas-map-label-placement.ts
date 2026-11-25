@@ -48,18 +48,31 @@ export interface MapLabelRequest {
    */
   maxCover?: number;
   /**
-   * Half width of the smallest acceptable setting, for maps too small for
-   * the compact one. Tried only after the full and compact settings found
-   * neither a clear nor a budgeted seat, so roomy maps never shrink a name.
+   * Smaller or re-shaped settings of the same lettering (one size down, a
+   * two-line stack…), in preference order, for maps too small for the
+   * compact one. Tried only after the full and compact settings found
+   * neither a clear nor a budgeted seat, so roomy maps never shrink a name:
+   * first every fallback for a clear seat, then every one within `maxCover`.
    */
-  tightHalfW?: number;
+  fallbacks?: readonly MapLabelFallback[];
   /**
-   * Last resort, looser than `maxCover`: when even the narrowest setting has
-   * no seat within budget, keep its least-covered seat up to this share and
-   * flag it `underlay` — the caller draws it faint, as a watermark the pins
-   * sit on, rather than dropping the name from the map.
+   * Last resort, looser than `maxCover`: when no setting has a seat within
+   * budget, keep the least-covered seat of any fallback (or, without
+   * fallbacks, of the narrowest setting) up to this share and flag it
+   * `underlay` — the caller draws it faint, as a watermark the pins sit on,
+   * rather than dropping the name from the map.
    */
   underlayMaxCover?: number;
+}
+
+export interface MapLabelFallback {
+  /** Echoed back as `MapLabelPlacement.variant` so the caller can draw it. */
+  variant: string;
+  /** Half extents of this setting in screen pixels (`halfH` defaults to the request's). */
+  halfW: number;
+  halfH?: number;
+  /** Own candidate offsets (a smaller setting can slide further); defaults to the request's. */
+  candidates?: readonly (readonly [number, number])[];
 }
 
 export interface MapLabelPlacement {
@@ -73,8 +86,8 @@ export interface MapLabelPlacement {
   clear: boolean;
   /** True when the tighter `compactHalfW` setting was needed. */
   compact?: boolean;
-  /** True when the smallest `tightHalfW` setting was needed. */
-  tight?: boolean;
+  /** Set when one of the request's `fallbacks` was needed. */
+  variant?: string;
   /** True for a last-resort seat beyond `maxCover` (see `underlayMaxCover`). */
   underlay?: boolean;
   /**
@@ -151,8 +164,8 @@ export function mapLabelCoverFraction(
  *
  * Each label tries, in order: a clear seat at full width, a clear seat at its
  * compact width, then (only with `maxCover`) the least-covered seat. A label
- * with a `tightHalfW` then repeats clear / least-covered at that width, and
- * one with `underlayMaxCover` finally settles for a faint underlay seat.
+ * with `fallbacks` then repeats clear / least-covered over those settings,
+ * and one with `underlayMaxCover` finally settles for a faint underlay seat.
  */
 export function placeMapLabels(
   requests: readonly MapLabelRequest[],
@@ -171,20 +184,21 @@ export function placeMapLabels(
     if (req.compactHalfW != null && Number.isFinite(req.compactHalfW) && req.compactHalfW < req.halfW) {
       widths.push({ halfW: req.compactHalfW, compact: true });
     }
-    const hasTight = req.tightHalfW != null && Number.isFinite(req.tightHalfW);
-    if ((widths.length === 0 && !hasTight) || !Number.isFinite(req.halfH)) {
+    const fallbacks = (req.fallbacks ?? []).filter(f => Number.isFinite(f.halfW) && f.halfW > 0);
+    if ((widths.length === 0 && fallbacks.length === 0) || !Number.isFinite(req.halfH)) {
       out.set(req.id, { dx: 0, dy: 0, clear: false });
       continue;
     }
     const ax = req.x * zoom;
     const ay = req.y * zoom;
     const pick: { seat: MapLabelPlacement | null; rect: ScreenRect | null } = { seat: null, rect: null };
-    const seatRect = (dx: number, dy: number, halfW: number): ScreenRect => (
-      { cx: ax + dx, cy: ay + dy, halfW: halfW + pad, halfH: req.halfH + pad }
+    const seatRect = (dx: number, dy: number, halfW: number, halfH: number): ScreenRect => (
+      { cx: ax + dx, cy: ay + dy, halfW: halfW + pad, halfH: halfH + pad }
     );
-    const tryClear = (halfW: number, flags: Partial<MapLabelPlacement>) => {
-      for (const [dx, dy] of req.candidates) {
-        const rect = seatRect(dx, dy, halfW);
+    type Seats = readonly (readonly [number, number])[];
+    const tryClear = (halfW: number, halfH: number, flags: Partial<MapLabelPlacement>, seats: Seats = req.candidates) => {
+      for (const [dx, dy] of seats) {
+        const rect = seatRect(dx, dy, halfW, halfH);
         if (screenObstacles.some(o => circleHitsRect(o.x, o.y, o.r, rect))) continue;
         if (placed.some(other => rectsOverlap(rect, other))) continue;
         pick.seat = { dx, dy, clear: true, ...flags };
@@ -192,15 +206,17 @@ export function placeMapLabels(
         return;
       }
     };
-    const tryCovered = (halfW: number, budget: number, flags: Partial<MapLabelPlacement>) => {
-      // Least covered wins, with a mild pull toward earlier (preferred)
-      // candidates so the name does not wander for a marginal gain.
-      let bestScore = Number.POSITIVE_INFINITY;
-      const total = Math.max(1, req.candidates.length);
-      req.candidates.forEach(([dx, dy], index) => {
-        const rect = seatRect(dx, dy, halfW);
+    // Least covered wins, with a mild pull toward earlier (preferred)
+    // candidates so the name does not wander for a marginal gain.
+    let bestScore = Number.POSITIVE_INFINITY;
+    const tryCovered = (
+      halfW: number, halfH: number, budget: number, flags: Partial<MapLabelPlacement>, seats: Seats = req.candidates,
+    ) => {
+      const total = Math.max(1, seats.length);
+      seats.forEach(([dx, dy], index) => {
+        const rect = seatRect(dx, dy, halfW, halfH);
         if (placed.some(other => rectsOverlap(rect, other))) return;
-        const cover = mapLabelCoverFraction(rect.cx, rect.cy, halfW, req.halfH, solidObstacles);
+        const cover = mapLabelCoverFraction(rect.cx, rect.cy, halfW, halfH, solidObstacles);
         if (cover > budget) return;
         const score = cover + (index / total) * 0.12;
         if (score < bestScore - 1e-9) {
@@ -211,23 +227,27 @@ export function placeMapLabels(
       });
     };
     for (const width of widths) {
-      tryClear(width.halfW, width.compact ? { compact: true } : {});
+      tryClear(width.halfW, req.halfH, width.compact ? { compact: true } : {});
       if (pick.seat) break;
     }
     const budget = req.maxCover != null && req.maxCover > 0 ? req.maxCover : 0;
     const last = widths[widths.length - 1];
-    if (!pick.seat && last && budget > 0) tryCovered(last.halfW, budget, last.compact ? { compact: true } : {});
-    const tight = req.tightHalfW != null && Number.isFinite(req.tightHalfW) && req.tightHalfW > 0
-      && (!last || req.tightHalfW < last.halfW)
-      ? req.tightHalfW
-      : null;
-    if (!pick.seat && tight != null) {
-      tryClear(tight, { tight: true });
-      if (!pick.seat && budget > 0) tryCovered(tight, budget, { tight: true });
+    const lastFlags: Partial<MapLabelPlacement> = last?.compact ? { compact: true } : {};
+    if (!pick.seat && last && budget > 0) tryCovered(last.halfW, req.halfH, budget, lastFlags);
+    for (const f of fallbacks) {
+      if (!pick.seat) tryClear(f.halfW, f.halfH ?? req.halfH, { variant: f.variant }, f.candidates);
+    }
+    if (budget > 0) {
+      for (const f of fallbacks) {
+        if (!pick.seat) tryCovered(f.halfW, f.halfH ?? req.halfH, budget, { variant: f.variant }, f.candidates);
+      }
     }
     if (!pick.seat && req.underlayMaxCover != null && req.underlayMaxCover > budget) {
-      if (tight != null) tryCovered(tight, req.underlayMaxCover, { tight: true, underlay: true });
-      else if (last) tryCovered(last.halfW, req.underlayMaxCover, { ...(last.compact ? { compact: true } : {}), underlay: true });
+      // Shared best score: the least-covered seat across every fallback wins.
+      for (const f of fallbacks) {
+        tryCovered(f.halfW, f.halfH ?? req.halfH, req.underlayMaxCover, { variant: f.variant, underlay: true }, f.candidates);
+      }
+      if (fallbacks.length === 0 && last) tryCovered(last.halfW, req.halfH, req.underlayMaxCover, { ...lastFlags, underlay: true });
     }
     if (pick.seat && pick.rect) {
       placed.push(pick.rect);

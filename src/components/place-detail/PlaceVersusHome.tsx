@@ -1,9 +1,10 @@
-import { formatHomeDelta } from "./home-delta-format";
+import { formatHomeDelta, HOME_DELTA_SAME } from "./home-delta-format";
 import { useMemo } from "react";
 import { Home } from "lucide-react";
 import type { Place, ScenarioId } from "../../types";
 import {
   buildHomeBaseComparison,
+  homeBaseHeadline,
   type HomeDeltaSignal,
 } from "../../lib/home-base";
 import { CLIMATE_NORMALS_PERIOD } from "../../lib/atlas-metadata";
@@ -100,7 +101,7 @@ export function PlaceVersusHome({
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <EvidenceClassLabel cls={classifyDossierSection("vs-home")} />
         </div>
-        <p className="text-sm text-frost leading-snug">{prose(comparison.headline)}</p>
+        <p className="text-sm text-frost leading-snug">{prose(homeBaseHeadline(comparison, temp))}</p>
         <div className="divider-contour my-3" />
         <ul className="grid grid-cols-2 @3xl/dossier:grid-cols-4 gap-2" aria-label={`Climate differences, ${place.name} minus ${home.name}`}>
           {comparison.signals.map(signal => (
@@ -133,7 +134,8 @@ function DeltaTile({
   temp: ReturnType<typeof useUnits>["temp"];
   dist: ReturnType<typeof useUnits>["dist"];
 }) {
-  const similar = signal.direction === "similar";
+  const value = formatHomeDelta(signal, temp, dist);
+  const similar = signal.direction === "similar" || value === HOME_DELTA_SAME;
   return (
     <li className="panel-thin px-3 py-2" title={signal.basis}>
       <div className="text-[10px] uppercase tracking-wider text-stone">{signal.label}</div>
@@ -145,11 +147,13 @@ function DeltaTile({
             {signal.direction === "higher" ? "▲" : "▼"}
           </span>
         )}
-        <span>{similar ? "similar" : formatHomeDelta(signal, temp, dist)}</span>
+        <span>{similar ? HOME_DELTA_SAME : value}</span>
       </div>
-      <div className="mt-1">
-        <span className="chip" data-tone={signal.tone}>{signal.descriptor}</span>
-      </div>
+      {similar ? null : (
+        <div className="mt-1">
+          <span className="chip" data-tone={signal.tone}>{signal.descriptor}</span>
+        </div>
+      )}
     </li>
   );
 }

@@ -8,7 +8,7 @@ import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtSnow, useProse } from "../lib
 import { getBioclimCardSignal, getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
 import { getVisitWindow, type BestWindow } from "../lib/best-months";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
-import { buildHomeBaseComparison, pickHomeDeltaChips } from "../lib/home-base";
+import { buildHomeBaseComparison, homeBaseHeadline, pickHomeDeltaChips } from "../lib/home-base";
 import { formatHomeDelta } from "./place-detail/home-delta-format";
 import { ArrowRight, Droplets, Home, Leaf, Sun } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
@@ -438,7 +438,7 @@ export const PlaceCard = memo(function PlaceCard({
               aria-label={homeComparison.isSame
                 ? `${place.name} is your home base`
                 : `Climate versus your home base, ${homeComparison.home.name}`}
-              title={prose(homeComparison.headline)}
+              title={prose(homeBaseHeadline(homeComparison, temp))}
             >
               <span className="place-card__home-delta__label">
                 <Home className="w-3 h-3 shrink-0" aria-hidden />
