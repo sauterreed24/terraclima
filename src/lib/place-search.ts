@@ -35,7 +35,11 @@
 //
 // Typos. The fuzzy pass runs only when the exact pass returns nothing, and
 // only against name and locality words: Damerau–Levenshtein distance ≤ 1 for
-// tokens of 5–7 letters, ≤ 2 for 8+.
+// tokens of 5–7 letters, ≤ 2 for 8+, and two dropped letters for 7
+// ("ashvile" → Asheville).
+//
+// Abbreviations. "mt", "ft", "pt", "st" and a few more also match their
+// spelled-out word, and the reverse, as whole words (`WORD_VARIANTS`).
 // ============================================================
 
 import type { Place } from "../types";
@@ -75,7 +79,32 @@ export interface SearchToken {
   text: string;
   /** Quoted in the query: must match as whole words, in order. */
   phrase: boolean;
+  /**
+   * Other spellings of the same word that also count as a match, whole word
+   * only: "mt" ↔ "mount", "ft" ↔ "fort", "st" ↔ "saint". Absent when none.
+   */
+  variants?: string[];
 }
+
+/**
+ * Abbreviations people type for words that appear spelled out in place names,
+ * and the reverse ("Mt. Charleston" → Mount Charleston, "Saint John's" →
+ * St. John's). Matched as whole words only.
+ */
+const WORD_VARIANTS: Record<string, readonly string[]> = {
+  mt: ["mount", "mountain", "mountains"],
+  mount: ["mt"],
+  mtn: ["mountain", "mount"],
+  ft: ["fort"],
+  fort: ["ft"],
+  pt: ["point", "port"],
+  point: ["pt"],
+  port: ["pt"],
+  st: ["saint", "ste", "sainte"],
+  ste: ["sainte", "saint", "st"],
+  saint: ["st", "ste"],
+  sainte: ["ste", "st"],
+};
 
 export interface ParsedSearchQuery {
   /** Whole query in normalized, unpadded form ("" when blank). */
@@ -92,7 +121,8 @@ export function parseSearchQuery(raw: string | null | undefined): ParsedSearchQu
     const key = `${phrase ? "p" : "w"}:${text}`;
     if (!text || seen.has(key)) return;
     seen.add(key);
-    tokens.push({ text, phrase });
+    const variants = phrase ? undefined : WORD_VARIANTS[text];
+    tokens.push(variants ? { text, phrase, variants: [...variants] } : { text, phrase });
   };
   const quoted = /["“”]([^"“”]*)["“”]/g;
   let rest = "";
@@ -121,6 +151,17 @@ function fieldHas(field: string, token: SearchToken, wholeWord: boolean): boolea
  * words in prose, so "wa" does not hit "water" in every summary.
  */
 function tokenTier(fields: PlaceSearchFields, token: SearchToken): number {
+  let best = literalTokenTier(fields, token);
+  // An abbreviation's spelled-out form (or the reverse) counts as the same
+  // word, matched whole so "pt" → "point" does not also hit "pointed".
+  for (const text of token.variants ?? []) {
+    if (best <= SEARCH_TIER.nameWord) break;
+    best = Math.min(best, literalTokenTier(fields, { text, phrase: true }));
+  }
+  return best;
+}
+
+function literalTokenTier(fields: PlaceSearchFields, token: SearchToken): number {
   const short = token.text.length < 3;
   if (fieldHas(fields.name, token, false)) return SEARCH_TIER.nameWord;
   if (!short && !token.phrase && fields.name.includes(token.text)) return SEARCH_TIER.namePart;
@@ -167,7 +208,11 @@ export function editDistance(a: string, b: string, max = Infinity): number {
   return prev[b.length]!;
 }
 
-/** Allowed typos for a token: none under 5 letters, 1 for 5–7, 2 for 8+. */
+/**
+ * Allowed typos for a token: none under 5 letters, 1 for 5–7, 2 for 8+. A
+ * 7-letter token also gets a second edit when both are dropped letters (see
+ * {@link fuzzyFieldDistance}).
+ */
 export function typoBudget(token: string): number {
   if (token.length >= 8) return 2;
   if (token.length >= 5) return 1;
@@ -181,9 +226,21 @@ function fuzzyFieldDistance(field: string, token: string, budget: number): numbe
     // A one-letter slip must not turn a short word into a match for a long token.
     if (word.length < 4) continue;
     const d = editDistance(token, word, budget);
-    if (d <= budget && (best == null || d < best)) best = d;
+    // Dropped letters are the commonest slip ("ashvile" → Asheville): a
+    // 7-letter token may miss two of them. Other two-edit slips at this length
+    // land on unrelated names ("houston" → Houghton), so they stay out.
+    const dropped = d > budget && token.length === 7 && word.length === 9 && isSubsequence(token, word);
+    if (!dropped && d > budget) continue;
+    const dist = dropped ? 2 : d;
+    if (best == null || dist < best) best = dist;
   }
   return best;
+}
+
+function isSubsequence(short: string, long: string): boolean {
+  let i = 0;
+  for (let j = 0; j < long.length && i < short.length; j++) if (short[i] === long[j]) i++;
+  return i === short.length;
 }
 
 export interface PlaceSearchResult {

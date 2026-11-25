@@ -8,6 +8,7 @@ All notable changes to Terraclima are tracked here.
 
 - **Offline:** the atlas now opens with no connection after one visit, as promised. The files of the first visit loaded before the offline helper started and were never kept, so a reload on a plane showed a blank page. A profile you read while online also reopens offline.
 - **Profiles on a bad connection:** a failed download of the profile's source list no longer raises an error; the profile reads normally and the list loads next time.
+- **Search:** abbreviations work both ways: "Mt. Charleston", "Ft Davis", "Pt Reyes", "Pt Townsend" and "Saint John's" find their places (they found nothing). A word with two letters left out, like "ashvile", finds Asheville; other two-letter slips still do not match, so "houston" does not turn into Houghton.
 - **Saved places:** you can save every place in the atlas. The list used to hold 50, and saving the 51st quietly removed your oldest saved place (saving the 50th also said one had been removed when none was). A save now never removes another one.
 
 ### Review follow-ups: saved places, search prompts, phone profile, station fixes

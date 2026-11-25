@@ -258,7 +258,7 @@ describe("searchPlaces — matching rules on fixtures", () => {
 });
 
 describe("typo tolerance", () => {
-  it("budget: none under 5 letters, 1 for 5–7, 2 for 8+", () => {
+  it("budget: none under 5 letters, 1 for 5–7, 2 for 8+ (plus two dropped letters at 7)", () => {
     expect(["taos", "seqim", "sequimm", "flagstaf"].map(typoBudget)).toEqual([0, 1, 1, 2]);
   });
 
@@ -288,6 +288,13 @@ describe("typo tolerance", () => {
     for (const id of fuzzy) expect(oregonIds.has(id)).toBe(true);
   });
 
+  it("a 7-letter token may drop two letters of a name, but no other two-edit slip", () => {
+    expect(rankedIds("ashvile")[0]).toBe("asheville-nc");
+    // Two edits that are not dropped letters stay out at this length.
+    expect(rankedIds("houston")).toEqual([]);
+    expect(rankedIds("sequoia")).toEqual([]);
+  });
+
   it("is only a fallback: an exact hit is never widened by near-miss names", () => {
     expect(searchPlaces(PLACES, "sequim").mode).toBe("exact");
     expect(rankedIds("taos")[0]).toBe("taos-nm");
@@ -295,6 +302,26 @@ describe("typo tolerance", () => {
     expect(rankedIds("taoz")).toEqual([]);
     expect(rankedIds("xyzzyq")).toEqual([]);
     expect(searchPlaces(PLACES, "xyzzyq").mode).toBe("exact");
+  });
+});
+
+describe("abbreviations", () => {
+  it("mt / ft / pt / st and saint match the spelled-out word, and the reverse", () => {
+    expect(rankedIds("mt. charleston")[0]).toBe("mount-charleston-nv");
+    expect(rankedIds("Mt Charleston NV")[0]).toBe("mount-charleston-nv");
+    expect(rankedIds("ft davis")[0]).toBe("fort-davis-tx");
+    expect(rankedIds("pt reyes")[0]).toBe("point-reyes-ca");
+    expect(rankedIds("pt townsend")[0]).toBe("port-townsend-wa");
+    expect(rankedIds("saint john's")[0]).toBe("st-johns-nl");
+    expect(rankedIds("st johns")[0]).toBe("st-johns-nl");
+  });
+
+  it("matches a variant only as a whole word", () => {
+    const parsed = parseSearchQuery("pt reyes");
+    expect(parsed.tokens[0]).toEqual({ text: "pt", phrase: false, variants: ["point", "port"] });
+    // Whole word only: "mt" must not reach a name that merely contains "mount…".
+    const fixture = [makePlace({ id: "mountainview-xx", name: "Mountainview" })];
+    expect(searchPlaces(fixture, "mt").rankByPlace.size).toBe(0);
   });
 });
 
