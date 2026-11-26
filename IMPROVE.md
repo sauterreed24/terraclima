@@ -20,29 +20,27 @@ Read this first each session. Keep sections short; condense old rounds.
 - `npm run quality:check` must pass; CHANGELOG gets a plain-language entry for user-visible changes.
 
 ## Scorecard (measured by `npm run eval`; all rows measured)
-| id | check | target | session-1 start | end of round 2 | end of round 3 |
+| id | check | target | session-1 start | end of round 3 | end of round 4 (merged) |
 |----|-------|--------|------|------|------|
-| S1a | search: intended place on top, tuning set | ≥ 95% | 38/44 | 72/74 | 75/77 (3 review cases added) |
-| S1b | same, **held-out** set 2 (misses not printed) | ≥ 90% | — | 28/29 | 28/29 |
+| S1a / S1b | search: intended place on top, tuning / **held-out** (misses not printed) | ≥ 95% / ≥ 90% | 38/44 / 24/30 | 75/77 / 28/29 | 75/77 / 28/29 |
 | S2a–f | find (≤2), must-have list = reference, save+compare (≤5), home base (≤2), export (≤2), move saved places to another browser (≤4) | done, steps ≤ target | 2/exact/5/2/2/impossible | …/4 | same |
-| S3a | saved items lost (reload, 61st save, two tabs) | 0 | 11 | 0 | 0 |
-| S3c | second tab shows the first tab's saves | yes | no | yes | yes |
-| S3d | offline cache drops an old build's file after a visit | dropped | — | kept | dropped |
-| S4a | stays usable: bad link, corrupt storage, storage blocked, offline reload, offline profile reopen, failed code chunk, failed history file (no storm), history file fails once then loads, offline after a new deploy's file list | all | 4/6 | 7/7 | 9/9 (2 scenarios added from review, both failed first) |
-| S5a | first ranked card, desktop, ms median | ≤ 1500 | ~650 | ~600 | 560–584 |
-| S5b | first ranked card, phone 1.6 Mbps + 4× CPU, ms | ≤ 8000 | ~6200 | ~6100 | 6004–6336 |
-| S5c | first-load JS, KiB gzip | ≤ 747 | 740 | 742 | 742 |
-| S5d | first profile open, slow phone, ms | ≤ 3000 | 4032 | ~1850 | 1844–1907 |
-| S5e | first profile open, KB gzip downloaded | ≤ 250 | 676 | 125 | 125 |
+| S2g | profiles show their sources, 2050 outlook, first chapter (seeded, link + click, phone) | 0 missing | — | — | 0 |
+| S2h | chapter-only search = before the split (typed now/2050; linked now/2050/save-data) | equal | — | — | 57/57/1/1/1 = 57,1 |
+| S2i | send saved places by link: asked first, own saves kept, typing unaffected | done ≤ 4 | impossible | impossible | 4 steps |
+| S2k | export-menu items covered by other panels | 0 | (1, unmeasured) | — | 0 |
+| S3a / S3c / S3d | saved items lost / second tab in step / old build files dropped | 0 / yes / dropped | 11 / no / — | 0 / yes / dropped | same |
+| S4a | stays usable in failure scenarios (now 10, incl. failed profile-field file: notice, no re-download) | all | 4/6 | 9/9 | 10/10 |
+| S5a | first ranked card, desktop, ms median | ≤ 1500 | ~650 | ~570 | 558–588 |
+| S5b | first ranked card, phone 1.6 Mbps + 4× CPU, ms | ≤ 8000 | ~6200 | ~6000–6300 | **5550–5556** |
+| S5c | first-load JS, KiB gzip | ≤ 650 (was 747) | 740 | 742 | **640** |
+| S5d | first profile open, slow phone, ms | ≤ 3000 | 4032 | ~1850 | 1702–1764 |
+| S5e | first profile open, KB gzip the profile itself needs | ≤ 250 | 676 | 125 | 139 (its field file used to ride in first load) |
 | S6a | console/page errors across all tasks | 0 | 0 | 0 | 0 |
-| S7a | figures on screen / in exports that differ from the climate records (conversion written in the evaluator): export of all 226 with a home base, cards + profiles + Compare for 8 seeded places | 0 | — | 96 of 1875 | 0 of 2048 |
-| S7b | same, HELD-OUT seed | 0 | — | 5 of 71 | 0 of 114 |
-| S8a | places badged "High confidence" whose climate data is not high | 0 | — | 133 | 0 |
-| S8b | profiles that misstate how their figures were checked (seeded + held-out) | 0 + 0 | — | 13 + 14 | 0 + 0 |
+| S7a / S7b | figures differing from the climate records (export of all 226, cards, profiles, Compare; seeded / HELD-OUT) | 0 / 0 | — | 0 of 2048 / 0 of 114 | 0 of 2051 / 0 of 119 |
+| S8a / S8b | "High confidence" over unchecked data / profiles misstating how figures were checked | 0 / 0+0 | — | 0 / 0+0 | same |
 
 Noise: non-timing rows identical across two runs; timing medians move ≈ ±50 ms desktop, ±250 ms throttled.
-Proven to fail on a broken build: S7 (summer months shifted → 458 of 1920); S2b (filter loosened 1 °C → 105 vs 91). Every other row failed on the code before its fix.
-Next bar: S5b (first card on a slow phone, 6.0 s) needs Decision 1; a held-out search set 3; S7 sample could grow (16 profiles per run now).
+Next bar: S5b (5.5 s) is now mostly the remaining corpus prose (experience text, summaries) that search reads; a search-index split would be the next step. A held-out search set 3 once set 2 has been looked at.
 
 ## Checks for a human (cannot be scripted here)
 - Look and layout on a real phone (iOS Safari, Android Chrome), both themes.
