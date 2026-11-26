@@ -343,15 +343,18 @@ async function sectionProfileFields(browser: Browser) {
   record("S2g", "profiles show their sources, 2050 outlook and first In depth chapter (6 seeded, link + click, phone)", `${out.length} missing`, "0", out.length === 0, out);
   for (const e of out.slice(0, 5)) console.log(`        ${e}`);
   // A word found only in In depth chapters finds the same places once the chapters arrive (idle prefetch).
-  const c2 = await newCtx(browser);
-  const pg = await open(c2); await firstCard(pg);
-  await pg.waitForTimeout(6500);
-  await pg.getByPlaceholder("Search places or regions").first().fill("orographic");
-  await pg.waitForTimeout(800);
-  const shown = await inListCount(pg);
   const expected = topIds("orographic", 999).length;
-  await c2.close();
-  record("S2h", "chapter-only search word after the page settles: places shown = before the split", `${shown} vs ${expected}`, "equal", shown === expected);
+  const counts: number[] = [];
+  for (const path of ["/", "/?scn=ssp245"]) { // the 2050 layer searches in a worker
+    const c2 = await newCtx(browser);
+    const pg = await open(c2, path); await firstCard(pg);
+    await pg.waitForTimeout(6500);
+    await pg.getByPlaceholder("Search places or regions").first().fill("orographic");
+    await pg.waitForTimeout(1200);
+    counts.push(await inListCount(pg));
+    await c2.close();
+  }
+  record("S2h", "chapter-only search word after the page settles (now / 2050 layer): places shown = before the split", `${counts.join(" / ")} vs ${expected}`, "equal", counts.every(n => n === expected));
 }
 
 // ---------------------------------------------------------------- S3 data safety
