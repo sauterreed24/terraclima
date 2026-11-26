@@ -1403,6 +1403,9 @@ export default function App() {
     if (!target) return;
     const restoreFocus = () => {
       try { target.focus({ preventScroll: true }); } catch { /* noop */ }
+      // Back in the search field (the profile was opened from it): select the
+      // query, so typing the next name replaces it instead of appending.
+      if (target instanceof HTMLInputElement) target.select();
     };
     restoreFocus();
     const id = window.requestAnimationFrame(restoreFocus);

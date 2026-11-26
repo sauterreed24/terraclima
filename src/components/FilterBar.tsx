@@ -304,7 +304,13 @@ export const FilterBar = memo(function FilterBar({
                 return;
               }
             }
-            if (event.key !== "Escape" || event.currentTarget.value.length === 0) return;
+            if (event.key !== "Escape") return;
+            if (event.currentTarget.value.length === 0) {
+              // Already empty: leave the field, so single-key shortcuts (V, R, B…) work again.
+              event.currentTarget.blur();
+              document.getElementById("main-content")?.focus({ preventScroll: true });
+              return;
+            }
             event.preventDefault();
             event.stopPropagation();
             clearSearch();

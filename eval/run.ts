@@ -5,7 +5,7 @@
  *   npm run eval -- --no-build   # reuse dist/
  *   npm run eval -- --full       # also run the Vitest suite (≈2.5 min)
  *   npm run eval -- --runs=7     # load-time samples (default 5)
- *   npm run eval -- --only=search,speed   # sections: search jobs data recover mistakes speed accuracy
+ *   npm run eval -- --only=search,speed   # sections: search jobs data recover mistakes keyboard speed accuracy
  *
  * Sections (scorecard rows in IMPROVE.md):
  *   S1 search    realistic queries → intended place on top (tuning + held-out sets)
@@ -495,6 +495,33 @@ async function sectionMistakes(browser: Browser) {
   const passed = Object.values(results).filter(Boolean).length;
   record("S9a", "one-click mistakes undone in one click, restoring exactly the previous state", `${passed}/${Object.keys(results).length}`, "all", passed === Object.keys(results).length, results);
   for (const [k, v] of Object.entries(results)) if (!v) console.log(`        not undoable: ${k}`);
+}
+
+// ---------------------------------------------------------------- S10 keyboard
+// Keyboard only: find two places by name, add each to Compare from its profile, open Compare.
+// Counts key presses (typing a name counts as one).
+async function sectionKeyboard(browser: Browser) {
+  console.log("\nS10 keyboard only");
+  const ctx = await newCtx(browser);
+  const page = await open(ctx); await firstCard(page);
+  let keys = 0;
+  const k = async (key: string, wait = 350) => { keys++; await page.keyboard.press(key); await page.waitForTimeout(wait); };
+  for (const name of ["bishop", "sequim"]) {
+    if (!(await page.evaluate(() => document.activeElement instanceof HTMLInputElement))) await k("/");
+    await page.keyboard.type(name); keys++; await page.waitForTimeout(500);
+    await k("Enter", 1000);
+    await k("Shift+Tab"); // from Close to the header's Compare button
+    await k("Enter");
+    await k("Escape", 600);
+  }
+  // Esc clears the search; Esc in the empty field leaves it, so V is a shortcut again.
+  for (let i = 0; i < 2 && (await page.evaluate(() => document.activeElement instanceof HTMLInputElement)); i++) await k("Escape");
+  await k("v", 1200);
+  const text = await page.getByRole("dialog").first().innerText().catch(() => "");
+  const cmp = new URL(page.url()).searchParams.get("cmp") ?? "";
+  const ok = /Bishop/.test(text) && /Sequim/.test(text) && cmp.includes("bishop-ca") && cmp.includes("sequim-wa");
+  record("S10a", "keyboard only: two places found by name, added to Compare, Compare opened", ok ? `${keys} keys` : `failed (cmp=${cmp})`, "done in <= 14", ok && keys <= 14);
+  await ctx.close();
 }
 
 // ---------------------------------------------------------------- S4 recovery
@@ -990,6 +1017,7 @@ async function main() {
     if (want("data")) await sectionData(browser);
     if (want("recover")) await sectionRecover(browser);
     if (want("mistakes")) await sectionMistakes(browser);
+    if (want("keyboard")) await sectionKeyboard(browser);
     if (want("speed")) await sectionSpeed(browser);
     if (want("accuracy")) await sectionAccuracy(browser);
   } finally {
