@@ -724,7 +724,8 @@ async function sectionSpeed(browser: Browser) {
 // ---------------------------------------------------------------- S7 accuracy
 // Reference: the generated climate records, converted with formulas written here,
 // not imported from the app. A figure is wrong if it differs by more than rounding.
-type Rec = { tempHighC: number[]; tempLowC: number[]; annualPrecipMm: number; humidity: number[] | null; frostFreeDays: number };
+type Rec = { tempHighC: number[]; tempLowC: number[]; precipMm: number[]; annualPrecipMm: number; humidity: number[] | null; frostFreeDays: number };
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const REC = new Map<string, Rec>((RECORDS as Array<{ placeId: string; periods: Record<string, Rec> }>).map(r => [r.placeId, r.periods["rolling-1996-2025"]!]));
 const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length;
 const f = (c: number) => c * 9 / 5 + 32;
@@ -817,6 +818,13 @@ async function sectionAccuracy(browser: Browser) {
       chk("winter low", num(/WINTER LOW\s*(-?\d+)°F/i), r.winterLowF);
       chk("humidity", num(/(\d+)%\s*humidity/i), r.humidityAnnual);
       chk("frost-free days", num(/(\d+)\s*frost-free days/i), r.frostFree);
+      // The card's month line: "Nov 76°F highs · 0.2 in".
+      const ml = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (-?\d+)°F highs · ([\d.]+) in\b/.exec(text);
+      if (ml) {
+        const m = MONTHS.indexOf(ml[1]!); const rec = REC.get(p.id)!;
+        chk("month high", Number(ml[2]), f(rec.tempHighC[m]!));
+        chk("month precip", Number(ml[3]), rec.precipMm[m]! / 25.4, rec.precipMm[m]! / 25.4 >= 10 ? 0.51 : 0.051);
+      } else { n++; out.push(`${p.id} card: month line not found`); }
       const vs = text.slice(Math.max(0, text.search(/vs Flagstaff/i)));
       chk("vs-home Summer", num(/\bSummer\s*([+\-−–]?\d+)°F/i, vs), r.summerHighF - h.summerHighF);
       chk("vs-home Winter", num(/\bWinter\s*([+\-−–]?\d+)°F/i, vs), r.winterLowF - h.winterLowF);
@@ -835,6 +843,7 @@ async function sectionAccuracy(browser: Browser) {
   const profileErrs = async (seed: number) => {
     const out: string[] = []; let n = 0;
     const c2 = await newCtx(browser);
+    await c2.addInitScript(home => { localStorage.setItem("terraclima.home-base.v1", JSON.stringify(home)); }, HOME);
     for (const p of sample(PLACES, 8, seed)) {
       const pg = await open(c2, `/?p=${p.id}`);
       await pg.getByRole("dialog").getByText(/Climate normals/i).first().waitFor({ timeout: 15000 });
@@ -846,6 +855,31 @@ async function sectionAccuracy(browser: Browser) {
         ["winter low", grab(/WINTER LOW (-?\d+)°F/i), r.winterLowF, 0.51],
         ["yearly precip", grab(/(?:YEARLY RAIN|RAIN & SNOW) ([\d.]+) in/i), r.precipIn, r.precipIn >= 10 ? 0.51 : 0.051],
       ];
+      // "Versus your home base": each figure by its label (Flagstaff is home).
+      if (p.id !== HOME) {
+        const vs = t.slice(Math.max(0, t.search(/Versus your home base/i)));
+        // A figure, or "about the same" — accepted only inside the comparison's stated
+        // similarity band (home-base.ts cuts: 1 °C, 3 points, ±10 % precipitation).
+        const grab = (label: string, unit: string) => {
+          // The tile (label, arrow, value), not the summary sentence above it.
+          const m = new RegExp(`${label}\\s*[▲▼≈]\\s*(?:([+\\-−–]?[\\d.]+)\\s*${unit}|(about the same))`, "i").exec(vs);
+          return m ? (m[2] ? "same" : Number(m[1]!.replace(/[−–]/, "-").replace("+", ""))) : null;
+        };
+        const recP = REC.get(p.id)!; const recH = REC.get(HOME)!;
+        const check = (label: string, shown: number | "same" | null, want: number, tol: number, sameBand: number) => {
+          n++;
+          if (shown == null) out.push(`${p.id} profile vs home ${label}: not found`);
+          else if (shown === "same") { if (Math.abs(want) > sameBand) out.push(`${p.id} profile vs home ${label}: "about the same", records give ${want.toFixed(2)}`); }
+          else if (Math.abs(shown - want) > tol) out.push(`${p.id} profile vs home ${label}: shown ${shown}, records give ${want.toFixed(2)}`);
+        };
+        check("summer days", grab("Summer days", "°F"), r.summerHighF - h.summerHighF, 0.51, 1.8);
+        check("winter nights", grab("Winter nights", "°F"), r.winterLowF - h.winterLowF, 0.51, 1.8);
+        if (r.humiditySummer != null && h.humiditySummer != null) check("summer humidity", grab("Summer humidity", "pts"), r.humiditySummer - h.humiditySummer, 0.51, 3);
+        const ratio = recP.annualPrecipMm / recH.annualPrecipMm;
+        const asMultiple = grab("Annual precip", "×");
+        if (typeof asMultiple === "number") check("annual precip ×", asMultiple, ratio, 0.051, 0);
+        else check("annual precip %", grab("Annual precip", "%"), (ratio - 1) * 100, 0.51, 10);
+      }
       for (const [label, shown, want, tol] of pairs) {
         n++;
         if (shown == null) out.push(`${p.id} profile ${label}: not found`);
