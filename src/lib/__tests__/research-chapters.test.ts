@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { PLACES } from "../../data/places";
+// Sources and chapters load with the profile; the full list carries them for every place.
+import { PLACES_FULL as PLACES } from "../../data/places.full";
 import { SITE_HISTORY } from "../../data/places.site-history";
 import { chapterCountLabel, hasThinChapterDepth, researchedChapterCount } from "../research-chapters";
 

@@ -11,6 +11,7 @@ import {
 } from "./compare-workbench";
 import { possessive } from "./place-name";
 import { hasThinChapterDepth } from "./research-chapters";
+import { httpsCitationCount } from "./profile-stats";
 
 export interface CompareDecisionProfile {
   place: Place;
@@ -240,7 +241,7 @@ function caveatRead(profile: CompareDecisionProfile): string {
 }
 
 function sourceGapLabels(place: Place): string[] {
-  const httpsCitations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
+  const httpsCitations = httpsCitationCount(place);
   const hasLiveSignals = Boolean(place.liveSignals && Object.values(place.liveSignals).some(value => typeof value === "number"));
   const hasHumidity = Boolean(place.climate.humidity?.length);
   const hasSunshine = hasSourcedSkySeries(place);

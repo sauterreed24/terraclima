@@ -38,14 +38,11 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Shaley silt loam on sandstone and limestone", drainage: "moderate", phRange: [5.4, 6.8], waterHolding: "moderate" },
     growability: { score: 72, hardinessZone: "7b", growsWell: ["Apples", "Blueberries", "Native azaleas", "Cool greens"], tricky: ["Heat-loving melons without season extension"] },
-    climateChange: { outlook2050: "Longer pollen season; heavier convective rain.", outlook2100: "Southern Appalachian species migration upslope.", keyShifts: [{ variable: "Humid heat nights", direction: "up" }], resilienceNote: "Elevation buffers some heat relative to the valley." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "moderate", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 58, microclimateUniqueness: 68, comfort: 70, resilience: 58, growability: 72, tradeoff: 40 },
     relocationFit: ["retirees", "remote workers"], travelFit: ["DeSoto State Park", "hang gliding ridge"],
     whoWouldLove: "Southerners who want mountain air without leaving the state.", whoMightNot: "Those needing urban amenities or dry winters.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Valley Head 2 NE (proxy)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Connecticut — NW highlands cold pocket
@@ -78,14 +75,11 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Stony loam on schist/gneiss glacial till", drainage: "good", phRange: [5.0, 6.2], waterHolding: "moderate" },
     growability: { score: 54, hardinessZone: "5b", growsWell: ["Maple syrup", "Apples", "Cool-season vegetables", "Hemlock-shade ornamentals"], tricky: ["Long-season tomatoes"] },
-    climateChange: { outlook2050: "Shorter snow season; wetter shoulder storms.", outlook2100: "Hardiness zone creep upward.", keyShifts: [{ variable: "Winter snow", direction: "down" }], resilienceNote: "Cold infrastructure still matters for decades." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "elevated", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 52, microclimateUniqueness: 64, comfort: 58, resilience: 60, growability: 54, tradeoff: 44 },
     relocationFit: ["second-home owners", "artists"], travelFit: ["fall color", "cross-country skiing"],
     whoWouldLove: "New England maximalists who want real winter.", whoMightNot: "Mild-climate retirees.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Norfolk 2 SW", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Delaware — Delaware Bay / Atlantic moderation
@@ -119,14 +113,11 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Sandy coastal plain and marsh organics", drainage: "excessive", phRange: [4.8, 6.5], waterHolding: "low" },
     growability: { score: 62, hardinessZone: "7b", growsWell: ["Beach plum", "Salt-tolerant shrubs", "Irrigated perennials"], tricky: ["Dry-farmed Mediterranean herbs"] },
-    climateChange: { outlook2050: "Higher surge reach; more compound flood–rain events.", outlook2100: "Salt intrusion into shallow aquifers.", keyShifts: [{ variable: "Sea level", direction: "up" }], resilienceNote: "Elevation is the long-term constraint." },
     risks: { wildfire: { level: "very-low", trend: "stable" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "high", trend: "worsening" } },
     scores: { hiddenGem: 44, microclimateUniqueness: 58, comfort: 68, resilience: 48, growability: 62, tradeoff: 52 },
     relocationFit: ["coastal retirees", "remote workers"], travelFit: ["Cape Henlopen", "ferry to Cape May"],
     whoWouldLove: "Bay-and-beach people who prefer small-town scale.", whoMightNot: "Mountain-air seekers; flood-risk skeptics.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Lewes (Sussex County)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Georgia — Southern Appalachian escarpment
@@ -159,14 +150,11 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Acidic loam in coves; thin on ridges", drainage: "good", phRange: [4.8, 6.0], waterHolding: "moderate" },
     growability: { score: 70, hardinessZone: "7a", growsWell: ["Apples", "Brassicas", "Blueberries", "Trout-lily natives"], tricky: ["Heat-loving peppers without greenhouse"] },
-    climateChange: { outlook2050: "Heavier extreme rain on slopes.", outlook2100: "Species migration upslope.", keyShifts: [{ variable: "Flash flood risk", direction: "up" }], resilienceNote: "Forested slopes buffer erosion if kept intact." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 48, microclimateUniqueness: 72, comfort: 74, resilience: 54, growability: 70, tradeoff: 38 },
     relocationFit: ["remote workers", "hikers"], travelFit: ["Bartram Trail", "waterfalls"],
     whoWouldLove: "Southerners who want mountain climate without West Coast prices.", whoMightNot: "Those who need reliable hot summers for crops.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Clayton 1 WSW", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Illinois — Driftless / Mississippi bluffs
@@ -199,14 +187,11 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Silt loam on loess and colluvium", drainage: "good", phRange: [5.8, 7.0], waterHolding: "high" },
     growability: { score: 68, hardinessZone: "5a", growsWell: ["Apples", "Grape (hybrid)", "Pasture", "Cool greens"], tricky: ["Long-season heat lovers"] },
-    climateChange: { outlook2050: "More intense spring rain on bluffs.", outlook2100: "Shorter ice season on the river.", keyShifts: [{ variable: "Heavy rain", direction: "up" }], resilienceNote: "Topographic diversity aids adaptation." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 56, microclimateUniqueness: 66, comfort: 60, resilience: 58, growability: 68, tradeoff: 40 },
     relocationFit: ["historic-town lovers", "remote workers"], travelFit: ["Mississippi Palisades", "architecture"],
     whoWouldLove: "Midwest topography fans who still want seasons.", whoMightNot: "Those avoiding cold winters or steep drives.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Galena", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Indiana — southern lakeshore snowbelt + mesoscale lake breeze
@@ -239,7 +224,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Sandy dune soils with organics in swales", drainage: "excessive", phRange: [5.5, 7.0], waterHolding: "low" },
     growability: { score: 58, hardinessZone: "6a", growsWell: ["Beachgrass stabilization plantings", "Prairie natives", "Cool greens", "Blueberries (with mulch)"], tricky: ["Drought-intolerant fruit without irrigation"] },
-    climateChange: { outlook2050: "Less ice cover may reduce snowband frequency but increase lake heat.", outlook2100: "Shifting shoreline ecology.", keyShifts: [{ variable: "Lake ice", direction: "down" }], resilienceNote: "Lake moderation still dominates local comfort." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "moderate", trend: "worsening" } },
     scores: { hiddenGem: 50, microclimateUniqueness: 70, comfort: 66, resilience: 60, growability: 58, tradeoff: 42 },
     liveSignals: {
@@ -262,33 +246,9 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       { label: "Winter snowband watch", kind: "seasonal", season: "winter", note: "Lake-effect clouds and localized snow are part of the true lived climate." },
       { label: "Spring bird migration", kind: "wildlife", season: "spring", note: "The lakeshore flyway shows why this narrow strip carries outsized ecological value." },
     ],
-    deepSections: [
-      {
-        id: "beverly-shores-lake-season-lag",
-        title: "The lake shifts the seasons",
-        paragraphs: [
-          "Lake Michigan warms and cools more slowly than the land, and Beverly Shores follows it. In April and May the water is still cold and a breeze off the lake can chill the beach within minutes. In September and October the water is warm and holds off the first frost.",
-          "In July the lake breeze keeps the beach a few degrees cooler than towns inland. From November to January cold winds blowing down the length of the lake bring cloud and bands of snow, about 190 cm in a winter, and totals differ over a few kilometers.",
-        ],
-      },
-      {
-        id: "beverly-shores-small-town-friction",
-        title: "A few hundred residents inside a national park",
-        paragraphs: [
-          "Beverly Shores has a few hundred year-round residents and is surrounded by Indiana Dunes National Park. Many of the houses are seasonal. Shops, schools and medical care are in Chesterton and Michigan City, a short drive away, and the South Shore Line runs to Chicago.",
-          "The beach and the dune trails are the reason to live here. Against them stand the grey winters, the small number of houses for sale and the lake itself: high water in 2019 and 2020 cut away the beach and undermined parts of Lake Front Drive.",
-        ],
-      },
-    ],
     relocationFit: ["Chicago commuters", "park lovers"], travelFit: ["Indiana Dunes trails", "bird migration"],
     whoWouldLove: "Great Lakes beach people who want dunes, not crowds.", whoMightNot: "Sun-belt warmth seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [
-      { label: "NOAA - Michigan City IN climate normals", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
-      { label: "National Park Service - Indiana Dunes National Park", kind: "other", url: "https://www.nps.gov/indu/" },
-      { label: "Town of Beverly Shores - municipal services", kind: "other", url: "https://www.in.gov/towns/beverlyshores/" },
-    ],
   },
 
   // Maryland — Appalachian high county
@@ -321,14 +281,11 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Loam on glacial till and sandstone residuum", drainage: "moderate", phRange: [5.0, 6.5], waterHolding: "moderate" },
     growability: { score: 60, hardinessZone: "5b", growsWell: ["Hay", "Cool-season vegetables", "Apples", "Maple"], tricky: ["Warm-season corn without GDD"] },
-    climateChange: { outlook2050: "Wetter springs; shorter snow season.", outlook2100: "Hardiness zone migration upward.", keyShifts: [{ variable: "Heavy rain", direction: "up" }], resilienceNote: "Lake tourism economy sensitive to winter reliability." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "elevated", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 46, microclimateUniqueness: 68, comfort: 62, resilience: 58, growability: 60, tradeoff: 42 },
     relocationFit: ["lake-house buyers", "remote workers"], travelFit: ["Wisp Resort", "Autumn Glory"],
     whoWouldLove: "Mid-Atlantic residents who want real ski-adjacent winters.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Oakland 2 SE", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Massachusetts — Berkshires
@@ -361,14 +318,11 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Stony loam on schist", drainage: "good", phRange: [5.2, 6.5], waterHolding: "moderate" },
     growability: { score: 58, hardinessZone: "5b", growsWell: ["Apples", "Berries", "Cool greens", "Hay"], tricky: ["Heat-loving crops"] },
-    climateChange: { outlook2050: "More freeze–thaw; maple sap windows shift.", outlook2100: "Species composition shifts upslope.", keyShifts: [{ variable: "Winter freeze–thaw", direction: "up" }], resilienceNote: "Forest-based economies need adaptive management." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 40, microclimateUniqueness: 58, comfort: 58, resilience: 58, growability: 58, tradeoff: 44 },
     relocationFit: ["culture seekers", "second homes"], travelFit: ["Tanglewood", "ski areas"],
     whoWouldLove: "New England culture without Boston housing costs.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Pittsfield Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Mississippi — Gulf maritime
@@ -400,14 +354,11 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Sandy loam over coastal plain sediments", drainage: "moderate", phRange: [5.0, 6.5], waterHolding: "moderate" },
     growability: { score: 72, hardinessZone: "9a", growsWell: ["Live oak", "Satsuma", "Camellias", "Subtropical ornamentals"], tricky: ["Cold-requirement stone fruit"] },
-    climateChange: { outlook2050: "Higher sea level and surge risk; wetter hurricanes.", outlook2100: "Saltwater intrusion into coastal soils.", keyShifts: [{ variable: "Hurricane rainfall", direction: "up" }], resilienceNote: "Wind and storm surge dominate planning." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "elevated", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "low", trend: "stable" }, storm: { level: "very-high", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-high", trend: "worsening" } },
     scores: { hiddenGem: 42, microclimateUniqueness: 58, comfort: 62, resilience: 40, growability: 72, tradeoff: 56 },
     relocationFit: ["coastal retirees", "artists"], travelFit: ["Gulf Islands NS", "seafood"],
     whoWouldLove: "Humid subtropical coastal life with arts-town flavor.", whoMightNot: "Hurricane-averse; dry-air seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Biloxi MS (proxy sound)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Missouri — Ozark karst / Current River
@@ -439,14 +390,11 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Cherty limestone residuum; thin upland soils", drainage: "excessive", phRange: [5.0, 6.8], waterHolding: "low" },
     growability: { score: 64, hardinessZone: "6b", growsWell: ["Pasture", "Cool greens", "Blackberries", "River cane restoration"], tricky: ["Irrigation without groundwater awareness"] },
-    climateChange: { outlook2050: "Heavier convective rain; flashier streams.", outlook2100: "Groundwater sensitivity to land-use change.", keyShifts: [{ variable: "Flash flood frequency", direction: "up" }], resilienceNote: "Springs buffer some warming but not land-use stress." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "moderate", trend: "mixed" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 54, microclimateUniqueness: 72, comfort: 64, resilience: 56, growability: 64, tradeoff: 42 },
     relocationFit: ["paddlers", "remote workers"], travelFit: ["Ozark NS rivers", "caving"],
     whoWouldLove: "River people who want geology and misty mornings.", whoMightNot: "Those needing dry air or flat farmland.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Eminence", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USGS — Ozark Plateau springs", kind: "usgs", url: "https://www.usgs.gov/" }],
   },
 
   // Nevada — Spring Mountains sky island (Tier B + deep)
@@ -495,7 +443,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Thin stony inceptisols on limestone and volcanic debris", drainage: "excessive", phRange: [6.0, 7.5], waterHolding: "low" },
     growability: { score: 42, hardinessZone: "6a", growsWell: ["Native conifer regeneration", "Cool-season greens (short season)", "Haskap trials"], tricky: ["Any warm-season crop"] },
-    climateChange: { outlook2050: "Earlier snowmelt; longer fire season upslope.", outlook2100: "Desert encroachment on lower elevations.", keyShifts: [{ variable: "Snowpack", direction: "down" }, { variable: "Wildfire", direction: "up" }], resilienceNote: "Water supply for Las Vegas is downstream; forest stress is upslope." },
     risks: { wildfire: { level: "elevated", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "elevated", trend: "worsening" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "moderate", trend: "stable" }, landslide: { level: "moderate", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     localContrast: [{ radiusKm: 30, summerHighDeltaC: -12, note: "vs Las Vegas basin floor — largest single-gradient contrast in the region." }],
     nearbyContrasts: [{ label: "Las Vegas valley floor", note: "Subtropical desert heat island; frequent strong inversions under winter high pressure." }],
@@ -513,28 +460,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["hikers", "remote workers"], travelFit: ["bristlecone trails", "summer heat escape"],
     whoWouldLove: "Desert-city residents who need forest weekends.", whoMightNot: "Those needing mild winters at elevation.",
     confidence: "high",
-    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
-    citations: [{ label: "NOAA — Mount Charleston cooperative summaries", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USFS — Spring Mountains NRA", kind: "other" },
-      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
-    ],
-    deepSections: [
-      {
-        id: "charleston-inversion",
-        title: "Basin inversion and the mountain island",
-        paragraphs: [
-          "Las Vegas Valley’s frequent clear, stable nights create strong nocturnal inversions that pool cool air near the surface — paradoxically trapping heat and pollutants in the same layer. Above the inversion cap, the Spring Mountains intercept moisture and radiate freely to space under clear skies.",
-          "That vertical separation is why a morning drive can traverse from basin smog and searing afternoon heat in the valley to pine-scented air and crisp dew points near treeline in one hour.",
-        ],
-      },
-      {
-        id: "charleston-hydrology",
-        title: "Snowpack, springs, and desert demand",
-        paragraphs: [
-          "Winter snowpack is the primary natural reservoir for high-elevation springs that feed lower desert ecosystems and human supply. Warming shifts the snow–rain ratio and advances melt timing — a hydrologic stressor for species adapted to late-summer streamflow.",
-          "Management tension here is not hypothetical: recreation, municipal water, and wildfire risk all scale with how snow and rain partition across the narrow elevation bands.",
-        ],
-      },
-    ],
   },
 
   // New Jersey — Cape May maritime / Victorian seaside
@@ -567,7 +492,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Sandy dune soils with peat in swales", drainage: "excessive", phRange: [4.8, 6.2], waterHolding: "low" },
     growability: { score: 60, hardinessZone: "7b", growsWell: ["Beach plum", "Hydrangea", "Irrigated perennials"], tricky: ["Drought herbs without watering"] },
-    climateChange: { outlook2050: "Surge and nuisance flooding increase.", outlook2100: "Barrier migration and beach nourishment costs rise.", keyShifts: [{ variable: "Sea level", direction: "up" }], resilienceNote: "Tourism economy is storm-exposed." },
     risks: { wildfire: { level: "very-low", trend: "stable" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "low", trend: "stable" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "high", trend: "worsening" } },
     scores: { hiddenGem: 40, microclimateUniqueness: 60, comfort: 70, resilience: 46, growability: 60, tradeoff: 50 },
     liveSignals: {
@@ -582,8 +506,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-home restorers", "retirees"], travelFit: ["Victorian architecture", "bird migration"],
     whoWouldLove: "Beach-town people who want walkable scale.", whoMightNot: "Dry-air or mountain-climate seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Cape May County AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Ohio — eastern Lake Erie snowbelt
@@ -616,14 +538,11 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Clay loam on lake plain with sandy strips", drainage: "imperfect", phRange: [6.0, 7.5], waterHolding: "high" },
     growability: { score: 56, hardinessZone: "6b", growsWell: ["Concord grapes", "Apples", "Cool greens"], tricky: ["Peaches (late frost)"] },
-    climateChange: { outlook2050: "Less ice, shifting snowbands.", outlook2100: "More lake-effect rain vs snow events.", keyShifts: [{ variable: "Lake ice", direction: "down" }], resilienceNote: "Shoreline erosion competes with winter tourism." },
     risks: { wildfire: { level: "low", trend: "stable" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "moderate", trend: "worsening" } },
     scores: { hiddenGem: 44, microclimateUniqueness: 72, comfort: 58, resilience: 54, growability: 56, tradeoff: 46 },
     relocationFit: ["lake-house buyers"], travelFit: ["wine trail", "winter storm watching"],
     whoWouldLove: "Great Lakes maximalists.", whoMightNot: "Sunbelt retirees.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Geneva", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Oklahoma — Ouachita uplift
@@ -655,14 +574,11 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Acidic sandy loam on sandstone and shale", drainage: "moderate", phRange: [4.8, 6.2], waterHolding: "moderate" },
     growability: { score: 70, hardinessZone: "8a", growsWell: ["Pine timber", "Warm-season vegetables", "Peaches (with frost management)"], tricky: ["Cool-climate small fruit"] },
-    climateChange: { outlook2050: "Heavier extreme rain; longer fire season in droughts.", outlook2100: "Forest stress under heat waves.", keyShifts: [{ variable: "Convective rain", direction: "up" }], resilienceNote: "Water resources are reservoir-dependent." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "moderate", trend: "mixed" }, extremeHeat: { level: "elevated", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 52, microclimateUniqueness: 74, comfort: 62, resilience: 54, growability: 70, tradeoff: 44 },
     relocationFit: ["outdoor families", "remote workers"], travelFit: ["Beavers Bend SP", "fishing"],
     whoWouldLove: "Oklahoma residents who want forest and water.", whoMightNot: "Dry-climate seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Broken Bow", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Rhode Island — Block Island outer coast
@@ -695,7 +611,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Thin, sandy and peaty island soils", drainage: "excessive", phRange: [4.8, 6.0], waterHolding: "low" },
     growability: { score: 48, hardinessZone: "7a", growsWell: ["Beach plum", "Salt-tolerant natives", "Cool greens"], tricky: ["Tree crops in wind exposure"] },
-    climateChange: { outlook2050: "Storm-surge and erosion accelerate.", outlook2100: "Habitat migration with sea-level rise.", keyShifts: [{ variable: "Sea level", direction: "up" }], resilienceNote: "Freshwater lens is finite." },
     risks: { wildfire: { level: "low", trend: "stable" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "very-low", trend: "stable" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "high", trend: "worsening" } },
     scores: { hiddenGem: 58, microclimateUniqueness: 76, comfort: 64, resilience: 44, growability: 48, tradeoff: 58 },
     liveSignals: {
@@ -709,8 +624,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["seasonal residents", "fishermen"], travelFit: ["bluffs", "biking"],
     whoWouldLove: "Cool-summer island people who tolerate ferry logistics.", whoMightNot: "Heat seekers; budget shoppers; anyone unwilling to plan groceries and care around the ferry schedule.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Block Island State Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // South Dakota — Black Hills chinook corridor (Tier B + deep)
@@ -757,7 +670,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Sandy loam on sandstone and alluvium", drainage: "good", phRange: [6.0, 7.5], waterHolding: "moderate" },
     growability: { score: 54, hardinessZone: "4b", growsWell: ["Cool-season hay", "Apples (hardy)", "Windbreak conifers"], tricky: ["Long-season crops"] },
-    climateChange: { outlook2050: "Warmer winters; more rain vs snow.", outlook2100: "Fire–grass transition risk on ecotone.", keyShifts: [{ variable: "Winter snow fraction", direction: "down" }], resilienceNote: "Water supply tied to Black Hills snowpack." },
     risks: { wildfire: { level: "elevated", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "elevated", trend: "mixed" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "elevated", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 62, microclimateUniqueness: 88, comfort: 56, resilience: 58, growability: 54, tradeoff: 46 },
     liveSignals: {
@@ -773,26 +685,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["outdoor workers", "remote workers"], travelFit: ["Spearfish Canyon", "Sturgis proximity"],
     whoWouldLove: "Plains–mountain ecotone people who respect wind.", whoMightNot: "Those needing stable mild winters.",
     confidence: "high",
-    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
-    citations: [{ label: "NOAA — Spearfish", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Rapid City — Black Hills climatology notes", kind: "noaa", url: "https://www.weather.gov/unr/" }],
-    deepSections: [
-      {
-        id: "spearfish-chinook",
-        title: "Foehn mechanics and surface traces",
-        paragraphs: [
-          "When mid-latitude westerlies impinge on the Black Hills, stable flow can descend lee slopes as a warm, dry downslope wind. In narrow valleys, the replacement of cold pool air happens quickly enough to produce step changes in temperature readings that are visible on minute-resolution archives.",
-          "These are not merely ‘nice warm days’ — they are adiabatic warming events with real implications for snowmelt, road ice, and wildfire risk when relative humidity crashes.",
-        ],
-      },
-      {
-        id: "spearfish-ecotone",
-        title: "Ecotone fire and water",
-        paragraphs: [
-          "Spearfish sits where ponderosa pine meets grassland — a boundary that moves with fire frequency and winter moisture. Climate warming pushes some processes toward more rain-dominated winter precipitation, which changes both fire season length and plant recruitment.",
-          "Management here is applied climatology: fuel treatments, water rights, and recreation economies all depend on how snow and wind regimes shift together.",
-        ],
-      },
-    ],
   },
 
   // Virginia — Burkes Garden sinkhole valley (Tier B + deep)
@@ -839,7 +731,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     },
     soil: { texture: "Deep limestone-derived loams on pasture floor", drainage: "moderate", phRange: [6.0, 7.2], waterHolding: "high" },
     growability: { score: 66, hardinessZone: "5b", growsWell: ["Hay and pasture", "Apples (with site selection)", "Potatoes"], tricky: ["Early spring crops on basin floor without frost protection"] },
-    climateChange: { outlook2050: "Earlier spring warming alters pool frequency.", outlook2100: "Cold-pool intensity may weaken with fewer clear, calm nights.", keyShifts: [{ variable: "Frost-free season", direction: "up" }], resilienceNote: "Agricultural calendars must track floor vs rim separately." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "elevated", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     localContrast: [{ radiusKm: 3, winterLowDeltaC: -6, growingSeasonDeltaDays: -14, note: "vs rim — floor remains colder on radiative nights; growing season shorter on floor." }],
     scores: { hiddenGem: 78, microclimateUniqueness: 90, comfort: 54, resilience: 60, growability: 66, tradeoff: 44 },
@@ -856,27 +747,5 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["ranching families", "remote workers"], travelFit: ["ridge vistas", "spring frost photography"],
     whoWouldLove: "Atmospheric science nerds and pastoral landscapes.", whoMightNot: "Frost-sensitive orchardists on the basin floor.",
     confidence: "high",
-    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
-    citations: [{ label: "NOAA — nearby Tazewell County stations", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Journal of Applied Meteorology — Appalachian cold pools (regional synthesis)", kind: "academic" },
-      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
-    ],
-    deepSections: [
-      {
-        id: "burkes-pool-dynamics",
-        title: "Ventilation, pooling, and humidity",
-        paragraphs: [
-          "Cold-air pools in humid eastern climates differ from intermountain-west basins: longwave cooling still drives surface stratification, but soil moisture and cloud feedbacks can either reinforce or erode the pool depending on synoptic wind.",
-          "Burkes Garden’s nearly closed geometry limits horizontal ventilation until pressure gradients strengthen — a situation where a few meters of elevation change can mean the difference between liquid dew and rime on crops.",
-        ],
-      },
-      {
-        id: "burkes-agriculture",
-        title: "Floor vs rim farming",
-        paragraphs: [
-          "Hay and pasture dominate the floor because risk management is simpler at scale than tree fruit with late-spring radiation freezes. Rim sites catch earlier spring sun and avoid the deepest pools — classic thermal-belt logic transposed onto a sinkhole landform.",
-          "Climate change does not remove the pool; it changes the frequency of destructive freeze events relative to phenological advance — the central problem of eastern orchardists everywhere.",
-        ],
-      },
-    ],
   },
 ];

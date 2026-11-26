@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { PLACES, PLACES_BY_ID } from "../../data/places";
+// Chapters load with the profile; the full list carries them for every place.
+import { PLACES_FULL as PLACES, PLACES_FULL_BY_ID as PLACES_BY_ID } from "../../data/places.full";
 import { SITE_HISTORY, withSiteHistoryDeepSections } from "../../data/places.site-history";
 import { composePlaceExperience } from "../place-overview";
 import { mergeDeepSections } from "../place-appendix-sections";

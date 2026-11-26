@@ -39,6 +39,7 @@ import { scoreLivability } from "./livability-score";
 import { hasSourcedSkySeries, observedSunshinePct } from "./hero-glance";
 import { chapterCountLabel, hasThinChapterDepth, researchedChapterCount } from "./research-chapters";
 import { cToF, cmToIn, mToFt, mmToIn } from "./units";
+import { httpsCitationCount } from "./profile-stats";
 
 export interface ShortlistExportFile {
   body: string;
@@ -672,7 +673,7 @@ function markdownCell(s: string): string {
 
 function buildExportEvidenceReadiness(places: readonly Place[]): ExportEvidenceReadiness[] {
   return places.map(place => {
-    const httpsCitations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
+    const httpsCitations = httpsCitationCount(place);
     const chapters = researchedChapterCount(place);
     const hasLiveSignals = Boolean(place.liveSignals && Object.values(place.liveSignals).some(value => typeof value === "number"));
     const hasHumidity = Boolean(place.climate.humidity?.length);

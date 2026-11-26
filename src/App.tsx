@@ -114,6 +114,7 @@ import {
 } from "./lib/theme";
 import { ThemeToggle } from "./components/chrome/ThemeToggle";
 import { MOST_COMFORTABLE_LENS_SUMMARY } from "./lib/ranking-options";
+import { outlook2050 } from "./lib/profile-stats";
 
 /** Hero discovery paths — ranking lenses, archetype screens, or a pinned trip. */
 type DiscoveryQuickPickId =
@@ -233,6 +234,8 @@ const LearnMode = lazy(loadLearnMode);
 const PlaceDetail = lazy(loadPlaceDetail);
 const CompareView = lazy(loadCompareView);
 const SearchSuggestions = lazy(() => import("./components/SearchSuggestions"));
+const loadProfileFieldsFor = (places: readonly Place[]) =>
+  import("./data/profile-extras/registry").then(m => m.loadProfileExtrasFor(places)).catch(() => false);
 
 if (typeof window !== "undefined" && (parseAppSearch(window.location.search).compareIds?.length ?? 0) > 0) {
   preloadCompareView();
@@ -377,6 +380,15 @@ export default function App() {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
   const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
+  // Sources, outlooks and In depth chapters load after the atlas is up (and
+  // when a profile opens); not at all on a save-data connection until needed.
+  useEffect(() => {
+    if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
+    const start = () => window.setTimeout(() => void loadProfileFieldsFor(PLACES), 3000);
+    if (document.readyState === "complete") start();
+    else window.addEventListener("load", start, { once: true });
+    return () => window.removeEventListener("load", start);
+  }, []);
   const [animatePlaceDetailEntry, setAnimatePlaceDetailEntry] = useState(false);
   const [placeEntryIntent, setPlaceEntryIntent] = useState<"surprise" | null>(null);
   // Theme preference (auto/light/dark). URL ?theme=... wins on first paint;
@@ -1134,6 +1146,7 @@ export default function App() {
     // the profile code (the registry is a small chunk of its own).
     const historyId = resolvePlaceId(id) ?? id;
     void import("./data/site-history/registry").then(m => m.loadSiteHistory(historyId)).catch(() => {});
+    if (PLACES_BY_ID[historyId]) void loadProfileFieldsFor([PLACES_BY_ID[historyId]]);
     // A hop from inside an open profile keeps the original launcher, so closing
     // the chain still returns focus to the card that started it.
     const hopping = liveOverlayStateRef.current.selectedId != null;
@@ -3773,7 +3786,7 @@ const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
               className="scenario-remap__row"
               onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
               aria-label={openLabel}
-              title={prose(row.place.climateChange.outlook2050)}
+              title={prose(outlook2050(row.place) ?? "")}
             >
               <span className="scenario-remap__rank" aria-hidden>{row.projectedRank}</span>
               <span className="scenario-remap__main">

@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { PLACES_BY_ID, foldDiacritics, getPlaceSearchFields, getPlaceSearchText, normalizeSearchText } from "../../data/places";
+import { foldDiacritics, getPlaceSearchFields, getPlaceSearchText, normalizeSearchText } from "../../data/places";
+// Sources load with the profile; the full list carries them for every place.
+import { PLACES_FULL_BY_ID as PLACES_BY_ID } from "../../data/places.full";
 
 describe("foldDiacritics (D3)", () => {
   it("strips combining marks and lowercases", () => {

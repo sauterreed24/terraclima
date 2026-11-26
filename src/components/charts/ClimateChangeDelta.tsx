@@ -6,6 +6,7 @@ interface Props { place: Place }
 export function ClimateChangeDelta({ place }: Props) {
   const prose = useProse();
   const cc = place.climateChange;
+  if (!cc) return null;
   return (
     <div className="space-y-4">
       <div className="grid md:grid-cols-2 gap-3">

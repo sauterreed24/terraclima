@@ -4,6 +4,11 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### A faster first screen
+
+- **First load is 14% smaller:** each place's sources, confidence notes, climate outlook and In depth chapters (about 105 KB compressed for all 226 places) now load with its profile, in small files of about 23 places, and in the background once the atlas is up. On a slow phone connection the first ranked card appears in about 5.5 seconds instead of 6.1, and the first profile opens slightly faster than before (1.7 s, was 1.85 s). Rankings, scores, exports and Compare are unchanged; a search for a word that appears only in an In depth chapter (such as "orographic") finds those places once the background download finishes, a few seconds after the page loads.
+- **For editors:** these fields are edited in `src/data/profile-extras/`; run `npm run corpus:profile-stats` afterwards.
+
 ### Figures you can check against the source
 
 - **How each place's figures were checked:** the profile's climate figures now say whether they are station-checked (55 places), checked with caveats (45), or a grid estimate with no station near enough to check (126). The Evidence panel shows two ratings, sources and climate data, and the "High confidence" badge appears only when both are high. It used to show for 133 places whose figures were never checked against a station, because it rated only the written sources. Compare gains a "Climate figures" row.

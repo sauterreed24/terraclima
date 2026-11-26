@@ -3,7 +3,8 @@
  * Prints each remaining °C leftover after conversion for manual inspection.
  */
 import { localizeProse } from "../src/lib/units";
-import { PLACES } from "../src/data/places";
+// Every place with its profile-only fields (sources, outlook, chapters).
+import { PLACES_FULL as PLACES } from "../src/data/places.full";
 import { CONCEPTS } from "../src/data/glossary";
 import { COLLECTIONS } from "../src/data/collections";
 

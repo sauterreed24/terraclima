@@ -153,7 +153,7 @@ Tuned for real devices, not only high-end laptops.
 
 ## Data and provenance
 
-Structured editorial research backed by public climate and geospatial references. See [`docs/CLIMATE-DATA-V2.md`](docs/CLIMATE-DATA-V2.md) for formulas and pipeline commands.
+Structured editorial research backed by public climate and geospatial references. See [`docs/CLIMATE-DATA-V2.md`](docs/CLIMATE-DATA-V2.md) for formulas and pipeline commands. Each place's sources, confidence notes, climate outlook and In depth chapters live in [`src/data/profile-extras/`](src/data/profile-extras/) and load with its profile; after editing them run `npm run corpus:profile-stats`.
 
 - **Current climate (Now):** Daymet V4 R1 rolling **1996–2025** climatology (not a WMO standard normal). Official **1991–2020** WMO normals remain the same-source comparison/reference.
 - **Station validation and correction:** NOAA/GHCN-D & normals (USA), ECCC (Canada), SMN/WMO (Mexico) validate the grid. Where a representative GHCN-Daily station sits beside a place (within 15 km and 100 m of elevation, 15 or more overlapping years, no disagreeing neighbour), the grid is corrected month by month to that station, and the profile shows “validated” with the station named. 53 places carry a correction.

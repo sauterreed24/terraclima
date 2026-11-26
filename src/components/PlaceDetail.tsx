@@ -29,6 +29,7 @@ import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { withSiteHistoryDeepSections } from "../data/site-history/apply";
 import { retryFailedSiteHistory, siteHistoryThenable } from "../data/site-history/registry";
 import { climateDataBasis } from "../lib/climate-data-basis";
+import { profileExtrasThenable, retryFailedProfileExtras, withProfileExtras } from "../data/profile-extras/registry";
 import { clearDossierHash } from "../lib/dossier-url-hash";
 import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
@@ -758,7 +759,23 @@ function DetailBody({
 }) {
   // Waits (inside the profile's Suspense fallback) for this place's site
   // history file; already-loaded files do not suspend.
-  const siteHistory = use(siteHistoryThenable(placeRaw.id));
+  // Start both downloads before waiting on either, so they run side by side.
+  const historyPending = siteHistoryThenable(placeRaw.id);
+  const extrasPending = profileExtrasThenable(placeRaw);
+  const siteHistory = use(historyPending);
+  use(extrasPending);
+  const [, setExtrasRetried] = useState(0);
+  useEffect(() => {
+    if (withProfileExtras(placeRaw) !== placeRaw || placeRaw.citations !== undefined) return;
+    let live = true;
+    void retryFailedProfileExtras(placeRaw).then(arrived => {
+      if (live && arrived) setExtrasRetried(n => n + 1);
+    });
+    return () => {
+      live = false;
+    };
+  }, [placeRaw]);
+  const placeWithExtras = withProfileExtras(placeRaw);
   // Rendered without history because its download failed: retry once, and
   // re-render when it arrives (a reopen, Back or Forward retries again).
   const [, setHistoryRetried] = useState(0);
@@ -773,8 +790,8 @@ function DetailBody({
     };
   }, [placeRaw.id, siteHistory]);
   const place = useMemo(
-    () => withSiteHistoryDeepSections(placeRaw, siteHistory ?? undefined),
-    [placeRaw, siteHistory],
+    () => withSiteHistoryDeepSections(placeWithExtras, siteHistory ?? undefined),
+    [placeWithExtras, siteHistory],
   );
   const { temp, dist } = useUnits();
   const prose = useProse();
@@ -1648,7 +1665,7 @@ function DetailBody({
             <BookOpen className="w-3 h-3" /> Citations
           </div>
           <ul className="space-y-1 text-sm">
-            {place.citations.map((c, i) => {
+            {(place.citations ?? []).map((c, i) => {
               const href = safeExternalHref(c.url);
               return (
                 <li key={i} className="flex items-start gap-2 text-frost">

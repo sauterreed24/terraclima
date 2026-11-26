@@ -11,6 +11,7 @@ const COLD_HTML_PRELOAD_CHUNK_STEMS = [
   "atlas-data",
   "atlas-hydro",
   "site-history",
+  "profile-fields",
 ];
 
 // Country corpus chunks are the app's reality payload; suffix deploy builds so
@@ -160,6 +161,9 @@ export default defineConfig({
           // Its id → file index: a few KB, fetched when a profile opens, never on first load.
           if (/\/data\/site-history\/(?:registry|group-index)\.ts$/.test(id)) return "site-history-index";
           if (id.includes("/data/places.site-history")) return "site-history";
+          // Profile-only place fields: one chunk per generated group file, loaded with profiles.
+          const profileFile = /\/data\/profile-extras\/generated\/((?:usa|canada|mexico)-\d+)\.json$/.exec(id)?.[1];
+          if (profileFile) return `profile-fields-${profileFile}`;
           // Hero photo table — only the place page reads it; ships beside it.
           if (id.includes("/data/place-hero-photos")) return "hero-photos";
           // Natural Earth rivers + lakes for the atlas map — decorative, lazy.

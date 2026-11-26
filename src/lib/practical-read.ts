@@ -171,7 +171,7 @@ export function buildPracticalReadCards(place: Place): PracticalReadCard[] {
         `Use this as climate and land due diligence, not a housing-market claim. Strongest fit: ${trimSentence(place.whoWouldLove, "Start with the fit tags, then check water, access, and exposure.")} Harder fit: ${trimSentence(place.whoMightNot, "Some households will find the tradeoffs too large.")}`,
       bullets: [
         `Main climate checks: ${topRiskPhrase(place, 4)}`,
-        `Long-term read: ${trimSentence(place.climateChange.resilienceNote, "Climate outlook should be verified against local hazard maps.")}`,
+        `Long-term read: ${trimSentence(place.climateChange?.resilienceNote, "Climate outlook should be verified against local hazard maps.")}`,
         `Practical anchors: ${anchorNames}`,
       ],
     },

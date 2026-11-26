@@ -42,6 +42,7 @@ import { useElementIsolation } from "../hooks/use-element-isolation";
 import { ChevronRight, Clock3, Home, Link2, Plus, RefreshCcw, X } from "lucide-react";
 import { effectiveAccessRemoteness, effectiveHousingPressure } from "../lib/research/lived-indicators";
 import { chapterCountLabel, hasThinChapterDepth, researchedChapterCount } from "../lib/research-chapters";
+import { httpsCitationCount } from "../lib/profile-stats";
 
 type CandidateSourceFilter = "all" | CompareCandidateSource;
 type CandidateSortId = "curated" | "lens" | "risk" | "easy" | "name";
@@ -1169,7 +1170,7 @@ interface CompareEvidenceReadiness {
 
 function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenceReadiness[] {
   return places.map(place => {
-    const httpsCitations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
+    const httpsCitations = httpsCitationCount(place);
     const chapters = researchedChapterCount(place);
     const hasLiveSignals = Boolean(place.liveSignals && Object.values(place.liveSignals).some(value => typeof value === "number"));
     const hasHumidity = Boolean(place.climate.humidity?.length);
@@ -1239,7 +1240,7 @@ function buildGroupedComparisonRows(
     ? `${Math.round(values.reduce((sum, value) => sum + value, 0) / values.length)}%`
     : "no data";
   const meanHumidity = (place: Place) => meanPercent(place.climate.humidity);
-  const httpsCitations = (place: Place) => `${place.citations.filter(citation => citation.url?.startsWith("https://")).length}`;
+  const httpsCitations = (place: Place) => `${httpsCitationCount(place)}`;
 
   return [
     row("Comfort", "Priority score", places.map(place => {

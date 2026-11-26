@@ -1,4 +1,5 @@
 import type { Country, Place, Tier } from "../types";
+import { deepSectionCount as deepSections, httpsCitationCount as httpsCitations } from "./profile-stats";
 
 export type CoverageIssueId =
   | "liveSignals"
@@ -68,8 +69,8 @@ export function normalizeCoverageRegion(country: Country, region: string): strin
 
 export function analyzePlaceCoverage(place: Place): PlaceCoverageRead {
   const missing: CoverageIssueId[] = [];
-  const httpsCitationCount = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
-  const deepSectionCount = place.deepSections?.length ?? 0;
+  const httpsCitationCount = httpsCitations(place);
+  const deepSectionCount = deepSections(place);
 
   if (!place.liveSignals) missing.push("liveSignals");
   if (place.climate.humidity == null) missing.push("humidity");

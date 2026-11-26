@@ -2,7 +2,8 @@
 // Terraclima — Unified Places Corpus
 // ============================================================
 
-import type { Citation, Place } from "../types";
+import type { Place } from "../types";
+import type { PolishProfileFields } from "./profile-extras/types";
 import { ARCHETYPE_LABELS, DRIVER_LABELS } from "../types";
 import { applyClimateV2Overlay } from "../lib/climate-v2/overlay";
 import { sanitizeLivedSignals } from "../lib/research/lived-indicators";
@@ -14,10 +15,8 @@ import { TIER_C_INDICATORS } from "./places.tier-c-indicators";
 import { EXPERIENCE_AUTHORED } from "./places.experience-authored";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "./generated/climate-v2";
 import housingPressureJson from "./generated/research/housing-pressure-by-id.json";
-import citationsOverlayJson from "./generated/research/citations-overlay.json";
 
 const HOUSING_PRESSURE_BY_ID = (housingPressureJson as { byId: Record<string, number> }).byId;
-const CITATIONS_OVERLAY_BY_ID = (citationsOverlayJson as { byId: Record<string, Citation[]> }).byId;
 
 const TIER_C_POLISH_ALL: Record<string, typeof TIER_C_POLISH[keyof typeof TIER_C_POLISH]> = {
   ...TIER_C_POLISH,
@@ -75,19 +74,16 @@ function applyPolish(p: Place): Place {
     liveSignals = { ...p.liveSignals, sources: merged };
   }
 
-  const deepSections = p.deepSections ?? polish.deepSections;
+  // In depth chapters and citations (polish included) are profile-only:
+  // src/data/profile-extras puts them back when a profile needs them.
+  return { ...p, climate, liveSignals };
+}
 
-  // Citations: concatenate authored + polish, deduping by URL so a polish
-  // entry never introduces a duplicate of an existing source URL.
-  const citations = polish.additionalCitations
-    ? (() => {
-        const existingUrls = new Set(p.citations.map(c => c.url ?? ""));
-        const additions = polish.additionalCitations.filter(c => !existingUrls.has(c.url ?? ""));
-        return [...p.citations, ...additions];
-      })()
-    : p.citations;
-
-  return { ...p, climate, liveSignals, deepSections, citations };
+/** Tier C polish fields that belong with a place's profile (merged lazily). */
+export function polishProfileFields(id: string): PolishProfileFields | undefined {
+  const polish = TIER_C_POLISH_ALL[id];
+  if (!polish || (!polish.deepSections && !polish.additionalCitations)) return undefined;
+  return { deepSections: polish.deepSections, additionalCitations: polish.additionalCitations };
 }
 
 const POLISHED_USA = PLACES_USA.map(applyPolish);
@@ -116,22 +112,6 @@ function applyLivedIndicators(p: Place): Place {
       accessRemotenessIndex,
     },
   };
-}
-
-/**
- * Merge compact research citation projection (deprecated Citation[] view).
- * Full PlaceResearchReceipt records stay lazy-loaded in Evidence UI so the
- * eager places graph does not ship multi-megabyte receipt JSON.
- */
-function applyResearch(p: Place): Place {
-  const projected = CITATIONS_OVERLAY_BY_ID[p.id];
-  if (!projected?.length) return p;
-  const existingUrls = new Set(projected.map(c => (c.url ?? "").toLowerCase()));
-  const authoredExtras = p.citations.filter(c => {
-    const url = (c.url ?? "").toLowerCase();
-    return !url || !existingUrls.has(url);
-  });
-  return { ...p, citations: [...projected, ...authoredExtras] };
 }
 
 /**
@@ -169,13 +149,7 @@ export const PLACES: Place[] = [
   ...POLISHED_USA,
   ...POLISHED_CANADA,
   ...POLISHED_MEXICO,
-].map(p =>
-  applyResearch(
-    applyLivedIndicators(
-      applyClimateV2(applyExperienceAuthored(p)),
-    ),
-  ),
-);
+].map(p => applyLivedIndicators(applyClimateV2(applyExperienceAuthored(p))));
 
 export const PLACES_BY_ID: Record<string, Place> = Object.fromEntries(
   PLACES.map(p => [p.id, p]),
@@ -309,6 +283,18 @@ function searchField(parts: readonly string[]): string {
   return out || " ";
 }
 
+/**
+ * In depth chapters load with the profile (`profile-extras/registry`); once a
+ * country's file arrives its chapter text joins that country's search prose.
+ */
+const DEFERRED_SEARCH_PROSE = new Map<string, readonly string[]>();
+export function addDeferredSearchProse(id: string, parts: readonly string[]): void {
+  if (parts.length === 0 || DEFERRED_SEARCH_PROSE.has(id)) return;
+  DEFERRED_SEARCH_PROSE.set(id, parts);
+  const place = PLACES_BY_ID[id];
+  if (place) PLACE_SEARCH_FIELDS.delete(place);
+}
+
 export function getPlaceSearchFields(place: Place): PlaceSearchFields {
   const cached = PLACE_SEARCH_FIELDS.get(place);
   if (cached !== undefined) return cached;
@@ -354,6 +340,7 @@ export function getPlaceSearchFields(place: Place): PlaceSearchFields {
       ...(typeof history === "string" ? [history] : history ?? []),
       experience?.why ?? "",
       ...(place.deepSections ?? []).map(s => `${s.title} ${s.paragraphs.join(" ")}`),
+      ...(place.deepSections ? [] : DEFERRED_SEARCH_PROSE.get(place.id) ?? []),
     ]),
     crossReference: searchField((place.nearbyContrasts ?? []).map(c => `${c.label} ${c.note}`)),
   };

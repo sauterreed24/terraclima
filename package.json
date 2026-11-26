@@ -41,6 +41,7 @@
     "climate:data:verify": "tsx scripts/climate-data/verify.ts",
     "climate:data:audit": "tsx scripts/climate-data/audit.ts",
     "climate:data:update": "tsx scripts/climate-data/update.ts",
+    "corpus:profile-stats": "tsx scripts/generate-profile-stats.ts",
     "corpus:research:bootstrap": "tsx scripts/research/bootstrap-research-layer.ts",
     "corpus:research:citations": "tsx scripts/research/build-citations-overlay.ts",
     "corpus:research:verify": "tsx scripts/research/verify-research.ts",

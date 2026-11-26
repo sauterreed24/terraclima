@@ -27,6 +27,7 @@ const COLD_CHUNK_STEMS = [
   "atlas-data",
   "atlas-hydro",
   "site-history",
+  "profile-fields",
 ] as const;
 
 /**
@@ -49,8 +50,12 @@ const BUDGETS = {
    * Raised to 765 KB when 880 templated season and fit lines were rewritten
    * by hand: the file got smaller, but varied prose compresses less well than
    * repeated templates (~757 KB measured).
+   *
+   * Lowered to 670 KB when sources, outlooks, confidence notes and In depth
+   * chapters moved out of first load into per-group profile files
+   * (src/data/profile-extras; ~654 KB measured), so the saving cannot erode.
    */
-  totalInitialJsGzip: 765_000,
+  totalInitialJsGzip: 670_000,
   /** Total initial modulepreload count. Baseline 15 → 22. */
   maxModulePreloads: 22,
   /** Atlas topology cold chunk raw size ceiling (lazy). Baseline ~222 KB → 280 KB. */
