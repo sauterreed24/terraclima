@@ -234,6 +234,7 @@ const LearnMode = lazy(loadLearnMode);
 const PlaceDetail = lazy(loadPlaceDetail);
 const CompareView = lazy(loadCompareView);
 const SearchSuggestions = lazy(() => import("./components/SearchSuggestions"));
+const SharedSavedPlacesPrompt = lazy(() => import("./components/chrome/SharedSavedPlacesPrompt"));
 const loadProfileFieldsFor = (places: readonly Place[]) =>
   import("./data/profile-extras/registry").then(m => m.loadProfileExtrasFor(places)).catch(() => false);
 
@@ -379,6 +380,10 @@ export default function App() {
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
   }, []);
+  // Opened from a "Link to these places" link: the prompt asks before adding.
+  // Captured at start-up: the address sync drops parameters it does not know.
+  const [sharedSavedLink, setSharedSavedLink] = useState(() =>
+    typeof window !== "undefined" && window.location.search.includes("saved=") ? window.location.search : "");
   const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
   // Sources, outlooks and In depth chapters load after the atlas is up (and
   // when a profile opens); not at all on a save-data connection until needed.
@@ -1836,6 +1841,16 @@ export default function App() {
         </a>
         <div className="ambient-aurora" aria-hidden="true" />
         <main id="main-content" tabIndex={-1} className="relative z-10 flex flex-col flex-1 min-h-0 outline-none">
+      {sharedSavedLink ? (
+        <Suspense fallback={null}>
+          <SharedSavedPlacesPrompt
+            search={sharedSavedLink}
+            saved={bookmarkIds}
+            onSaved={(ids, message) => { setBookmarkIds(new Set(ids)); setTransientFeedback(message); }}
+            onDone={() => setSharedSavedLink("")}
+          />
+        </Suspense>
+      ) : null}
       <div ref={topBarRegionRef} data-topbar-region>
         <TopBar
           view={view}

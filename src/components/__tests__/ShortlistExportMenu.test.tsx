@@ -40,6 +40,7 @@ describe("ShortlistExportMenu", () => {
       "CSVClimate figures and scores, as a table for spreadsheets",
       "GeoJSONMap points for GIS and mapping tools",
       "Calendar (.ics)Best months to visit, as calendar events",
+      "Link to these placesOffers them to another device or person",
     ]);
     expect(items.map(item => item.getAttribute("aria-label"))).toEqual([
       "Visit plan: Best months, data gaps and what to check, as text",
@@ -47,6 +48,7 @@ describe("ShortlistExportMenu", () => {
       "CSV: Climate figures and scores, as a table for spreadsheets",
       "GeoJSON: Map points for GIS and mapping tools",
       "Calendar (.ics): Best months to visit, as calendar events",
+      "Link to these places: Offers them to another device or person",
     ]);
     expect(items[0]).toHaveAttribute("title", "Visit plan: Best months, data gaps and what to check, as text");
   });

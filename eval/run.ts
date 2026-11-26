@@ -240,6 +240,12 @@ async function sectionJobs(browser: Browser) {
     const page = await open(ctx); await firstCard(page);
     let steps = 0;
     await page.getByRole("button", { name: /^Export saved places/ }).first().click(); steps++;
+    // Every item of the menu must be reachable (one was covered by the panel below it).
+    const blocked: string[] = [];
+    for (const item of await page.getByRole("menuitem").all()) {
+      if (!(await item.click({ trial: true, timeout: 1500 }).then(() => true, () => false))) blocked.push((await item.getAttribute("aria-label")) ?? "?");
+    }
+    record("S2k", "export menu items covered by other panels", blocked.length, "0", blocked.length === 0, blocked);
     const dl = page.waitForEvent("download", { timeout: 8000 });
     await page.getByRole("menuitem", { name: /^JSON/ }).first().click().catch(async () => {
       await page.getByRole("button", { name: /^JSON/ }).first().click();
@@ -274,6 +280,34 @@ async function sectionJobs(browser: Browser) {
       await other.close();
     } catch (e) { mdetail = String(e).slice(0, 120); }
     record("S2f", "move saved places to another browser (export, then import there; its own save kept)", moved ? `${mstep} steps` : `failed ${mdetail}`, "done in <= 4", moved && mstep <= 4);
+    // J7 send saved places to someone by link; their browser asks first and keeps its own saves
+    {
+      let linkSteps = steps; let ok = false; let detail = "";
+      try {
+        await ctx.grantPermissions(["clipboard-read", "clipboard-write"], { origin: BASE });
+        const sender = await open(ctx); await firstCard(sender);
+        await sender.getByRole("button", { name: /^Export saved places/ }).first().click(); linkSteps = 1;
+        await sender.getByRole("menuitem", { name: /^Link to these places/ }).first().click(); linkSteps++;
+        await sender.getByText(/Link copied/).first().waitFor({ timeout: 5000 });
+        const link = await sender.evaluate(() => navigator.clipboard.readText());
+        const other = await newCtx(browser);
+        await other.addInitScript(() => {
+          if (!sessionStorage.getItem("seeded")) {
+            localStorage.setItem("terraclima.bookmarks.v1", JSON.stringify(["sitka-ak", "bishop-ca"])); sessionStorage.setItem("seeded", "1");
+          }
+        });
+        const p2 = await open(other, link.replace(/^https?:\/\/[^/]+/, "")); await firstCard(p2);
+        await p2.getByRole("heading", { name: /This link carries 3 saved places/ }).waitFor({ timeout: 8000 }); linkSteps++; // open the link
+        const untouched = (await bookmarks(p2)).join(",") === "sitka-ak,bishop-ca";
+        await p2.getByRole("button", { name: /^Add 2 places$/ }).click(); linkSteps++;
+        await p2.waitForTimeout(300);
+        const after = await bookmarks(p2);
+        ok = untouched && after.join(",") === "sitka-ak,bishop-ca,sequim-wa,oaxaca-mx" && !new URL(p2.url()).searchParams.has("saved");
+        detail = `before=${untouched} after=${after.join(",")}`;
+        await other.close();
+      } catch (e) { detail = String(e).slice(0, 140); }
+      record("S2i", "send saved places by link; receiver is asked, keeps own saves, gets the rest", ok ? `${linkSteps} steps` : `failed ${detail}`, "done in <= 4", ok && linkSteps <= 4);
+    }
     await ctx.close();
   }
 }

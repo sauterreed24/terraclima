@@ -9,8 +9,8 @@ import { loadHomeBaseId } from "../../lib/home-base";
 import type { ExportContext, ShortlistExportFile } from "../../lib/shortlist-export";
 import { useFocusTrap } from "../../hooks/use-focus-trap";
 
-type ExportFormatId = "markdown" | "json" | "csv" | "geojson" | "ics";
-type ExportStatus = "idle" | "preparing" | "ready" | "failed";
+type ExportFormatId = "markdown" | "json" | "csv" | "geojson" | "ics" | "link";
+type ExportStatus = "idle" | "preparing" | "ready" | "failed" | "linked" | "link-failed";
 type MenuPlacement = "down" | "up";
 
 const FORMATS: ReadonlyArray<{
@@ -27,6 +27,7 @@ const FORMATS: ReadonlyArray<{
   { id: "csv", label: "CSV", hint: "Climate figures and scores, as a table for spreadsheets" },
   { id: "geojson", label: "GeoJSON", hint: "Map points for GIS and mapping tools" },
   { id: "ics", label: "Calendar (.ics)", hint: "Best months to visit, as calendar events" },
+  { id: "link", label: "Link to these places", hint: "Offers them to another device or person" },
 ];
 const MENU_NAV_KEYS = new Set(["ArrowDown", "ArrowRight", "ArrowUp", "ArrowLeft", "Home", "End"]);
 
@@ -53,6 +54,7 @@ async function buildShortlistExport(format: ExportFormatId, places: readonly Pla
     case "csv": return exports.exportShortlistAsCSV(places, readExportSession());
     case "geojson": return exports.exportShortlistAsGeoJSON(places, readExportSession());
     case "ics": return exports.exportShortlistAsICS(places);
+    case "link": throw new Error("A link is not a file");
   }
 }
 
@@ -145,7 +147,9 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
     status === "preparing" ? "Preparing export..."
       : status === "ready" ? "Download started."
         : status === "failed" ? "The download did not start. Try another format or browser."
-          : "";
+          : status === "linked" ? "Link copied. Opening it offers to add these places."
+            : status === "link-failed" ? "The link could not be copied. Try a download instead."
+              : "";
   const triggerLabel = disabled
     ? "Save a place to export it"
     : status === "preparing"
@@ -155,7 +159,8 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
     const trigger = triggerRef.current;
     if (!trigger || typeof window === "undefined") return "down";
     const rect = trigger.getBoundingClientRect();
-    const estimatedPanelHeight = Math.min(280, Math.max(240, FORMATS.length * 48 + 28));
+    // Each item is two lines (~60 px) plus the panel's padding.
+    const estimatedPanelHeight = FORMATS.length * 60 + 28;
     const spaceBelow = window.innerHeight - rect.bottom;
     const spaceAbove = rect.top;
     return spaceBelow < estimatedPanelHeight && spaceAbove > spaceBelow ? "up" : "down";
@@ -184,6 +189,14 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
     (format: ExportFormatId) => {
       const exportPlaces = [...places];
       close();
+      if (format === "link") {
+        void import("../../lib/shared-saved-places")
+          .then(m => m.shareSavedPlacesLink(exportPlaces.map(p => p.id)))
+          .then(outcome => outcome !== "dismissed" && setExportStatus(outcome === "failed" ? "link-failed" : "linked"))
+          .catch(() => setExportStatus("link-failed"))
+          .finally(() => { focusTriggerSoon(); resetLater(); });
+        return;
+      }
       setExportStatus("preparing");
       if (statusResetRef.current !== null) {
         window.clearTimeout(statusResetRef.current);

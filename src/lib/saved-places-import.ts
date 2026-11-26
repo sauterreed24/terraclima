@@ -86,6 +86,16 @@ export function parseSavedPlacesFile(
   return { ok: true, ids, unknown };
 }
 
+/** One sentence describing an import, for the status line. */
+function describeImport(result: ReturnType<typeof importBookmarks>, unknown: number): string {
+  const n = result.added.length;
+  const parts = [n === 0 ? "No new places to add" : `Added ${n} saved place${n === 1 ? "" : "s"}`];
+  if (result.alreadySaved > 0) parts.push(`${result.alreadySaved} ${result.alreadySaved === 1 ? "was" : "were"} already saved`);
+  if (unknown > 0) parts.push(`${unknown} ${unknown === 1 ? "is" : "are"} no longer in the atlas`);
+  if (result.capped) parts.push(`this browser keeps up to ${BOOKMARK_LIMIT}, so the rest were not added`);
+  return `${parts.join("; ")}.`;
+}
+
 /**
  * Read a picked file, add its places to the saved list, and describe what
  * happened in one sentence for the status line. `ids` is the saved list after.
@@ -109,10 +119,11 @@ export async function importSavedPlacesFile(
     };
   }
   const result = importBookmarks(parsed.ids, resolve);
-  const n = result.added.length;
-  const parts = [n === 0 ? "No new places to add" : `Added ${n} saved place${n === 1 ? "" : "s"}`];
-  if (result.alreadySaved > 0) parts.push(`${result.alreadySaved} ${result.alreadySaved === 1 ? "was" : "were"} already saved`);
-  if (parsed.unknown > 0) parts.push(`${parsed.unknown} ${parsed.unknown === 1 ? "is" : "are"} no longer in the atlas`);
-  if (result.capped) parts.push(`this browser keeps up to ${BOOKMARK_LIMIT}, so the rest were not added`);
-  return { ids: result.ids, message: `${parts.join("; ")}.` };
+  return { ids: result.ids, message: describeImport(result, parsed.unknown) };
+}
+
+/** Add places from a "Link to these places" link (ids already resolved). */
+export function importSavedIds(ids: readonly string[], resolve: (id: string) => string | null): { ids: string[]; message: string } {
+  const result = importBookmarks(ids, resolve);
+  return { ids: result.ids, message: describeImport(result, 0) };
 }
