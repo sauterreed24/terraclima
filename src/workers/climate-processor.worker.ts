@@ -13,6 +13,14 @@
 
 import { isWorkerRequest, type WorkerResponse } from "../types/worker";
 import { runScenarioRanking } from "../lib/climate-processor";
+import { PLACES } from "../data/places";
+
+// The worker keeps its own copy of the atlas. In depth chapter text reaches
+// search only once the profile-field files arrive (as on the page), so fetch
+// them here too; searches before that match without it.
+void import("../data/profile-extras/registry")
+  .then(m => m.loadProfileExtrasFor(PLACES))
+  .catch(() => {});
 
 // `self` is typed via the DOM lib here; cast to the minimal worker surface we
 // use so we don't have to add the "webworker" lib (which would clash with DOM
