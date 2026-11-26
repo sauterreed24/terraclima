@@ -1,9 +1,13 @@
 import type { Place } from "../types";
 
-/** [citations, https citations, In depth chapters, 2050 outlook] per place id. */
-export type ProfileStatsRow = [number, number, number, string];
+/** [citations, https citations, In depth chapters, 2050 outlook, research review date] per place id. */
+export type ProfileStatsRow = [number, number, number, string, string];
 
-export function computeProfileStats(places: readonly Place[]): Record<string, ProfileStatsRow> {
+export function computeProfileStats(
+  places: readonly Place[],
+  /** Place id → date its research receipt was last reviewed (receipts.json). */
+  reviewedOn: Readonly<Record<string, string>> = {},
+): Record<string, ProfileStatsRow> {
   return Object.fromEntries(places.map(p => {
     const citations = p.citations ?? [];
     return [p.id, [
@@ -11,6 +15,7 @@ export function computeProfileStats(places: readonly Place[]): Record<string, Pr
       citations.filter(c => c.url?.startsWith("https://")).length,
       p.deepSections?.length ?? 0,
       p.climateChange?.outlook2050 ?? "",
+      reviewedOn[p.id] ?? "",
     ]];
   }));
 }
@@ -38,4 +43,9 @@ export function computeProfileFieldGroups(places: readonly Place[]): Record<stri
     (groups[group] ??= {})[place.id] = profileFieldsOf(place);
   }
   return groups;
+}
+
+/** Review dates from the research receipts bundle (`{ receipts: [{ placeId, reviewedOn }] }`). */
+export function reviewDatesFrom(bundle: { receipts: ReadonlyArray<{ placeId: string; reviewedOn: string }> }): Record<string, string> {
+  return Object.fromEntries(bundle.receipts.map(r => [r.placeId, r.reviewedOn]));
 }

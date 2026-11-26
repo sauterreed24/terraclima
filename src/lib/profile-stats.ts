@@ -33,3 +33,8 @@ export function deepSectionCount(place: Counted): number {
 export function outlook2050(place: Counted): string | null {
   return place.climateChange?.outlook2050 ?? (STATS[place.id]?.[3] || null);
 }
+
+/** When the place's research sources were last reviewed (shown before the full receipts load). */
+export function researchReviewedOn(place: Pick<Place, "id">): string | null {
+  return STATS[place.id]?.[4] || null;
+}

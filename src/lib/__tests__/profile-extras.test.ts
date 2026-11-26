@@ -3,7 +3,8 @@ import { PLACES } from "../../data/places";
 import { PLACES_FULL } from "../../data/places.full";
 import { withProfileExtras } from "../../data/profile-extras/registry";
 import statsJson from "../../data/profile-extras/stats.json";
-import { computeProfileFieldGroups, computeProfileStats } from "../profile-stats-compute";
+import { computeProfileFieldGroups, computeProfileStats, reviewDatesFrom } from "../profile-stats-compute";
+import receipts from "../../data/generated/research/receipts.json";
 import { rankPlaces } from "../scoring";
 import { ALL_RANKING_PROFILES } from "../ranking-options";
 import { assessLiveFit, rankLiveFit } from "../live-fit";
@@ -37,7 +38,7 @@ describe("profile-only fields (citations, confidence notes, climate-change outlo
   });
 
   it("stats.json and the generated group files are up to date (run npm run corpus:profile-stats)", async () => {
-    expect(statsJson).toEqual(computeProfileStats(PLACES_FULL));
+    expect(statsJson).toEqual(computeProfileStats(PLACES_FULL, reviewDatesFrom(receipts as never)));
     const groups = computeProfileFieldGroups(PLACES_FULL);
     for (const [group, fields] of Object.entries(groups)) {
       const file = (await import(`../../data/profile-extras/generated/${group}.json`)).default;

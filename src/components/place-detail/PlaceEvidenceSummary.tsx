@@ -9,6 +9,7 @@ import {
 } from "../../lib/evidence-summary";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "../../data/generated/climate-v2";
 import { climateDataBasis } from "../../lib/climate-data-basis";
+import { researchReviewedOn } from "../../lib/profile-stats";
 import { loadResearchReceipts } from "../../data/generated/research";
 import { groupClaimsByScope, sourcesForClaim } from "../../lib/research/claim-scope";
 import { safeExternalHref } from "../../lib/safe-url";
@@ -30,6 +31,8 @@ export function PlaceEvidenceSummary({
   const summary = buildPlaceEvidenceSummary(place);
   const [receipt, setReceipt] = useState<PlaceResearchReceipt | null>(null);
   const claimGroups = receipt ? groupClaimsByScope(receipt) : [];
+  // The date ships with the atlas, so it shows before the sources are opened.
+  const reviewedOn = receipt?.reviewedOn ?? researchReviewedOn(place);
   const prose = useProse();
   const { temp } = useUnits();
   const panelId = useId();
@@ -101,9 +104,9 @@ export function PlaceEvidenceSummary({
           <span className="tc-evidence-summary__pill" data-tone="sage">
             {summary.completenessLabel} coverage
           </span>
-          {receipt ? (
-            <span className="tc-evidence-summary__pill" data-tone="ice" title={`Research receipt last reviewed ${receipt.reviewedOn}`}>
-              Reviewed {receipt.reviewedOn}
+          {reviewedOn ? (
+            <span className="tc-evidence-summary__pill" data-tone="ice" title={`Research receipt last reviewed ${reviewedOn}`}>
+              Reviewed {reviewedOn}
             </span>
           ) : null}
           <ChevronDown

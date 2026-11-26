@@ -8,6 +8,7 @@ All notable changes to Terraclima are tracked here.
 
 - **First load is 14% smaller:** each place's sources, confidence notes, climate outlook and In depth chapters (about 105 KB compressed for all 226 places) now load with its profile, in small files of about 23 places, and in the background once the atlas is up. On a slow phone connection the first ranked card appears in about 5.5 seconds instead of 6.1, and the first profile opens slightly faster than before (1.7 s, was 1.85 s). Rankings, scores, exports and Compare are unchanged; a search for a word that appears only in an In depth chapter (such as "orographic") finds those places once the background download finishes, a few seconds after the page loads.
 - **For editors:** these fields are edited in `src/data/profile-extras/`; run `npm run corpus:profile-stats` afterwards.
+- **Evidence panel:** the "Reviewed" date shows on the closed panel again, without downloading the 2.5 MB source list (it ships in the small stats file).
 - **Sunshine in Compare:** where no weather station records sunshine, Compare shows the estimate the "Sunniest winters" ranking already uses, marked as one ("~74% est."; typically within about 9 points of a station figure). It said "no data", so finalists could be blank on a figure the ranking sorts by.
 
 ### Figures you can check against the source
