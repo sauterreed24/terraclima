@@ -299,11 +299,17 @@ async function sectionJobs(browser: Browser) {
         const p2 = await open(other, link.replace(/^https?:\/\/[^/]+/, "")); await firstCard(p2);
         await p2.getByRole("heading", { name: /This link carries 3 saved places/ }).waitFor({ timeout: 8000 }); linkSteps++; // open the link
         const untouched = (await bookmarks(p2)).join(",") === "sitka-ak,bishop-ca";
+        // Typing elsewhere while the prompt is open keeps focus (it used to steal it each render).
+        const box = p2.getByPlaceholder("Search places or regions").first();
+        await box.click(); await box.pressSequentially("bishop", { delay: 40 });
+        const typed = await box.inputValue();
+        await box.fill("");
+        if (typed !== "bishop") detail = `typing while asked kept "${typed}"`;
         await p2.getByRole("button", { name: /^Add 2 places$/ }).click(); linkSteps++;
         await p2.waitForTimeout(300);
         const after = await bookmarks(p2);
-        ok = untouched && after.join(",") === "sitka-ak,bishop-ca,sequim-wa,oaxaca-mx" && !new URL(p2.url()).searchParams.has("saved");
-        detail = `before=${untouched} after=${after.join(",")}`;
+        ok = typed === "bishop" && untouched && after.join(",") === "sitka-ak,bishop-ca,sequim-wa,oaxaca-mx" && !new URL(p2.url()).searchParams.has("saved");
+        detail ||= `before=${untouched} after=${after.join(",")}`;
         await other.close();
       } catch (e) { detail = String(e).slice(0, 140); }
       record("S2i", "send saved places by link; receiver is asked, keeps own saves, gets the rest", ok ? `${linkSteps} steps` : `failed ${detail}`, "done in <= 4", ok && linkSteps <= 4);
@@ -354,7 +360,18 @@ async function sectionProfileFields(browser: Browser) {
     counts.push(await inListCount(pg));
     await c2.close();
   }
-  record("S2h", "chapter-only search word after the page settles (now / 2050 layer): places shown = before the split", `${counts.join(" / ")} vs ${expected}`, "equal", counts.every(n => n === expected));
+  // Deep links, the 2050 layer and save-data connections (no background download) as well.
+  const linked = topIds("surrendered", 999).length;
+  const linkCounts: number[] = [];
+  for (const [path, saveData] of [["/?q=surrendered", false], ["/?scn=ssp245&q=surrendered", false], ["/?q=surrendered", true]] as const) {
+    const c3 = await newCtx(browser);
+    if (saveData) await c3.addInitScript(() => Object.defineProperty(navigator, "connection", { value: { saveData: true }, configurable: true }));
+    const pg = await open(c3, path); await firstCard(pg).catch(() => {});
+    await pg.waitForTimeout(5000);
+    linkCounts.push(await inListCount(pg).catch(() => -1));
+    await c3.close();
+  }
+  record("S2h", "chapter-only search (typed: now / 2050; linked: now / 2050 / save-data) = before the split", `${[...counts, ...linkCounts].join(" / ")} vs ${expected},${linked}`, "equal", counts.every(n => n === expected) && linkCounts.every(n => n === linked));
 }
 
 // ---------------------------------------------------------------- S3 data safety
@@ -565,9 +582,14 @@ async function sectionRecover(browser: Browser) {
     let hits = 0;
     await ctx.route(/profile-fields-usa-1-.*\.js$/, r => { hits++; return r.abort(); }); // Bishop's group
     const page = await open(ctx, "/?p=bishop-ca", /Failed to fetch dynamically imported module/);
-    await page.waitForTimeout(4000);
+    await page.waitForTimeout(4500); // past the idle prefetch
+    const settled = hits;
+    // Re-renders of the open profile (save, unsave) must not download again.
+    for (let i = 0; i < 2; i++) await page.getByRole("dialog").getByRole("button", { name: /^(Save|Remove) Bishop/ }).first().click().catch(() => {});
+    await page.waitForTimeout(1000);
     const body = await page.getByRole("dialog").first().innerText().catch(() => "");
-    results["profile-fields file fails → profile still opens, no retry storm"] = /Bishop/.test(body) && /Climate normals/i.test(body) && hits <= 4;
+    results["profile-fields file fails → profile opens, says sources are missing, no re-download on re-render"] =
+      /Bishop/.test(body) && /Climate normals/i.test(body) && /could not be downloaded/.test(body) && hits <= 4 && hits === settled;
     if (hits > 4) console.log(`        profile-fields requests while failing: ${hits}`);
     await ctx.close();
   }
