@@ -342,6 +342,14 @@ describe("state, province and Mexican state abbreviations", () => {
   });
 });
 
+describe("words that are also Object property names", () => {
+  it("search them as words, never as built-in methods", () => {
+    for (const q of ["constructor oregon", "toString mt", "__proto__ fort", "hasOwnProperty st", "valueOf", "constructor"]) {
+      expect(() => rankedIds(q), q).not.toThrow();
+    }
+  });
+});
+
 describe("typo matches prefer whole words", () => {
   it("'sante fe' puts Santa Fe ahead of Felton", () => {
     expect(rankedIds("sante fe")[0]).toBe("santa-fe-nm");

@@ -447,3 +447,19 @@ describe("month param (m) for the month ranking", () => {
     }
   });
 });
+
+describe("link values that are Object property names", () => {
+  it("never validate as a place, collection or archetype", () => {
+    const places = { "sequim-wa": {} };
+    const collections = { "fog-belts": {} };
+    const archetypes = { "rain-shadow-sanctuary": {} };
+    for (const evil of ["constructor", "toString", "__proto__", "hasOwnProperty", "valueOf"]) {
+      const v = validatedStateFromSearch(`?p=${evil}&col=${evil}&a=${evil}&cmp=${evil}&hb=${evil}`, places, collections, archetypes);
+      expect(v.placeId, evil).toBeNull();
+      expect(v.collectionId, evil).toBeNull();
+      expect(v.archetypes, evil).toEqual([]);
+      expect(v.compareIds, evil).toEqual([]);
+      expect(v.homeBaseId, evil).toBeNull();
+    }
+  });
+});

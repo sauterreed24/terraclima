@@ -364,9 +364,11 @@ export function validatedStateFromSearch(
   const p = parseAppSearch(search);
   const view: AppView =
     p.view === "trips" || p.view === "collections" || p.view === "learn" ? p.view : "explorer";
-  const resolveId = resolvePlaceId ?? ((id: string) => placesById[id] ? id : null);
+  // Own keys only: "constructor" or "__proto__" in a link must not pass as an id.
+  const owns = (record: Record<string, unknown>, key: string) => Object.prototype.hasOwnProperty.call(record, key);
+  const resolveId = resolvePlaceId ?? ((id: string) => owns(placesById, id) ? id : null);
   const placeId = p.placeId ? resolveId(p.placeId) : null;
-  const collectionId = p.collectionId && collectionById[p.collectionId] ? p.collectionId : null;
+  const collectionId = p.collectionId && owns(collectionById, p.collectionId) ? p.collectionId : null;
   const countries = p.countries ?? [];
   const archetypes = archetypesById
     ? (p.archetypes ?? []).filter(

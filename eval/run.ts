@@ -466,7 +466,15 @@ async function sectionRecover(browser: Browser) {
     const page = await open(ctx, "/?p=nowhere&cmp=a,b,c,d,e,f&sh=999&r=zzz&fit=nope&hb=x&q=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E");
     await page.waitForTimeout(1500);
     const body = await page.locator("body").innerText();
-    results["bad link params"] = !/Something went wrong/i.test(body) && body.length > 500;
+    let ok = !/Something went wrong/i.test(body) && body.length > 500;
+    // Values that are also Object property names (a crash class found in review).
+    for (const q of ["?q=constructor%20oregon", "?col=constructor", "?v=trips&col=__proto__", "?a=toString&p=hasOwnProperty&hb=valueOf"]) {
+      await page.goto(BASE + "/" + q);
+      await page.waitForTimeout(1500);
+      const t = await page.locator("body").innerText();
+      if (/Something went wrong|could not load/i.test(t) || t.length < 500) { ok = false; console.log(`        bad link broke the page: ${q}`); }
+    }
+    results["bad link params"] = ok;
     await ctx.close();
   }
   {

@@ -139,7 +139,8 @@ export function parseSearchQuery(raw: string | null | undefined): ParsedSearchQu
   // but "mt" on its own is Montana.
   if (tokens.length > 1) {
     for (const token of tokens) {
-      const variants = token.phrase ? undefined : WORD_VARIANTS[token.text];
+      // Own keys only: a token like "constructor" is a word, not an Object method.
+      const variants = token.phrase || !Object.prototype.hasOwnProperty.call(WORD_VARIANTS, token.text) ? undefined : WORD_VARIANTS[token.text];
       if (variants) token.variants = [...variants];
     }
   }
