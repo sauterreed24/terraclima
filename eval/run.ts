@@ -29,6 +29,8 @@ import { runScenarioRanking } from "../src/lib/climate-processor";
 import RECORDS from "../src/data/generated/climate-v2/records.json" with { type: "json" };
 import { assessLiveFit } from "../src/lib/live-fit";
 import { SITE_HISTORY } from "../src/data/places.site-history";
+import { PLACES_FULL_BY_ID } from "../src/data/places.full";
+import { SITE_HISTORY_GROUP_BY_ID } from "../src/data/site-history/group-index";
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const args = process.argv.slice(2);
@@ -276,6 +278,48 @@ async function sectionJobs(browser: Browser) {
   }
 }
 
+// Profiles carry their sources, 2050 outlook and chapters (loaded after first paint since the split).
+async function sectionProfileFields(browser: Browser) {
+  const out: string[] = []; let n = 0;
+  const ctx = await newCtx(browser, { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  for (const p of sample(PLACES, 6, 23)) {
+    const full = PLACES_FULL_BY_ID[p.id]!;
+    const pg = await open(ctx, n % 2 === 0 ? `/?p=${p.id}` : `/?q=${encodeURIComponent(p.name)}`);
+    if (n % 2 === 1) { await firstCard(pg); await pg.locator(CARD).first().click(); }
+    n++;
+    const dlg = pg.getByRole("dialog").first();
+    await dlg.getByText(/Climate normals/i).first().waitFor({ timeout: 20000 });
+    // Open every collapsed section so its text is in the page.
+    for (const b of await dlg.getByRole("button", { name: /^Show\b/ }).all()) await b.click().catch(() => {});
+    await pg.waitForTimeout(400);
+    const t = (await dlg.textContent() ?? "").replace(/\s+/g, " ");
+    const want = [
+      ["first source", full.citations?.[0]?.label ?? ""],
+      ["2050 outlook", (full.climateChange?.outlook2050 ?? "").slice(0, 40)],
+      ...((full.deepSections ?? []).slice(0, 1).map(sec => ["first In depth chapter", sec.title] as [string, string])),
+    ] as Array<[string, string]>;
+    for (const [what, text] of want) if (text && !t.includes(text.replace(/\s+/g, " ").replace(/°C/g, ""))) {
+      // Temperatures in prose are localized (°C → °F); compare on text before the first number.
+      const head = text.split(/\d/)[0]!.trim();
+      if (!head || !t.includes(head)) out.push(`${p.id}: ${what} missing ("${text.slice(0, 50)}")`);
+    }
+    await pg.close();
+  }
+  await ctx.close();
+  record("S2g", "profiles show their sources, 2050 outlook and first In depth chapter (6 seeded, link + click, phone)", `${out.length} missing`, "0", out.length === 0, out);
+  for (const e of out.slice(0, 5)) console.log(`        ${e}`);
+  // A word found only in In depth chapters finds the same places once the chapters arrive (idle prefetch).
+  const c2 = await newCtx(browser);
+  const pg = await open(c2); await firstCard(pg);
+  await pg.waitForTimeout(6500);
+  await pg.getByPlaceholder("Search places or regions").first().fill("orographic");
+  await pg.waitForTimeout(800);
+  const shown = await inListCount(pg);
+  const expected = topIds("orographic", 999).length;
+  await c2.close();
+  record("S2h", "chapter-only search word after the page settles: places shown = before the split", `${shown} vs ${expected}`, "equal", shown === expected);
+}
+
 // ---------------------------------------------------------------- S3 data safety
 async function sectionData(browser: Browser) {
   console.log("\nS3 data safety (saved places, home base, compare)");
@@ -478,6 +522,18 @@ async function sectionRecover(browser: Browser) {
     results["history file fails once, then loads → profile shows its history"] = body.replace(/\s+/g, " ").includes(line.replace(/\s+/g, " "));
     await ctx.close();
   }
+  {
+    // The profile-fields file fails (offline, or an old tab after a deploy): the profile still opens.
+    const ctx = await newCtx(browser);
+    let hits = 0;
+    await ctx.route(/profile-fields-usa-1-.*\.js$/, r => { hits++; return r.abort(); }); // Bishop's group
+    const page = await open(ctx, "/?p=bishop-ca", /Failed to fetch dynamically imported module/);
+    await page.waitForTimeout(4000);
+    const body = await page.getByRole("dialog").first().innerText().catch(() => "");
+    results["profile-fields file fails → profile still opens, no retry storm"] = /Bishop/.test(body) && /Climate normals/i.test(body) && hits <= 4;
+    if (hits > 4) console.log(`        profile-fields requests while failing: ${hits}`);
+    await ctx.close();
+  }
   const passed = Object.values(results).filter(Boolean).length;
   record("S4a", "failure scenarios where the app stays usable", `${passed}/${Object.keys(results).length}`, "all", passed === Object.keys(results).length, results);
   for (const [k, v] of Object.entries(results)) if (!v) console.log(`        fails: ${k}`);
@@ -532,14 +588,21 @@ async function sectionSpeed(browser: Browser) {
     await cdp.send("Network.enable");
     await cdp.send("Network.emulateNetworkConditions", { offline: false, latency: 150, downloadThroughput: (1.6 * 1024 * 1024) / 8, uploadThroughput: (750 * 1024) / 8 });
     await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+    // Count what the profile itself needs: files requested before its figures show
+    // (the idle prefetch of every group file starts later and is not this action's cost).
     const fetched = new Set<string>();
-    page.on("requestfinished", r => { const m = r.url().match(/\/(assets\/[^?#]+)$/); if (m) fetched.add(m[1]!); });
+    let shown = false;
+    page.on("request", r => { if (shown) return; const m = r.url().match(/\/(assets\/[^?#]+)$/); if (m) fetched.add(m[1]!); });
     const t0 = Date.now();
     await page.locator(CARD).first().click();
     await page.getByRole("dialog").getByText(/Climate normals/i).first().waitFor({ timeout: 60000 });
+    shown = true;
     opens.push(Date.now() - t0);
     await page.waitForTimeout(4000); // let follow-up downloads finish
-    // gzip size of what was fetched: what a phone downloads from GitHub Pages.
+    // gzip size of what was fetched: what a phone downloads from GitHub Pages. Other groups'
+    // profile-field files are the background prefetch, not this profile's need.
+    const group = SITE_HISTORY_GROUP_BY_ID[new URL(page.url()).searchParams.get("p") ?? ""] ?? "";
+    for (const f of [...fetched]) if (/profile-fields-/.test(f) && !f.includes(`profile-fields-${group}-`)) fetched.delete(f);
     openKb = Math.round([...fetched].reduce((n, f) => n + (existsSync(join(ROOT, "dist", f)) ? gzipSync(readFileSync(join(ROOT, "dist", f))).length : 0), 0) / 1024);
     await ctx.close();
   }
@@ -547,7 +610,7 @@ async function sectionSpeed(browser: Browser) {
   record("S5d", "first profile open, phone 1.6 Mbps + 4x CPU (ms to climate figures)", `${o.median} [${o.min}–${o.max}]`, "<= 3000", o.median <= 3000, opens);
   record("S5e", "first profile open: KB gzip downloaded", openKb, "<= 250", openKb <= 250);
   const kb = initialJsGzip();
-  record("S5c", "first-load JavaScript (KB gzip)", kb, "<= 747", kb <= 747);
+  record("S5c", "first-load JavaScript (KB gzip)", kb, "<= 650", kb <= 650);
 }
 
 
@@ -781,6 +844,7 @@ async function main() {
     await startServer();
     browser = await chromium.launch({ executablePath: chromePath() });
     if (want("jobs")) await sectionJobs(browser);
+    if (want("jobs") || want("profile")) await sectionProfileFields(browser);
     if (want("data")) await sectionData(browser);
     if (want("recover")) await sectionRecover(browser);
     if (want("speed")) await sectionSpeed(browser);
