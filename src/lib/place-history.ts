@@ -81,4 +81,13 @@ export function clearRecentPlaces(): string[] {
   return [];
 }
 
+/** Undo a clear: bring back `previous`, after anything viewed since. */
+export function restoreRecentPlaces(previous: readonly string[]): string[] {
+  const storage = safeStorage();
+  const current = readRaw(storage);
+  const next = [...current, ...previous.filter(id => !current.includes(id))].slice(0, RECENT_LIMIT);
+  writeRaw(storage, next);
+  return next;
+}
+
 export const RECENT_STORAGE_KEY = STORAGE_KEY;

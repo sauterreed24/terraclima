@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Undo for one-click mistakes
+
+- **Undo:** removing a saved place, clearing your home base, or clearing recently viewed now shows an Undo button in the status line (which stays 8 seconds instead of 4). Undo puts a saved place back where it was in your list, and keeps anything you saved in the meantime.
+
 ### A faster first screen
 
 - **First load is 14% smaller:** each place's sources, confidence notes, climate outlook and In depth chapters (about 105 KB compressed for all 226 places) now load with its profile, in small files of about 23 places, and in the background once the atlas is up. On a slow phone connection the first ranked card appears in about 5.5 seconds instead of 6.1, and the first profile opens slightly faster than before (1.7 s, was 1.85 s). Rankings, scores, exports and Compare are unchanged; a search for a word that appears only in an In depth chapter (such as "orographic") finds those places once the background download finishes, a few seconds after the page loads.

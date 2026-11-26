@@ -8,6 +8,7 @@ import {
   hasBookmark,
   loadBookmarks,
   removeBookmark,
+  restoreBookmark,
   setBookmarks,
   toggleBookmark,
 } from "../place-bookmarks";
@@ -198,5 +199,32 @@ describe("place-bookmarks", () => {
     expect(result.added).toEqual(["bishop-ca"]);
     expect(result.alreadySaved).toBe(1);
     expect(loadBookmarks()).toEqual(["san-miguel-mx", "bishop-ca"]);
+  });
+
+  it("undo of a removal restores the exact list, from any position, over many generated lists", () => {
+    let seed = 11;
+    const rand = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+    for (let run = 0; run < 200; run++) {
+      const list = Array.from({ length: 1 + Math.floor(rand() * 12) }, (_, i) => `p-${run}-${i}`);
+      setBookmarks(list);
+      const victim = list[Math.floor(rand() * list.length)]!;
+      const at = loadBookmarks().indexOf(victim);
+      toggleBookmark(victim);
+      expect(loadBookmarks()).not.toContain(victim);
+      restoreBookmark(victim, at);
+      expect(loadBookmarks()).toEqual(list);
+      // A second Undo (double click) changes nothing.
+      restoreBookmark(victim, at);
+      expect(loadBookmarks()).toEqual(list);
+    }
+  });
+
+  it("undo keeps a place saved after the removal", () => {
+    setBookmarks(["a", "b", "c"]);
+    toggleBookmark("b");
+    toggleBookmark("new");
+    restoreBookmark("b", 1);
+    expect(loadBookmarks()).toEqual(["new", "b", "a", "c"]);
+    expect(new Set(loadBookmarks())).toEqual(new Set(["a", "b", "c", "new"]));
   });
 });

@@ -5,7 +5,7 @@
  *   npm run eval -- --no-build   # reuse dist/
  *   npm run eval -- --full       # also run the Vitest suite (≈2.5 min)
  *   npm run eval -- --runs=7     # load-time samples (default 5)
- *   npm run eval -- --only=search,speed   # sections: search jobs data recover speed accuracy
+ *   npm run eval -- --only=search,speed   # sections: search jobs data recover mistakes speed accuracy
  *
  * Sections (scorecard rows in IMPROVE.md):
  *   S1 search    realistic queries → intended place on top (tuning + held-out sets)
@@ -455,6 +455,46 @@ async function sectionData(browser: Browser) {
     await ctx.close();
   }
   record("S3a", "saved items lost: reload, 61st save, two tabs", lost, "0", lost === 0, notes);
+}
+
+// ---------------------------------------------------------------- S9 mistakes
+// A one-click mistake (remove a saved place, clear the home base, clear recently viewed)
+// must be undoable in one more click, restoring exactly what was there.
+async function sectionMistakes(browser: Browser) {
+  console.log("\nS9 mistakes (undo in one click)");
+  const results: Record<string, boolean> = {};
+  const ctx = await newCtx(browser);
+  await ctx.addInitScript(() => {
+    if (!sessionStorage.getItem("seeded")) {
+      localStorage.setItem("terraclima.bookmarks.v1", JSON.stringify(["bishop-ca", "sequim-wa", "oaxaca-mx"]));
+      localStorage.setItem("terraclima.home-base.v1", JSON.stringify("flagstaff-az"));
+      localStorage.setItem("terraclima.recent-places.v1", JSON.stringify(["sitka-ak", "taos-nm"]));
+      sessionStorage.setItem("seeded", "1");
+    }
+  });
+  const page = await open(ctx); await firstCard(page);
+  const read = (key: string) => page.evaluate(k => localStorage.getItem(k), key);
+  const undo = async () => {
+    const b = page.getByRole("button", { name: /^Undo/ }).first();
+    if (!(await b.isVisible({ timeout: 1500 }).catch(() => false))) return false;
+    await b.click(); await page.waitForTimeout(300); return true;
+  };
+  // 1. remove a saved place from the middle of the list
+  await page.getByRole("button", { name: /^Remove Sequim from your saved places/ }).first().click();
+  await page.waitForTimeout(300);
+  results["remove a saved place"] = (await undo()) && (await read("terraclima.bookmarks.v1")) === JSON.stringify(["bishop-ca", "sequim-wa", "oaxaca-mx"]);
+  // 2. clear the home base
+  await page.getByRole("button", { name: /^Clear home base/ }).first().click().catch(() => {});
+  await page.waitForTimeout(300);
+  results["clear the home base"] = (await undo()) && (await read("terraclima.home-base.v1")) === JSON.stringify("flagstaff-az");
+  // 3. clear recently viewed
+  await page.getByRole("button", { name: /^Clear recently viewed/ }).first().click().catch(() => {});
+  await page.waitForTimeout(300);
+  results["clear recently viewed"] = (await undo()) && (await read("terraclima.recent-places.v1")) === JSON.stringify(["sitka-ak", "taos-nm"]);
+  await ctx.close();
+  const passed = Object.values(results).filter(Boolean).length;
+  record("S9a", "one-click mistakes undone in one click, restoring exactly the previous state", `${passed}/${Object.keys(results).length}`, "all", passed === Object.keys(results).length, results);
+  for (const [k, v] of Object.entries(results)) if (!v) console.log(`        not undoable: ${k}`);
 }
 
 // ---------------------------------------------------------------- S4 recovery
@@ -915,6 +955,7 @@ async function main() {
     if (want("jobs") || want("profile")) await sectionProfileFields(browser);
     if (want("data")) await sectionData(browser);
     if (want("recover")) await sectionRecover(browser);
+    if (want("mistakes")) await sectionMistakes(browser);
     if (want("speed")) await sectionSpeed(browser);
     if (want("accuracy")) await sectionAccuracy(browser);
   } finally {

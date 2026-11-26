@@ -142,6 +142,16 @@ export function addBookmarksToFront(ids: readonly string[]): { ids: string[]; ad
   };
 }
 
+/** Undo a removal: put `id` back at `index` (or the end), leaving later changes in place. */
+export function restoreBookmark(id: string, index: number): string[] {
+  const storage = safeStorage();
+  const current = readRaw(storage);
+  if (current.includes(id) || current.length >= BOOKMARK_LIMIT) return current;
+  const next = [...current.slice(0, index), id, ...current.slice(index)];
+  writeRaw(storage, next);
+  return next;
+}
+
 /** Remove a single id. No-op if absent. Returns the new list. */
 export function removeBookmark(id: string): string[] {
   const storage = safeStorage();
