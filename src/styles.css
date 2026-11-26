@@ -14232,3 +14232,12 @@ html[data-theme="dark"] .detail-zone-divider__eyebrow {
     margin-block-end: 0.6rem;
   }
 }
+
+/* More → Import saved places: a label around a visually hidden file input. */
+.hero-more-menu__import { cursor: pointer; }
+.hero-more-menu__import:focus-within { outline: 2px solid rgba(26, 143, 168, 0.75); outline-offset: 2px; }
+
+/* The saved-places export menu opens inside this panel, whose `contain: layout`
+   makes its own stacking context; while the menu is open, lift the panel above
+   the climate-scenario control below it, which otherwise covers the last items. */
+.tc-explorer-continuity:has(.tc-shortlist-export__panel) { position: relative; z-index: 30; }

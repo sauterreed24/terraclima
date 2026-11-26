@@ -10,6 +10,10 @@ import { SITE_HISTORY_CANADA_2 } from "./site-history/canada-2";
 import { SITE_HISTORY_MEXICO_1 } from "./site-history/mexico-1";
 import { SITE_HISTORY_MEXICO_2 } from "./site-history/mexico-2";
 
+import { primeSiteHistory } from "./site-history/registry";
+
+// The full record, eagerly: for tests, scripts and audits. The app itself
+// loads one file per profile through `site-history/registry`.
 export type { SiteHistoryEntry } from "./site-history/types";
 export { withSiteHistoryDeepSections } from "./site-history/apply";
 
@@ -25,3 +29,5 @@ export const SITE_HISTORY: Record<string, SiteHistoryEntry> = {
   ...SITE_HISTORY_MEXICO_1,
   ...SITE_HISTORY_MEXICO_2,
 };
+
+primeSiteHistory(SITE_HISTORY);

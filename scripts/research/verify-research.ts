@@ -4,7 +4,8 @@
 import { readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { PLACES } from "../../src/data/places";
+// Every place with its profile-only fields (sources, outlook, chapters).
+import { PLACES_FULL as PLACES } from "../../src/data/places.full";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "../../src/data/generated/climate-v2";
 import type { PlaceResearchReceipt, ResearchLedger } from "../../src/lib/research/contracts";
 import {

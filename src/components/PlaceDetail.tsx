@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { drawerPanelTransition, scrimFadeTransition } from "../lib/device-profile";
-import { useState, useEffect, useMemo, useRef, useId, useCallback, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { use, useState, useEffect, useMemo, useRef, useId, useCallback, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
 import type { Place, MicroclimateArchetype, TopographicDriver, ScenarioId } from "../types";
@@ -26,7 +26,10 @@ import { composeFieldStory } from "../lib/place-story";
 import { externalMapLinks, getPlaceHeroMedia } from "../lib/place-hero-media";
 import { composePlaceExperience } from "../lib/place-overview";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
-import { SITE_HISTORY, withSiteHistoryDeepSections } from "../data/places.site-history";
+import { withSiteHistoryDeepSections } from "../data/site-history/apply";
+import { retryFailedSiteHistory, siteHistoryThenable } from "../data/site-history/registry";
+import { climateDataBasis } from "../lib/climate-data-basis";
+import { profileExtrasThenable, retryFailedProfileExtras, withProfileExtras } from "../data/profile-extras/registry";
 import { clearDossierHash } from "../lib/dossier-url-hash";
 import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
@@ -402,6 +405,7 @@ function DetailHeader({
   const janLow = meanJanLow(place);
   const annualP = getAnnualPrecipMm(place);
   const fourthStat = fourthHeroStat(place);
+  const dataBasis = climateDataBasis(place);
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
   const lede = useMemo(() => composePlaceExperience(place).lede, [place]);
   const hero = useMemo(() => getPlaceHeroMedia(place.id), [place.id]);
@@ -653,6 +657,8 @@ function DetailHeader({
       <div className="text-[10px] uppercase tracking-wider text-stone-readable mt-4 flex items-center gap-1.5">
         <Calendar className="w-3 h-3 shrink-0" aria-hidden />
         Climate normals · <span className="font-mono-num">{CLIMATE_NORMALS_PERIOD}</span>
+        {" · "}
+        <span title={dataBasis.detail} data-basis={dataBasis.status}>{dataBasis.label}</span>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-1.5">
         <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />} label="Summer high" value={fmtTemp(summerHigh, temp)} />
@@ -751,9 +757,41 @@ function DetailBody({
   onHomeBaseToggle?: (id: string) => void;
   scenario?: ScenarioId;
 }) {
+  // Waits (inside the profile's Suspense fallback) for this place's site
+  // history file; already-loaded files do not suspend.
+  // Start both downloads before waiting on either, so they run side by side.
+  const historyPending = siteHistoryThenable(placeRaw.id);
+  const extrasPending = profileExtrasThenable(placeRaw);
+  const siteHistory = use(historyPending);
+  use(extrasPending);
+  const [, setExtrasRetried] = useState(0);
+  useEffect(() => {
+    if (withProfileExtras(placeRaw) !== placeRaw || placeRaw.citations !== undefined) return;
+    let live = true;
+    void retryFailedProfileExtras(placeRaw).then(arrived => {
+      if (live && arrived) setExtrasRetried(n => n + 1);
+    });
+    return () => {
+      live = false;
+    };
+  }, [placeRaw]);
+  const placeWithExtras = withProfileExtras(placeRaw);
+  // Rendered without history because its download failed: retry once, and
+  // re-render when it arrives (a reopen, Back or Forward retries again).
+  const [, setHistoryRetried] = useState(0);
+  useEffect(() => {
+    if (siteHistory !== null) return;
+    let live = true;
+    void retryFailedSiteHistory(placeRaw.id).then(arrived => {
+      if (live && arrived) setHistoryRetried(n => n + 1);
+    });
+    return () => {
+      live = false;
+    };
+  }, [placeRaw.id, siteHistory]);
   const place = useMemo(
-    () => withSiteHistoryDeepSections(placeRaw, SITE_HISTORY[placeRaw.id]),
-    [placeRaw],
+    () => withSiteHistoryDeepSections(placeWithExtras, siteHistory ?? undefined),
+    [placeWithExtras, siteHistory],
   );
   const { temp, dist } = useUnits();
   const prose = useProse();
@@ -1627,7 +1665,12 @@ function DetailBody({
             <BookOpen className="w-3 h-3" /> Citations
           </div>
           <ul className="space-y-1 text-sm">
-            {place.citations.map((c, i) => {
+            {place.citations === undefined ? (
+              <li className="text-xs text-stone-readable">
+                The sources for this place could not be downloaded. They load the next time you open it with a connection.
+              </li>
+            ) : null}
+            {(place.citations ?? []).map((c, i) => {
               const href = safeExternalHref(c.url);
               return (
                 <li key={i} className="flex items-start gap-2 text-frost">

@@ -35,7 +35,11 @@
 //
 // Typos. The fuzzy pass runs only when the exact pass returns nothing, and
 // only against name and locality words: Damerau–Levenshtein distance ≤ 1 for
-// tokens of 5–7 letters, ≤ 2 for 8+.
+// tokens of 5–7 letters, ≤ 2 for 8+, and two dropped letters for 7
+// ("ashvile" → Asheville).
+//
+// Abbreviations. "mt", "ft", "pt", "st" and a few more also match their
+// spelled-out word, and the reverse, as whole words (`WORD_VARIANTS`).
 // ============================================================
 
 import type { Place } from "../types";
@@ -75,7 +79,30 @@ export interface SearchToken {
   text: string;
   /** Quoted in the query: must match as whole words, in order. */
   phrase: boolean;
+  /**
+   * Other spellings of the same word that also count as a match, whole word
+   * only: "mt" ↔ "mount", "ft" ↔ "fort", "st" ↔ "saint". Absent when none.
+   */
+  variants?: string[];
 }
+
+/**
+ * Abbreviations people type for words that appear spelled out in place names,
+ * and the reverse ("Mt. Charleston" → Mount Charleston, "Saint John's" →
+ * St. John's). Matched as whole words only.
+ */
+const WORD_VARIANTS: Record<string, readonly string[]> = {
+  mt: ["mount"],
+  mount: ["mt"],
+  mtn: ["mountain"],
+  ft: ["fort"],
+  fort: ["ft"],
+  pt: ["point", "port"],
+  point: ["pt"],
+  port: ["pt"],
+  st: ["saint"],
+  saint: ["st"],
+};
 
 export interface ParsedSearchQuery {
   /** Whole query in normalized, unpadded form ("" when blank). */
@@ -108,6 +135,15 @@ export function parseSearchQuery(raw: string | null | undefined): ParsedSearchQu
   const meaningful = words.filter(w => !STOPWORDS.has(w));
   // A query made only of stopwords ("the") is still a query.
   for (const w of meaningful.length > 0 || tokens.length > 0 ? meaningful : words) push(w, false);
+  // Abbreviations only alongside another word: "mt washington" means Mount,
+  // but "mt" on its own is Montana.
+  if (tokens.length > 1) {
+    for (const token of tokens) {
+      // Own keys only: a token like "constructor" is a word, not an Object method.
+      const variants = token.phrase || !Object.prototype.hasOwnProperty.call(WORD_VARIANTS, token.text) ? undefined : WORD_VARIANTS[token.text];
+      if (variants) token.variants = [...variants];
+    }
+  }
   return { normalized: normalizeSearchText(input).trim(), tokens };
 }
 
@@ -121,10 +157,23 @@ function fieldHas(field: string, token: SearchToken, wholeWord: boolean): boolea
  * words in prose, so "wa" does not hit "water" in every summary.
  */
 function tokenTier(fields: PlaceSearchFields, token: SearchToken): number {
+  let best = literalTokenTier(fields, token);
+  // An abbreviation's spelled-out form (or the reverse) counts as the same
+  // word, matched whole so "pt" → "point" does not also hit "pointed".
+  for (const text of token.variants ?? []) {
+    if (best <= SEARCH_TIER.nameWord) break;
+    best = Math.min(best, literalTokenTier(fields, { text, phrase: true }));
+  }
+  return best;
+}
+
+function literalTokenTier(fields: PlaceSearchFields, token: SearchToken): number {
   const short = token.text.length < 3;
   if (fieldHas(fields.name, token, false)) return SEARCH_TIER.nameWord;
   if (!short && !token.phrase && fields.name.includes(token.text)) return SEARCH_TIER.namePart;
-  if (fieldHas(fields.locality, token, false)) return SEARCH_TIER.locality;
+  // A one- or two-letter token is a code here ("mi", "bc"): whole words only,
+  // so "grand marais mi" does not take "mi" as the start of "Minnesota".
+  if (fieldHas(fields.locality, token, short)) return SEARCH_TIER.locality;
   if (fieldHas(fields.classification, token, false)) return SEARCH_TIER.classification;
   if (fieldHas(fields.headline, token, short)) return SEARCH_TIER.headline;
   if (fieldHas(fields.summary, token, short)) return SEARCH_TIER.summary;
@@ -167,7 +216,11 @@ export function editDistance(a: string, b: string, max = Infinity): number {
   return prev[b.length]!;
 }
 
-/** Allowed typos for a token: none under 5 letters, 1 for 5–7, 2 for 8+. */
+/**
+ * Allowed typos for a token: none under 5 letters, 1 for 5–7, 2 for 8+. A
+ * 7-letter token also gets a second edit when both are dropped letters (see
+ * {@link fuzzyFieldDistance}).
+ */
 export function typoBudget(token: string): number {
   if (token.length >= 8) return 2;
   if (token.length >= 5) return 1;
@@ -181,9 +234,21 @@ function fuzzyFieldDistance(field: string, token: string, budget: number): numbe
     // A one-letter slip must not turn a short word into a match for a long token.
     if (word.length < 4) continue;
     const d = editDistance(token, word, budget);
-    if (d <= budget && (best == null || d < best)) best = d;
+    // Dropped letters are the commonest slip ("ashvile" → Asheville): a
+    // 7-letter token may miss two of them. Other two-edit slips at this length
+    // land on unrelated names ("houston" → Houghton), so they stay out.
+    const dropped = d > budget && token.length === 7 && word.length === 9 && isSubsequence(token, word);
+    if (!dropped && d > budget) continue;
+    const dist = dropped ? 2 : d;
+    if (best == null || dist < best) best = dist;
   }
   return best;
+}
+
+function isSubsequence(short: string, long: string): boolean {
+  let i = 0;
+  for (let j = 0; j < long.length && i < short.length; j++) if (short[i] === long[j]) i++;
+  return i === short.length;
 }
 
 export interface PlaceSearchResult {
@@ -260,7 +325,12 @@ export function searchPlaces(places: readonly Place[], query: string | null | un
     for (let t = 0; t < parsed.tokens.length; t++) {
       const token = parsed.tokens[t]!;
       const exactTier = tiers[t]![i]!;
-      if (exactTier <= SEARCH_TIER.headline) continue;
+      if (exactTier <= SEARCH_TIER.headline) {
+        // A short exact word ("fe") that is a whole word here beats one that is
+        // only the start of a longer word ("Felton"): "sante fe" → Santa Fe.
+        if (exactTier <= SEARCH_TIER.namePart && !` ${f.name} ${f.locality} `.includes(` ${token.text} `)) total += 1;
+        continue;
+      }
       const budget = token.phrase ? 0 : typoBudget(token.text);
       const inName = budget > 0 ? fuzzyFieldDistance(f.name, token.text, budget) : null;
       const inLocality = budget > 0 && inName == null ? fuzzyFieldDistance(f.locality, token.text, budget) : null;

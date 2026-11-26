@@ -225,6 +225,14 @@ describe("exportShortlistAsCSV", () => {
     expect(Number(s.livability_vs_home)).toBe(scoreLivability(sequim).score - scoreLivability(yuma).score);
     // Yuma records no snowfall, so the snow delta is blank rather than a made-up number.
     expect(s.annual_snow_vs_home_in).toBe("");
+    // Whole-point columns subtract unrounded values, so the difference is the nearest whole point.
+    const exact = (meanAnnualHumidityPct(sequim)! - meanAnnualHumidityPct(yuma)!);
+    expect(Number(s.humidity_vs_home_pct)).toBe(Math.round(exact));
+    for (const place of PLACES) {
+      const row = csvRecords(exportShortlistAsCSV([place], { generatedAt: FIXED, home: yuma }).body)[0]!;
+      const h = meanAnnualHumidityPct(place);
+      if (h != null) expect(Math.abs(Number(row.humidity_vs_home_pct) - (h - meanAnnualHumidityPct(yuma)!)), place.id).toBeLessThanOrEqual(0.5);
+    }
     // Home against itself is all zeros.
     expect([y.summer_high_vs_home_f, y.winter_low_vs_home_f, y.humidity_vs_home_pct, y.livability_vs_home]).toEqual(["0", "0", "0", "0"]);
   });

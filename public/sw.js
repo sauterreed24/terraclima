@@ -7,7 +7,9 @@
  *     install on a flaky connection still succeeds). On install we activate
  *     ourselves so updates roll out without waiting for all tabs to close.
  *   - Runtime cache: stale-while-revalidate for hashed JS/CSS produced by
- *     Vite (long-cache, content-addressed names). Same strategy for the
+ *     Vite (long-cache, content-addressed names). Files of the very first
+ *     visit load before this worker exists; the page posts their URLs
+ *     (`CACHE_URLS`) once the worker is ready, so a second open works offline. Same strategy for the
  *     manifest, icon PNGs, and og-image so a cold offline open still shows
  *     metadata + a favicon. Range requests pass through untouched.
  *   - The atlas data files are large and content-hashed; we let the browser
@@ -65,7 +67,98 @@ self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     void self.skipWaiting();
   }
+  // The page lists the build files it loaded before this worker controlled it
+  // (the whole first visit). Cache them so the app opens offline next time.
+  if (event.data && event.data.type === "CACHE_URLS" && Array.isArray(event.data.urls)) {
+    event.waitUntil(cacheLoadedAssets(event.data.urls).then(pruneOldBuilds));
+  }
 });
+
+/**
+ * Drop cached build files that neither the current deploy nor the one before
+ * it ships, and never one the cached page (the offline shell) still loads.
+ * Hashed names change with every deploy, so without this the cache grows with
+ * each update; under storage pressure a browser may then clear the whole site,
+ * saved places included. Keeping one deploy back covers a tab still open on the
+ * old version and an offline open of the old shell. Needs the network (the
+ * file list is fetched fresh); offline, nothing is removed.
+ */
+async function pruneOldBuilds() {
+  let manifest;
+  try {
+    const response = await fetch(new URL("asset-manifest.json", self.registration.scope).href, { cache: "no-store" });
+    if (!response.ok) return;
+    manifest = await response.json();
+  } catch {
+    return;
+  }
+  const toPaths = list => (Array.isArray(list) ? list : [])
+    .filter(file => typeof file === "string")
+    .map(file => new URL(file, self.registration.scope).pathname);
+  const current = toPaths(manifest && manifest.files);
+  // A list without the build's own files is not trusted to prune with.
+  if (current.length < 5) return;
+
+  const shell = await caches.open(SHELL_CACHE);
+  const readList = async key => {
+    try {
+      const hit = await shell.match(key);
+      return hit ? toPaths(await hit.json()) : [];
+    } catch {
+      return [];
+    }
+  };
+  const storeList = (key, paths) => shell.put(key, new Response(JSON.stringify(paths), { headers: { "content-type": "application/json" } }));
+  const CURRENT_KEY = "./build-files-current.json";
+  const PREVIOUS_KEY = "./build-files-previous.json";
+  let stored = await readList(CURRENT_KEY);
+  let previous = await readList(PREVIOUS_KEY);
+  const same = stored.length === current.length && stored.every((path, k) => path === current[k]);
+  if (!same) {
+    // A new deploy: the one we knew becomes "previous".
+    if (stored.length > 0) {
+      previous = stored;
+      await storeList(PREVIOUS_KEY, previous);
+    }
+    stored = current;
+    await storeList(CURRENT_KEY, current);
+  }
+  const keep = new Set([...current, ...previous]);
+  // Files the cached page itself loads (scripts, styles, preloads).
+  try {
+    const page = (await shell.match("./index.html")) || (await shell.match("./"));
+    const html = page ? await page.text() : "";
+    for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
+      keep.add(new URL(match[1], self.registration.scope).pathname);
+    }
+  } catch {
+    return;
+  }
+  const cache = await caches.open(RUNTIME_CACHE);
+  for (const request of await cache.keys()) {
+    const path = new URL(request.url).pathname;
+    if (path.includes("/assets/") && !keep.has(path)) await cache.delete(request);
+  }
+}
+
+async function cacheLoadedAssets(urls) {
+  const cache = await caches.open(RUNTIME_CACHE);
+  await Promise.all(
+    urls.slice(0, 400).map(async raw => {
+      try {
+        const url = new URL(raw, self.location.href);
+        if (url.origin !== self.location.origin || !url.pathname.includes("/assets/")) return;
+        if (await cache.match(url.href, { ignoreVary: true })) return;
+        // Default cache mode: the files were just downloaded, so this is
+        // normally served from the HTTP cache without a second download.
+        const response = await fetch(url.href);
+        if (response && response.ok && response.type === "basic") await cache.put(url.href, response);
+      } catch {
+        // Best-effort: a file that cannot be fetched now is cached on its next use.
+      }
+    }),
+  );
+}
 
 self.addEventListener("fetch", event => {
   const request = event.request;
@@ -109,7 +202,10 @@ async function handleNavigation(request) {
 
 async function staleWhileRevalidate(request) {
   const cache = await caches.open(RUNTIME_CACHE);
-  const cached = await cache.match(request);
+  // Build files have content-hashed names, so a URL match is enough. Ignoring
+  // Vary lets a module script (sent with an Origin header) use a copy cached by
+  // a plain fetch, on hosts that answer with `Vary: Origin`.
+  const cached = await cache.match(request, { ignoreVary: true });
   const fetchPromise = fetch(request)
     .then(response => {
       // Only cache successful, basic-origin responses.

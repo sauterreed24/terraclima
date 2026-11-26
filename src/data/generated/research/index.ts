@@ -1,12 +1,9 @@
-/* Research provenance runtime exports.
- * Compact citation overlay is eager-safe; full receipts are lazy.
+/* Research provenance runtime exports: full receipts load lazily.
+ * The citation projection (citations-overlay.json) is merged into each place's
+ * sources by `npm run corpus:profile-stats` (src/data/places.full.ts), and
+ * ships with the profile fields, not from here.
  */
-import type { Citation } from "../../../types";
 import type { PlaceResearchReceipt } from "../../../lib/research/contracts";
-import citationsOverlay from "./citations-overlay.json";
-
-export const RESEARCH_CITATIONS_BY_ID: Record<string, Citation[]> =
-  (citationsOverlay as { byId: Record<string, Citation[]> }).byId;
 
 let _receiptsById: Record<string, PlaceResearchReceipt> | null = null;
 

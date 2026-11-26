@@ -10,7 +10,8 @@
 // loudly rather than at runtime.
 
 import { describe, expect, it } from "vitest";
-import { PLACES, PLACES_BY_ID } from "../../data/places";
+// Chapters load with the profile; the full list carries them for every place.
+import { PLACES_FULL as PLACES, PLACES_FULL_BY_ID as PLACES_BY_ID } from "../../data/places.full";
 import {
   LIVABILITY_COMPONENT_KEYS,
   livabilityPercentiles,

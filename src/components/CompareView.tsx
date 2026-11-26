@@ -6,7 +6,8 @@ import { scenarioMeta } from "../lib/climate-projection";
 import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm, RISK_VALUE } from "../lib/climate-metrics";
-import { hasSourcedSkySeries, observedSunshinePct, sunshineDisplayValue } from "../lib/hero-glance";
+import { climateDataBasis } from "../lib/climate-data-basis";
+import { hasSourcedSkySeries, sunshineDisplayValue } from "../lib/hero-glance";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { computeBioclim, CONRAD_GLOSS, DE_MARTONNE_GLOSS, type BioclimIndex } from "../lib/bioclim";
@@ -41,6 +42,7 @@ import { useElementIsolation } from "../hooks/use-element-isolation";
 import { ChevronRight, Clock3, Home, Link2, Plus, RefreshCcw, X } from "lucide-react";
 import { effectiveAccessRemoteness, effectiveHousingPressure } from "../lib/research/lived-indicators";
 import { chapterCountLabel, hasThinChapterDepth, researchedChapterCount } from "../lib/research-chapters";
+import { httpsCitationCount } from "../lib/profile-stats";
 
 type CandidateSourceFilter = "all" | CompareCandidateSource;
 type CandidateSortId = "curated" | "lens" | "risk" | "easy" | "name";
@@ -1101,7 +1103,7 @@ export function CompareView({
                     <Row label="Summer high" value={fmtTemp(meanSummerHigh(p), temp)} />
                     <Row label="Winter low" value={fmtTemp(meanJanLow(p), temp)} />
                     <Row label="Annual precip" value={fmtPrecip(getAnnualPrecipMm(p), dist)} />
-                    <Row label="Sunshine" value={observedSunshinePct(p) == null ? "—" : `${observedSunshinePct(p)}%`} />
+                    <Row label="Sunshine" value={sunshineDisplayValue(p)} />
                     <Row label="Frost-free" value={`${p.climate.frostFreeDays ?? "—"} d`} />
                     <Row label="Hardiness" value={p.growability.hardinessZone ?? p.climate.hardinessZone ?? "—"} />
                     <Row label="Chill hours" value={`${p.climate.chillHours ?? "—"}`} />
@@ -1168,7 +1170,7 @@ interface CompareEvidenceReadiness {
 
 function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenceReadiness[] {
   return places.map(place => {
-    const httpsCitations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
+    const httpsCitations = httpsCitationCount(place);
     const chapters = researchedChapterCount(place);
     const hasLiveSignals = Boolean(place.liveSignals && Object.values(place.liveSignals).some(value => typeof value === "number"));
     const hasHumidity = Boolean(place.climate.humidity?.length);
@@ -1238,7 +1240,7 @@ function buildGroupedComparisonRows(
     ? `${Math.round(values.reduce((sum, value) => sum + value, 0) / values.length)}%`
     : "no data";
   const meanHumidity = (place: Place) => meanPercent(place.climate.humidity);
-  const httpsCitations = (place: Place) => `${place.citations.filter(citation => citation.url?.startsWith("https://")).length}`;
+  const httpsCitations = (place: Place) => `${httpsCitationCount(place)}`;
 
   return [
     row("Comfort", "Priority score", places.map(place => {
@@ -1275,6 +1277,7 @@ function buildGroupedComparisonRows(
     row("Garden/land", "Soil drainage", places.map(place => place.soil.drainage)),
     row("Evidence", "Profile depth", places.map(place => place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index")),
     row("Evidence", "Confidence", places.map(place => place.confidence)),
+    row("Evidence", "Climate figures", places.map(place => climateDataBasis(place).label)),
     row("Evidence", "Web sources", places.map(httpsCitations)),
     row("Evidence", "In-depth chapters", places.map(place => `${researchedChapterCount(place)}`)),
   ];

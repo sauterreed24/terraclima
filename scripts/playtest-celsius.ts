@@ -20,7 +20,8 @@
  * evolves.
  */
 import { localizeProse } from "../src/lib/units";
-import { PLACES } from "../src/data/places";
+// Every place with its profile-only fields (sources, outlook, chapters).
+import { PLACES_FULL as PLACES } from "../src/data/places.full";
 import { CONCEPTS } from "../src/data/glossary";
 import { ARCHETYPES } from "../src/data/archetypes";
 import { COLLECTIONS } from "../src/data/collections";
@@ -29,6 +30,8 @@ import { rankPlaces } from "../src/lib/scoring";
 import { describeHumanComfort, scoreLivability } from "../src/lib/livability-score";
 import { scorePlaceFeel } from "../src/lib/place-feel";
 import { composePlaceExperience } from "../src/lib/place-overview";
+// The app loads site history per profile; prime every entry so overviews read as in a profile.
+import "../src/data/places.site-history";
 import { buildExplorerScoutBrief } from "../src/lib/explorer-scout-brief";
 
 const RANKINGS = ALL_RANKING_PROFILES;

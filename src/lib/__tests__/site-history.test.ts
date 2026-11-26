@@ -1,8 +1,36 @@
 import { describe, expect, it } from "vitest";
-import { PLACES, PLACES_BY_ID } from "../../data/places";
+// Chapters load with the profile; the full list carries them for every place.
+import { PLACES_FULL as PLACES, PLACES_FULL_BY_ID as PLACES_BY_ID } from "../../data/places.full";
 import { SITE_HISTORY, withSiteHistoryDeepSections } from "../../data/places.site-history";
 import { composePlaceExperience } from "../place-overview";
 import { mergeDeepSections } from "../place-appendix-sections";
+import { SITE_HISTORY_GROUP_BY_ID } from "../../data/site-history/group-index";
+import * as groups from "../../data/site-history/registry";
+
+describe("site-history per-profile loading", () => {
+  it("the id → file index matches the files exactly", async () => {
+    const files = ["usa-1", "usa-2", "usa-3", "usa-4", "usa-5", "usa-6", "canada-1", "canada-2", "mexico-1", "mexico-2"] as const;
+    const actual: Record<string, string> = {};
+    for (const f of files) {
+      const mod = await import(`../../data/site-history/${f}.ts`) as Record<string, Record<string, unknown>>;
+      for (const id of Object.keys(Object.values(mod)[0]!)) actual[id] = f;
+    }
+    // If this fails, regenerate group-index.ts from the files (one line per id).
+    expect(SITE_HISTORY_GROUP_BY_ID).toEqual(actual);
+  });
+
+  it("loads the entry for a place and serves it synchronously afterwards", async () => {
+    const id = "bishop-ca";
+    const entry = await groups.loadSiteHistory(id);
+    expect(entry).toBe(SITE_HISTORY[id]);
+    expect(groups.siteHistoryFor(id)).toBe(SITE_HISTORY[id]);
+    const thenable = groups.siteHistoryThenable(id) as Promise<unknown> & { status?: string };
+    expect(thenable.status).toBe("fulfilled");
+    expect(groups.siteHistoryThenable(id)).toBe(thenable);
+    expect(groups.siteHistoryFor("not-a-place")).toBeNull();
+    expect(await groups.loadSiteHistory("not-a-place")).toBeNull();
+  });
+});
 
 describe("site-history overlay", () => {
   it("covers every corpus place with unique researched history", () => {

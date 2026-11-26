@@ -7,7 +7,8 @@
 // The same engine also supplies the mechanism explanation, nearby contrast,
 // and a short settlement/land-use history so the first screen has depth.
 //
-// Researched site-history overlays (`SITE_HISTORY`) are the newest
+// Researched site-history overlays (`SITE_HISTORY`, loaded per profile by
+// `site-history/registry`; PlaceDetail waits for it) are the newest
 // hand-written layer: their feel, seasons and traveler/resident fit win over
 // `Place.experience`, and their history / why / immersive / nearby contrast
 // fill in where the corpus has none — without shipping that prose in the
@@ -23,7 +24,7 @@
 import type { Place } from "../types";
 import { DRIVER_LABELS } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
-import { SITE_HISTORY } from "../data/places.site-history";
+import { siteHistoryFor } from "../data/site-history/registry";
 import type { SiteHistoryEntry } from "../data/site-history/types";
 import {
   RISK_VALUE,
@@ -40,7 +41,7 @@ import {
  */
 function siteHistoryOverlay(place: Place): SiteHistoryEntry | null {
   if (place.experience === undefined) return null;
-  return SITE_HISTORY[place.id] ?? null;
+  return siteHistoryFor(place.id) ?? null;
 }
 
 export type SeasonKey = "winter" | "spring" | "summer" | "autumn";

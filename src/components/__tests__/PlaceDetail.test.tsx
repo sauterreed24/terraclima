@@ -4,6 +4,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { PLACES_BY_ID } from "../../data/places";
 import { UnitProvider } from "../../lib/units";
 import { PlaceDetail } from "../PlaceDetail";
+// Prime every site-history entry, as an opened profile has its file already.
+import "../../data/places.site-history";
+// Prime every country's profile fields, as an opened profile has its file already.
+import "../../data/places.full";
 
 vi.mock("framer-motion", async () => {
   const React = await import("react");

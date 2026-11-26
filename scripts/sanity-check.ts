@@ -3,7 +3,8 @@
  * Flags implausible climate values, missing/inconsistent fields, duplicate IDs,
  * broken references, and growability/soil inconsistencies.
  */
-import { PLACES } from "../src/data/places";
+// Every place with its profile-only fields (sources, outlook, chapters).
+import { PLACES_FULL as PLACES } from "../src/data/places.full";
 import { rankPlaces } from "../src/lib/scoring";
 import { COLLECTIONS } from "../src/data/collections";
 import { CLIMATE_TRIP_THEMES } from "../src/data/climate-trip-themes";

@@ -22,7 +22,8 @@
  * Exit code 1 on any fatal finding so CI / pre-commit can gate on it.
  */
 import { localizeProse } from "../src/lib/units";
-import { PLACES } from "../src/data/places";
+// Every place with its profile-only fields (sources, outlook, chapters).
+import { PLACES_FULL as PLACES } from "../src/data/places.full";
 import { ARCHETYPES } from "../src/data/archetypes";
 import { CONCEPTS } from "../src/data/glossary";
 import { COLLECTIONS } from "../src/data/collections";

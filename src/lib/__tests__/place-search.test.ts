@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PLACES, PLACES_BY_ID, getPlaceSearchFields, getPlaceSearchText } from "../../data/places";
+import { PLACES, PLACES_BY_ID, REGION_SEARCH_ALIASES, getPlaceSearchFields, getPlaceSearchText } from "../../data/places";
 import { ARCHETYPE_LABELS, type Place } from "../../types";
 import {
   SEARCH_TIER,
@@ -258,7 +258,7 @@ describe("searchPlaces — matching rules on fixtures", () => {
 });
 
 describe("typo tolerance", () => {
-  it("budget: none under 5 letters, 1 for 5–7, 2 for 8+", () => {
+  it("budget: none under 5 letters, 1 for 5–7, 2 for 8+ (plus two dropped letters at 7)", () => {
     expect(["taos", "seqim", "sequimm", "flagstaf"].map(typoBudget)).toEqual([0, 1, 1, 2]);
   });
 
@@ -288,6 +288,13 @@ describe("typo tolerance", () => {
     for (const id of fuzzy) expect(oregonIds.has(id)).toBe(true);
   });
 
+  it("a 7-letter token may drop two letters of a name, but no other two-edit slip", () => {
+    expect(rankedIds("ashvile")[0]).toBe("asheville-nc");
+    // Two edits that are not dropped letters stay out at this length.
+    expect(rankedIds("houston")).toEqual([]);
+    expect(rankedIds("sequoia")).toEqual([]);
+  });
+
   it("is only a fallback: an exact hit is never widened by near-miss names", () => {
     expect(searchPlaces(PLACES, "sequim").mode).toBe("exact");
     expect(rankedIds("taos")[0]).toBe("taos-nm");
@@ -295,6 +302,57 @@ describe("typo tolerance", () => {
     expect(rankedIds("taoz")).toEqual([]);
     expect(rankedIds("xyzzyq")).toEqual([]);
     expect(searchPlaces(PLACES, "xyzzyq").mode).toBe("exact");
+  });
+});
+
+describe("abbreviations", () => {
+  it("mt / ft / pt / st and saint match the spelled-out word, and the reverse", () => {
+    expect(rankedIds("mt. charleston")[0]).toBe("mount-charleston-nv");
+    expect(rankedIds("Mt Charleston NV")[0]).toBe("mount-charleston-nv");
+    expect(rankedIds("ft davis")[0]).toBe("fort-davis-tx");
+    expect(rankedIds("pt reyes")[0]).toBe("point-reyes-ca");
+    expect(rankedIds("pt townsend")[0]).toBe("port-townsend-wa");
+    expect(rankedIds("saint john's")[0]).toBe("st-johns-nl");
+    expect(rankedIds("st johns")[0]).toBe("st-johns-nl");
+  });
+
+  it("matches a variant only as a whole word", () => {
+    const parsed = parseSearchQuery("pt reyes");
+    expect(parsed.tokens[0]).toEqual({ text: "pt", phrase: false, variants: ["point", "port"] });
+    // On its own an abbreviation is just itself: "mt" is Montana.
+    expect(parseSearchQuery("mt").tokens[0]).toEqual({ text: "mt", phrase: false });
+    expect(rankedIds("mt").slice(0, 3)).toEqual(expect.arrayContaining(["bozeman-mt", "missoula-mt"]));
+    // Whole word only: "mt" must not reach a name that merely contains "mount…".
+    const fixture = [makePlace({ id: "mountainview-xx", name: "Mountainview" })];
+    expect(searchPlaces(fixture, "mt view").rankByPlace.size).toBe(0);
+  });
+});
+
+describe("state, province and Mexican state abbreviations", () => {
+  it("find places whose id does not end in the code", () => {
+    expect(rankedIds("la paz bcs")[0]).toBe("la-paz-mx");
+    expect(rankedIds("yellowknife nwt")[0]).toBe("yellowknife-nt");
+    expect(rankedIds("charlottetown pei")[0]).toBe("charlottetown-pei");
+    expect(rankedIds("niagara on")[0]).toBe("niagara-on-the-lake");
+    expect(rankedIds("san miguel gto")[0]).toBe("san-miguel-de-allende-mx");
+  });
+
+  it("every region in the atlas has an abbreviation", () => {
+    for (const place of PLACES) expect(REGION_SEARCH_ALIASES[place.region], place.region).toBeTruthy();
+  });
+});
+
+describe("words that are also Object property names", () => {
+  it("search them as words, never as built-in methods", () => {
+    for (const q of ["constructor oregon", "toString mt", "__proto__ fort", "hasOwnProperty st", "valueOf", "constructor"]) {
+      expect(() => rankedIds(q), q).not.toThrow();
+    }
+  });
+});
+
+describe("typo matches prefer whole words", () => {
+  it("'sante fe' puts Santa Fe ahead of Felton", () => {
+    expect(rankedIds("sante fe")[0]).toBe("santa-fe-nm");
   });
 });
 

@@ -9,6 +9,8 @@ import { CollectionsView } from "../components/CollectionsView";
 import { LazyRouteErrorBoundary } from "../components/LazyRouteErrorBoundary";
 import { LearnMode } from "../components/LearnMode";
 import { PlaceDetail } from "../components/PlaceDetail";
+// Prime every site-history entry, as an opened profile has its file already.
+import "../data/places.site-history";
 import { RouteLoadingFallback } from "../components/RouteLoadingFallback";
 import { PwaUpdateBanner } from "../components/chrome/PwaUpdateBanner";
 import { PLACES, PLACES_BY_ID } from "../data/places";

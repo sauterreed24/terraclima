@@ -1,5 +1,5 @@
 import { lazy, memo, startTransition, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Cloud, Compass, Eye, Globe2, HelpCircle, Home, Library, Link2, Map, Menu, MoreHorizontal, Route, Search, ShieldAlert, Shuffle, Snowflake, Sparkles, Target, X, type LucideIcon } from "lucide-react";
+import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Cloud, Compass, Eye, Globe2, HelpCircle, Home, Library, Link2, Map, Menu, MoreHorizontal, Route, Search, ShieldAlert, Shuffle, Snowflake, Sparkles, Target, Upload, X, type LucideIcon } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { BackToTop } from "./components/chrome/BackToTop";
@@ -76,6 +76,7 @@ import {
 } from "./lib/app-ranking-preference";
 import {
   BOOKMARK_LIMIT,
+  BOOKMARKS_STORAGE_KEY,
   addBookmarksToFront,
   loadBookmarks,
   toggleBookmark as toggleBookmarkPersist,
@@ -113,6 +114,7 @@ import {
 } from "./lib/theme";
 import { ThemeToggle } from "./components/chrome/ThemeToggle";
 import { MOST_COMFORTABLE_LENS_SUMMARY } from "./lib/ranking-options";
+import { outlook2050 } from "./lib/profile-stats";
 
 /** Hero discovery paths — ranking lenses, archetype screens, or a pinned trip. */
 type DiscoveryQuickPickId =
@@ -232,6 +234,9 @@ const LearnMode = lazy(loadLearnMode);
 const PlaceDetail = lazy(loadPlaceDetail);
 const CompareView = lazy(loadCompareView);
 const SearchSuggestions = lazy(() => import("./components/SearchSuggestions"));
+const SharedSavedPlacesPrompt = lazy(() => import("./components/chrome/SharedSavedPlacesPrompt"));
+const loadProfileFieldsFor = (places: readonly Place[]) =>
+  import("./data/profile-extras/registry").then(m => m.loadProfileExtrasFor(places)).catch(() => false);
 
 if (typeof window !== "undefined" && (parseAppSearch(window.location.search).compareIds?.length ?? 0) > 0) {
   preloadCompareView();
@@ -366,6 +371,19 @@ export default function App() {
     return resolved;
   });
   const [bookmarkIds, setBookmarkIds] = useState<Set<string>>(() => new Set(loadBookmarks()));
+  // Another tab saved or removed a place: show the same list here, so this tab
+  // never displays (or exports) a stale set of saved places.
+  useEffect(() => {
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === BOOKMARKS_STORAGE_KEY || event.key === null) setBookmarkIds(new Set(loadBookmarks()));
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+  // Opened from a "Link to these places" link: the prompt asks before adding.
+  // Captured at start-up: the address sync drops parameters it does not know.
+  const [sharedSavedLink, setSharedSavedLink] = useState(() =>
+    typeof window !== "undefined" && window.location.search.includes("saved=") ? window.location.search : "");
   const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
   const [animatePlaceDetailEntry, setAnimatePlaceDetailEntry] = useState(false);
   const [placeEntryIntent, setPlaceEntryIntent] = useState<"surprise" | null>(null);
@@ -893,7 +911,20 @@ export default function App() {
       liveFitMaxOverallRisk,
     ],
   );
-  const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters]);
+  // Sources, outlooks and In depth chapters load as soon as a search is entered,
+  // a few seconds after start-up otherwise (not on save-data), and with a
+  // profile. Their chapter text then joins search: re-run filtering.
+  const [searchEpoch, setSearchEpoch] = useState(0);
+  const hasSearch = (deferredFilters.search ?? "").trim() !== "";
+  useEffect(() => {
+    const fetchAll = () => void loadProfileFieldsFor(PLACES).then(() => setSearchEpoch(n => n + 1));
+    if (hasSearch) return fetchAll();
+    if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
+    const timer = window.setTimeout(fetchAll, 5000);
+    return () => window.clearTimeout(timer);
+  }, [hasSearch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- searchEpoch: same filters, new search text
+  const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters, searchEpoch]);
   const activeTripTheme = useMemo(
     () => activeCollection ? CLIMATE_TRIP_THEME_BY_ID[activeCollection] ?? null : null,
     [activeCollection],
@@ -921,6 +952,7 @@ export default function App() {
     // Present-day is the default view; only spin up the (corpus-carrying)
     // worker once the user engages a future-climate layer.
     disableWorker: climateScenario === "now",
+    searchEpoch,
   });
   const resultsPending = explorerResultsPending(filters, deferredFilters, processor.projecting);
   const resultsPendingRef = useRef(resultsPending);
@@ -1120,6 +1152,11 @@ export default function App() {
 
   const openPlace = useCallback((id: string, opts?: { trigger?: HTMLElement | null; entryIntent?: "surprise" | null }) => {
     preloadPlaceDetail();
+    // The profile waits for this place's site-history file; fetch it alongside
+    // the profile code (the registry is a small chunk of its own).
+    const historyId = resolvePlaceId(id) ?? id;
+    void import("./data/site-history/registry").then(m => m.loadSiteHistory(historyId)).catch(() => {});
+    if (PLACES_BY_ID[historyId]) void loadProfileFieldsFor([PLACES_BY_ID[historyId]]);
     // A hop from inside an open profile keeps the original launcher, so closing
     // the chain still returns focus to the card that started it.
     const hopping = liveOverlayStateRef.current.selectedId != null;
@@ -1197,13 +1234,13 @@ export default function App() {
 
   const toggleBookmark = useCallback((id: string) => {
     const canonical = resolvePlaceId(id) ?? id;
-    const { ids, pinned } = toggleBookmarkPersist(canonical);
+    const { ids, pinned, full } = toggleBookmarkPersist(canonical);
     setBookmarkIds(new Set(ids));
     const place = PLACES_BY_ID[canonical];
     const placeName = place?.name ?? "Place";
-    if (pinned && ids.length === BOOKMARK_LIMIT) {
+    if (full) {
       setTransientFeedback(
-        `Saved ${placeName}. You can save up to ${BOOKMARK_LIMIT} places, so the oldest one was removed.`,
+        `${placeName} was not saved: this browser keeps up to ${BOOKMARK_LIMIT} saved places. Remove one to make room.`,
       );
     } else if (pinned) {
       setTransientFeedback(`Saved ${placeName}.`);
@@ -1260,15 +1297,28 @@ export default function App() {
     setBookmarkIds(new Set(saved.ids));
     const savedCount = finalists.filter(id => saved.ids.includes(id)).length;
     if (saved.added.length === 0) {
-      setTransientFeedback(`These ${savedCount} top picks are already in your saved places.`);
+      setTransientFeedback(saved.capped
+        ? "Nothing saved: your saved places are full."
+        : `These ${savedCount} top picks are already in your saved places.`);
     } else if (saved.capped) {
       setTransientFeedback(
-        `Saved ${saved.added.length} new place${saved.added.length === 1 ? "" : "s"}. You can save up to ${BOOKMARK_LIMIT}, so only the top ${BOOKMARK_LIMIT} were kept.`,
+        `Saved ${saved.added.length} new place${saved.added.length === 1 ? "" : "s"}. This browser keeps up to ${BOOKMARK_LIMIT} saved places, so the rest were not added.`,
       );
     } else {
       setTransientFeedback(
         `Saved ${saved.added.length} new place${saved.added.length === 1 ? "" : "s"}. ${savedCount} top picks are in your saved places, ready to compare or export.`,
       );
+    }
+  }, []);
+
+  const importSavedPlaces = useCallback(async (file: File) => {
+    try {
+      const { importSavedPlacesFile } = await import("./lib/saved-places-import");
+      const result = await importSavedPlacesFile(file, resolvePlaceId);
+      setBookmarkIds(new Set(result.ids));
+      setTransientFeedback(result.message);
+    } catch {
+      setTransientFeedback("Nothing imported: check your connection and try again.");
     }
   }, []);
 
@@ -1796,6 +1846,11 @@ export default function App() {
         </a>
         <div className="ambient-aurora" aria-hidden="true" />
         <main id="main-content" tabIndex={-1} className="relative z-10 flex flex-col flex-1 min-h-0 outline-none">
+      {sharedSavedLink ? (
+        <Suspense fallback={null}>
+          <SharedSavedPlacesPrompt search={sharedSavedLink} onDone={setSharedSavedLink} />
+        </Suspense>
+      ) : null}
       <div ref={topBarRegionRef} data-topbar-region>
         <TopBar
           view={view}
@@ -1849,6 +1904,7 @@ export default function App() {
                   onCompareContextLeaders={comparePlaces}
                   onPreloadCompare={preloadCompareView}
                   onSaveScoutFinalists={saveScoutFinalists}
+                  onImportSavedPlaces={importSavedPlaces}
                   onApplyContextScenario={applyContextScenario}
                   bookmarkIds={bookmarkIds}
                   onToggleBookmark={toggleBookmark}
@@ -2987,6 +3043,7 @@ const HeroCard = memo(function HeroCard({
   onCompareContextLeaders,
   onPreloadCompare,
   onSaveScoutFinalists,
+  onImportSavedPlaces,
   onApplyContextScenario,
   bookmarkIds,
   onToggleBookmark,
@@ -3035,6 +3092,7 @@ const HeroCard = memo(function HeroCard({
   onCompareContextLeaders: ComparePlacesHandler;
   onPreloadCompare: () => void;
   onSaveScoutFinalists: (ids: readonly string[]) => void;
+  onImportSavedPlaces: (file: File) => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
   bookmarkIds: Set<string>;
   onToggleBookmark: (id: string) => void;
@@ -3269,6 +3327,24 @@ const HeroCard = memo(function HeroCard({
                 <Compass className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
                 Summary panels
               </button>
+              <label
+                htmlFor="hero-import-saved-places"
+                className="btn-ghost hero-more-menu__import !text-xs !py-1.5 w-full justify-start border-[rgba(122,212,240,0.35)]"
+              >
+                <Upload className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
+                Import saved places
+                <input
+                  id="hero-import-saved-places"
+                  type="file"
+                  accept=".json,.geojson"
+                  className="sr-only"
+                  onChange={event => {
+                    const file = event.currentTarget.files?.[0];
+                    event.currentTarget.value = "";
+                    if (file) onImportSavedPlaces(file);
+                  }}
+                />
+              </label>
               {scoutToolsOpen && scoutBrief ? (
                 <button
                   type="button"
@@ -3725,7 +3801,7 @@ const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
               className="scenario-remap__row"
               onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
               aria-label={openLabel}
-              title={prose(row.place.climateChange.outlook2050)}
+              title={prose(outlook2050(row.place) ?? "")}
             >
               <span className="scenario-remap__rank" aria-hidden>{row.projectedRank}</span>
               <span className="scenario-remap__main">

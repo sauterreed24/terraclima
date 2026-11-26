@@ -5,6 +5,7 @@ import { compareLensScore, type CompareDecisionProfile } from "./compare-finalis
 import { comparisonLensLabel, type ComparisonLensId } from "./compare-workbench";
 import { possessive } from "./place-name";
 import { chapterCountLabel, researchedChapterCount } from "./research-chapters";
+import { httpsCitationCount } from "./profile-stats";
 
 export type CompareCoachLaneId = "lens" | "climate-contrast" | "risk" | "evidence";
 export type CompareCandidateSwapTone = "upgrade" | "contrast" | "risk" | "garden" | "evidence" | "steady";
@@ -112,7 +113,7 @@ function climateContrastDetail(place: Place, active: ActiveClimateAverages): str
 
 function evidenceScore(place: Place): number {
   const confidence = place.confidence === "high" ? 32 : place.confidence === "moderate" ? 20 : 8;
-  const httpsCitations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
+  const httpsCitations = httpsCitationCount(place);
   return (
     confidence +
     Math.min(httpsCitations * 8, 32) +
@@ -124,7 +125,7 @@ function evidenceScore(place: Place): number {
 }
 
 function evidenceDetail(place: Place): string {
-  const citations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
+  const citations = httpsCitationCount(place);
   const sourceBacked = place.liveSignals ? "sourced cost and access data" : "little cost and access data";
   return `${place.confidence} confidence, ${citations} web source${citations === 1 ? "" : "s"}, ${chapterCountLabel(researchedChapterCount(place))}, ${sourceBacked}.`;
 }

@@ -1,4 +1,5 @@
 import type { Place } from "../types";
+import { deepSectionCount } from "./profile-stats";
 
 /**
  * Researched reading chapters a place carries: its authored `deepSections`
@@ -8,7 +9,7 @@ import type { Place } from "../types";
  * not counted.
  */
 export function researchedChapterCount(place: Place): number {
-  return (place.deepSections?.length ?? 0) + 1;
+  return deepSectionCount(place) + 1;
 }
 
 /** Fewer than two means the site-history chapter is the only researched reading. */

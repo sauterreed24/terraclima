@@ -1,3 +1,4 @@
+import { overallConfidence } from "./climate-data-basis";
 import type { Place, RiskLevel } from "../types";
 import {
   annualComfortMonthCount,
@@ -553,7 +554,8 @@ function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): L
   if (place.scores.comfort >= 72) badges.push("Comfort");
   if (comfortMonths >= 8) badges.push("Long season");
   if (feel.score >= 74) badges.push("Good feel");
-  if (place.confidence === "high") badges.push("High confidence");
+  // Only when the climate figures are as well checked as the sources.
+  if (overallConfidence(place) === "high") badges.push("High confidence");
 
   return { score, reasons, cautions, badges: [...new Set(badges)].slice(0, 5) };
 }

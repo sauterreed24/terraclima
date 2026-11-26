@@ -7,18 +7,21 @@
 // minimal — no folders, no tags. The same ergonomic curve as a
 // browser bookmark: one click, persistent, scannable.
 //
-// Stored as a JSON array of ids, ordered most-recent-first. We cap
-// the list so a runaway tab can't bloat localStorage; older entries
-// drop off the tail.
+// Stored as a JSON array of ids, ordered most-recent-first. The cap sits far
+// above the corpus size so a runaway tab can't bloat localStorage, and a save
+// never pushes an older one out: at the cap a new save is refused instead.
 
 const STORAGE_KEY = "terraclima.bookmarks.v1";
 
-/** Hard cap. Plenty for hand-pinning a relocation shortlist. */
-export const BOOKMARK_LIMIT = 50;
+/**
+ * Hard cap, well above the number of places in the atlas (226), so every place
+ * can be saved. Reaching it refuses a new save; it never drops an old one.
+ */
+export const BOOKMARK_LIMIT = 500;
 
 type Storage = Pick<typeof window.localStorage, "getItem" | "setItem"> | null;
 
-function safeStorage(): Storage {
+export function safeStorage(): Storage {
   if (typeof window === "undefined") return null;
   try {
     return window.localStorage;
@@ -27,7 +30,7 @@ function safeStorage(): Storage {
   }
 }
 
-function readRaw(storage: Storage): string[] {
+export function readRaw(storage: Storage): string[] {
   if (!storage) return [];
   try {
     const raw = storage.getItem(STORAGE_KEY);
@@ -50,7 +53,7 @@ function readRaw(storage: Storage): string[] {
   }
 }
 
-function writeRaw(storage: Storage, ids: readonly string[]): void {
+export function writeRaw(storage: Storage, ids: readonly string[]): void {
   if (!storage) return;
   try {
     storage.setItem(STORAGE_KEY, JSON.stringify(ids.slice(0, BOOKMARK_LIMIT)));
@@ -74,21 +77,17 @@ export function hasBookmark(id: string): boolean {
  * when newly added — pinned-first ordering is the most useful default
  * for a "your saved places" rail.
  */
-export function toggleBookmark(id: string): { ids: string[]; pinned: boolean } {
+export function toggleBookmark(id: string): { ids: string[]; pinned: boolean; full: boolean } {
   const storage = safeStorage();
   const current = readRaw(storage);
   const idx = current.indexOf(id);
-  let next: string[];
-  let pinned: boolean;
-  if (idx >= 0) {
-    next = current.filter(v => v !== id);
-    pinned = false;
-  } else {
-    next = [id, ...current].slice(0, BOOKMARK_LIMIT);
-    pinned = true;
+  if (idx < 0 && current.length >= BOOKMARK_LIMIT) {
+    // Full: refuse the new save rather than drop one the user kept.
+    return { ids: current, pinned: false, full: true };
   }
+  const next = idx >= 0 ? current.filter(v => v !== id) : [id, ...current];
   writeRaw(storage, next);
-  return { ids: next, pinned };
+  return { ids: next, pinned: idx < 0, full: false };
 }
 
 /** Force-set the bookmark list (used by tests + import flows). */
@@ -110,7 +109,9 @@ export function setBookmarks(ids: readonly string[]): string[] {
 /**
  * Add a ranked set of ids to the head of the saved shortlist without toggling
  * existing pins off. This is used for "save these finalists" flows where the
- * current rank order matters more than single-click recency.
+ * current rank order matters more than single-click recency. Places already
+ * saved are never dropped: when the list is full, only the incoming ids that
+ * fit are added (`capped` says some did not).
  */
 export function addBookmarksToFront(ids: readonly string[]): { ids: string[]; added: string[]; capped: boolean } {
   const storage = safeStorage();
@@ -124,20 +125,20 @@ export function addBookmarksToFront(ids: readonly string[]): { ids: string[]; ad
     incoming.push(v);
   }
 
-  const merged = [
-    ...incoming,
-    ...current.filter(id => !incomingSeen.has(id)),
-  ];
-  const next = merged.slice(0, BOOKMARK_LIMIT);
   const currentSet = new Set(current);
-  const nextSet = new Set(next);
-  const added = incoming.filter(id => !currentSet.has(id) && nextSet.has(id));
+  const room = Math.max(0, BOOKMARK_LIMIT - current.length);
+  const fresh = incoming.filter(id => !currentSet.has(id));
+  const added = fresh.slice(0, room);
+  const addedSet = new Set(added);
+  const kept = incoming.filter(id => currentSet.has(id) || addedSet.has(id));
+  const keptSet = new Set(kept);
+  const next = [...kept, ...current.filter(id => !keptSet.has(id))];
 
   writeRaw(storage, next);
   return {
     ids: next,
     added,
-    capped: merged.length > BOOKMARK_LIMIT,
+    capped: added.length < fresh.length,
   };
 }
 

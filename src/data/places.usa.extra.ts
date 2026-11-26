@@ -50,7 +50,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     },
     soil: { texture: "Andisols and humic nitisols on basalt; high organic matter in older alluvium", drainage: "moderate", phRange: [5.0, 7.2], waterHolding: "high", notes: "Rapid weathering of basalt produces mineral-rich but phosphorus-limiting soils in places." },
     growability: { score: 88, hardinessZone: "12a", growsWell: ["Taro", "Tropical fruit", "Orchids", "Coffee (mild elevations inland)", "Ginger", "Banana"], tricky: ["Temperate bulbs", "Dry-farmed Mediterranean crops"] },
-    climateChange: { outlook2050: "Warmer nights; possible shift in trade-wind frequency; heavier extreme rain events.", outlook2100: "Coastal groundwater and reef stress; uncertain trade regime.", keyShifts: [{ variable: "Extreme rainfall", direction: "up" }, { variable: "Coral bleaching stress", direction: "up" }], resilienceNote: "Elevation diversity on-island provides migration space for ecosystems." },
     risks: { wildfire: { level: "low", trend: "stable" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "very-low", trend: "stable" }, storm: { level: "moderate", trend: "mixed", note: "Hurricane landfalls infrequent but tropical storms matter." }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "elevated", trend: "worsening" } },
     localContrast: [{ radiusKm: 40, precipDeltaPct: -85, note: "vs Kona leeward — dramatically drier in rain shadow." }],
     scores: { hiddenGem: 72, microclimateUniqueness: 94, comfort: 58, resilience: 62, growability: 88, tradeoff: 44 },
@@ -67,26 +66,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["remote workers", "tropical-ag researchers"], travelFit: ["volcanoes", "Mauna Kea stargazing", "waterfalls"],
     whoWouldLove: "Rainforest people who enjoy steady warmth and don't mind humidity.", whoMightNot: "Sun-chasers seeking dry summers; mold-sensitive residents.",
     confidence: "high",
-    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
-    citations: [{ label: "NOAA — Hilo International", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Honolulu — Hawaiʻi climate summaries", kind: "noaa", url: "https://www.weather.gov/hfo/" }],
-    deepSections: [
-      {
-        id: "hilo-trades",
-        title: "Trade-wind regime and the trade-wind inversion",
-        paragraphs: [
-          "The subtropical high over the central Pacific feeds persistent northeasterly trades. A climatological inversion a few thousand feet above the sea surface caps convection over the ocean but breaks on windward slopes, allowing deep clouds to form. That is why rainfall concentrates on the northeast coast while leeward areas sit in subsidence.",
-          "When the inversion weakens — during some El Niño winters or Kona lows — moisture penetrates higher and rainfall patterns flip temporarily, producing multi-day warm rains that stress flood control.",
-        ],
-      },
-      {
-        id: "hilo-island-mountain",
-        title: "From sea level to Mauna Kea in one afternoon",
-        paragraphs: [
-          "A road from Hilo to the Mauna Kea visitor station climbs through cloud forest, subalpine shrubland, and alpine desert in under two hours of driving — one of the planet’s steepest climate gradients. Summit mean temperatures are below freezing in winter; Hilo remains in tropical air.",
-          "This vertical stacking makes Hawaiʻi Island a natural laboratory for lapse-rate studies, inversion height, and astronomical seeing — the reason major observatories sit above the cloud deck.",
-        ],
-      },
-    ],
   },
   {
     id: "nome-ak",
@@ -109,32 +88,11 @@ export const PLACES_USA_EXTRA: Place[] = [
     climate: { tempHighC: [-13, -11, -6, 1, 7, 12, 14, 13, 8, 1, -6, -10], tempLowC: [-20, -19, -15, -8, -1, 4, 6, 5, 0, -8, -14, -18], precipMm: [18, 16, 14, 18, 22, 28, 50, 65, 48, 32, 24, 20], snowCm: [38, 32, 28, 20, 8, 0, 0, 0, 5, 22, 35, 40], humidity: [78, 76, 74, 72, 74, 76, 78, 80, 80, 78, 76, 74], annualPrecipMm: 355, frostFreeDays: 85, hardinessZone: "2b" },
     soil: { texture: "Permafrost-influenced silts and organic soils near coast; rocky inland", drainage: "imperfect", phRange: [5.0, 7.0], waterHolding: "moderate" },
     growability: { score: 28, growsWell: ["Cool-season greenhouse crops", "Berry picking (wild)"], tricky: ["Tree fruit", "Field crops without season extension", "Dry-farmed row crops"] },
-    climateChange: { outlook2050: "Later freeze-up and earlier break-up; more open-water storms.", outlook2100: "Coastal erosion accelerates; ice road season shortens.", keyShifts: [{ variable: "Sea ice duration", direction: "down" }], resilienceNote: "Subsistence and transport systems tightly coupled to ice timing." },
     risks: { wildfire: { level: "very-low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "very-low", trend: "stable" }, extremeCold: { level: "very-high", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "elevated", trend: "worsening" } },
     scores: { hiddenGem: 58, microclimateUniqueness: 78, comfort: 38, resilience: 48, growability: 28, tradeoff: 62 },
     relocationFit: ["mining logistics", "research"], travelFit: ["Iditarod finish", "Bering land bridge archaeology"],
     whoWouldLove: "Arctic coastal culture and long-light summers.", whoMightNot: "Anyone needing mild winters or tree cover.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Nome Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
-    deepSections: [
-      {
-        id: "nome-ice-season",
-        title: "Living with the ice calendar",
-        paragraphs: [
-          "Sea ice is a travel surface, a hunting platform and a buffer that steadies winter temperatures. When the pack is solid, cold air sitting over Siberia does not translate into quite the same shock at the shoreline as it does over open ocean. When ice is thin or absent, the same wind can feel brutally raw.",
-          "Break-up turns logistics on its head: barges replace ice roads, river mouths become debris jams, and coastal erosion accelerates where permafrost bluffs thaw. For any property, ask about flood insurance, the setback from the shore, and whether the foundation is on piles or thermosyphons.",
-        ],
-      },
-      {
-        id: "nome-light-work",
-        title: "Summer light, winter dark, and daily rhythm",
-        paragraphs: [
-          "Summer weeks bring usable light deep into the evening — gardeners and construction crews stretch schedules naturally. Winter reverses the bargain: short daylight concentrates errands and social life into a few bright hours, while artificial light becomes a mental-health variable as much as a utility bill.",
-          "On the shortest day the sun is up for less than four hours, and in late June for more than twenty-one. At this latitude the light governs the working year as much as the temperature does.",
-        ],
-      },
-    ],
   },
   {
     id: "corpus-christi-tx",
@@ -157,32 +115,11 @@ export const PLACES_USA_EXTRA: Place[] = [
     climate: { tempHighC: [17, 19, 22, 25, 29, 32, 33, 34, 32, 28, 23, 19], tempLowC: [8, 10, 14, 18, 22, 24, 25, 25, 23, 19, 13, 9], precipMm: [35, 40, 55, 50, 85, 90, 95, 75, 120, 95, 55, 45], annualPrecipMm: 820, frostFreeDays: 300, hardinessZone: "9b" },
     soil: { texture: "Sandy coastal plain and saline clays", drainage: "moderate", phRange: [7.0, 8.4], waterHolding: "low" },
     growability: { score: 70, growsWell: ["Citrus (protected)", "Palms", "Subtropical ornamentals"], tricky: ["Cool-climate fruit"] },
-    climateChange: { outlook2050: "Higher baseline sea level and wetter hurricanes.", outlook2100: "Surge reach expands in bay networks.", keyShifts: [{ variable: "Hurricane rainfall", direction: "up" }], resilienceNote: "Windstorm building codes have tightened post-Harvey era." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "high", trend: "worsening" }, drought: { level: "moderate", trend: "worsening" }, extremeHeat: { level: "elevated", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "low", trend: "stable" }, storm: { level: "very-high", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-high", trend: "worsening" } },
     scores: { hiddenGem: 40, microclimateUniqueness: 62, comfort: 52, resilience: 42, growability: 70, tradeoff: 58 },
     relocationFit: ["port workers", "wind energy"], travelFit: ["Padre Island", "birding"],
     whoWouldLove: "Gulf coast life with strong Hispanic cultural ties.", whoMightNot: "Dry-climate seekers; hurricane-averse.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Corpus Christi Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
-    deepSections: [
-      {
-        id: "corpus-surge-bay",
-        title: "Surge, bays, and why geometry matters more than category",
-        paragraphs: [
-          "Hurricane hazard here is not only wind — it is water pushed into a concave coastline. Corpus Christi Bay narrows toward the city; Aransas Pass and the Laguna Madre exchange water on wind shifts. A modest storm on paper can still stack surge against a high tide. If you are evaluating a lot, elevation above the base flood elevation and the vintage of the drainage system matter more than distance to the beach in miles.",
-          "Flood insurance maps are revised after major storms, so look up the current map for the address before relying on an older one.",
-        ],
-      },
-      {
-        id: "corpus-sea-breeze-heat",
-        title: "Sea breeze vs offshore flow — summer comfort in practice",
-        paragraphs: [
-          "On many July days the Gulf supplies a late-afternoon onshore push that trims heat index peaks for an hour or two. When large-scale flow turns offshore ahead of a tropical wave, that relief disappears and heat indices spike — the same week can contain both 'manageable' and 'dangerous' afternoons.",
-          "Workers and athletes learn to schedule hard outdoor blocks before noon; newcomers should plan shade, hydration, and a cool indoor anchor the way northern cities plan for wind chill in January.",
-        ],
-      },
-    ],
   },
   {
     id: "paducah-ky",
@@ -205,14 +142,11 @@ export const PLACES_USA_EXTRA: Place[] = [
     climate: { tempHighC: [5, 8, 14, 20, 26, 30, 32, 31, 28, 22, 14, 8], tempLowC: [-4, -2, 3, 9, 15, 19, 21, 20, 16, 9, 3, -1], precipMm: [90, 95, 120, 120, 130, 110, 115, 95, 95, 100, 110, 115], annualPrecipMm: 1315, frostFreeDays: 200, hardinessZone: "7a" },
     soil: { texture: "Mississippi embayment silty loams", drainage: "moderate", phRange: [5.5, 6.8], waterHolding: "high" },
     growability: { score: 76, growsWell: ["Soybeans", "Corn", "Tobacco heritage", "Oak shade trees"], tricky: ["Dry lavender"] },
-    climateChange: { outlook2050: "Heavier spring rain; more high-CAPE nights.", outlook2100: "Mississippi basin flooding teleconnections intensify.", keyShifts: [{ variable: "Warm-season humidity", direction: "up" }], resilienceNote: "Floodplain management is central." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "moderate", trend: "mixed" }, extremeHeat: { level: "elevated", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 36, microclimateUniqueness: 58, comfort: 54, resilience: 52, growability: 76, tradeoff: 48 },
     relocationFit: ["logistics", "healthcare"], travelFit: ["quilt museum", "riverfront"],
     whoWouldLove: "River-town Midwesterners who tolerate humidity.", whoMightNot: "Mountain-air seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Barkley Regional", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "bismarck-nd",
@@ -235,7 +169,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     climate: { tempHighC: [-5, -2, 4, 13, 20, 26, 30, 29, 23, 14, 4, -4], tempLowC: [-16, -14, -7, 1, 7, 12, 15, 14, 7, 0, -7, -14], precipMm: [12, 12, 22, 45, 65, 95, 75, 60, 45, 35, 18, 15], annualPrecipMm: 474, frostFreeDays: 145, hardinessZone: "4b" },
     soil: { texture: "Mollisols and glacial till loams", drainage: "good", phRange: [6.0, 8.0], waterHolding: "moderate" },
     growability: { score: 68, growsWell: ["Hard red spring wheat", "Soybeans", "Sunflowers"], tricky: ["Long-season corn without heat units"] },
-    climateChange: { outlook2050: "Wetter springs; more crop-damaging hail days.", outlook2100: "Winter warming faster than summer.", keyShifts: [{ variable: "Frost-free season", direction: "up" }], resilienceNote: "Agriculture adapts via cultivar shifts." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "elevated", trend: "mixed" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "high", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 44, microclimateUniqueness: 56, comfort: 48, resilience: 60, growability: 68, tradeoff: 52 },
     liveSignals: {
@@ -258,33 +191,9 @@ export const PLACES_USA_EXTRA: Place[] = [
       { label: "January cold-start test", kind: "seasonal", season: "winter", note: "A practical relocation check for vehicles, errands, school mornings, and tolerance for subzero wind." },
       { label: "Prairie storm watch", kind: "vista", season: "late spring", note: "Dryline storms, hail, and big-sky convective structure are a core part of the local climate identity." },
     ],
-    deepSections: [
-      {
-        id: "bismarck-continentality-is-logistics",
-        title: "Planning around the extremes",
-        paragraphs: [
-          "Bismarck is far from any ocean, and no mountain range shelters it. January afternoons average −5°C and nights −16°C, and July afternoons 29°C. Winter errands depend on the car starting, on the wind chill and on whether the roads are open, and blizzards close schools and highways several times in most winters.",
-          "The open setting has advantages. The air dries quickly after a storm, summer nights cool to about 15°C, and winter days are often sunny. The Missouri River runs in a wooded valley along the west side of the city and breaks up the plain.",
-        ],
-      },
-      {
-        id: "bismarck-capital-service-counterweight",
-        title: "A state capital on the plains",
-        paragraphs: [
-          "Bismarck is the capital of North Dakota and the service center for a wide stretch of the northern plains. Two hospital systems, the state offices, large shops and an airport with flights to Minneapolis and Denver are all in the city.",
-          "The climate is harsher than in lake-moderated or mountain towns. Living with it is far easier here than in a small prairie town with the same wind and cold and a long drive to a hospital.",
-        ],
-      },
-    ],
     relocationFit: ["energy sector", "remote workers"], travelFit: ["Lewis & Clark", "prairie reserves"],
     whoWouldLove: "Wide-open plains people who own a good parka.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [
-      { label: "NOAA - Bismarck Municipal climate normals", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
-      { label: "City of Bismarck - municipal services", kind: "other", url: "https://www.bismarcknd.gov/1606/Services" },
-      { label: "U.S. Census QuickFacts - Bismarck city", kind: "oss-data", url: "https://www.census.gov/quickfacts/fact/table/bismarckcitynorthdakota/POP010220" },
-    ],
   },
   {
     id: "morgantown-wv",
@@ -307,14 +216,11 @@ export const PLACES_USA_EXTRA: Place[] = [
     climate: { tempHighC: [3, 5, 11, 18, 23, 27, 29, 28, 24, 18, 11, 5], tempLowC: [-5, -4, 1, 6, 11, 16, 18, 17, 13, 7, 2, -2], precipMm: [75, 70, 95, 100, 110, 115, 120, 100, 95, 85, 80, 80], annualPrecipMm: 1125, frostFreeDays: 175, hardinessZone: "6b" },
     soil: { texture: "Acidic shaly silt loams", drainage: "moderate", phRange: [4.8, 6.2], waterHolding: "moderate" },
     growability: { score: 72, growsWell: ["Maple", "Apples", "Brassicas", "Cool-season turf"], tricky: ["Drought-tolerant xeriscape without irrigation"] },
-    climateChange: { outlook2050: "Heavier convective rain; longer pollen seasons.", outlook2100: "Species migration on slopes.", keyShifts: [{ variable: "Flash flood frequency", direction: "up" }], resilienceNote: "Forested slopes buffer some erosion." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "moderate", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 42, microclimateUniqueness: 64, comfort: 58, resilience: 56, growability: 72, tradeoff: 46 },
     relocationFit: ["university families", "healthcare"], travelFit: ["fall color", "whitewater"],
     whoWouldLove: "Appalachian foothills without deep South heat.", whoMightNot: "Sun-belt retirees seeking dry air.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Morgantown Municipal", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "port-orford-cape-blanco-or",
@@ -360,7 +266,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     },
     soil: { texture: "Coastal sandy loam and wind-worked marine terrace soils", drainage: "moderate", phRange: [5.2, 6.5], organicMatterPct: [3, 7], waterHolding: "moderate", notes: "Wind exposure and salt spray matter more than raw soil fertility on the open headlands." },
     growability: { score: 64, hardinessZone: "9b", growsWell: ["Kale", "Brassicas", "Potatoes", "Berries in sheltered pockets", "Wind-tolerant herbs"], tricky: ["Tomatoes without shelter", "Heat-loving fruit", "Tall tender plants"], homeGarden: "Use hedges, hoop cover, and south-facing walls; the climate is kind to cool crops but hard on exposed plants." },
-    climateChange: { outlook2050: "Ocean moderation persists, but winter storms, erosion, and marine heatwaves become more consequential.", outlook2100: "Sea-level and bluff exposure dominate siting decisions while summer heat remains buffered.", keyShifts: [{ variable: "Coastal erosion", direction: "up" }, { variable: "Marine heatwaves", direction: "up" }, { variable: "Summer heat", direction: "mixed" }], resilienceNote: "Excellent heat refuge, poor parcel uniformity: bluff, tsunami, wind, and landslide siting are decisive." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "high", trend: "stable" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "high", trend: "worsening" } },
     localContrast: [{ radiusKm: 35, summerHighDeltaC: -4, precipDeltaPct: 40, note: "vs interior Rogue/Coquille foothill valleys, where summer warms quickly away from the upwelling layer." }],
     nearbyContrasts: [{ label: "Bandon, OR", note: "Still marine and windy, but a little less headland-exposed." }, { label: "Grants Pass, OR", note: "Hotter, drier inland Rogue Valley climate within a few hours." }],
@@ -378,7 +283,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     whoWouldLove: "People who want quiet, cold-ocean weather, visible storms, and a town small enough that the harbor still sets the rhythm.",
     whoMightNot: "Sun-and-heat seekers, anyone allergic to wind, or buyers who want simple coastal parcel due diligence. Daily-services access is genuinely limited.",
     confidence: "high",
-    confidenceNotes: "This high-confidence profile is anchored by NOAA Port Orford/Cape Blanco normals and official coastal terrain context; bluff exposure, wind shelter, and tsunami/landslide siting need parcel checks.",
     settlementsWithinZone: [
       { name: "Port Orford", role: "town", population: "~1,100", note: "The main lived anchor: harbor, shops, and exposed headland neighborhoods in the same cool marine layer." },
       { name: "Langlois", role: "village", population: "~200", note: "A quieter dairy-and-coast crossroad just north, slightly more inland and less harbor-driven." },
@@ -389,29 +293,6 @@ export const PLACES_USA_EXTRA: Place[] = [
       { label: "Port Orford Heads", kind: "trail", season: "year-round", note: "Short trails above the harbor show the town's exposure and storm approach." },
       { label: "Redfish Rocks marine reserve", kind: "water", season: "summer", note: "A clear anchor for cold-water ecology rather than warm beach life." },
       { label: "Humbug Mountain", kind: "trail", season: "shoulder seasons", note: "A nearby climb into the coastal forest rain belt." },
-    ],
-    deepSections: [
-      {
-        id: "port-orford-upwelling-headland",
-        title: "Cold upwelling and a town on the edge of the current",
-        paragraphs: [
-          "Cape Blanco is the westernmost point of Oregon, and Port Orford lies just south of it. In summer, strong northerly winds blow along this coast and draw cold water to the surface. The sea air holds afternoons to about 20°C while the inland valleys of southern Oregon are above 30°C.",
-          "Wind is the constant here: Cape Blanco is one of the windiest places on the Oregon coast, with northerlies in summer and southerly gales in winter. Salt spray, fog and about 1800 mm of rain a year, nearly all of it from October to May, come with the cool air.",
-        ],
-      },
-      {
-        id: "port-orford-parcel-reality",
-        title: "Shelter from the wind decides the lot",
-        paragraphs: [
-          "Two houses a few hundred meters apart can feel very different here. One on the open bluff takes the wind and the salt directly. One behind a stand of shore pine or spruce, or on ground that faces south, has a usable garden and a quieter winter.",
-          "Look for shelter belts, south-facing ground and good drainage, and check the road in storm season. Highway 101 is the only route north and south, and slides close it from time to time. The nearest hospitals are in Gold Beach and Bandon, each about 45 km away.",
-        ],
-      },
-    ],
-    citations: [
-      { label: "NOAA NCEI Port Orford monthly 1991-2020 normals service", kind: "noaa", url: "https://www.ncei.noaa.gov/access/services/data/v1?dataTypes=MLY-TMAX-NORMAL%2CMLY-TMIN-NORMAL%2CMLY-TAVG-NORMAL%2CMLY-PRCP-NORMAL%2CMLY-SNOW-NORMAL&dataset=normals-monthly-1991-2020&format=pdf&stations=USC00356784" },
-      { label: "NOAA NCEI U.S. Climate Normals overview", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" },
-      { label: "USGS National Map coastal terrain and hydrography", kind: "usgs", url: "https://www.usgs.gov/programs/national-geospatial-program/national-map" },
     ],
   },
   {
@@ -447,7 +328,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     climate: { tempHighC: [4.4, 7.1, 11.2, 15.4, 20.2, 24.8, 29.3, 28.7, 24.3, 17.0, 8.7, 4.1], tempLowC: [-5.7, -4.4, -2.1, 0.8, 4.3, 8.1, 10.9, 10.0, 5.8, 0.9, -3.3, -5.5], precipMm: [43, 31, 33, 25, 27, 20, 8, 9, 14, 24, 38, 44], snowCm: [20, 12, 8, 3, 0, 0, 0, 0, 0, 1, 8, 18], humidity: [68, 62, 55, 48, 43, 38, 32, 33, 38, 47, 58, 66], sunshinePct: [52, 58, 64, 72, 78, 86, 92, 90, 84, 72, 54, 48], annualPrecipMm: 316, frostFreeDays: 125, hardinessZone: "6b", diurnalSummerC: 18, diurnalWinterC: 10 },
     soil: { texture: "Volcanic loam, lakebed clays, and alluvial basin soils", drainage: "imperfect", phRange: [6.2, 8.0], organicMatterPct: [1, 5], waterHolding: "moderate", notes: "Irrigated parcels and old lakebed soils behave very differently from dry sage benches." },
     growability: { score: 60, hardinessZone: "6b", growsWell: ["Potatoes", "Alfalfa", "Cool-season vegetables", "Hardy apples", "Native dryland grasses"], tricky: ["Long-season heat crops", "Tender perennials", "Dry farming without water rights"], homeGarden: "Excellent light and cool nights, but frost timing and irrigation rights are the real filters." },
-    climateChange: { outlook2050: "Hotter summers, more drought stress, more smoke days, and tighter lake/irrigation conflict.", outlook2100: "Water allocation and wetland health dominate resilience despite continued dry-air heat relief.", keyShifts: [{ variable: "Drought", direction: "up" }, { variable: "Smoke", direction: "up" }, { variable: "Snowpack runoff", direction: "down" }], resilienceNote: "Dry air and elevation help human comfort, but watershed stress is the main long-term constraint." },
     risks: { wildfire: { level: "elevated", trend: "worsening" }, flood: { level: "moderate", trend: "mixed" }, drought: { level: "high", trend: "worsening" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "high", trend: "worsening" }, storm: { level: "low", trend: "stable" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     localContrast: [{ radiusKm: 70, summerHighDeltaC: -5, precipDeltaPct: -55, note: "vs the wetter Cascade crest and Crater Lake uplands; the basin is much sunnier and drier." }],
     nearbyContrasts: [{ label: "Ashland, OR", note: "Warmer, more Mediterranean, more urbanized, and much less basin-cold in winter." }, { label: "Crater Lake rim", note: "Snowier, wetter, and far colder at the crest." }],
@@ -467,7 +347,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     whoWouldLove: "People who want sun, cool nights, big sky, and a less polished inland Oregon base.",
     whoMightNot: "Smoke-sensitive residents, water-rights-averse growers, or anyone expecting green Willamette Valley softness.",
     confidence: "high",
-    confidenceNotes: "This high-confidence profile uses NOAA normals and official basin/wetland geography; air quality, water rights, and lake-adjacent flooding are highly site-specific.",
     settlementsWithinZone: [
       { name: "Klamath Falls", role: "hub", population: "~22,000", note: "The service anchor on the lake edge, with the strongest urban inversion and air-quality signal." },
       { name: "Merrill", role: "town", population: "~850", note: "A smaller agricultural basin anchor where irrigation and frost calendars matter more than city amenities." },
@@ -478,15 +357,6 @@ export const PLACES_USA_EXTRA: Place[] = [
       { label: "Crater Lake day trips", kind: "vista", season: "summer", note: "A fast climb from dry basin to snow-fed Cascade crest." },
       { label: "Link River and Moore Park", kind: "trail", season: "year-round", note: "Close-in routes that show the city-lake interface." },
       { label: "Lava Beds and Tulelake basin", kind: "historic", season: "shoulder seasons", note: "A stark nearby contrast in lava, dry air, and basin settlement history." },
-    ],
-    deepSections: [
-      { id: "klamath-water-climate", title: "Water decides more than temperature", paragraphs: ["The Upper Klamath Basin can look comfortable on temperature charts: bright, dry, cool at night, and rarely humid. But the livability question is tied to water allocation, wetland health, irrigation districts, and lake ecology.", "In drought years irrigation deliveries from the Klamath Project have been cut sharply, as in 2001 and 2021, and some household wells have gone dry. Ask about the water source for any property before anything else."] },
-      { id: "klamath-inversion-sun", title: "Sunny basin, stagnant winter lid", paragraphs: ["Clear high-desert nights drain cold air into the basin, and winter high pressure can hold a stable lid over the city. That creates a familiar western-basin split: bright climate in the abstract, but occasional stagnant air at street level.", "Summer reverses the problem. Mixing is stronger, humidity is low, and evening cooling is reliable, but regional fires can import smoke into the same basin geometry that otherwise protects the place from marine gloom."] },
-    ],
-    citations: [
-      { label: "NOAA NCEI U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" },
-      { label: "USGS Upper Klamath Basin science", kind: "usgs", url: "https://www.usgs.gov/centers/oregon-water-science-center/science/upper-klamath-basin" },
-      { label: "USFWS Klamath Basin National Wildlife Refuge Complex", kind: "other", url: "https://www.fws.gov/refuge/klamath-basin" },
     ],
   },
   {
@@ -522,7 +392,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     climate: { tempHighC: [4.3, 6.6, 10.6, 15.5, 20.5, 25.7, 27.2, 25.6, 22.2, 16.1, 9.3, 4.4], tempLowC: [-7.3, -5.9, -2.5, 1.4, 5.8, 10.1, 12.4, 11.6, 7.9, 1.9, -3.5, -7.0], precipMm: [18, 16, 20, 18, 28, 32, 68, 82, 45, 32, 20, 20], snowCm: [20, 16, 12, 4, 0, 0, 0, 0, 0, 2, 8, 18], humidity: [48, 42, 35, 30, 30, 35, 48, 52, 48, 40, 42, 48], sunshinePct: [68, 72, 74, 78, 80, 84, 86, 84, 80, 74, 66, 64], annualPrecipMm: 399, frostFreeDays: 155, hardinessZone: "6b / 7a", diurnalSummerC: 15, diurnalWinterC: 12 },
     soil: { texture: "Volcanic tuff, sandy loam, and shallow mesa soils", drainage: "good", phRange: [6.2, 7.5], organicMatterPct: [1, 4], waterHolding: "low", notes: "Mesa edges, canyon rims, and fill soils vary sharply; defensible space and drainage matter." },
     growability: { score: 54, hardinessZone: "6b / 7a", growsWell: ["Pinon", "Native xeriscape", "Apricots in sheltered spots", "Cool-season vegetables", "Lavender"], tricky: ["Water-hungry lawns", "Tender fruit", "Unsheltered windy beds"], homeGarden: "High sun and cool nights help, but water, wind, and late frost shape every edible garden." },
-    climateChange: { outlook2050: "Hotter dry seasons, longer fire weather, and more stress on ponderosa and pinon belts.", outlook2100: "Forest composition shifts and post-fire flood risk become central siting concerns.", keyShifts: [{ variable: "Fire weather", direction: "up" }, { variable: "Snowpack", direction: "down" }, { variable: "Post-fire flooding", direction: "up" }], resilienceNote: "Elevation protects from lowland heat but not from forest and watershed risk." },
     risks: { wildfire: { level: "high", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "elevated", trend: "worsening" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "elevated", trend: "worsening" }, storm: { level: "low", trend: "stable" }, landslide: { level: "moderate", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     localContrast: [{ radiusKm: 35, summerHighDeltaC: -6, winterLowDeltaC: -4, note: "vs Espanola/Rio Grande valley floor; the mesa is cooler and more exposed to forest-edge weather." }],
     nearbyContrasts: [{ label: "Santa Fe, NM", note: "Similar highland light but broader basin city fabric and less mesa-canyon fragmentation." }, { label: "Bandelier canyon country", note: "Warmer canyon bottoms and sharper post-fire flood exposure." }],
@@ -543,7 +412,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     whoWouldLove: "People who want a cerebral mountain-mesa town with dry air, cool nights, and trails five minutes from the door.",
     whoMightNot: "Fire-averse buyers, water-intensive gardeners, or anyone who wants low-altitude oxygen and soft winters.",
     confidence: "high",
-    confidenceNotes: "This high-confidence profile is based on NOAA normals and official Jemez/Bandelier terrain context; canyon-edge fire, drainage, and evacuation exposure are parcel-specific.",
     settlementsWithinZone: [
       { name: "Los Alamos", role: "hub", population: "~13,000", note: "The main mesa-town service anchor, with canyon edges woven into the urban fabric." },
       { name: "White Rock", role: "town", population: "~6,000", note: "Lower, drier, and warmer on the plateau edge above the Rio Grande canyon." },
@@ -554,15 +422,6 @@ export const PLACES_USA_EXTRA: Place[] = [
       { label: "Valles Caldera", kind: "vista", season: "summer", note: "A high volcanic grassland contrast to the mesa neighborhoods." },
       { label: "Pajarito Mountain", kind: "winter-sport", season: "winter", note: "Local snow and forest exposure in one quick drive." },
       { label: "Los Alamos mesa trail network", kind: "trail", season: "year-round", note: "Everyday access to mesa rims, canyons, and dry highland air." },
-    ],
-    deepSections: [
-      { id: "los-alamos-mesa-canyon", title: "Mesa neighborhoods are not one smooth climate", paragraphs: ["Los Alamos is built on the Pajarito Plateau, a set of narrow mesas divided by deep canyons on the east flank of the Jemez Mountains. Cold air drains into the canyons at night, smoke and runoff follow them, and the wind blows hardest across the mesa tops.", "Each mesa is a peninsula with few roads out, and that matters in a fire. The town was evacuated for the Cerro Grande fire in 2000, which destroyed more than 200 homes, and again for the Las Conchas fire in 2011. For any street, check the evacuation route, the drainage and how much clearing the lot needs."] },
-      { id: "los-alamos-altitude-fire", title: "Altitude buys comfort, not immunity", paragraphs: ["At more than 2,200 m, the town is far cooler than the Rio Grande valley below it. July afternoons average about 28°C and nights about 14°C, and the air is dry. Winter afternoons average 4 to 7°C in strong sun, and the season's snow comes to about 80 cm.", "The forest above the town is the hazard. After both fires, summer thunderstorms on the burned slopes sent floods and debris down the canyons. July and August are the wettest months, with about 65 mm each, and that is when the flood risk below a burn is highest."] },
-    ],
-    citations: [
-      { label: "NOAA NCEI U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" },
-      { label: "NPS Bandelier National Monument", kind: "other", url: "https://www.nps.gov/band/index.htm" },
-      { label: "USGS National Map Pajarito Plateau terrain context", kind: "usgs", url: "https://www.usgs.gov/programs/national-geospatial-program/national-map" },
     ],
   },
   {
@@ -598,7 +457,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     climate: { tempHighC: [-0.5, 1.8, 7.2, 13.0, 18.7, 25.1, 30.0, 29.1, 23.4, 15.1, 6.5, 0.2], tempLowC: [-11.4, -9.2, -4.2, 0.7, 5.7, 10.3, 14.0, 12.8, 7.4, 1.4, -5.3, -10.4], precipMm: [16, 18, 28, 45, 65, 50, 25, 20, 28, 35, 24, 18], snowCm: [25, 22, 20, 10, 2, 0, 0, 0, 1, 8, 18, 24], humidity: [52, 48, 42, 38, 38, 35, 28, 28, 32, 38, 44, 50], sunshinePct: [58, 64, 70, 76, 78, 84, 88, 86, 80, 72, 58, 52], annualPrecipMm: 372, frostFreeDays: 135, hardinessZone: "5a", diurnalSummerC: 16, diurnalWinterC: 11 },
     soil: { texture: "Alluvial loam near creek bottoms, stony loam and calcareous sagebrush soils on benches", drainage: "good", phRange: [7.0, 8.2], organicMatterPct: [1, 4], waterHolding: "low", notes: "Sheltered creek parcels can garden; windy benches need xeric expectations." },
     growability: { score: 50, hardinessZone: "5a", growsWell: ["Hardy apples", "Potatoes", "Cool-season greens", "Native grasses", "Sheltered berries"], tricky: ["Long-season crops", "Unsheltered fruit blossom", "High-water lawns"], homeGarden: "Wind protection and frost awareness matter more than summer heat." },
-    climateChange: { outlook2050: "More hot dry spells, earlier snowmelt, and higher fire weather on foothill and canyon edges.", outlook2100: "Range snowpack and late-summer water timing become the main resilience question.", keyShifts: [{ variable: "Snowpack", direction: "down" }, { variable: "Fire weather", direction: "up" }, { variable: "Summer heat", direction: "up" }], resilienceNote: "Dry air and elevation help comfort; water timing and wind/fire exposure remain hard constraints." },
     risks: { wildfire: { level: "elevated", trend: "worsening" }, flood: { level: "moderate", trend: "mixed" }, drought: { level: "elevated", trend: "worsening" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "elevated", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "moderate", trend: "stable" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     localContrast: [{ radiusKm: 45, summerHighDeltaC: -4, winterLowDeltaC: 3, note: "vs colder Wind River high country and more exposed basin floor; Lander sits in the foothill transition." }],
     nearbyContrasts: [{ label: "Riverton, WY", note: "Lower, more basin-exposed, and less canyon-sheltered." }, { label: "Sinks Canyon", note: "Cooler, wind-filtered, and closer to creek microclimates." }],
@@ -618,7 +476,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     whoWouldLove: "People who want real Wyoming seasons, dry air, a functional town, and canyon-to-alpine access without resort performance.",
     whoMightNot: "Mild-winter seekers, anyone who hates wind, or gardeners who need a long forgiving season.",
     confidence: "high",
-    confidenceNotes: "This high-confidence profile uses NOAA/NWS Wyoming normals and official canyon/terrain context; wind exposure, irrigation, and snow drifting vary sharply by site.",
     settlementsWithinZone: [
       { name: "Lander", role: "hub", population: "~7,500", note: "The service anchor and best expression of foothill-town climate." },
       { name: "Hudson", role: "town", population: "~450", note: "Lower and more river-valley oriented on the basin fringe." },
@@ -629,15 +486,6 @@ export const PLACES_USA_EXTRA: Place[] = [
       { label: "Wind River Range approaches", kind: "trail", season: "summer", note: "Fast access to alpine relief that defines the regional snow-water cycle." },
       { label: "South Pass historic corridor", kind: "historic", season: "shoulder seasons", note: "Open-country exposure and continental weather become obvious immediately." },
       { label: "Main Street Lander", kind: "culture", season: "year-round", note: "A real small-town anchor rather than a scenic-only climate stop." },
-    ],
-    deepSections: [
-      { id: "lander-foothill-transition", title: "The useful edge between basin and range", paragraphs: ["Lander's climate is valuable because it is not purely basin and not fully mountain. The town sits where dry High Plains air, canyon shelter, and Wind River snow-water influence overlap, giving it better texture than a station number alone shows.", "That edge gives residents choices: warmer benches, creek bottoms, canyon-adjacent shelter, and quick access to colder high country. The tradeoff is wind, winter severity, and a short growing season."] },
-      { id: "lander-wind-dry-air", title: "Dry air makes comfort, wind makes friction", paragraphs: ["Low humidity is the comfort engine. Summer heat loses its oppressive edge, sweat works, nights cool, and shoulder seasons can feel astonishingly clear. But the same openness exposes homes, gardens, and roads to wind.", "Good siting in Lander is practical: look for wind breaks, solar orientation, drifting patterns, and whether a property has enough water and shelter to turn dry-air comfort into daily livability."] },
-    ],
-    citations: [
-      { label: "NWS Riverton 1991-2020 Wyoming climate normals", kind: "noaa", url: "https://www.weather.gov/riw/cms_wyclimatenormals_2020" },
-      { label: "NOAA NCEI U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" },
-      { label: "Wyoming State Parks - Sinks Canyon", kind: "other", url: "https://wyoparks.wyo.gov/index.php/places-to-go/sinks-canyon" },
     ],
   },
 ];

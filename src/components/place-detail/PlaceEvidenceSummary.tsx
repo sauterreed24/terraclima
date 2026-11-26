@@ -8,6 +8,8 @@ import {
   type EvidenceClass,
 } from "../../lib/evidence-summary";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "../../data/generated/climate-v2";
+import { climateDataBasis } from "../../lib/climate-data-basis";
+import { researchReviewedOn } from "../../lib/profile-stats";
 import { loadResearchReceipts } from "../../data/generated/research";
 import { groupClaimsByScope, sourcesForClaim } from "../../lib/research/claim-scope";
 import { safeExternalHref } from "../../lib/safe-url";
@@ -29,24 +31,40 @@ export function PlaceEvidenceSummary({
   const summary = buildPlaceEvidenceSummary(place);
   const [receipt, setReceipt] = useState<PlaceResearchReceipt | null>(null);
   const claimGroups = receipt ? groupClaimsByScope(receipt) : [];
+  // The date ships with the atlas, so it shows before the sources are opened.
+  const reviewedOn = receipt?.reviewedOn ?? researchReviewedOn(place);
   const prose = useProse();
   const { temp } = useUnits();
   const panelId = useId();
   const [open, setOpen] = useState(false);
 
+  // The claim-by-claim sources for all places are one 2.5 MB file (≈120 KB
+  // gzip). Fetch it only when the reader opens this panel, not on every profile.
   useEffect(() => {
+    if (!open) return;
     let cancelled = false;
-    void loadResearchReceipts().then(byId => {
+    loadResearchReceipts().then(byId => {
       if (!cancelled) setReceipt(byId[place.id] ?? null);
+    }).catch(() => {
+      // Offline or a failed download: the panel reads fine without the
+      // claim-by-claim sources; they load the next time it opens.
     });
     return () => {
       cancelled = true;
     };
-  }, [place.id]);
+  }, [place.id, open]);
 
-  const exportDossierData = () => {
+  const exportDossierData = async () => {
+    let researchReceipt = receipt;
+    if (!researchReceipt) {
+      try {
+        researchReceipt = (await loadResearchReceipts())[place.id] ?? null;
+      } catch {
+        researchReceipt = null;
+      }
+    }
     downloadBlobFile(
-      JSON.stringify({ place, researchReceipt: receipt ?? null }, null, 2),
+      JSON.stringify({ place, researchReceipt: researchReceipt ?? null }, null, 2),
       `${place.id}-profile.json`,
       "application/json",
     );
@@ -73,15 +91,22 @@ export function PlaceEvidenceSummary({
           </span>
         </span>
         <span className="tc-evidence-summary__toggle-meta">
-          <span className="tc-evidence-summary__pill" data-tone="ice">
-            {summary.confidence} confidence
+          <span className="tc-evidence-summary__pill" data-tone="ice" title="How well the written profile is sourced">
+            Sources: {summary.confidence}
+          </span>
+          <span
+            className="tc-evidence-summary__pill"
+            data-tone={place.climateDataConfidence === "high" ? "ice" : "ochre"}
+            title={climateDataBasis(place).detail}
+          >
+            Climate data: {place.climateDataConfidence ?? "pending"}
           </span>
           <span className="tc-evidence-summary__pill" data-tone="sage">
             {summary.completenessLabel} coverage
           </span>
-          {receipt ? (
-            <span className="tc-evidence-summary__pill" data-tone="ice" title={`Research receipt last reviewed ${receipt.reviewedOn}`}>
-              Reviewed {receipt.reviewedOn}
+          {reviewedOn ? (
+            <span className="tc-evidence-summary__pill" data-tone="ice" title={`Research receipt last reviewed ${reviewedOn}`}>
+              Reviewed {reviewedOn}
             </span>
           ) : null}
           <ChevronDown
@@ -106,6 +131,7 @@ export function PlaceEvidenceSummary({
                 {" "}
                 Climate-data confidence ({place.climateDataConfidence ?? "pending"}) reflects grid
                 validation status — grid-only places cannot inherit high climate confidence from citation count.
+                {" "}{climateDataBasis(place).detail}
                 Completeness ({summary.completenessLabel}) only describes optional field coverage
                 — {summary.completenessNote}
               </p>
@@ -267,7 +293,7 @@ export function PlaceEvidenceSummary({
           </p>
 
           <div>
-            <button type="button" className="btn-ghost !text-xs" onClick={exportDossierData}>
+            <button type="button" className="btn-ghost !text-xs" onClick={() => { void exportDossierData(); }}>
               <Download className="w-3 h-3" aria-hidden />
               Download this profile's data (JSON)
             </button>

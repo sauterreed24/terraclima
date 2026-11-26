@@ -31,6 +31,8 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { buildComfortPrecisionProfile, apparentComfortIndexFromProfile } from "../src/lib/comfort-precision";
 import { composePlaceExperience } from "../src/lib/place-overview";
+// The app loads site history per profile; prime every entry so overviews read as in a profile.
+import "../src/data/places.site-history";
 import { projectPlace } from "../src/lib/climate-projection";
 import { meanSummerHigh } from "../src/lib/climate-metrics";
 

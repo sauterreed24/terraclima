@@ -19,6 +19,7 @@ Executable checks live in [`src/lib/app-url.ts`](../src/lib/app-url.ts), [`src/l
 | `scn` | Climate-scenario layer: `ssp245`, `ssp585` | `now` (the implicit default) is never written; unknown values dropped |
 | `clens` | Compare priority lens: `travel`, `move`, `remote`, `garden`, `risk` | `balanced` (the implicit default) is never written; unknown values dropped |
 | `hb` | Home-base place id (cards, profiles, and Compare read climate deltas against it) | Only known ids (alias-canonicalized); omitted when unset; written last |
+| `saved` | One-shot: place ids from **Link to these places** (`?saved=a,b,c`) | Read once at start-up (known ids only, aliases resolved, deduped, max 300). The app asks before adding them to saved places and never adds silently; the parameter is then removed from the address and is never written by the app's URL sync |
 
 ## Goals and Must-haves parameters (Explorer filters)
 

@@ -2,7 +2,8 @@
 // Terraclima — Unified Places Corpus
 // ============================================================
 
-import type { Citation, Place } from "../types";
+import type { Place } from "../types";
+import type { PolishProfileFields } from "./profile-extras/types";
 import { ARCHETYPE_LABELS, DRIVER_LABELS } from "../types";
 import { applyClimateV2Overlay } from "../lib/climate-v2/overlay";
 import { sanitizeLivedSignals } from "../lib/research/lived-indicators";
@@ -14,10 +15,8 @@ import { TIER_C_INDICATORS } from "./places.tier-c-indicators";
 import { EXPERIENCE_AUTHORED } from "./places.experience-authored";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "./generated/climate-v2";
 import housingPressureJson from "./generated/research/housing-pressure-by-id.json";
-import citationsOverlayJson from "./generated/research/citations-overlay.json";
 
 const HOUSING_PRESSURE_BY_ID = (housingPressureJson as { byId: Record<string, number> }).byId;
-const CITATIONS_OVERLAY_BY_ID = (citationsOverlayJson as { byId: Record<string, Citation[]> }).byId;
 
 const TIER_C_POLISH_ALL: Record<string, typeof TIER_C_POLISH[keyof typeof TIER_C_POLISH]> = {
   ...TIER_C_POLISH,
@@ -75,19 +74,16 @@ function applyPolish(p: Place): Place {
     liveSignals = { ...p.liveSignals, sources: merged };
   }
 
-  const deepSections = p.deepSections ?? polish.deepSections;
+  // In depth chapters and citations (polish included) are profile-only:
+  // src/data/profile-extras puts them back when a profile needs them.
+  return { ...p, climate, liveSignals };
+}
 
-  // Citations: concatenate authored + polish, deduping by URL so a polish
-  // entry never introduces a duplicate of an existing source URL.
-  const citations = polish.additionalCitations
-    ? (() => {
-        const existingUrls = new Set(p.citations.map(c => c.url ?? ""));
-        const additions = polish.additionalCitations.filter(c => !existingUrls.has(c.url ?? ""));
-        return [...p.citations, ...additions];
-      })()
-    : p.citations;
-
-  return { ...p, climate, liveSignals, deepSections, citations };
+/** Tier C polish fields that belong with a place's profile (merged lazily). */
+export function polishProfileFields(id: string): PolishProfileFields | undefined {
+  const polish = TIER_C_POLISH_ALL[id];
+  if (!polish || (!polish.deepSections && !polish.additionalCitations)) return undefined;
+  return { deepSections: polish.deepSections, additionalCitations: polish.additionalCitations };
 }
 
 const POLISHED_USA = PLACES_USA.map(applyPolish);
@@ -116,22 +112,6 @@ function applyLivedIndicators(p: Place): Place {
       accessRemotenessIndex,
     },
   };
-}
-
-/**
- * Merge compact research citation projection (deprecated Citation[] view).
- * Full PlaceResearchReceipt records stay lazy-loaded in Evidence UI so the
- * eager places graph does not ship multi-megabyte receipt JSON.
- */
-function applyResearch(p: Place): Place {
-  const projected = CITATIONS_OVERLAY_BY_ID[p.id];
-  if (!projected?.length) return p;
-  const existingUrls = new Set(projected.map(c => (c.url ?? "").toLowerCase()));
-  const authoredExtras = p.citations.filter(c => {
-    const url = (c.url ?? "").toLowerCase();
-    return !url || !existingUrls.has(url);
-  });
-  return { ...p, citations: [...projected, ...authoredExtras] };
 }
 
 /**
@@ -169,13 +149,7 @@ export const PLACES: Place[] = [
   ...POLISHED_USA,
   ...POLISHED_CANADA,
   ...POLISHED_MEXICO,
-].map(p =>
-  applyResearch(
-    applyLivedIndicators(
-      applyClimateV2(applyExperienceAuthored(p)),
-    ),
-  ),
-);
+].map(p => applyLivedIndicators(applyClimateV2(applyExperienceAuthored(p))));
 
 export const PLACES_BY_ID: Record<string, Place> = Object.fromEntries(
   PLACES.map(p => [p.id, p]),
@@ -247,6 +221,32 @@ const COUNTRY_SEARCH_ALIASES: Record<Place["country"], string> = {
 };
 
 /**
+ * Postal and common abbreviations for states, provinces and territories, so
+ * "kelowna bc", "la paz bcs" or "yellowknife nwt" find their place whatever
+ * the place id happens to end with. Keyed by `Place.region`.
+ */
+export const REGION_SEARCH_ALIASES: Readonly<Record<string, string>> = {
+  Alabama: "AL", Alaska: "AK", Arizona: "AZ", Arkansas: "AR", California: "CA", Colorado: "CO",
+  Connecticut: "CT", Delaware: "DE", "District of Columbia": "DC", Florida: "FL", Georgia: "GA",
+  Hawaii: "HI", Idaho: "ID", Illinois: "IL", Indiana: "IN", Iowa: "IA", Kansas: "KS", Kentucky: "KY",
+  Louisiana: "LA", Maine: "ME", Maryland: "MD", Massachusetts: "MA", Michigan: "MI", Minnesota: "MN",
+  Mississippi: "MS", Missouri: "MO", Montana: "MT", Nebraska: "NE", Nevada: "NV", "New Hampshire": "NH",
+  "New Jersey": "NJ", "New Mexico": "NM", "New York": "NY", "North Carolina": "NC", "North Dakota": "ND",
+  Ohio: "OH", Oklahoma: "OK", Oregon: "OR", Pennsylvania: "PA", "Rhode Island": "RI",
+  "South Carolina": "SC", "South Dakota": "SD", Tennessee: "TN", Texas: "TX", Utah: "UT", Vermont: "VT",
+  Virginia: "VA", Washington: "WA", "West Virginia": "WV", Wisconsin: "WI", Wyoming: "WY",
+  Alberta: "AB", "British Columbia": "BC", Manitoba: "MB", "New Brunswick": "NB",
+  "Newfoundland and Labrador": "NL Newfoundland Labrador NFLD", "Northwest Territories": "NT NWT",
+  "Nova Scotia": "NS", Nunavut: "NU", Ontario: "ON", "Prince Edward Island": "PE PEI", Quebec: "QC",
+  Saskatchewan: "SK", Yukon: "YT",
+  "Baja California": "BC", "Baja California Sur": "BCS", Campeche: "Camp", Chiapas: "Chis",
+  Chihuahua: "Chih", Coahuila: "Coah", Durango: "Dgo", "Estado de México": "Edomex Mex",
+  Guanajuato: "Gto", Guerrero: "Gro", Jalisco: "Jal", Michoacán: "Mich", Morelos: "Mor",
+  "Nuevo León": "NL", Oaxaca: "Oax", Puebla: "Pue", Querétaro: "Qro", "Quintana Roo": "Q Roo",
+  "San Luis Potosí": "SLP", Sinaloa: "Sin", Sonora: "Son", Veracruz: "Ver", Yucatán: "Yuc", Zacatecas: "Zac",
+};
+
+/**
  * Runtime indexes.
  *
  * Annual precipitation stays eager because it is a small numeric lookup used
@@ -283,9 +283,24 @@ function searchField(parts: readonly string[]): string {
   return out || " ";
 }
 
+/**
+ * In depth chapters load with the profile (`profile-extras/registry`); once a
+ * group's file arrives its chapter text joins those places' search prose.
+ * Cached fields carry the version they were built at, so every copy of a
+ * place (scenario-projected ones included) picks the text up.
+ */
+const DEFERRED_SEARCH_PROSE = new Map<string, readonly string[]>();
+let deferredProseVersion = 0;
+export function addDeferredSearchProse(id: string, parts: readonly string[]): void {
+  if (parts.length === 0 || DEFERRED_SEARCH_PROSE.has(id)) return;
+  DEFERRED_SEARCH_PROSE.set(id, parts);
+  deferredProseVersion++;
+}
+const FIELDS_VERSION = new WeakMap<PlaceSearchFields, number>();
+
 export function getPlaceSearchFields(place: Place): PlaceSearchFields {
   const cached = PLACE_SEARCH_FIELDS.get(place);
-  if (cached !== undefined) return cached;
+  if (cached !== undefined && FIELDS_VERSION.get(cached) === deferredProseVersion) return cached;
 
   // "boulder-co" → "co": lets "boulder co" / "sequim wa" work without a state-abbreviation table.
   const idSuffix = /-([a-z]{2})$/.exec(place.id)?.[1] ?? "";
@@ -300,6 +315,7 @@ export function getPlaceSearchFields(place: Place): PlaceSearchFields {
       place.municipality ?? "",
       place.region,
       COUNTRY_SEARCH_ALIASES[place.country] ?? place.country,
+      REGION_SEARCH_ALIASES[place.region] ?? "",
       idSuffix,
       ...settlements.map(s => s.name),
     ]),
@@ -327,10 +343,12 @@ export function getPlaceSearchFields(place: Place): PlaceSearchFields {
       ...(typeof history === "string" ? [history] : history ?? []),
       experience?.why ?? "",
       ...(place.deepSections ?? []).map(s => `${s.title} ${s.paragraphs.join(" ")}`),
+      ...(place.deepSections ? [] : DEFERRED_SEARCH_PROSE.get(place.id) ?? []),
     ]),
     crossReference: searchField((place.nearbyContrasts ?? []).map(c => `${c.label} ${c.note}`)),
   };
   PLACE_SEARCH_FIELDS.set(place, fields);
+  FIELDS_VERSION.set(fields, deferredProseVersion);
   return fields;
 }
 

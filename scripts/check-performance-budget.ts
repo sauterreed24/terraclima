@@ -27,6 +27,7 @@ const COLD_CHUNK_STEMS = [
   "atlas-data",
   "atlas-hydro",
   "site-history",
+  "profile-fields",
 ] as const;
 
 /**
@@ -36,8 +37,8 @@ const COLD_CHUNK_STEMS = [
 const BUDGETS = {
   /** Initial CSS file gzip. Baseline ~56.4 KB → 62 KB. */
   initialCssGzip: 62_000,
-  /** Largest synchronous entry JS chunk (index-*.js) gzip. Baseline ~100 KB → 113 KB (raised from 112 KB when the map learned to keep pins clear of its readout bar and names clear of its controls; the map is part of the entry chunk). */
-  largestEntryJsGzip: 113_000,
+  /** Largest synchronous entry JS chunk (index-*.js) gzip. Baseline ~100 KB → 113 KB (raised from 112 KB when the map learned to keep pins clear of its readout bar and names clear of its controls; the map is part of the entry chunk; raised to 113.5 KB for More → Import saved places, whose parsing and messages load only when a file is picked; to 114 KB for re-running search when In depth chapter text arrives and for starting the saved-places link share within the click, while the total first-load ceiling fell from 765 KB to 670 KB). */
+  largestEntryJsGzip: 114_000,
   /**
    * Sum of modulepreload + entry script JS gzip (excludes CSS).
    * Historical baseline ~603 KB → 680 KB. Corpus-truth overhaul adds authored
@@ -49,8 +50,12 @@ const BUDGETS = {
    * Raised to 765 KB when 880 templated season and fit lines were rewritten
    * by hand: the file got smaller, but varied prose compresses less well than
    * repeated templates (~757 KB measured).
+   *
+   * Lowered to 670 KB when sources, outlooks, confidence notes and In depth
+   * chapters moved out of first load into per-group profile files
+   * (src/data/profile-extras; ~654 KB measured), so the saving cannot erode.
    */
-  totalInitialJsGzip: 765_000,
+  totalInitialJsGzip: 670_000,
   /** Total initial modulepreload count. Baseline 15 → 22. */
   maxModulePreloads: 22,
   /** Atlas topology cold chunk raw size ceiling (lazy). Baseline ~222 KB → 280 KB. */
@@ -198,6 +203,18 @@ for (const { href } of initialJsGzipSizes) {
 for (const [stem, count] of stemCounts) {
   if (count > 1 && /^(react|vendor|geo)\.js$/.test(stem)) {
     violations.push(`Unexpected duplicate initial dependency stem ${stem} × ${count}`);
+  }
+}
+
+// The service worker removes cached files that are not on this list, so a
+// built file missing from it would be dropped from the offline cache.
+const FILE_LIST = join(DIST, "asset-manifest.json");
+if (!existsSync(FILE_LIST)) {
+  violations.push("dist/asset-manifest.json is missing (written by the build-file-list plugin in vite.config.ts)");
+} else {
+  const listed = new Set((JSON.parse(readFileSync(FILE_LIST, "utf8")) as { files: string[] }).files);
+  for (const file of readdirSync(ASSETS)) {
+    if (!listed.has(`assets/${file}`)) violations.push(`assets/${file} is not in asset-manifest.json; the service worker would drop it`);
   }
 }
 

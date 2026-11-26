@@ -4,6 +4,36 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### A faster first screen
+
+- **First load is 14% smaller:** each place's sources, confidence notes, climate outlook and In depth chapters (about 105 KB compressed for all 226 places) now load with its profile, in small files of about 23 places, and in the background once the atlas is up. On a slow phone connection the first ranked card appears in about 5.5 seconds instead of 6.1, and the first profile opens slightly faster than before (1.7 s, was 1.85 s). Rankings, scores, exports and Compare are unchanged; a search for a word that appears only in an In depth chapter (such as "orographic") finds those places once the background download finishes, a few seconds after the page loads.
+- **For editors:** these fields are edited in `src/data/profile-extras/`; run `npm run corpus:profile-stats` afterwards.
+- **Evidence panel:** the "Reviewed" date shows on the closed panel again, without downloading the 2.5 MB source list (it ships in the small stats file).
+- **Send saved places as a link:** Export → "Link to these places" copies (or shares) a link. Opening it shows the places and asks before adding them; nothing already saved is removed or reordered, and the link's parameter then leaves the address.
+- **Export menu:** its last item was partly hidden behind the climate-scenario panel below it, so it could not be clicked; the menu now sits above it.
+- **Sunshine in Compare:** where no weather station records sunshine, Compare shows the estimate the "Sunniest winters" ranking already uses, marked as one ("~74% est."; typically within about 9 points of a station figure). It said "no data", so finalists could be blank on a figure the ranking sorts by.
+
+### Figures you can check against the source
+
+- **How each place's figures were checked:** the profile's climate figures now say whether they are station-checked (55 places), checked with caveats (45), or a grid estimate with no station near enough to check (126). The Evidence panel shows two ratings, sources and climate data, and the "High confidence" badge appears only when both are high. It used to show for 133 places whose figures were never checked against a station, because it rated only the written sources. Compare gains a "Climate figures" row.
+- **Offline copy stays small:** after each update the app kept the previous version's files in its offline copy as well, so it grew with every release. Files the current version no longer uses are now removed (only when online). A browser short of space can clear a whole site's storage, saved places included, so a smaller footprint protects them. The files of the previous version, and anything the stored page still needs, are kept, so an offline open just after an update still works.
+- **Profiles after a dropped connection:** if a place's local history failed to download, the profile now tries once more by itself and shows it when it arrives (a reopen used to fetch it without showing it).
+- **Search:** two-letter codes match whole words, so "Grand Marais MI" finds the Michigan town (the Minnesota one came first); "Qro" finds Querétaro.
+- **Import saved places:** a place you saved under an older name is recognised as already saved, not added twice.
+- **Exports with a home base:** the humidity and sunshine differences were sometimes a whole point off, because both sides were rounded before subtracting (−7 where the records give −6.2). They now come from the unrounded values.
+- **Cards with a home base:** the "Humidity" difference is now labelled "Summer humidity", which is what it measures (June–August, as in the profile). Next to the card's own year-round humidity it read as a yearly difference: Zacatecas showed "+17 pts" against Flagstaff, while its yearly humidity is less than 2 points higher.
+
+### Saved places that stay put
+
+- **Offline:** the atlas now opens with no connection after one visit, as promised. The files of the first visit loaded before the offline helper started and were never kept, so a reload on a plane showed a blank page. A profile you read while online also reopens offline.
+- **Profiles on a bad connection:** a failed download of the profile's source list no longer raises an error; the profile reads normally and the list loads next time.
+- **Search:** abbreviations work both ways: "Mt. Charleston", "Ft Davis", "Pt Reyes", "Pt Townsend" and "Saint John's" find their places (they found nothing). A word with two letters left out, like "ashvile", finds Asheville; other two-letter slips still do not match, so "houston" does not turn into Houghton.
+- **Two tabs:** a place saved or removed in one tab shows up in your other open tabs straight away, so neither shows or exports an out-of-date list.
+- **Faster profiles on phones:** opening your first profile downloads about 125 KB instead of 680 KB. If that place's local-history file cannot be downloaded (offline, or an old tab after an update), the profile still opens without it and tries again the next time you open it. It fetches the local history for that place's part of the atlas instead of all 226 places, and the source-by-source evidence list (2.5 MB unpacked) loads when you open the Evidence panel rather than with every profile; the "Reviewed" date shows there. On a slow phone connection the profile appears in about 1.8 seconds; it took 4.
+- **Search by state or province code:** "La Paz BCS", "Yellowknife NWT", "Charlottetown PEI", "San Miguel Gto" and every US, Canadian and Mexican code now find their place. A misspelt "sante fe" puts Santa Fe first (Felton came first).
+- **Take saved places to another device:** More → Import saved places reads a file made with Export saved places (JSON or GeoJSON) and adds its places after the ones you already have. Nothing you saved is removed or reordered, and places no longer in the atlas are counted, not added.
+- **Saved places:** you can save every place in the atlas. The list used to hold 50, and saving the 51st quietly removed your oldest saved place (saving the 50th also said one had been removed when none was). A save now never removes another one.
+
 ### Review follow-ups: saved places, search prompts, phone profile, station fixes
 
 - **Saved places:** the list you keep is "Saved places" everywhere, with Save, Saved and Remove on the buttons. "Shortlist" is gone from the interface, and "pin" now only means a marker on the map. Filtering to one collection or trip reads "Show only these".

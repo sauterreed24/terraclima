@@ -1,7 +1,8 @@
 /**
  * corpus:voice:check — banned phrases, duplicate paragraphs, missing authored experience.
  */
-import { PLACES } from "../../src/data/places";
+// Every place with its profile-only fields (sources, outlook, chapters).
+import { PLACES_FULL as PLACES } from "../../src/data/places.full";
 import { BANNED_VOICE_PHRASES } from "../../src/lib/research/contracts";
 import * as tierCPolish from "../../src/data/places.tier-c-polish";
 import { SITE_HISTORY } from "../../src/data/places.site-history";

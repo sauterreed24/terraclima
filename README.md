@@ -93,7 +93,7 @@ Each **place profile** is a long-form field guide: opening story, a photograph o
   - **Sunniest winters** uses the station sunshine record where a place has one, otherwise an estimate, and says which.
   - Rankings that would tie are ordered by the underlying measurement.
 - **Compare:** up to four places with a finalist verdict, scout sequence, comfort/livability rows, climate ribbons, and focus-managed modal behavior.
-- **Saved places:** they persist in your browser (`localStorage`). Export Markdown scout plans or JSON / CSV / GeoJSON / ICS from [`src/lib/shortlist-export.ts`](src/lib/shortlist-export.ts). Copy/share the current filtered view (`navigator.share` where available, clipboard otherwise).
+- **Saved places:** they persist in your browser (`localStorage`); every place can be saved, and a save never pushes out an older one. Export Markdown scout plans or JSON / CSV / GeoJSON / ICS from [`src/lib/shortlist-export.ts`](src/lib/shortlist-export.ts). **More → Import saved places** reads a JSON or GeoJSON export back in (on another device, or after clearing the browser) and adds its places after the ones already saved. **Export → Link to these places** copies a link that, when opened, asks before adding those places to the reader's own list. Copy/share the current filtered view (`navigator.share` where available, clipboard otherwise).
 - **Recently viewed:** last ten profiles on this device. **Print** a profile for a paper-ready brief. Profiles show reading progress and a back-to-top control.
 - **Collections & Learn:** curated bundles and a glossary tying mechanisms (lapse rate, cold-air pooling, orographic lift, marine layer, foehn, thermal belts, karst) to real places.
 - **Units:** the corpus is authored in metric and the interface shows US units only (°F, inches, feet, miles), converted at render time by `localizeProse` and the formatters in [`units.ts`](src/lib/units.ts). There is no °C switch; `temp=` and `dist=` in older links are ignored and dropped from the address bar. CSV and JSON exports give elevation in feet.
@@ -153,7 +153,7 @@ Tuned for real devices, not only high-end laptops.
 
 ## Data and provenance
 
-Structured editorial research backed by public climate and geospatial references. See [`docs/CLIMATE-DATA-V2.md`](docs/CLIMATE-DATA-V2.md) for formulas and pipeline commands.
+Structured editorial research backed by public climate and geospatial references. See [`docs/CLIMATE-DATA-V2.md`](docs/CLIMATE-DATA-V2.md) for formulas and pipeline commands. Each place's sources, confidence notes, climate outlook and In depth chapters live in [`src/data/profile-extras/`](src/data/profile-extras/) and load with its profile; after editing them run `npm run corpus:profile-stats`.
 
 - **Current climate (Now):** Daymet V4 R1 rolling **1996–2025** climatology (not a WMO standard normal). Official **1991–2020** WMO normals remain the same-source comparison/reference.
 - **Station validation and correction:** NOAA/GHCN-D & normals (USA), ECCC (Canada), SMN/WMO (Mexico) validate the grid. Where a representative GHCN-Daily station sits beside a place (within 15 km and 100 m of elevation, 15 or more overlapping years, no disagreeing neighbour), the grid is corrected month by month to that station, and the profile shows “validated” with the station named. 53 places carry a correction.

@@ -108,6 +108,16 @@ describe("App resilience integration", () => {
     vi.restoreAllMocks();
   });
 
+  it("shows places saved in another tab without a reload", async () => {
+    renderAppWithPwa();
+    expect(screen.queryByRole("button", { name: "Remove Sequim from your saved places" })).toBeNull();
+    window.localStorage.setItem("terraclima.bookmarks.v1", JSON.stringify(["sequim-wa"]));
+    window.dispatchEvent(new StorageEvent("storage", { key: "terraclima.bookmarks.v1" }));
+    expect(
+      (await screen.findAllByRole("button", { name: "Remove Sequim from your saved places" }, { timeout: APP_RESILIENCE_TIMEOUT_MS })).length,
+    ).toBeGreaterThan(0);
+  }, APP_RESILIENCE_TIMEOUT_MS);
+
   it("shows lazy-route recovery when a cold view chunk fails", async () => {
     lazyState.tripsReject = true;
     window.history.replaceState(null, "", "/?v=trips");

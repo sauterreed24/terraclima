@@ -1,0 +1,185 @@
+{
+  "note": "HELD OUT (set 2, written 2026-11-25 before round 2). Never tune on it; the evaluator prints only the count.",
+  "queries": [
+    {
+      "q": "Fairbanks, AK",
+      "expect": [
+        "fairbanks-ak"
+      ]
+    },
+    {
+      "q": "anchorage alaska",
+      "expect": [
+        "anchorage-ak"
+      ]
+    },
+    {
+      "q": "honolul",
+      "expect": [
+        "honolulu-hi"
+      ]
+    },
+    {
+      "q": "mt. washington new hampshire",
+      "expect": [
+        "mount-washington-nh"
+      ]
+    },
+    {
+      "q": "ft davis tx",
+      "expect": [
+        "fort-davis-tx"
+      ]
+    },
+    {
+      "q": "crested butte colorado",
+      "expect": [
+        "crested-butte-co"
+      ]
+    },
+    {
+      "q": "leadvile",
+      "expect": [
+        "leadville-co"
+      ]
+    },
+    {
+      "q": "durango colorado",
+      "expect": [
+        "durango-co"
+      ]
+    },
+    {
+      "q": "durango mexico",
+      "expect": [
+        "durango-mx"
+      ]
+    },
+    {
+      "q": "san miguel de allende gto",
+      "expect": [
+        "san-miguel-de-allende-mx"
+      ]
+    },
+    {
+      "q": "guanajuato",
+      "expect": [
+        "guanajuato-mx"
+      ]
+    },
+    {
+      "q": "puerto escondido oaxaca",
+      "expect": [
+        "puerto-escondido-mx"
+      ]
+    },
+    {
+      "q": "lake superior north shore",
+      "expect": [
+        "grand-marais-mn"
+      ]
+    },
+    {
+      "q": "traverse city",
+      "expect": [
+        "traverse-city-mi"
+      ]
+    },
+    {
+      "q": "the outer banks nc",
+      "expect": [
+        "nags-head-nc"
+      ]
+    },
+    {
+      "q": "charleston sc",
+      "expect": [
+        "charleston-sc"
+      ]
+    },
+    {
+      "q": "charlestown",
+      "expect": [
+        "charleston-sc"
+      ]
+    },
+    {
+      "q": "savanah",
+      "expect": [
+        "savannah-ga"
+      ]
+    },
+    {
+      "q": "st. johns nl",
+      "expect": [
+        "st-johns-nl"
+      ]
+    },
+    {
+      "q": "gaspe",
+      "expect": [
+        "gaspe-qc"
+      ]
+    },
+    {
+      "q": "baie st paul",
+      "expect": [
+        "baie-saint-paul-qc"
+      ]
+    },
+    {
+      "q": "okanogan",
+      "expect": [
+        "osoyoos-bc",
+        "summerland-bc",
+        "penticton-bc",
+        "kelowna-bc"
+      ]
+    },
+    {
+      "q": "vancouver island",
+      "expect": [
+        "victoria-bc",
+        "tofino-bc",
+        "tofino-ucluelet-corridor",
+        "qualicum-bc"
+      ]
+    },
+    {
+      "q": "haida gwai",
+      "expect": [
+        "haida-gwaii-bc"
+      ]
+    },
+    {
+      "q": "yellowknife nwt",
+      "expect": [
+        "yellowknife-nt"
+      ]
+    },
+    {
+      "q": "san cristóbal chiapas",
+      "expect": [
+        "san-cristobal-mx"
+      ]
+    },
+    {
+      "q": "merida yucatan",
+      "expect": [
+        "merida-mx"
+      ]
+    },
+    {
+      "q": "oaxaca city",
+      "expect": [
+        "oaxaca-mx"
+      ]
+    },
+    {
+      "q": "wilmington",
+      "expect": [
+        "wilmington-de"
+      ]
+    }
+  ]
+}

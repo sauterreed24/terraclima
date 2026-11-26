@@ -14,7 +14,8 @@ import {
   listMissingStructuredFields,
   validatePlaceEvidence,
 } from "../evidence-summary";
-import { PLACES } from "../../data/places";
+// Sources and chapters load with the profile; the full list carries them for every place.
+import { PLACES_FULL as PLACES } from "../../data/places.full";
 import type { Citation, Place } from "../../types";
 
 function samplePlace(): Place {

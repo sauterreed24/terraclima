@@ -401,7 +401,8 @@ export interface Place {
   climate: ClimateProfile;
   soil: SoilProfile;
   growability: Growability;
-  climateChange: ClimateChangeOutlook;
+  /** Profile-only: loaded with the profile (`src/data/profile-extras`), absent on the atlas list. */
+  climateChange?: ClimateChangeOutlook;
 
   /**
    * Optional authored, cited mid-century projection override. When absent the
@@ -452,7 +453,8 @@ export interface Place {
    */
   climateDataConfidence?: Confidence;
   confidenceNotes?: string;
-  citations: Citation[];
+  /** Profile-only: loaded with the profile (`src/data/profile-extras`), absent on the atlas list. */
+  citations?: Citation[];
 
   /**
    * Populated places that share this microclimate zone — helps anchor the

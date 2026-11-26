@@ -86,7 +86,7 @@ export function applyResearchOverlay(
   const projected = citationsFromResearchSources(receipt.sources);
   if (projected.length === 0) return place;
   const existingUrls = new Set(projected.map(c => (c.url ?? "").toLowerCase()));
-  const authoredExtras = place.citations.filter(c => {
+  const authoredExtras = (place.citations ?? []).filter(c => {
     const url = (c.url ?? "").toLowerCase();
     return !url || !existingUrls.has(url);
   });

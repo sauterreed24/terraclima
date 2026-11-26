@@ -13,6 +13,14 @@
 
 import { isWorkerRequest, type WorkerResponse } from "../types/worker";
 import { runScenarioRanking } from "../lib/climate-processor";
+import { PLACES } from "../data/places";
+
+// The worker keeps its own copy of the atlas. In depth chapter text reaches
+// search only once the profile-field files arrive (as on the page), so fetch
+// them here too; searches before that match without it.
+const chaptersIndexed = import("../data/profile-extras/registry")
+  .then(m => m.loadProfileExtrasFor(PLACES))
+  .catch(() => false);
 
 // `self` is typed via the DOM lib here; cast to the minimal worker surface we
 // use so we don't have to add the "webworker" lib (which would clash with DOM
@@ -26,5 +34,9 @@ const ctx = self as unknown as WorkerScope;
 
 ctx.addEventListener("message", (event: MessageEvent) => {
   if (!isWorkerRequest(event.data)) return;
-  ctx.postMessage(runScenarioRanking(event.data));
+  const request = event.data;
+  // A search waits for the chapter text (settles on failure too), so the worker
+  // answers like the page does; other requests answer at once.
+  if (request.filters.search.trim() === "") ctx.postMessage(runScenarioRanking(request));
+  else void chaptersIndexed.then(() => ctx.postMessage(runScenarioRanking(request)));
 });

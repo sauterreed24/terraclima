@@ -12,6 +12,7 @@ import {
 } from "./climate-metrics";
 import { researchedChapterCount } from "./research-chapters";
 import { toFixedClean } from "./units";
+import { citationCount } from "./profile-stats";
 
 export type PlaceFeelComponentKey =
   | "sensoryComfort"
@@ -78,7 +79,7 @@ function compact(text: string, max = 128): string {
 
 function sourceCount(place: Place): number {
   const liveSources = place.liveSignals?.sources?.length ?? 0;
-  return place.citations.length + liveSources;
+  return citationCount(place) + liveSources;
 }
 
 function authoredTextureScore(place: Place): number {
