@@ -35,6 +35,8 @@ export interface UseClimateProcessorInput {
   nowEpochMs?: number;
   /** Force the synchronous path (tests / opt-out). */
   disableWorker?: boolean;
+  /** Bumped when In depth chapter text reaches search: re-run the same request. */
+  searchEpoch?: number;
 }
 
 export interface UseClimateProcessorResult {
@@ -69,12 +71,13 @@ function buildRequest(input: UseClimateProcessorInput, requestId: number): Scena
 }
 
 export function useClimateProcessor(input: UseClimateProcessorInput): UseClimateProcessorResult {
-  const { scenario, ranking, filters, poolIds, nowEpochMs, disableWorker } = input;
+  const { scenario, ranking, filters, poolIds, nowEpochMs, disableWorker, searchEpoch = 0 } = input;
 
   // Stable signature of the request so memo/effect only refire on real change.
+  // `searchEpoch` changes when deferred search text arrives (same request, new answer).
   const signature = useMemo(
-    () => JSON.stringify({ scenario, ranking, filters, poolIds, nowEpochMs }),
-    [scenario, ranking, filters, poolIds, nowEpochMs],
+    () => JSON.stringify({ scenario, ranking, filters, poolIds, nowEpochMs, searchEpoch }),
+    [scenario, ranking, filters, poolIds, nowEpochMs, searchEpoch],
   );
 
   // Synchronous seed — always correct, instant, and what tests observe. This

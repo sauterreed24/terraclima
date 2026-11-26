@@ -22,13 +22,16 @@ interface Props {
 export default function SharedSavedPlacesPrompt({ search, saved, onSaved, onDone }: Props) {
   const [ids] = useState(() => readSharedSavedIds(search, resolvePlaceId));
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
+  // Once, when the prompt appears: tidy the address and move focus to it.
   useEffect(() => {
     if (window.location.search.includes("saved=")) {
       window.history.replaceState(window.history.state, "", withoutSavedParam(window.location.href));
     }
-    if (ids.length === 0) onDone();
+    if (ids.length === 0) onDoneRef.current();
     else headingRef.current?.focus({ preventScroll: false });
-  }, [ids, onDone]);
+  }, [ids]);
   if (ids.length === 0) return null;
   const fresh = ids.filter(id => !saved.has(id));
   const names = ids.map(id => PLACES_BY_ID[id]?.name).filter(Boolean) as string[];

@@ -920,7 +920,22 @@ export default function App() {
       liveFitMaxOverallRisk,
     ],
   );
-  const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters]);
+  const onSharedSaved = useCallback((ids: readonly string[], message: string) => {
+    setBookmarkIds(new Set(ids));
+    setTransientFeedback(message);
+  }, []);
+  const onSharedSavedDone = useCallback(() => setSharedSavedLink(""), []);
+  // Chapter text joins search when the profile-field files arrive; re-run then.
+  const [searchEpoch, setSearchEpoch] = useState(0);
+  const hasSearch = (deferredFilters.search ?? "").trim() !== "";
+  useEffect(() => {
+    if (!hasSearch) return;
+    let live = true;
+    void loadProfileFieldsFor(PLACES).then(() => { if (live) setSearchEpoch(n => n + 1); });
+    return () => { live = false; };
+  }, [hasSearch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- searchEpoch: same filters, new search text
+  const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters, searchEpoch]);
   const activeTripTheme = useMemo(
     () => activeCollection ? CLIMATE_TRIP_THEME_BY_ID[activeCollection] ?? null : null,
     [activeCollection],
@@ -948,6 +963,7 @@ export default function App() {
     // Present-day is the default view; only spin up the (corpus-carrying)
     // worker once the user engages a future-climate layer.
     disableWorker: climateScenario === "now",
+    searchEpoch,
   });
   const resultsPending = explorerResultsPending(filters, deferredFilters, processor.projecting);
   const resultsPendingRef = useRef(resultsPending);
@@ -1846,8 +1862,8 @@ export default function App() {
           <SharedSavedPlacesPrompt
             search={sharedSavedLink}
             saved={bookmarkIds}
-            onSaved={(ids, message) => { setBookmarkIds(new Set(ids)); setTransientFeedback(message); }}
-            onDone={() => setSharedSavedLink("")}
+            onSaved={onSharedSaved}
+            onDone={onSharedSavedDone}
           />
         </Suspense>
       ) : null}

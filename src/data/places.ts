@@ -285,19 +285,22 @@ function searchField(parts: readonly string[]): string {
 
 /**
  * In depth chapters load with the profile (`profile-extras/registry`); once a
- * country's file arrives its chapter text joins that country's search prose.
+ * group's file arrives its chapter text joins those places' search prose.
+ * Cached fields carry the version they were built at, so every copy of a
+ * place (scenario-projected ones included) picks the text up.
  */
 const DEFERRED_SEARCH_PROSE = new Map<string, readonly string[]>();
+let deferredProseVersion = 0;
 export function addDeferredSearchProse(id: string, parts: readonly string[]): void {
   if (parts.length === 0 || DEFERRED_SEARCH_PROSE.has(id)) return;
   DEFERRED_SEARCH_PROSE.set(id, parts);
-  const place = PLACES_BY_ID[id];
-  if (place) PLACE_SEARCH_FIELDS.delete(place);
+  deferredProseVersion++;
 }
+const FIELDS_VERSION = new WeakMap<PlaceSearchFields, number>();
 
 export function getPlaceSearchFields(place: Place): PlaceSearchFields {
   const cached = PLACE_SEARCH_FIELDS.get(place);
-  if (cached !== undefined) return cached;
+  if (cached !== undefined && FIELDS_VERSION.get(cached) === deferredProseVersion) return cached;
 
   // "boulder-co" → "co": lets "boulder co" / "sequim wa" work without a state-abbreviation table.
   const idSuffix = /-([a-z]{2})$/.exec(place.id)?.[1] ?? "";
@@ -345,6 +348,7 @@ export function getPlaceSearchFields(place: Place): PlaceSearchFields {
     crossReference: searchField((place.nearbyContrasts ?? []).map(c => `${c.label} ${c.note}`)),
   };
   PLACE_SEARCH_FIELDS.set(place, fields);
+  FIELDS_VERSION.set(fields, deferredProseVersion);
   return fields;
 }
 
