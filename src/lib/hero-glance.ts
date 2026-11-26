@@ -1,10 +1,11 @@
 import type { Place } from "../types";
-import { meanAnnualHumidityPct } from "./climate-metrics";
+import { meanAnnualHumidityPct, meanAnnualSunshinePct } from "./climate-metrics";
 
 /**
  * Mean percent of possible sunshine from the authored monthly series.
  * Returns null when only Daymet solar energy is present — that series is
- * not observed sunshine hours and must not be shown as sky brightness.
+ * not observed sunshine hours, so it is never shown as a measured figure; where
+ * a figure is needed anyway (Compare), it appears as a marked estimate.
  */
 export function observedSunshinePct(place: Place): number | null {
   const sun = place.climate.sunshinePct;
@@ -20,10 +21,17 @@ export function hasSourcedSkySeries(place: Place): boolean {
     || place.climate.solarEnergyMjM2Day?.length === 12;
 }
 
-/** First-page / Compare sunshine cell — percent of possible, never solar MJ. */
+/**
+ * Compare sunshine cell — percent of possible, never solar MJ. Where no station
+ * records sunshine, the estimate from solar energy that the "Sunniest winters"
+ * ranking and the exports use, marked as approximate ("~74% est."; mean error
+ * against station records ≈ 9 points).
+ */
 export function sunshineDisplayValue(place: Place): string {
   const pct = observedSunshinePct(place);
-  return pct == null ? "no data" : `${pct}%`;
+  if (pct != null) return `${pct}%`;
+  const estimate = meanAnnualSunshinePct(place);
+  return estimate == null ? "no data" : `~${Math.round(estimate)}% est.`;
 }
 
 export function precipHeroLabel(place: Place): string {

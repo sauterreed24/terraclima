@@ -29,7 +29,9 @@ describe("hero glance", () => {
     expect(hasSourcedSkySeries(withSun)).toBe(true);
     expect(hasSourcedSkySeries(solarOnly)).toBe(true);
     expect(sunshineDisplayValue(withSun)).toBe("50%");
-    expect(sunshineDisplayValue(solarOnly)).toBe("no data");
+    // Without a station record, Compare shows the solar-based estimate, marked as approximate.
+    expect(sunshineDisplayValue(solarOnly)).toMatch(/^~\d+% est\.$/);
+    expect(sunshineDisplayValue(makePlace({ climate: makeClimate({ sunshinePct: undefined, solarEnergyMjM2Day: undefined }) }))).toBe("no data");
     expect(hasSourcedSkySeries(makePlace({ climate: makeClimate({ sunshinePct: undefined, solarEnergyMjM2Day: undefined }) }))).toBe(false);
   });
 

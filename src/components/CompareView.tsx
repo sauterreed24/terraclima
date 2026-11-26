@@ -7,7 +7,7 @@ import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm, RISK_VALUE } from "../lib/climate-metrics";
 import { climateDataBasis } from "../lib/climate-data-basis";
-import { hasSourcedSkySeries, observedSunshinePct, sunshineDisplayValue } from "../lib/hero-glance";
+import { hasSourcedSkySeries, sunshineDisplayValue } from "../lib/hero-glance";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { computeBioclim, CONRAD_GLOSS, DE_MARTONNE_GLOSS, type BioclimIndex } from "../lib/bioclim";
@@ -1103,7 +1103,7 @@ export function CompareView({
                     <Row label="Summer high" value={fmtTemp(meanSummerHigh(p), temp)} />
                     <Row label="Winter low" value={fmtTemp(meanJanLow(p), temp)} />
                     <Row label="Annual precip" value={fmtPrecip(getAnnualPrecipMm(p), dist)} />
-                    <Row label="Sunshine" value={observedSunshinePct(p) == null ? "—" : `${observedSunshinePct(p)}%`} />
+                    <Row label="Sunshine" value={sunshineDisplayValue(p)} />
                     <Row label="Frost-free" value={`${p.climate.frostFreeDays ?? "—"} d`} />
                     <Row label="Hardiness" value={p.growability.hardinessZone ?? p.climate.hardinessZone ?? "—"} />
                     <Row label="Chill hours" value={`${p.climate.chillHours ?? "—"}`} />

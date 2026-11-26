@@ -749,9 +749,9 @@ async function sectionAccuracy(browser: Browser) {
     await c2.close();
     return { out, n };
   };
-  // (d) Compare: the figures table for seeded pairs. Sunshine: the station record where the
-  //     export says "station"; otherwise the app's rule is "no data" (the solar-based estimate
-  //     is not shown as sunshine on screen; see Decisions in IMPROVE.md).
+  // (d) Compare: the figures table for seeded pairs. Sunshine has no independent reference
+  //     (estimated where no station), so it must equal the exported figure for the same place,
+  //     and an estimate must be marked as one.
   const exported = new Map(rows.map(r => [r.id!, r]));
   const compareErrs = async (seed: number) => {
     const out: string[] = []; let n = 0;
@@ -777,7 +777,7 @@ async function sectionAccuracy(browser: Browser) {
         ["humidity", /^COMFORT Humidity$/i, id => ref(id).humidityAnnual, 0.51],
         ["annual precip", /^SEASONALITY Annual precip$/i, id => ref(id).precipIn, 0.51],
         ["frost-free", /^SEASONALITY Frost-free$/i, id => ref(id).frostFree, 0.51],
-        ["sunshine (station)", /^SEASONALITY Sunshine$/i, id => (exported.get(id)?.sunshine_basis === "station" ? Number(exported.get(id)!.sunshine_pct) : null), 0.51],
+        ["sunshine (= export)", /^SEASONALITY Sunshine$/i, id => (exported.get(id)?.sunshine_pct ? Number(exported.get(id)!.sunshine_pct) : null), 0.51],
       ];
       for (const [label, re, want, tol] of checks) {
         const cs = cells(re);
@@ -787,6 +787,7 @@ async function sectionAccuracy(browser: Browser) {
           const w = want(p.id); const shown = cs ? val(cs[idx]) : undefined;
           if (w == null && (shown == null)) return;
           n++; const kind = `compare ${label}`; kinds[kind] = (kinds[kind] ?? 0) + 1;
+          if (label.startsWith("sunshine") && exported.get(p.id)?.sunshine_basis === "estimated" && cs?.[idx] && !/est/i.test(cs[idx]!)) out.push(`${p.id} compare sunshine: estimate "${cs[idx]}" not marked as one`);
           if (shown == null) out.push(`${p.id} compare ${label}: shown "${cs?.[idx] ?? "missing"}", expected ${w!.toFixed(1)}`);
           else if (w == null) out.push(`${p.id} compare ${label}: shown ${shown}, expected none`);
           else if (Math.abs(shown - w) > tol) out.push(`${p.id} compare ${label}: shown ${shown}, expected ${w.toFixed(2)}`);
