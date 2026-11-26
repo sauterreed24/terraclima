@@ -117,6 +117,7 @@ import {
 import { ThemeToggle } from "./components/chrome/ThemeToggle";
 import { MOST_COMFORTABLE_LENS_SUMMARY } from "./lib/ranking-options";
 import { outlook2050 } from "./lib/profile-stats";
+import type { StatusMessage } from "./components/chrome/StatusToast";
 
 /** Hero discovery paths — ranking lenses, archetype screens, or a pinned trip. */
 type DiscoveryQuickPickId =
@@ -237,6 +238,8 @@ const PlaceDetail = lazy(loadPlaceDetail);
 const CompareView = lazy(loadCompareView);
 const SearchSuggestions = lazy(() => import("./components/SearchSuggestions"));
 const SharedSavedPlacesPrompt = lazy(() => import("./components/chrome/SharedSavedPlacesPrompt"));
+const loadStatusToast = () => import("./components/chrome/StatusToast").then(m => ({ default: m.StatusToast }));
+const StatusToast = lazy(loadStatusToast);
 const HOME_CLEARED = "Home base cleared. Cards and profiles show plain figures again.";
 const loadProfileFieldsFor = (places: readonly Place[]) =>
   import("./data/profile-extras/registry").then(m => m.loadProfileExtrasFor(places)).catch(() => false);
@@ -403,9 +406,8 @@ export default function App() {
   });
   /** One-shot transient feedback for actions like pressing R on an empty pool or hitting the compare cap. */
   // A status line, optionally with Undo for a one-click mistake.
-  const [feedback, setTransientFeedback] = useState<string | { text: string; undo?: () => void } | null>(null);
-  const transientFeedback = typeof feedback === "string" ? feedback : feedback?.text ?? null;
-  const feedbackUndo = typeof feedback === "string" ? undefined : feedback?.undo;
+  const [feedback, setTransientFeedback] = useState<StatusMessage | null>(null);
+  const clearFeedback = useCallback(() => setTransientFeedback(null), []);
   const { shareStatus, shareFallbackUrl, copyCurrentView, resetShareStatus } = useShareStatus();
   /** Latest place id to be auto-evicted from compare so the feedback can name it. */
   const [evictedComparePlaceId, setEvictedComparePlaceId] = useState<string | null>(null);
@@ -923,7 +925,7 @@ export default function App() {
   const [searchEpoch, setSearchEpoch] = useState(0);
   const hasSearch = (deferredFilters.search ?? "").trim() !== "";
   useEffect(() => {
-    const fetchAll = () => void loadProfileFieldsFor(PLACES).then(() => setSearchEpoch(n => n + 1));
+    const fetchAll = () => { void loadStatusToast(); void loadProfileFieldsFor(PLACES).then(() => setSearchEpoch(n => n + 1)); };
     if (hasSearch) return fetchAll();
     if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
     const timer = window.setTimeout(fetchAll, 5000);
@@ -1240,7 +1242,7 @@ export default function App() {
 
   const toggleBookmark = useCallback((id: string) => {
     const canonical = resolvePlaceId(id) ?? id;
-    const wasAt = loadBookmarks().indexOf(canonical);
+    const before = loadBookmarks();
     const { ids, pinned, full } = toggleBookmarkPersist(canonical);
     setBookmarkIds(new Set(ids));
     const place = PLACES_BY_ID[canonical];
@@ -1254,7 +1256,11 @@ export default function App() {
     } else {
       setTransientFeedback({
         text: `Removed ${placeName} from your saved places.`,
-        undo: () => setBookmarkIds(new Set(restoreBookmark(canonical, wasAt))),
+        undo: () => {
+          const restored = restoreBookmark(canonical, before);
+          if (restored) setBookmarkIds(new Set(restored));
+          return restored != null;
+        },
       });
     }
   }, []);
@@ -1412,14 +1418,6 @@ export default function App() {
     return () => window.cancelAnimationFrame(id);
   }, [selectedId]);
 
-  // Auto-clear transient feedback after 4s (5s is too long, 3s too short for
-  // longer messages). Cleared early when a new message arrives.
-  useEffect(() => {
-    if (!feedback) return;
-    // Longer when it offers Undo, so there is time to use it.
-    const t = window.setTimeout(() => setTransientFeedback(null), typeof feedback !== "string" && feedback.undo ? 8000 : 4000);
-    return () => window.clearTimeout(t);
-  }, [feedback]);
 
   // When the compare cap auto-evicts a place, surface a feedback strip naming it.
   useEffect(() => {
@@ -1866,6 +1864,7 @@ export default function App() {
         </a>
         <div className="ambient-aurora" aria-hidden="true" />
         <main id="main-content" tabIndex={-1} className="relative z-10 flex flex-col flex-1 min-h-0 outline-none">
+      {feedback ? <Suspense fallback={null}><StatusToast message={feedback} onClose={clearFeedback} /></Suspense> : null}
       {sharedSavedLink ? (
         <Suspense fallback={null}>
           <SharedSavedPlacesPrompt search={sharedSavedLink} onDone={setSharedSavedLink} />
@@ -2160,25 +2159,6 @@ export default function App() {
                   {explorerDockLg ? searchSuggestions : null}
                 </div>
 
-                {transientFeedback ? (
-                  <div role="status" aria-live="polite" className="tc-toast panel-warm flex items-center justify-between gap-3 px-3 py-2 anim-fade-in">
-                    <span className="text-sm text-frost">{transientFeedback}</span>
-                    {feedbackUndo ? (
-                      <button type="button" className="btn-ghost !text-xs !py-1" onClick={() => { feedbackUndo(); setTransientFeedback(null); }}>
-                        Undo
-                      </button>
-                    ) : null}
-                    <button
-                      type="button"
-                      onClick={() => setTransientFeedback(null)}
-                      className="btn-ghost !text-xs !py-1"
-                      aria-label="Dismiss message"
-                      title="Dismiss message"
-                    >
-                      <X className="w-3 h-3" aria-hidden /> Dismiss
-                    </button>
-                  </div>
-                ) : null}
 
                 {ranked.length === 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

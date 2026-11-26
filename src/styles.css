@@ -14241,3 +14241,22 @@ html[data-theme="dark"] .detail-zone-divider__eyebrow {
    makes its own stacking context; while the menu is open, lift the panel above
    the climate-scenario control below it, which otherwise covers the last items. */
 .tc-explorer-continuity:has(.tc-shortlist-export__panel) { position: relative; z-index: 30; }
+
+/* The status line floats above every view and an open profile, so a message
+   and its Undo are seen where the action happened (the Compare bar is at the bottom). */
+.tc-toast--floating {
+  position: fixed;
+  top: calc(4.75rem + env(safe-area-inset-top, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  width: max-content;
+  max-width: min(92vw, 36rem);
+}
+@media (max-width: 1023px) {
+  /* Phones and tablets: near the bottom, above the Compare bar, clear of a profile's header buttons. */
+  .tc-toast--floating {
+    top: auto;
+    bottom: calc(9rem + env(safe-area-inset-bottom, 0px));
+  }
+}

@@ -7,7 +7,7 @@ All notable changes to Terraclima are tracked here.
 ### Undo for one-click mistakes, smoother keyboard use
 
 - **Keyboard:** after closing a profile you opened from search, the search text is selected, so typing the next name replaces it (it used to be appended, giving no results). Escape in an empty search field now leaves the field, so single-key shortcuts such as V (open Compare) work again. Finding two places and comparing them takes 14 key presses and no mouse.
-- **Undo:** removing a saved place, clearing your home base, or clearing recently viewed now shows an Undo button in the status line (which stays 8 seconds instead of 4). Undo puts a saved place back where it was in your list, and keeps anything you saved in the meantime.
+- **Undo:** removing a saved place, clearing your home base, or clearing recently viewed now shows an Undo button in the status line, or press Ctrl+Z (⌘Z). The message floats above every view and an open profile, stays 8 seconds (longer while you point at it or tab to it), and Undo puts a saved place back between the places it sat between, keeping anything saved in the meantime.
 
 ### A faster first screen
 

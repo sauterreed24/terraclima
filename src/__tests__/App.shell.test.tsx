@@ -903,7 +903,8 @@ describe("App shell", () => {
       const saved = JSON.parse(window.localStorage.getItem("terraclima.bookmarks.v1") ?? "[]") as string[];
       expect(saved).toHaveLength(4);
     });
-    expect(screen.getByText(/Saved 4 new places/)).toBeInTheDocument();
+    // The status line loads on its first message.
+    expect(await screen.findByText(/Saved 4 new places/)).toBeInTheDocument();
     const saved = JSON.parse(window.localStorage.getItem("terraclima.bookmarks.v1") ?? "[]") as string[];
     expect(screen.getByLabelText("Saved places status")).toHaveTextContent("Ready to compare");
 

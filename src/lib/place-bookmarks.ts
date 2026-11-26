@@ -142,14 +142,26 @@ export function addBookmarksToFront(ids: readonly string[]): { ids: string[]; ad
   };
 }
 
-/** Undo a removal: put `id` back at `index` (or the end), leaving later changes in place. */
-export function restoreBookmark(id: string, index: number): string[] {
+/**
+ * Undo a removal: put `id` back between the neighbours it had (`before` is the
+ * list as it was), leaving later changes in place. Returns null when it could
+ * not be restored (the list is full).
+ */
+export function restoreBookmark(id: string, before: readonly string[]): string[] | null {
   const storage = safeStorage();
   const current = readRaw(storage);
-  if (current.includes(id) || current.length >= BOOKMARK_LIMIT) return current;
-  const next = [...current.slice(0, index), id, ...current.slice(index)];
-  writeRaw(storage, next);
-  return next;
+  if (current.includes(id)) return current;
+  if (current.length >= BOOKMARK_LIMIT) return null;
+  const at = before.indexOf(id);
+  const prev = at > 0 ? before[at - 1] : undefined;
+  const next = at >= 0 ? before[at + 1] : undefined;
+  let index: number;
+  if (prev !== undefined && current.includes(prev)) index = current.indexOf(prev) + 1;
+  else if (next !== undefined && current.includes(next)) index = current.indexOf(next);
+  else index = Math.min(Math.max(at, 0), current.length);
+  const out = [...current.slice(0, index), id, ...current.slice(index)];
+  writeRaw(storage, out);
+  return out;
 }
 
 /** Remove a single id. No-op if absent. Returns the new list. */

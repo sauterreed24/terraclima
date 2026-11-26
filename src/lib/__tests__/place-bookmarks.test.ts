@@ -208,23 +208,36 @@ describe("place-bookmarks", () => {
       const list = Array.from({ length: 1 + Math.floor(rand() * 12) }, (_, i) => `p-${run}-${i}`);
       setBookmarks(list);
       const victim = list[Math.floor(rand() * list.length)]!;
-      const at = loadBookmarks().indexOf(victim);
+      const before = loadBookmarks();
       toggleBookmark(victim);
       expect(loadBookmarks()).not.toContain(victim);
-      restoreBookmark(victim, at);
+      restoreBookmark(victim, before);
       expect(loadBookmarks()).toEqual(list);
       // A second Undo (double click) changes nothing.
-      restoreBookmark(victim, at);
+      restoreBookmark(victim, before);
       expect(loadBookmarks()).toEqual(list);
+      // Saved elsewhere in between (another tab): the place returns between its old neighbours.
+      toggleBookmark(victim);
+      toggleBookmark(`other-${run}`);
+      restoreBookmark(victim, before);
+      const now = loadBookmarks();
+      expect(now.filter(id => id !== `other-${run}`)).toEqual(list);
     }
   });
 
-  it("undo keeps a place saved after the removal", () => {
+  it("undo keeps a place saved after the removal, and the restored one between its old neighbours", () => {
     setBookmarks(["a", "b", "c"]);
+    const before = loadBookmarks();
     toggleBookmark("b");
     toggleBookmark("new");
-    restoreBookmark("b", 1);
-    expect(loadBookmarks()).toEqual(["new", "b", "a", "c"]);
-    expect(new Set(loadBookmarks())).toEqual(new Set(["a", "b", "c", "new"]));
+    restoreBookmark("b", before);
+    expect(loadBookmarks()).toEqual(["new", "a", "b", "c"]);
+  });
+
+  it("says when a removal cannot be undone because the list is full", () => {
+    const full = Array.from({ length: BOOKMARK_LIMIT }, (_, i) => `e-${i}`);
+    setBookmarks(full);
+    expect(restoreBookmark("gone", ["gone", ...full.slice(0, 3)])).toBeNull();
+    expect(loadBookmarks()).toEqual(full);
   });
 });

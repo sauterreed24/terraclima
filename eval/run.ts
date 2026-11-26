@@ -491,6 +491,41 @@ async function sectionMistakes(browser: Browser) {
   await page.getByRole("button", { name: /^Clear recently viewed/ }).first().click().catch(() => {});
   await page.waitForTimeout(300);
   results["clear recently viewed"] = (await undo()) && (await read("terraclima.recent-places.v1")) === JSON.stringify(["sitka-ak", "taos-nm"]);
+  // 4. Undo where the mistake happened: inside an open profile, by Ctrl+Z (the profile traps focus).
+  await page.goto(BASE + "/?p=oaxaca-mx"); await page.getByRole("dialog").getByText(/Climate normals/i).first().waitFor();
+  const before = await read("terraclima.bookmarks.v1");
+  await page.getByRole("dialog").getByRole("button", { name: /^Remove Oaxaca.* from your saved places/ }).first().click().catch(() => {});
+  await page.waitForTimeout(400);
+  const removed = !(await read("terraclima.bookmarks.v1"))?.includes("oaxaca-mx");
+  const visibleOverProfile = await page.evaluate(() => {
+    const el = [...document.querySelectorAll('[role="status"]')].find(e => /Removed/.test(e.textContent ?? ""));
+    if (!el) return false;
+    const r = el.getBoundingClientRect();
+    const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    return r.top >= 0 && r.bottom <= innerHeight && !!hit && el.contains(hit);
+  });
+  await page.keyboard.press("Control+z"); await page.waitForTimeout(400);
+  results["remove from inside a profile: message visible over it, undo with Ctrl+Z"] = removed && visibleOverProfile && (await read("terraclima.bookmarks.v1")) === before && (await page.getByRole("dialog").count()) > 0;
+  await page.keyboard.press("Escape"); await page.waitForTimeout(400);
+  // 5. The message is on screen where the action was (clear home base from the top of the page), and stays while focused.
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.getByRole("button", { name: /^Clear home base/ }).first().click().catch(() => {});
+  await page.waitForTimeout(400);
+  // On screen AND on top: the element at the message's centre must be part of it.
+  const onScreen = await page.evaluate(() => {
+    const el = [...document.querySelectorAll('[role="status"]')].find(e => /Home base cleared/.test(e.textContent ?? ""));
+    if (!el) return false;
+    const r = el.getBoundingClientRect();
+    if (r.top < 0 || r.bottom > innerHeight) return false;
+    const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    return !!hit && el.contains(hit);
+  });
+  await page.getByRole("button", { name: /^Undo/ }).first().focus().catch(() => {});
+  await page.waitForTimeout(9000);
+  const stillThere = await page.getByRole("button", { name: /^Undo/ }).first().isVisible().catch(() => false);
+  await page.keyboard.press("Enter"); await page.waitForTimeout(300);
+  const focusOk = await page.evaluate(() => document.activeElement !== document.body && document.activeElement !== null);
+  results["message on screen, stays while focused, focus kept after Undo"] = onScreen && stillThere && focusOk && (await read("terraclima.home-base.v1")) === JSON.stringify("flagstaff-az");
   await ctx.close();
   const passed = Object.values(results).filter(Boolean).length;
   record("S9a", "one-click mistakes undone in one click, restoring exactly the previous state", `${passed}/${Object.keys(results).length}`, "all", passed === Object.keys(results).length, results);
