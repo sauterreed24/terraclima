@@ -85,13 +85,13 @@ export function withProfileExtras(place: Place): Place {
 
 /**
  * Download the group file for `place`. Resolves true once its fields are
- * available, false when the download failed (never rejects). A call after a
- * failure — a new open of the profile — tries again.
+ * available, false when the download failed (never rejects). It does not
+ * reset a profile's settled failure: only `retryFailedProfileExtras` (a profile
+ * opening) does, so background calls never make an open profile re-download.
  */
 export function loadProfileExtras(place: Pick<Place, "id">): Promise<boolean> {
   const group = groupOf(place);
   if (!group) return Promise.resolve(false);
-  if (failed.delete(group)) thenables.delete(group);
   if (loaded.has(group)) return Promise.resolve(true);
   let load = loads.get(group);
   if (!load) {
@@ -151,5 +151,17 @@ export function profileExtrasThenable(place: Place): Promise<boolean> {
 export async function retryFailedProfileExtras(place: Place): Promise<boolean> {
   const group = groupOf(place);
   if (!group || !failed.has(group)) return false;
-  return loadProfileExtras(place);
+  failed.delete(group);
+  thenables.delete(group);
+  const ok = await loadProfileExtras(place);
+  if (!ok) {
+    // Failed again: keep a settled answer so later re-renders do not download
+    // once more; the next open of a profile tries again.
+    failed.add(group);
+    const settled = Promise.resolve(false) as Thenable;
+    settled.status = "fulfilled";
+    settled.value = false;
+    thenables.set(group, settled);
+  }
+  return ok;
 }

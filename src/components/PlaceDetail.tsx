@@ -1665,6 +1665,11 @@ function DetailBody({
             <BookOpen className="w-3 h-3" /> Citations
           </div>
           <ul className="space-y-1 text-sm">
+            {place.citations === undefined ? (
+              <li className="text-xs text-stone-readable">
+                The sources for this place could not be downloaded. They load the next time you open it with a connection.
+              </li>
+            ) : null}
             {(place.citations ?? []).map((c, i) => {
               const href = safeExternalHref(c.url);
               return (

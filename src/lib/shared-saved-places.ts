@@ -6,6 +6,8 @@
 // first, then removes the parameter from the address.
 // ============================================================
 
+import { shareUrl } from "./share";
+
 export const SAVED_LINK_PARAM = "saved";
 /** More than the atlas holds (226); longer lists are cut. */
 export const SAVED_LINK_MAX = 300;
@@ -48,8 +50,11 @@ export function withoutSavedParam(href: string): string {
   return url.toString();
 }
 
-/** Share (or copy) a link carrying these ids, from the current page's address. */
-export async function shareSavedPlacesLink(ids: readonly string[]) {
-  const { shareUrl } = await import("./share");
+/**
+ * Share (or copy) a link carrying these ids, from the current page's address.
+ * Called straight from the click, so the browser still counts it as the
+ * reader's action (Safari refuses share and clipboard otherwise).
+ */
+export function shareSavedPlacesLink(ids: readonly string[]) {
   return shareUrl({ title: "Saved places · Terraclima", url: savedPlacesLink(window.location.href, ids) });
 }

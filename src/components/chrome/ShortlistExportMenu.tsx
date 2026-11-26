@@ -10,7 +10,7 @@ import type { ExportContext, ShortlistExportFile } from "../../lib/shortlist-exp
 import { useFocusTrap } from "../../hooks/use-focus-trap";
 
 type ExportFormatId = "markdown" | "json" | "csv" | "geojson" | "ics" | "link";
-type ExportStatus = "idle" | "preparing" | "ready" | "failed" | "linked" | "link-failed";
+type ExportStatus = "idle" | "preparing" | "ready" | "failed" | "linked" | "shared" | "link-failed";
 type MenuPlacement = "down" | "up";
 
 const FORMATS: ReadonlyArray<{
@@ -109,9 +109,13 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
     }
   }, []);
 
+  const linkModuleRef = useRef<typeof import("../../lib/shared-saved-places") | null>(null);
   useEffect(() => {
     if (!open) return;
     firstItemRef.current?.focus({ preventScroll: true });
+    if (!linkModuleRef.current) {
+      void import("../../lib/shared-saved-places").then(m => { linkModuleRef.current = m; }).catch(() => {});
+    }
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -148,6 +152,7 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
       : status === "ready" ? "Download started."
         : status === "failed" ? "The download did not start. Try another format or browser."
           : status === "linked" ? "Link copied. Opening it offers to add these places."
+            : status === "shared" ? "Link shared. Opening it offers to add these places."
             : status === "link-failed" ? "The link could not be copied. Try a download instead."
               : "";
   const triggerLabel = disabled
@@ -190,9 +195,13 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
       const exportPlaces = [...places];
       close();
       if (format === "link") {
-        void import("../../lib/shared-saved-places")
-          .then(m => m.shareSavedPlacesLink(exportPlaces.map(p => p.id)))
-          .then(outcome => outcome !== "dismissed" && setExportStatus(outcome === "failed" ? "link-failed" : "linked"))
+        const ids = exportPlaces.map(p => p.id);
+        // Loaded when the menu opened, so the share or copy starts within this click.
+        const linkModule = linkModuleRef.current;
+        (linkModule ? linkModule.shareSavedPlacesLink(ids) : import("../../lib/shared-saved-places").then(m => m.shareSavedPlacesLink(ids)))
+          .then(outcome => {
+            if (outcome !== "dismissed") setExportStatus(outcome === "failed" ? "link-failed" : outcome === "shared" ? "shared" : "linked");
+          })
           .catch(() => setExportStatus("link-failed"))
           .finally(() => { focusTriggerSoon(); resetLater(); });
         return;
