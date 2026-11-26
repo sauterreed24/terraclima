@@ -385,15 +385,6 @@ export default function App() {
   const [sharedSavedLink, setSharedSavedLink] = useState(() =>
     typeof window !== "undefined" && window.location.search.includes("saved=") ? window.location.search : "");
   const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
-  // Sources, outlooks and In depth chapters load after the atlas is up (and
-  // when a profile opens); not at all on a save-data connection until needed.
-  useEffect(() => {
-    if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
-    const start = () => window.setTimeout(() => void loadProfileFieldsFor(PLACES), 3000);
-    if (document.readyState === "complete") start();
-    else window.addEventListener("load", start, { once: true });
-    return () => window.removeEventListener("load", start);
-  }, []);
   const [animatePlaceDetailEntry, setAnimatePlaceDetailEntry] = useState(false);
   const [placeEntryIntent, setPlaceEntryIntent] = useState<"surprise" | null>(null);
   // Theme preference (auto/light/dark). URL ?theme=... wins on first paint;
@@ -920,19 +911,17 @@ export default function App() {
       liveFitMaxOverallRisk,
     ],
   );
-  const onSharedSaved = useCallback((ids: readonly string[], message: string) => {
-    setBookmarkIds(new Set(ids));
-    setTransientFeedback(message);
-  }, []);
-  const onSharedSavedDone = useCallback(() => setSharedSavedLink(""), []);
-  // Chapter text joins search when the profile-field files arrive; re-run then.
+  // Sources, outlooks and In depth chapters load as soon as a search is entered,
+  // a few seconds after start-up otherwise (not on save-data), and with a
+  // profile. Their chapter text then joins search: re-run filtering.
   const [searchEpoch, setSearchEpoch] = useState(0);
   const hasSearch = (deferredFilters.search ?? "").trim() !== "";
   useEffect(() => {
-    if (!hasSearch) return;
-    let live = true;
-    void loadProfileFieldsFor(PLACES).then(() => { if (live) setSearchEpoch(n => n + 1); });
-    return () => { live = false; };
+    const fetchAll = () => void loadProfileFieldsFor(PLACES).then(() => setSearchEpoch(n => n + 1));
+    if (hasSearch) return fetchAll();
+    if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
+    const timer = window.setTimeout(fetchAll, 5000);
+    return () => window.clearTimeout(timer);
   }, [hasSearch]);
   // eslint-disable-next-line react-hooks/exhaustive-deps -- searchEpoch: same filters, new search text
   const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters, searchEpoch]);
@@ -1859,12 +1848,7 @@ export default function App() {
         <main id="main-content" tabIndex={-1} className="relative z-10 flex flex-col flex-1 min-h-0 outline-none">
       {sharedSavedLink ? (
         <Suspense fallback={null}>
-          <SharedSavedPlacesPrompt
-            search={sharedSavedLink}
-            saved={bookmarkIds}
-            onSaved={onSharedSaved}
-            onDone={onSharedSavedDone}
-          />
+          <SharedSavedPlacesPrompt search={sharedSavedLink} onDone={setSharedSavedLink} />
         </Suspense>
       ) : null}
       <div ref={topBarRegionRef} data-topbar-region>

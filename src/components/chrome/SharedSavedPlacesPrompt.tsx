@@ -1,17 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { BookmarkCheck, X } from "lucide-react";
 import { PLACES_BY_ID, resolvePlaceId } from "../../data/places";
+import { BOOKMARKS_STORAGE_KEY, loadBookmarks } from "../../lib/place-bookmarks";
 import { readSharedSavedIds, withoutSavedParam } from "../../lib/shared-saved-places";
 import { importSavedIds } from "../../lib/saved-places-import";
 
 interface Props {
   /** The address's query string as the app opened (it may since have been rewritten). */
   search: string;
-  /** Ids already in this browser's saved places. */
-  saved: ReadonlySet<string>;
-  /** After adding: the saved list now, and one sentence for the status line. */
-  onSaved: (ids: readonly string[], message: string) => void;
-  onDone: () => void;
+  /** Called with "" when the prompt is finished. */
+  onDone: (next: "") => void;
 }
 
 /**
@@ -19,8 +17,10 @@ interface Props {
  * places and asks before adding them. Nothing is saved unless the reader agrees,
  * and the parameter leaves the address either way.
  */
-export default function SharedSavedPlacesPrompt({ search, saved, onSaved, onDone }: Props) {
+export default function SharedSavedPlacesPrompt({ search, onDone }: Props) {
   const [ids] = useState(() => readSharedSavedIds(search, resolvePlaceId));
+  const [saved] = useState(() => new Set(loadBookmarks().map(id => resolvePlaceId(id) ?? id)));
+  const [message, setMessage] = useState<string | null>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
@@ -29,7 +29,7 @@ export default function SharedSavedPlacesPrompt({ search, saved, onSaved, onDone
     if (window.location.search.includes("saved=")) {
       window.history.replaceState(window.history.state, "", withoutSavedParam(window.location.href));
     }
-    if (ids.length === 0) onDoneRef.current();
+    if (ids.length === 0) onDoneRef.current("");
     else headingRef.current?.focus({ preventScroll: false });
   }, [ids]);
   if (ids.length === 0) return null;
@@ -42,27 +42,27 @@ export default function SharedSavedPlacesPrompt({ search, saved, onSaved, onDone
         This link carries {ids.length} saved place{ids.length === 1 ? "" : "s"}
       </h2>
       <p className="text-sm text-stone-readable mt-1">{shown}.</p>
-      <p className="text-xs text-stone-readable mt-1">
-        {fresh.length === 0
+      <p className="text-xs text-stone-readable mt-1" role="status" aria-live="polite">
+        {message ?? (fresh.length === 0
           ? "All of them are already in your saved places."
-          : `${fresh.length} ${fresh.length === 1 ? "is" : "are"} not in your saved places yet. Adding them keeps everything you have saved.`}
+          : `${fresh.length} ${fresh.length === 1 ? "is" : "are"} not in your saved places yet. Adding them keeps everything you have saved.`)}
       </p>
       <div className="flex flex-wrap gap-2 mt-2">
-        {fresh.length > 0 ? (
+        {fresh.length > 0 && message == null ? (
           <button
             type="button"
             className="btn-primary !text-xs !py-1.5"
             onClick={() => {
-              const result = importSavedIds(fresh, resolvePlaceId);
-              onSaved(result.ids, result.message);
-              onDone();
+              setMessage(importSavedIds(fresh, resolvePlaceId).message);
+              // The app's saved-places listener refreshes from storage.
+              window.dispatchEvent(new StorageEvent("storage", { key: BOOKMARKS_STORAGE_KEY }));
             }}
           >
             <BookmarkCheck className="w-3.5 h-3.5" aria-hidden /> Add {fresh.length} place{fresh.length === 1 ? "" : "s"}
           </button>
         ) : null}
-        <button type="button" className="btn-ghost !text-xs !py-1.5" onClick={onDone}>
-          <X className="w-3.5 h-3.5" aria-hidden /> {fresh.length > 0 ? "Not now" : "Close"}
+        <button type="button" className="btn-ghost !text-xs !py-1.5" onClick={() => onDone("")}>
+          <X className="w-3.5 h-3.5" aria-hidden /> {fresh.length > 0 && message == null ? "Not now" : "Close"}
         </button>
       </div>
     </section>
