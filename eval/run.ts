@@ -582,7 +582,7 @@ async function sectionRecover(browser: Browser) {
     let hits = 0;
     await ctx.route(/profile-fields-usa-1-.*\.js$/, r => { hits++; return r.abort(); }); // Bishop's group
     const page = await open(ctx, "/?p=bishop-ca", /Failed to fetch dynamically imported module/);
-    await page.waitForTimeout(4500); // past the idle prefetch
+    await page.waitForTimeout(7000); // past the background prefetch (5 s after start-up), which may try once
     const settled = hits;
     // Re-renders of the open profile (save, unsave) must not download again.
     for (let i = 0; i < 2; i++) await page.getByRole("dialog").getByRole("button", { name: /^(Save|Remove) Bishop/ }).first().click().catch(() => {});
