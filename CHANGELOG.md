@@ -4,6 +4,11 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### 2050 layer says what it is
+
+- **2050 figures checked:** every place's projected summer high, winter low and rainfall, and the changes shown in the 2050 summary, now match the published rules applied to the records (1,452 figures, both scenarios). No figures changed.
+- **Honest labels:** the 2050 summary said its changes were measured from the 1991–2020 normals; they are applied to the 1996–2025 averages the rest of the app uses. The climate-layer buttons described an "ensemble median", but no model ensemble is loaded yet: they now say it is a broad regional estimate (IPCC AR6).
+
 ### Phone search no longer covered
 
 - **Filters button on phones:** on the first screen of an iPhone-sized phone the floating Filters button sat on top of the search box, so a tap meant for search opened Filters and long searches ran under it. While the search box is on screen, Filters now sits at the end of it; once you scroll past, it floats at the bottom again as before.

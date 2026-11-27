@@ -58,13 +58,13 @@ export const SCENARIOS: readonly ScenarioMeta[] = [
     id: "ssp245",
     label: "2050 mid (2041–2060) · SSP2-4.5",
     short: "2050 mid",
-    description: "Mid-century under SSP2-4.5 — ensemble median applied to 1996–2025 observed climatology.",
+    description: "Mid-century, SSP2-4.5: broad regional estimate (IPCC AR6) applied to the 1996–2025 averages.",
   },
   {
     id: "ssp585",
     label: "2050 high (2041–2060) · SSP5-8.5",
     short: "2050 high",
-    description: "Mid-century under SSP5-8.5 — ensemble median applied to 1996–2025 observed climatology.",
+    description: "Mid-century, SSP5-8.5: broad regional estimate (IPCC AR6) applied to the 1996–2025 averages.",
   },
 ] as const;
 

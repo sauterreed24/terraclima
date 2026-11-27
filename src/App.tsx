@@ -3818,7 +3818,7 @@ const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
             {rankingLabel} re-ranked on projected 2041–2060 climate ({meta.short}).
           </p>
           <p className="scenario-remap__copy">
-            {leaderLine} {churnLine} The score chip compares each place's ranking score under the projection with today's. The summer, winter and precipitation chips show the projected change from 1991–2020 normals. Projections are illustrative, not forecasts.
+            {leaderLine} {churnLine} The score chip compares each place's ranking score under the projection with today's. The summer, winter and precipitation chips show the projected change from the 1996–2025 averages. Projections are illustrative, not forecasts.
           </p>
         </div>
         <div className="scenario-remap__facts" aria-label={`${meta.short} ranking summary`}>
