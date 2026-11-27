@@ -30,6 +30,7 @@ import { runScenarioRanking } from "../src/lib/climate-processor";
 import RECORDS from "../src/data/generated/climate-v2/records.json" with { type: "json" };
 import { assessLiveFit } from "../src/lib/live-fit";
 import { localizeProse } from "../src/lib/units";
+import { projectPlace } from "../src/lib/climate-projection";
 import { SITE_HISTORY } from "../src/data/places.site-history";
 import { PLACES_FULL_BY_ID } from "../src/data/places.full";
 import { SITE_HISTORY_GROUP_BY_ID } from "../src/data/site-history/group-index";
@@ -1069,6 +1070,98 @@ function sectionNotes() {
   for (const e of res.tune.bad.slice(0, 8)) console.log(`        ${e}`);
 }
 
+// ---------------------------------------------------------------- S7e 2050 figures
+// The 2050 layers (scn=ssp245 / ssp585): every place's projected summer high, winter low
+// and yearly precipitation, as the cards and the 2050 summary show them, against the
+// documented rules applied here to the records: one anomaly per latitude band (IPCC AR6
+// screening table, copied from the spec in climate-projection.ts), Mexico's precipitation
+// nudged 4 points drier, warming eased from the January delta to the July delta along a
+// cosine, monthly values rounded to 0.1 °C / 1 mm.
+const BAND_DELTAS: Record<"ssp245" | "ssp585", Array<[number, number, number, number]>> = {
+  // [max |lat|, ΔJJA high °C, ΔJan low °C, Δprecip %]
+  ssp245: [[25, 1.6, 1.4, -5], [35, 1.9, 1.6, -6], [45, 2.0, 1.9, 2], [55, 2.1, 2.4, 5], [65, 2.3, 3.2, 8], [91, 2.6, 4.5, 12]],
+  ssp585: [[25, 2.2, 2.0, -8], [35, 2.7, 2.3, -9], [45, 2.9, 2.8, 3], [55, 3.1, 3.6, 7], [65, 3.4, 4.8, 11], [91, 3.9, 6.5, 16]],
+};
+function ref2050(id: string, scn: "ssp245" | "ssp585") {
+  const p = PLACES.find(x => x.id === id)!; const r = recFull.get(id)!;
+  const [, dJJA, dJan, dP0] = BAND_DELTAS[scn].find(b => Math.abs(p.lat) < b[0])!;
+  const dP = dP0 + (p.country === "Mexico" ? -4 : 0);
+  const w = (i: number) => dJan + (dJJA - dJan) * (1 - Math.cos(2 * Math.PI * i / 12)) / 2;
+  const r1 = (x: number) => Math.round(x * 10) / 10;
+  const hi = r.tempHighC.map((v, i) => r1(v + w(i))), lo = r.tempLowC.map((v, i) => r1(v + w(i)));
+  const pr = r.precipMm.map(v => Math.max(0, Math.round(v * (1 + dP / 100))));
+  const now = { sh: mean(r.tempHighC, [5, 6, 7]), wl: mean(r.tempLowC, [11, 0, 1]), ap: r.precipMm.reduce((a, b) => a + b, 0) };
+  const fut = { sh: mean(hi, [5, 6, 7]), wl: mean(lo, [11, 0, 1]), ap: pr.reduce((a, b) => a + b, 0) };
+  return { now, fut, dSh: fut.sh - now.sh, dWl: fut.wl - now.wl, dPpct: (fut.ap - now.ap) / now.ap * 100 };
+}
+async function section2050(browser: Browser) {
+  console.log("\nS7e 2050 figures (cards and the 2050 summary = records + documented projection)");
+  const errs: string[] = []; let n = 0;
+  const num = (x: string | undefined) => (x == null ? null : Number(x.replace(/[−–]/, "-").replace("+", "")));
+  const ctx = await newCtx(browser);
+  for (const scn of ["ssp245", "ssp585"] as const) {
+    for (const ranking of ["coolest-summers", "mildest-winters"]) {
+      const pg = await open(ctx, `/?scn=${scn}&r=${ranking}`);
+      await firstCard(pg);
+      await pg.locator(".scenario-remap__row").first().waitFor({ timeout: 15000 }).catch(() => {});
+      await pg.waitForTimeout(500);
+      // Summary chips: change from today, per row.
+      for (const row of await pg.locator(".scenario-remap__row").evaluateAll(els => els.map(e => (e as HTMLElement).innerText.replace(/\s+/g, " ")))) {
+        const matches = PLACES.filter(p => row.toLowerCase().includes(p.name.toLowerCase()));
+        if (matches.length !== 1) { if (!matches.length) errs.push(`${scn} summary row: place not found in "${row.slice(0, 60)}"`); continue; }
+        const id = matches[0]!.id; const ref = ref2050(id, scn);
+        const sh = num(/Summer ([+\-−]?[\d.]+)°F/.exec(row)?.[1]); const wl = num(/Winter ([+\-−]?[\d.]+)°F/.exec(row)?.[1]); const pp = num(/Precip ([+\-−]?[\d.]+)%/.exec(row)?.[1]);
+        for (const [label, shown, want, tol] of [["summer change °F", sh, ref.dSh * 1.8, 0.051], ["winter change °F", wl, ref.dWl * 1.8, 0.051], ["precip change %", pp, ref.dPpct, 0.51]] as const) {
+          n++;
+          if (shown == null || Math.abs(shown - want) > tol) errs.push(`${scn} ${id} summary ${label}: shown ${shown}, rules give ${want.toFixed(2)}`);
+        }
+      }
+      // First six cards: their projected summer high / winter low.
+      for (const text of await pg.locator(".place-card").evaluateAll(els => els.slice(0, 6).map(e => (e as HTMLElement).innerText))) {
+        const lower = text.toLowerCase();
+        const p = PLACES.find(x => lower.includes(x.name.toLowerCase()) && lower.includes(x.region.toLowerCase()));
+        if (!p) { errs.push(`${scn} card: place not found`); continue; }
+        const ref = ref2050(p.id, scn);
+        const sh = num(/SUMMER HIGH\s*(-?[\d]+)°F/i.exec(text)?.[1]); const wl = num(/WINTER LOW\s*([\-−]?[\d]+)°F/i.exec(text)?.[1]);
+        for (const [label, shown, want] of [["summer high", sh, ref.fut.sh * 1.8 + 32], ["winter low", wl, ref.fut.wl * 1.8 + 32]] as const) {
+          n++;
+          if (shown == null || Math.abs(shown - want) > 0.51) errs.push(`${scn} ${p.id} card ${label}: shown ${shown}, rules give ${want.toFixed(2)}`);
+        }
+      }
+      await pg.close();
+    }
+  }
+  await ctx.close();
+  // Every place, both scenarios, unrounded: the projected climate the whole app reads.
+  for (const scn of ["ssp245", "ssp585"] as const) for (const p of PLACES) {
+    const ref = ref2050(p.id, scn); const c = projectPlace(p, scn).climate;
+    const got = { sh: mean(c.tempHighC, [5, 6, 7]), wl: mean(c.tempLowC, [11, 0, 1]), ap: c.precipMm.reduce((a, b) => a + b, 0) };
+    for (const k of ["sh", "wl", "ap"] as const) {
+      n++;
+      if (Math.abs(got[k] - ref.fut[k]) > 1e-6) errs.push(`${scn} ${p.id} projected ${k}: app ${got[k].toFixed(2)}, rules give ${ref.fut[k].toFixed(2)}`);
+    }
+  }
+  // S8c: what the 2050 layer says about itself must match what it does: changes are
+  // applied to the 1996–2025 averages, and no place has ensemble (NEX) data loaded.
+  {
+    const said: string[] = [];
+    const pg = await open(await newCtx(browser), "/?scn=ssp245");
+    await firstCard(pg); await pg.locator(".scenario-remap").first().waitFor({ timeout: 15000 }).catch(() => {});
+    const text = await pg.evaluate(() => {
+      const titles = [...document.querySelectorAll("[title]")].map(e => e.getAttribute("title") ?? "");
+      return `${document.body.innerText}\n${titles.join("\n")}`;
+    });
+    if (/change from 1991.2020/i.test(text)) said.push("2050 summary: changes 'from 1991–2020 normals' (they are applied to 1996–2025)");
+    const nex = (RECORDS as Array<{ projection?: { modelCount?: number } }>).filter(r => (r.projection?.modelCount ?? 0) > 0).length;
+    if (nex === 0 && /ensemble median/i.test(text)) said.push("climate layer: claims an 'ensemble median' but no place has ensemble data");
+    await pg.close();
+    record("S8c", "2050 layer misdescribes its baseline or source", said.length, "0", said.length === 0, said);
+    for (const x of said) console.log(`        ${x}`);
+  }
+  record("S7e", "2050 figures that differ from records + documented projection (all places' projected climate; cards and 2050 summary chips; both scenarios)", `${errs.length} of ${n}`, "0", errs.length === 0 && n > 0, errs.slice(0, 30));
+  for (const e of errs.slice(0, 8)) console.log(`        ${e}`);
+}
+
 // ---------------------------------------------------------------- main
 async function main() {
   const started = Date.now();
@@ -1085,6 +1178,7 @@ async function main() {
     if (want("recover")) await sectionRecover(browser);
     if (want("speed")) await sectionSpeed(browser);
     if (want("accuracy")) await sectionAccuracy(browser);
+    if (want("accuracy") || want("2050")) await section2050(browser);
   } finally {
     await browser?.close();
     stopServer();
