@@ -258,7 +258,28 @@ async function sectionJobs(browser: Browser) {
       if (!filtersVisible) noFilters.push(`${w}x${h}`);
       await ctx.close();
     }
-    record("S2l", "phone first screen: search field covered by another control / Filters not on screen (5 phone browser sizes, empty + typed)", `${covered.length} / ${noFilters.length}`, "0 / 0", covered.length === 0 && noFilters.length === 0, { covered, noFilters });
+    // From review: after the sheet closes, focus sits on the button, and the button must
+    // still follow the row (it stayed docked off screen, or floated over the field).
+    {
+      const ctx = await newCtx(browser, { viewport: { width: 390, height: 664 }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
+      const page = await open(ctx); await firstCard(page); await page.waitForTimeout(600);
+      const btn = page.getByRole("button", { name: /^Open filters and ranking/ }).first();
+      const where = () => page.evaluate(() => {
+        const b = document.querySelector(".tc-filter-sheet-trigger") as HTMLElement | null;
+        const r = b?.getBoundingClientRect();
+        return { docked: !!b?.closest("[data-quick-search]"), onScreen: !!r && r.width > 0 && r.top < innerHeight && r.bottom > 0, focused: document.activeElement === b };
+      });
+      for (const scrollTo of [1600, 0]) {
+        await btn.click(); await page.waitForTimeout(400);
+        await page.locator("#tc-explorer-filter-sheet").evaluate(d => (d as HTMLDialogElement).close()); await page.waitForTimeout(300);
+        await page.evaluate(y => window.scrollTo(0, y), scrollTo); await page.waitForTimeout(700);
+        const w = await where();
+        const want = scrollTo === 0;
+        if (w.docked !== want || !w.onScreen) covered.push(`after closing Filters, scrolled to ${scrollTo}: docked=${w.docked} onScreen=${w.onScreen}`);
+      }
+      await ctx.close();
+    }
+    record("S2l", "phone first screen: search field covered by another control / Filters not on screen (5 phone browser sizes, empty + typed; scroll after closing Filters)", `${covered.length} / ${noFilters.length}`, "0 / 0", covered.length === 0 && noFilters.length === 0, { covered, noFilters });
     for (const c of covered.slice(0, 4)) console.log(`        ${c}`);
   }
   // J5 export saved places; figures match the atlas
