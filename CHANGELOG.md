@@ -15,6 +15,8 @@ All notable changes to Terraclima are tracked here.
 
 ### Phone search no longer covered
 
+- **Compare on phones:** the Summary / Sources / Differences / Add places buttons were see-through, so the page behind the comparison showed through their labels. They are now solid, in both themes.
+
 - **Filters button on phones:** on the first screen of an iPhone-sized phone the floating Filters button sat on top of the search box, so a tap meant for search opened Filters and long searches ran under it. While the search box is on screen, Filters now sits at the end of it; once you scroll past, it floats at the bottom again as before.
 
 ### Search finds named landscapes

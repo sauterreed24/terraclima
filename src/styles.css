@@ -4198,7 +4198,8 @@
     justify-content: center;
     border-radius: 999px;
     border: 1px solid rgba(26, 143, 168, 0.18);
-    background: rgba(255, 255, 255, 0.72);
+    /* Opaque: on phones these sit on the dimmed page, which read through them. */
+    background: rgb(255, 255, 255);
     padding: 0.32rem 0.72rem;
     color: var(--color-stone-readable);
     font-size: 0.72rem;
@@ -4211,7 +4212,7 @@
   }
   .compare-dialog__shortcut--primary {
     border-color: rgba(26, 143, 168, 0.38);
-    background: rgba(241, 251, 253, 0.88);
+    background: rgb(241, 251, 253);
     color: var(--color-ice);
   }
   .compare-dialog__shortcut:hover {
@@ -11406,18 +11407,18 @@ html[data-theme="dark"] .climate-trip-card__lead-cue small {
   color: var(--color-frost-strong);
 }
 html[data-theme="dark"] .compare-dialog__shortcut {
-  background: rgba(18, 26, 44, 0.72);
+  background: rgb(18, 26, 44);
   border-color: rgba(120, 138, 178, 0.28);
   color: var(--color-frost-strong);
   box-shadow: none;
 }
 html[data-theme="dark"] .compare-dialog__shortcut--primary {
-  background: rgba(28, 58, 70, 0.72);
+  background: rgb(28, 58, 70);
   border-color: rgba(94, 196, 220, 0.5);
   color: #b4ecf6;
 }
 html[data-theme="dark"] .compare-dialog__shortcut:hover {
-  background: rgba(31, 50, 70, 0.82);
+  background: rgb(31, 50, 70);
   border-color: rgba(94, 196, 220, 0.4);
 }
 html[data-theme="dark"] .compare-workbench__candidate-action {
