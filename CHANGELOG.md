@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Ranking notes that match the records (continued)
+
+- **Day-to-night swing in the comfort notes:** the "Nights cool off well" line rounded the swing to whole °C before converting, so 103 of 226 places showed it a degree or more off in °F. It now converts the unrounded figure (same for the thermal span in the geospatial notes).
+
 ### 2050 layer says what it is
 
 - **2050 figures checked:** every place's projected summer high, winter low and rainfall, and the changes shown in the 2050 summary, now match the published rules applied to the records (1,452 figures, both scenarios). No figures changed.

@@ -678,7 +678,7 @@ export function describeHumanComfort(p: Place): HumanComfortNarrative {
   if (winter >= 82 && winterLow >= -6) pushLimited(strengths, `Winter lows stay manageable for daily life (${toFixedClean(winterLow, 1)}°C mean).`);
   else if (winter < 55) pushLimited(frictions, `Winter cold is not cosmetic; it changes transport, housing, and outdoor rhythm (${toFixedClean(winterLow, 1)}°C mean low).`);
 
-  if (diurnal >= 12 && summerHigh < 34) pushLimited(strengths, `Nights cool off well: a summer day-to-night swing of ${Math.round(diurnal)}°C helps sleep.`);
+  if (diurnal >= 12 && summerHigh < 34) pushLimited(strengths, `Nights cool off well: a summer day-to-night swing of ${toFixedClean(diurnal, 1)}°C helps sleep.`);
   if (sky >= 70) pushLimited(strengths, "Clear skies and good light make outdoor time pleasant, beyond what the temperatures show.");
   if (atmosphere >= 76) pushLimited(strengths, "Wind, humidity, smoke and sun are all easy here.");
 

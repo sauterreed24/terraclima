@@ -386,7 +386,7 @@ export function buildGeospatialAnalysis(place: Place): GeospatialAnalysis {
   const contextLine =
     `Relief energy ~${Math.round(reliefEnergyMPerKm * FT_PER_MI_PER_M_PER_KM)} ft/mi, ` +
     `hydro seasonality ${hydroSeasonalityRatio.toFixed(1)}x, ` +
-    `thermal span ${Math.round(annualThermalAmplitudeC)}°C, ` +
+    `thermal span ${annualThermalAmplitudeC.toFixed(1)}°C, ` +
     `structure texture ${structuralTexture}/100, ` +
     `EO observability ${eoObservabilityScore}/100.`;
 
