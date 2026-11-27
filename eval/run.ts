@@ -1173,6 +1173,10 @@ async function section2050(browser: Browser) {
     if (/change from 1991.2020/i.test(text)) said.push("2050 summary: changes 'from 1991–2020 normals' (they are applied to 1996–2025)");
     const nex = (RECORDS as Array<{ projection?: { modelCount?: number } }>).filter(r => (r.projection?.modelCount ?? 0) > 0).length;
     if (nex === 0 && /ensemble median/i.test(text)) said.push("climate layer: claims an 'ensemble median' but no place has ensemble data");
+    // From review: the Learn page said the outlooks "come from" the NASA model set.
+    await pg.goto(`${BASE}/?v=learn`); await pg.waitForTimeout(1500);
+    const learn = await pg.evaluate(() => document.body.innerText);
+    if (nex === 0 && /(come from|use)[^.]{0,20}NEX-GDDP/i.test(learn)) said.push("Learn: says the 2050 outlooks come from NASA NEX-GDDP-CMIP6, but no place has that data");
     await pg.close();
     record("S8c", "2050 layer misdescribes its baseline or source", said.length, "0", said.length === 0, said);
     for (const x of said) console.log(`        ${x}`);
