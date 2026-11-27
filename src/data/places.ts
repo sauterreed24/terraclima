@@ -225,6 +225,12 @@ const COUNTRY_SEARCH_ALIASES: Record<Place["country"], string> = {
  * "kelowna bc", "la paz bcs" or "yellowknife nwt" find their place whatever
  * the place id happens to end with. Keyed by `Place.region`.
  */
+/** Common names a place's own fields never use (searched as locality). */
+const PLACE_SEARCH_ALIASES: Readonly<Record<string, string>> = {
+  // Hilo is the main town of Hawaiʻi Island, widely called the Big Island.
+  "hilo-hi": "Big Island, Hawaii Island",
+};
+
 export const REGION_SEARCH_ALIASES: Readonly<Record<string, string>> = {
   Alabama: "AL", Alaska: "AK", Arizona: "AZ", Arkansas: "AR", California: "CA", Colorado: "CO",
   Connecticut: "CT", Delaware: "DE", "District of Columbia": "DC", Florida: "FL", Georgia: "GA",
@@ -316,6 +322,7 @@ export function getPlaceSearchFields(place: Place): PlaceSearchFields {
       place.region,
       COUNTRY_SEARCH_ALIASES[place.country] ?? place.country,
       REGION_SEARCH_ALIASES[place.region] ?? "",
+      PLACE_SEARCH_ALIASES[place.id] ?? "",
       idSuffix,
       ...settlements.map(s => s.name),
     ]),
