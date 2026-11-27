@@ -482,6 +482,9 @@ export default function App() {
   // gating the JSX avoids mounting a 200+ LOC subtree that is `display: none`.
   const scoutBoardLg = useMediaQuery("(min-width: 1180px)");
   const explorerFilterSheetRef = useRef<ExplorerFilterSheetHandle | null>(null);
+  /** Phone search row and its Filters slot: while the row is on screen, Filters sits in it. */
+  const [quickSearchRow, setQuickSearchRow] = useState<HTMLLabelElement | null>(null);
+  const [filterTriggerDock, setFilterTriggerDock] = useState<HTMLElement | null>(null);
   const appShellRef = useRef<HTMLDivElement>(null);
   const skipLinkRef = useRef<HTMLAnchorElement>(null);
   const topBarRegionRef = useRef<HTMLDivElement>(null);
@@ -747,6 +750,24 @@ export default function App() {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [siteMenuOpen, setSiteMenuOpen] = useState(false);
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
+  // The floating Filters button sat on top of the phone search field on the
+  // first screen (iPhone-sized viewports), so a tap meant for search opened
+  // Filters. While the search row is on screen the button moves into it; once
+  // the row scrolls away it floats again.
+  // A callback ref holds the row, so a remounted row never leaves the button
+  // in a detached slot.
+  useEffect(() => {
+    const row = quickSearchRow;
+    const slot = row?.querySelector<HTMLElement>("[data-filter-trigger-dock]") ?? null;
+    if (!row || !slot || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([entry]) => {
+      // Moving the button remounts it; do not pull it out from under keyboard focus.
+      if (document.activeElement?.classList.contains("tc-filter-sheet-trigger")) return;
+      setFilterTriggerDock(entry?.isIntersecting ? slot : null);
+    });
+    io.observe(row);
+    return () => { io.disconnect(); setFilterTriggerDock(null); };
+  }, [quickSearchRow]);
   /** Scout Board / Living Compass / livability rails stay collapsed until asked for. */
   const [scoutToolsOpen, setScoutToolsOpen] = useState(false);
   /**
@@ -1921,6 +1942,7 @@ export default function App() {
                 />
                 {!explorerDockLg ? (
                   <label
+                    ref={setQuickSearchRow}
                     htmlFor={QUICK_SEARCH_INPUT_ID}
                     data-quick-search
                     className="panel-thin flex min-h-[46px] items-center gap-2.5 px-3 focus-within:ring-2 focus-within:ring-[rgba(94,196,220,0.35)]"
@@ -1957,6 +1979,7 @@ export default function App() {
                         <X className="h-4 w-4" aria-hidden />
                       </button>
                     ) : null}
+                    <span data-filter-trigger-dock className="contents" />
                   </label>
                 ) : null}
                 {explorerDockLg ? null : searchSuggestions}
@@ -2310,6 +2333,7 @@ export default function App() {
             footer={<FootprintPanel />}
             detailOpen={Boolean(selectedId)}
             onOpenChange={setFilterSheetOpen}
+            triggerDock={filterTriggerDock}
           />
         ) : null}
       </div>

@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Phone search no longer covered
+
+- **Filters button on phones:** on the first screen of an iPhone-sized phone the floating Filters button sat on top of the search box, so a tap meant for search opened Filters and long searches ran under it. While the search box is on screen, Filters now sits at the end of it; once you scroll past, it floats at the bottom again as before.
+
 ### Ranking notes that match the records
 
 - **"Why this rank" figures:** the line under each ranked card (Best this month, Coolest summers, Best sleep, Wettest forests and seven other rankings) was built from figures rounded to whole °C and millimetres, then converted again, so about one figure in three was a degree or more off, and some rain totals were nonsense: Hermosillo's November showed "0 in" (10 mm, 0.4 in), Honolulu's February "81°F" (the records give 79.7°F). The notes now convert the unrounded figures once, so they agree with the card's own numbers and with Compare.

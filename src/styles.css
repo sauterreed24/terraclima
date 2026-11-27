@@ -699,6 +699,27 @@
       transform: translateX(-50%);
     }
   }
+  /* Docked in the phone search row (while the row is on screen) instead of
+     floating over it. Same button, same 44px target. */
+  [data-docked] > .tc-filter-sheet-trigger,
+  [data-docked] > .tc-filter-sheet-trigger:hover,
+  [data-docked] > .tc-filter-sheet-trigger:active {
+    position: static;
+    transform: none;
+    left: auto;
+    bottom: auto;
+    flex-shrink: 0;
+    min-height: 44px;
+    margin: 0 -0.45rem 0 0;
+    padding: 0.4rem 0.7rem 0.4rem 0.6rem;
+    box-shadow: 0 0 0 1px rgba(94, 196, 220, 0.14) inset;
+    backdrop-filter: none;
+    will-change: auto;
+  }
+  [data-docked] {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
   .tc-filter-sheet-trigger__badge {
     min-width: 1.15rem;
     height: 1.15rem;
