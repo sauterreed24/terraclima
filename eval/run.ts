@@ -5,7 +5,7 @@
  *   npm run eval -- --no-build   # reuse dist/
  *   npm run eval -- --full       # also run the Vitest suite (≈2.5 min)
  *   npm run eval -- --runs=7     # load-time samples (default 5)
- *   npm run eval -- --only=search,speed   # sections: search jobs data recover speed accuracy
+ *   npm run eval -- --only=search,speed   # sections: search notes jobs data recover speed accuracy
  *
  * Sections (scorecard rows in IMPROVE.md):
  *   S1 search    realistic queries → intended place on top (tuning + held-out sets)
@@ -13,6 +13,7 @@
  *   S3 data      saved places, home base and compare survive reloads, many saves, bad storage, two tabs
  *   S4 recover   bad links, offline reload, failed code chunk, storage blocked: app stays usable
  *   S5 speed     time to first ranked card (fast + throttled phone), first-load JS gzip
+ *   S7c notes    figures in the line under each ranked card (all rankings that quote climate) = records (Node, fast)
  *   S7 accuracy  figures on cards, profiles, "vs home" chips and exports = the climate records,
  *                converted here independently (seeded profile sample + a held-out seed set)
  *
@@ -28,6 +29,7 @@ import { PLACES } from "../src/data/places";
 import { runScenarioRanking } from "../src/lib/climate-processor";
 import RECORDS from "../src/data/generated/climate-v2/records.json" with { type: "json" };
 import { assessLiveFit } from "../src/lib/live-fit";
+import { localizeProse } from "../src/lib/units";
 import { SITE_HISTORY } from "../src/data/places.site-history";
 import { PLACES_FULL_BY_ID } from "../src/data/places.full";
 import { SITE_HISTORY_GROUP_BY_ID } from "../src/data/site-history/group-index";
@@ -865,6 +867,32 @@ async function sectionAccuracy(browser: Browser) {
     await c4.close();
     return { out, n };
   };
+  // (e) Ranking notes as the card shows them ("Why this rank"), for two rankings: the
+  //     S7c reference formulas, read from the page instead of Node.
+  {
+    const c6 = await newCtx(browser);
+    for (const [ranking, m] of [["best-this-month", 1], ["best-diurnal-sleep", 5]] as const) {
+      const pg = await open(c6, `/?r=${ranking}${ranking === "best-this-month" ? `&m=${m + 1}` : ""}`);
+      await firstCard(pg);
+      const cards = await pg.locator(".place-card").evaluateAll(els => els.slice(0, 4).map(e => (e as HTMLElement).innerText));
+      for (const text of cards) {
+        // Name and region together: two places are called "Durango".
+        const lower = text.toLowerCase();
+        const id = PLACES.find(p => lower.includes(p.name.toLowerCase()) && lower.includes(p.region.toLowerCase()))?.id;
+        const note = /why this rank\s*(.+)/i.exec(text)?.[1]?.replace(/[\u2212\u2013](?=\d)/g, "-");
+        if (!id || !note) { errs.push(`card note ${ranking}: card or note not found`); continue; }
+        for (const ref of NOTE_REFS[ranking]!) {
+          const want = ref.want(id, m); if (want == null) continue;
+          checked++; kinds[`card note ${ranking}`] = (kinds[`card note ${ranking}`] ?? 0) + 1;
+          const hit = ref.re.exec(note.trim());
+          const v = hit ? noteFigureOk(hit[1]!, ref.kind, want) : null;
+          if (!v?.ok) errs.push(`${id} card note ${ranking}: "${note}" vs records ${v?.want.toFixed(2) ?? "(figure not found)"}`);
+        }
+      }
+      await pg.close();
+    }
+    await c6.close();
+  }
   const cmpTune = await compareErrs(11);
   const cmpHeld = await compareErrs(9001);
   checked += cmpTune.n; errs.push(...cmpTune.out);
@@ -903,12 +931,97 @@ async function sectionAccuracy(browser: Browser) {
   for (const e of [...errs.slice(0, 12), ...held.out.slice(0, 5)]) console.log(`        ${e}`);
 }
 
+// ---------------------------------------------------------------- S7c ranking notes
+// The line under each ranked card ("Jun: 81°F day · 60°F night · 0.5 in") as the reader
+// sees it (the app's own prose localizer), checked against the records with formulas
+// written here. Every place, every month for Best this month. Places split by a fixed
+// seed: tuning half (errors printed) and HELD-OUT half (count only).
+const recFull = new Map<string, { tempHighC: number[]; tempLowC: number[]; precipMm: number[]; humidity: number[] | null; diurnalSummerC?: number | null }>(
+  (RECORDS as Array<{ placeId: string; periods: Record<string, never> }>).map(r => [r.placeId, r.periods["rolling-1996-2025"]!]));
+const mean = (xs: number[], idx: number[]) => idx.reduce((s, i) => s + xs[i]!, 0) / idx.length;
+type NoteRef = Array<{ re: RegExp; want: (id: string, month: number) => number | null; kind: "F" | "dF" | "in" | "pct" }>;
+const NOTE_REFS: Record<string, NoteRef> = {
+  "coolest-summers": [{ re: /Mean summer high (-?[\d.]+)°F/, kind: "F", want: id => mean(recFull.get(id)!.tempHighC, [5, 6, 7]) }],
+  "mildest-winters": [{ re: /Mean winter low (-?[\d.]+)°F/, kind: "F", want: id => mean(recFull.get(id)!.tempLowC, [11, 0, 1]) }],
+  "best-shoulder-seasons": [
+    { re: /highs near (-?[\d.]+)°F/, kind: "F", want: id => mean(recFull.get(id)!.tempHighC, [3, 4, 8, 9]) },
+    { re: /· ([\d.,]+) in of rain a month/, kind: "in", want: id => mean(recFull.get(id)!.precipMm, [3, 4, 8, 9]) },
+  ],
+  "driest-air": [{ re: /Mean humidity ~(\d+)%(?! \(atlas)/, kind: "pct", want: id => { const h = recFull.get(id)!.humidity; return h ? mean(h, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) : null; } }],
+  "best-four-season": [
+    { re: /Winter days average (-?[\d.]+)°F/, kind: "F", want: id => { const r = recFull.get(id)!; return (mean(r.tempHighC, [11, 0, 1]) + mean(r.tempLowC, [11, 0, 1])) / 2; } },
+    { re: /summer highs (-?[\d.]+)°F/, kind: "F", want: id => mean(recFull.get(id)!.tempHighC, [5, 6, 7]) },
+  ],
+  "best-diurnal-sleep": [
+    { re: /Summer nights near (-?[\d.]+)°F/, kind: "F", want: id => mean(recFull.get(id)!.tempLowC, [5, 6, 7]) },
+    { re: /swing (-?[\d.]+)°F/, kind: "dF", want: id => { const r = recFull.get(id)!; return r.diurnalSummerC ?? r.tempHighC[6]! - r.tempLowC[6]!; } },
+  ],
+  "mediterranean-like": [{ re: /· ([\d.,]+) in(?:ches)? in Jul–Aug/, kind: "in", want: id => mean(recFull.get(id)!.precipMm, [6, 7]) * 2 }],
+  "wet-forest-refuges": [
+    { re: /^([\d.,]+) in of rain a year/, kind: "in", want: id => recFull.get(id)!.precipMm.reduce((a, b) => a + b, 0) },
+    { re: /driest month ([\d.,]+) in/, kind: "in", want: id => Math.min(...recFull.get(id)!.precipMm) },
+  ],
+  "monsoon-drama": [
+    { re: /^([\d.,]+) in(?:ches)? in Jul–Sep/, kind: "in", want: id => mean(recFull.get(id)!.precipMm, [6, 7, 8]) * 3 },
+    { re: /vs ([\d.,]+) in(?:ches)? in Dec–Feb/, kind: "in", want: id => mean(recFull.get(id)!.precipMm, [11, 0, 1]) * 3 },
+  ],
+  "best-this-month": [
+    { re: /: (-?[\d.]+)°F day/, kind: "F", want: (id, m) => recFull.get(id)!.tempHighC[m]! },
+    { re: /day · (-?[\d.]+)°F night/, kind: "F", want: (id, m) => recFull.get(id)!.tempLowC[m]! },
+    { re: /night · ([\d.,]+) in$/, kind: "in", want: (id, m) => recFull.get(id)!.precipMm[m]! },
+  ],
+  "best-for-remote-work": [{ re: /^(-?[\d.]+)°F summers/, kind: "F", want: id => mean(recFull.get(id)!.tempHighC, [5, 6, 7]) }],
+};
+/** Shown figure vs reference: whole °F within 0.5; inches within half the last shown digit. */
+function noteFigureOk(shownRaw: string, kind: NoteRef[number]["kind"], refMetric: number): { ok: boolean; want: number } {
+  const shown = Number(shownRaw.replace(/,/g, ""));
+  const want = kind === "F" ? refMetric * 9 / 5 + 32 : kind === "dF" ? refMetric * 9 / 5 : kind === "in" ? refMetric / 25.4 : refMetric;
+  const decimals = (shownRaw.split(".")[1] ?? "").length;
+  const tol = 0.5 * 10 ** -decimals + 1e-9;
+  return { ok: Math.abs(shown - want) <= tol, want };
+}
+const countBy = (xs: string[]) => xs.reduce<Record<string, number>>((o, x) => { const k = x.split(" ")[0]!; o[k] = (o[k] ?? 0) + 1; return o; }, {});
+function sectionNotes() {
+  console.log("\nS7c ranking notes (figures under ranked cards = the records)");
+  const held = new Set(sample(PLACES.map(p => p.id), Math.floor(PLACES.length / 2), 4242));
+  const res = { tune: { bad: [] as string[], n: 0 }, held: { bad: [] as string[], n: 0 } };
+  const missing: string[] = [];
+  for (const [ranking, refs] of Object.entries(NOTE_REFS)) {
+    const months = ranking === "best-this-month" ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] : [5];
+    for (const m of months) {
+      const out = runScenarioRanking({
+        type: "scenario-rank", requestId: 0, scenario: "now", ranking,
+        filters: { countries: [], archetypes: [], fitPresets: [], search: "" },
+        nowEpochMs: new Date(2026, m, 1, 12).getTime(),
+      } as never);
+      for (const row of out.rows as Array<{ id: string; note?: string }>) {
+        const shownNote = localizeProse(row.note ?? "", "F", "imperial").replace(/[−–](?=\d)/g, "-");
+        const bucket = held.has(row.id) ? res.held : res.tune;
+        for (const ref of refs) {
+          const want = ref.want(row.id, m);
+          if (want == null) continue;
+          bucket.n++;
+          const hit = ref.re.exec(shownNote);
+          if (!hit) { if (missing.length < 5) missing.push(`${ranking} ${row.id}: "${shownNote}"`); bucket.bad.push(`${ranking} ${row.id}: figure not found in "${shownNote}"`); continue; }
+          const v = noteFigureOk(hit[1]!, ref.kind, want);
+          if (!v.ok) bucket.bad.push(`${ranking} m${m + 1} ${row.id}: "${shownNote}" — records give ${v.want.toFixed(2)} for ${ref.re.source.slice(0, 24)}`);
+        }
+      }
+    }
+  }
+  record("S7c", "figures in ranking notes that differ from the records (11 rankings, 12 months; tuning half of places)", `${res.tune.bad.length} of ${res.tune.n}`, "0", res.tune.bad.length === 0, { byRanking: countBy(res.tune.bad), errors: res.tune.bad.slice(0, 40) });
+  record("S7d", "same, HELD-OUT half of places", `${res.held.bad.length} of ${res.held.n}`, "0", res.held.bad.length === 0, countBy(res.held.bad));
+  for (const e of res.tune.bad.slice(0, 8)) console.log(`        ${e}`);
+}
+
 // ---------------------------------------------------------------- main
 async function main() {
   const started = Date.now();
   if (want("search")) sectionSearch();
+  if (want("notes") || want("accuracy")) sectionNotes();
   let browser: Browser | null = null;
-  try {
+  const nodeOnly = ONLY != null && ONLY.every(x => x === "search" || x === "notes");
+  if (!nodeOnly) try {
     await startServer();
     browser = await chromium.launch({ executablePath: chromePath() });
     if (want("jobs")) await sectionJobs(browser);
