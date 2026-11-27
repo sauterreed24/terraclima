@@ -165,6 +165,17 @@
           var motion = reducedMotion ? "reduced" : richEffects ? "full" : "minimal";
           root.setAttribute("data-motion", motion);
           root.classList.toggle("tc-low-power", !richEffects);
+
+          // Trials (see IMPROVE.md): ?try=name[,name] switches them on for this
+          // device and is remembered; ?try=off switches them all off. Kept apart
+          // from saved places and settings. The app drops the parameter from the URL.
+          try {
+            var TK = "tc.trials";
+            var tq = new URLSearchParams(window.location.search || "").get("try");
+            if (tq != null) window.localStorage.setItem(TK, /^[a-z0-9,-]+$/.test(tq) && tq !== "off" ? tq : "");
+            var on = window.localStorage.getItem(TK);
+            if (on) root.setAttribute("data-trials", on);
+          } catch (e) { /* private browsing */ }
         } catch (e) { /* never block paint */ }
       })();
     </script>
