@@ -230,6 +230,37 @@ async function sectionJobs(browser: Browser) {
     record("S2d", "set home base from a profile; cards show differences after reload", ok ? `${steps} steps` : `failed (stored=${stored}, deltas=${deltas})`, "done in <= 2", ok && steps <= 2);
     await ctx.close();
   }
+  // J4b phone first screen: the search box must not sit under another control (the
+  //     floating Filters button covered it on an iPhone-sized screen), and Filters must
+  //     still be one tap away. Five phone browser viewports (Safari / Chrome with their toolbars); points across the field's width.
+  {
+    const covered: string[] = []; const noFilters: string[] = [];
+    for (const [w, h] of [[375, 548], [375, 667], [390, 664], [412, 839], [360, 640]] as const) {
+      const ctx = await newCtx(browser, { viewport: { width: w, height: h }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
+      const page = await open(ctx); await firstCard(page); await page.waitForTimeout(600);
+      for (const typed of ["", "big island lodge"]) {
+        if (typed) { await page.locator("#tc-atlas-quick-search").fill(typed); await page.waitForTimeout(400); await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(300); }
+        const hits = await page.evaluate(() => {
+          const label = document.querySelector("[data-quick-search]") as HTMLElement | null;
+          if (!label) return ["(no search field)"];
+          const r = label.getBoundingClientRect(); const out: string[] = [];
+          if (r.bottom <= 0 || r.top >= innerHeight) return out;
+          const y = Math.min(r.top + r.height / 2, innerHeight - 2);
+          for (let f = 0.08; f < 0.95; f += 0.12) {
+            const el = document.elementFromPoint(r.left + r.width * f, y);
+            if (el && !label.contains(el)) out.push(`${Math.round(f * 100)}%: ${(el.closest("button") as HTMLElement | null)?.getAttribute("aria-label") ?? el.className.toString().slice(0, 40)}`);
+          }
+          return out;
+        });
+        if (hits.length) covered.push(`${w}x${h}${typed ? " typed" : ""}: ${hits[0]} (+${hits.length - 1})`);
+      }
+      const filtersVisible = await page.getByRole("button", { name: /^Open filters and ranking/ }).evaluateAll(els => els.some(e => { const r = e.getBoundingClientRect(); return getComputedStyle(e).visibility !== "hidden" && r.width > 0 && r.top < innerHeight && r.bottom > 0; }));
+      if (!filtersVisible) noFilters.push(`${w}x${h}`);
+      await ctx.close();
+    }
+    record("S2l", "phone first screen: search field covered by another control / Filters not on screen (5 phone browser sizes, empty + typed)", `${covered.length} / ${noFilters.length}`, "0 / 0", covered.length === 0 && noFilters.length === 0, { covered, noFilters });
+    for (const c of covered.slice(0, 4)) console.log(`        ${c}`);
+  }
   // J5 export saved places; figures match the atlas
   {
     const ctx = await newCtx(browser);
