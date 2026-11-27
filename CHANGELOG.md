@@ -11,7 +11,7 @@ All notable changes to Terraclima are tracked here.
 ### 2050 layer says what it is
 
 - **2050 figures checked:** every place's projected summer high, winter low and rainfall, and the changes shown in the 2050 summary, now match the published rules applied to the records (1,452 figures, both scenarios). No figures changed.
-- **Honest labels:** the 2050 summary said its changes were measured from the 1991–2020 normals; they are applied to the 1996–2025 averages the rest of the app uses. The climate-layer buttons described an "ensemble median", but no model ensemble is loaded yet: they now say it is a broad regional estimate (IPCC AR6).
+- **Honest labels:** the 2050 summary said its changes were measured from the 1991–2020 normals; they are applied to the 1996–2025 averages the rest of the app uses. The climate-layer buttons described an "ensemble median", but no model ensemble is loaded yet: they now say it is a broad regional estimate (IPCC AR6). The Learn page and the Evidence panel said the outlooks came from NASA model projections; they now say the same.
 
 ### Phone search no longer covered
 

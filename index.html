@@ -172,7 +172,8 @@
           try {
             var TK = "tc.trials";
             var tq = new URLSearchParams(window.location.search || "").get("try");
-            if (tq != null) window.localStorage.setItem(TK, /^[a-z0-9,-]+$/.test(tq) && tq !== "off" ? tq : "");
+            if (tq === "off") window.localStorage.setItem(TK, "");
+            else if (tq && /^[a-z0-9,-]+$/.test(tq)) window.localStorage.setItem(TK, tq);
             var on = window.localStorage.getItem(TK);
             if (on) root.setAttribute("data-trials", on);
           } catch (e) { /* private browsing */ }

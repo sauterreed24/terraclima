@@ -142,7 +142,7 @@ export function LearnMode({ onOpenPlace }: Props) {
             Snow figures from the grid are the water held in the snowpack, not inches of snowfall.
           </li>
           <li>
-            Mid-century outlooks, where shown, come from the NASA NEX-GDDP-CMIP6 set of climate-model projections. They are broad regional guides, not engineering figures.
+            Mid-century (2050) outlooks are a broad regional estimate by latitude band, taken from the IPCC AR6 regional summaries and applied to the 1996–2025 averages. They are guides, not local forecasts or engineering figures.
           </li>
           <li>
             Scores are editorial ratings or calculations from these averages. Each profile lists its own sources under <span className="text-ice font-medium">Scores and sources</span>.

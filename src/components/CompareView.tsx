@@ -325,7 +325,8 @@ export function CompareView({
 
   // Trial compare-figures-first (index.html ?try=): Summary and the figures before the
   // lens picker, add places and sources. Moved as JSX so reading and focus order follow.
-  const figuresFirst = typeof document !== "undefined" && (document.documentElement.dataset.trials ?? "").split(",").includes("compare-figures-first");
+  // With one place the workbench is how to add a second, so it stays first.
+  const figuresFirst = places.length > 1 && typeof document !== "undefined" && (document.documentElement.dataset.trials ?? "").split(",").includes("compare-figures-first");
   const workbenchSections = (
     <>
       <section id="compare-candidates" className="compare-workbench" aria-label="Add or swap places">
@@ -741,7 +742,7 @@ export function CompareView({
                   Get started
                 </a>
               ) : null}
-              {evidenceReadiness.length > 0 ? (
+              {!figuresFirst && evidenceReadiness.length > 0 ? (
                 <a className="compare-dialog__shortcut" href="#compare-evidence-readiness" aria-label="Jump to how well each place is sourced">
                   Sources
                 </a>
@@ -752,6 +753,11 @@ export function CompareView({
               <a className="compare-dialog__shortcut" href="#compare-candidates" aria-label="Jump to add or swap places">
                 Add places
               </a>
+              {figuresFirst && evidenceReadiness.length > 0 ? (
+                <a className="compare-dialog__shortcut" href="#compare-evidence-readiness" aria-label="Jump to how well each place is sourced">
+                  Sources
+                </a>
+              ) : null}
             </nav>
 
             {figuresFirst ? null : workbenchSections}
