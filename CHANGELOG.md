@@ -4,6 +4,11 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Ranking notes that match the records
+
+- **"Why this rank" figures:** the line under each ranked card (Best this month, Coolest summers, Best sleep, Wettest forests and seven other rankings) was built from figures rounded to whole °C and millimetres, then converted again, so about one figure in three was a degree or more off, and some rain totals were nonsense: Hermosillo's November showed "0 in" (10 mm, 0.4 in), Honolulu's February "81°F" (the records give 79.7°F). The notes now convert the unrounded figures once, so they agree with the card's own numbers and with Compare.
+- **Small rain figures in profile text:** a round figure under 2 inches keeps one decimal ("less than 30 mm" reads "less than 1.2 in", not "less than 1 in").
+
 ### A faster first screen
 
 - **First load is 14% smaller:** each place's sources, confidence notes, climate outlook and In depth chapters (about 105 KB compressed for all 226 places) now load with its profile, in small files of about 23 places, and in the background once the atlas is up. On a slow phone connection the first ranked card appears in about 5.5 seconds instead of 6.1, and the first profile opens slightly faster than before (1.7 s, was 1.85 s). Rankings, scores, exports and Compare are unchanged; a search for a word that appears only in an In depth chapter (such as "orographic") finds those places once the background download finishes, a few seconds after the page loads.

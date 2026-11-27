@@ -608,7 +608,9 @@ function roundTwoSignificant(v: number): number {
 /** Convert a metric figure for prose; small results keep one decimal unless `wholeOnly`. */
 function convertFigure(n: string, factor: number, wholeOnly = false): string {
   const v = parseLooseNum(n) * factor;
-  if (isRoundMetric(n)) return formatUSNumber(roundTwoSignificant(v));
+  // Below 2 the whole-number approximation is too coarse: "10 mm" read as
+  // "0 in" and "less than 30 mm" as "less than 1 in" (1.2 in).
+  if (isRoundMetric(n) && (wholeOnly || v >= 2)) return formatUSNumber(roundTwoSignificant(v));
   return formatUSNumber(v, !wholeOnly && v < 10 ? 1 : 0);
 }
 

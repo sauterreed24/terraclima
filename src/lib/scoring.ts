@@ -32,7 +32,15 @@ import {
 import { placeFeelScore } from "./place-feel";
 import { computeKoppen, parseAuthoredKoppen } from "./koppen";
 import { computeBioclim } from "./bioclim";
-import { toFixedClean } from "./units";
+import { fmtDelta, fmtPrecip, fmtTemp } from "./units";
+
+// Ranking notes are written in the reader's units (°F, inches) straight from
+// the unrounded figures. Rounding to whole °C / mm first and letting the prose
+// localizer convert the rounded text put ~1 in 3 figures off by a degree or
+// more, and read a round "10 mm" as "0 in".
+const noteF = (c: number) => fmtTemp(c, "F");
+const noteDeltaF = (c: number) => fmtDelta(c, "F", { digits: 0, signed: false });
+const noteIn = (mm: number) => fmtPrecip(mm, "imperial");
 
 // Re-exported so the public surface of scoring.ts stays unchanged for callers
 // (components, charts, tests) that previously imported these from here.
@@ -279,11 +287,11 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
       }
       case "coolest-summers": {
         const s = Math.max(0, 100 - Math.max(0, summerHigh - k.coolSummerIdealHighC) * k.coolSummerPerDegC);
-        return { place: p, score: s, note: `Mean summer high ${toFixedClean(summerHigh, 1)}°C`, tiebreak: -summerHigh };
+        return { place: p, score: s, note: `Mean summer high ${noteF(summerHigh)}`, tiebreak: -summerHigh };
       }
       case "mildest-winters": {
         const s = 100 * clamp01((janLow - k.mildWinterFloorC) / (k.mildWinterCeilingC - k.mildWinterFloorC));
-        return { place: p, score: s, note: `Mean winter low ${toFixedClean(janLow, 1)}°C`, tiebreak: janLow };
+        return { place: p, score: s, note: `Mean winter low ${noteF(janLow)}`, tiebreak: janLow };
       }
       case "sunniest-winters": {
         const winterSun = meanWinterSunshinePct(p);
@@ -299,7 +307,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const dry = Math.max(0, k.shoulderDryBudget - Math.max(0, shoulderRain - k.shoulderDryFreeMm) * k.shoulderDryPerMm);
         const sunBonus = sunshineComfortBonus(p);
         const s = Math.max(0, Math.min(100, base * k.shoulderTempWeight + dry + sunBonus));
-        return { place: p, score: s, note: `Spring/fall highs near ${toFixedClean(shoulder, 1)}°C · ${shoulderRain.toFixed(0)} mm of rain a month`, tiebreak: -Math.abs(shoulder - k.shoulderIdealHighC) };
+        return { place: p, score: s, note: `Spring/fall highs near ${noteF(shoulder)} · ${noteIn(shoulderRain)} of rain a month`, tiebreak: -Math.abs(shoulder - k.shoulderIdealHighC) };
       }
       case "driest-air": {
         const hum = p.climate.humidity
@@ -342,7 +350,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         // winter is not four seasons.
         const blend = 0.35 * winter + 0.3 * summer + 0.35 * shoulders;
         const s = blend * (0.5 + 0.5 * (Math.min(winter, summer, shoulders) / 100));
-        return { place: p, score: s, note: `Winter days average ${toFixedClean(winterMean)}°C · summer highs ${toFixedClean(summerHigh)}°C` };
+        return { place: p, score: s, note: `Winter days average ${noteF(winterMean)} · summer highs ${noteF(summerHigh)}` };
       }
       case "best-diurnal-sleep": {
         // Sleep needs a cool bedroom, and a dry one: summer nights in the
@@ -357,7 +365,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
           : null;
         const muggy = nightDew == null ? 0 : Math.max(0, nightDew - k.sleepMuggyDewPointC) * k.sleepMuggyPerDegC;
         const s = Math.max(0, Math.min(100, 0.6 * night + 0.4 * swing - muggy));
-        return { place: p, score: s, note: `Summer nights near ${toFixedClean(summerNight)}°C; summer diurnal swing ${diurnal.toFixed(0)}°C`, tiebreak: diurnal };
+        return { place: p, score: s, note: `Summer nights near ${noteF(summerNight)}; summer diurnal swing ${noteDeltaF(diurnal)}`, tiebreak: diurnal };
       }
       case "strongest-geospatial-signal": {
         const g = buildGeospatialAnalysis(p);
@@ -386,7 +394,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         if (!bio) return { place: p, score: 0, note: "Bioclim unavailable" };
         const pet = bio.thornthwaitePet.value;
         const s = Math.max(0, 100 - pet / 20);
-        return { place: p, score: s, note: `Evaporative demand ${Math.round(pet)} mm/yr (Thornthwaite estimate)` };
+        return { place: p, score: s, note: `Evaporative demand ${noteIn(pet)}/yr (Thornthwaite estimate)` };
       }
       case "mediterranean-like": {
         // Csb (warm-summer Mediterranean — coastal CA, Pacific NW pockets) is the
@@ -417,7 +425,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         return {
           place: p,
           score: bonus + wint + dry,
-          note: `${Math.round(winterShare * 100)}% of the year's rain falls Oct–Mar · ${julAug.toFixed(0)} mm in Jul–Aug`,
+          note: `${Math.round(winterShare * 100)}% of the year's rain falls Oct–Mar · ${noteIn(julAug)} in Jul–Aug`,
           tiebreak: -julAug,
         };
       }
@@ -427,7 +435,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const driest = Math.min(...p.climate.precipMm);
         const s = 0.7 * Math.min(100, annualPrecip / k.wetForestPrecipDivisor)
           + 0.3 * Math.min(100, (driest / k.wetForestDriestMonthFullMm) * 100);
-        return { place: p, score: s, note: `${annualPrecip.toFixed(0)} mm of rain a year · driest month ${driest.toFixed(0)} mm`, tiebreak: annualPrecip };
+        return { place: p, score: s, note: `${noteIn(annualPrecip)} of rain a year · driest month ${noteIn(driest)}`, tiebreak: annualPrecip };
       }
       case "monsoon-drama": {
         const monsoon = p.climate.precipMm[6] + p.climate.precipMm[7] + p.climate.precipMm[8];
@@ -439,7 +447,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const share = annualPrecip > 0 ? monsoon / annualPrecip : 0;
         const s = 70 * clamp01((share - k.monsoonEvenShare) / (k.monsoonFullShare - k.monsoonEvenShare))
           + 30 * clamp01(monsoon / k.monsoonFullMm);
-        return { place: p, score: s, note: `${monsoon.toFixed(0)} mm in Jul–Sep vs ${winter.toFixed(0)} mm in Dec–Feb`, tiebreak: ratio };
+        return { place: p, score: s, note: `${noteIn(monsoon)} in Jul–Sep vs ${noteIn(winter)} in Dec–Feb`, tiebreak: ratio };
       }
       case "best-this-month": {
         const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"] as const;
@@ -457,7 +465,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const precipScore = Math.max(0, 22 - Math.max(0, monthPrecip - 55) * 0.16);
         const snowScore = Math.max(0, 15 - Math.min(15, monthSnow * 0.5));
         const s = Math.min(100, highScore + nightScore + precipScore + snowScore);
-        return { place: p, score: s, note: `${MONTH_NAMES[mi]}: ${toFixedClean(monthHigh)}°C day · ${toFixedClean(monthLow)}°C night · ${monthPrecip.toFixed(0)} mm` };
+        return { place: p, score: s, note: `${MONTH_NAMES[mi]}: ${noteF(monthHigh)} day · ${noteF(monthLow)} night · ${noteIn(monthPrecip)}` };
       }
       case "best-for-remote-work": {
         // Cool productive summers + mild winters + low fire + low smoke +
@@ -476,7 +484,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const access = p.liveSignals?.accessFriction;
         const accessPenalty = access != null ? Math.max(0, (access - 40)) * 0.32 : 0;
         const s = Math.max(0, Math.min(100, coolSummer + mildWinter + fireScore + smokeScore + sunBonus + livedBonus + feelBonus - accessPenalty));
-        return { place: p, score: s, note: `${summerHigh.toFixed(0)}°C summers · fire ${p.risks.wildfire.level} · smoke ${p.risks.smoke.level}` };
+        return { place: p, score: s, note: `${noteF(summerHigh)} summers · fire ${p.risks.wildfire.level} · smoke ${p.risks.smoke.level}` };
       }
       case "best-retirement": {
         // Mild all-year, low aggregate risk, good growability, and a livable

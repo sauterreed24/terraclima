@@ -372,3 +372,29 @@ describe("rankPlaces — bioclim ranking presets", () => {
     expect(ids).toEqual(expect.arrayContaining(["mount-washington-nh", "iqaluit-nu", "churchill-mb", "leadville-co"]));
   });
 });
+
+describe("ranking notes quote the unrounded figures in the reader's units", () => {
+  // Independent conversion: °F = °C × 9/5 + 32, inches = mm / 25.4.
+  const toF = (c: number) => c * 9 / 5 + 32;
+  it("Best this month: every place, every month, high / low / rain match the climate data", () => {
+    let checked = 0;
+    for (let m = 0; m < 12; m++) {
+      for (const r of rankPlaces("best-this-month", PLACES, new Date(2026, m, 1, 12))) {
+        const hit = /: (-?\d+)°F day · (-?\d+)°F night · (\d+(?:\.\d)?) in$/.exec(r.note ?? "");
+        expect(hit, `${r.place.id} ${r.note}`).not.toBeNull();
+        const c = r.place.climate;
+        expect(Math.abs(Number(hit![1]) - toF(c.tempHighC[m]!))).toBeLessThanOrEqual(0.5 + 1e-9);
+        expect(Math.abs(Number(hit![2]) - toF(c.tempLowC[m]!))).toBeLessThanOrEqual(0.5 + 1e-9);
+        const inches = c.precipMm[m]! / 25.4;
+        expect(Math.abs(Number(hit![3]) - inches)).toBeLessThanOrEqual((hit![3]!.includes(".") ? 0.05 : 0.5) + 1e-9);
+        checked++;
+      }
+    }
+    expect(checked).toBe(PLACES.length * 12);
+  });
+  it("climate-quoting notes carry no Celsius or millimetre figures to be re-rounded later", () => {
+    for (const profile of ["coolest-summers", "mildest-winters", "best-shoulder-seasons", "best-four-season", "best-diurnal-sleep", "mediterranean-like", "wet-forest-refuges", "monsoon-drama", "best-for-remote-work", "lowest-evaporative-demand"] as const) {
+      for (const r of rankPlaces(profile, PLACES)) expect(r.note ?? "", `${profile} ${r.place.id}`).not.toMatch(/°C|\d\s*mm\b/);
+    }
+  });
+});

@@ -447,3 +447,14 @@ describe("localizeProse — glossary difference phrasings", () => {
     expect(f(text)).toContain(expected);
   });
 });
+
+describe("localizeProse — small round rain figures keep a decimal", () => {
+  it.each([
+    ["about 10 mm of rain", "about 0.4 in of rain"],
+    ["less than 30 mm", "less than 1.2 in"],
+    ["averages 50 mm", "averages 2 in"],
+    ["about 200 mm", "about 8 in"],
+  ])("%j", (text, expected) => {
+    expect(localizeProse(text, "F", "imperial")).toBe(expected);
+  });
+});
