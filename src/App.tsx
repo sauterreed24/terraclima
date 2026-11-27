@@ -482,6 +482,9 @@ export default function App() {
   // gating the JSX avoids mounting a 200+ LOC subtree that is `display: none`.
   const scoutBoardLg = useMediaQuery("(min-width: 1180px)");
   const explorerFilterSheetRef = useRef<ExplorerFilterSheetHandle | null>(null);
+  /** Phone search row and its Filters slot: while the row is on screen, Filters sits in it. */
+  const [quickSearchRow, setQuickSearchRow] = useState<HTMLLabelElement | null>(null);
+  const [filterTriggerDock, setFilterTriggerDock] = useState<HTMLElement | null>(null);
   const appShellRef = useRef<HTMLDivElement>(null);
   const skipLinkRef = useRef<HTMLAnchorElement>(null);
   const topBarRegionRef = useRef<HTMLDivElement>(null);
@@ -747,6 +750,37 @@ export default function App() {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [siteMenuOpen, setSiteMenuOpen] = useState(false);
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
+  // The floating Filters button sat on top of the phone search field on the
+  // first screen (iPhone-sized viewports), so a tap meant for search opened
+  // Filters. While the search row is on screen the button moves into it; once
+  // the row scrolls away it floats again.
+  // A callback ref holds the row, so a remounted row never leaves the button
+  // in a detached slot. The button does not move while the sheet is open (its
+  // isolation is tied to the mounted button); the latest position applies on close.
+  const quickSearchInViewRef = useRef(false);
+  const filterSheetOpenRef = useRef(false);
+  const quickSearchSlot = quickSearchRow?.querySelector<HTMLElement>("[data-filter-trigger-dock]") ?? null;
+  const applyFilterTriggerDock = useCallback(() => {
+    if (filterSheetOpenRef.current) return;
+    // Moving remounts the button: keep keyboard / returned focus on it.
+    const sel = ".tc-filter-sheet-trigger";
+    const focused = document.activeElement?.matches(sel);
+    setFilterTriggerDock(quickSearchInViewRef.current ? quickSearchSlot : null);
+    if (focused) requestAnimationFrame(() => document.querySelector<HTMLElement>(sel)?.focus({ preventScroll: true }));
+  }, [quickSearchSlot]);
+  useEffect(() => {
+    if (!quickSearchRow || !quickSearchSlot || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([entry]) => {
+      quickSearchInViewRef.current = Boolean(entry?.isIntersecting);
+      applyFilterTriggerDock();
+    });
+    io.observe(quickSearchRow);
+    return () => { io.disconnect(); quickSearchInViewRef.current = false; setFilterTriggerDock(null); };
+  }, [quickSearchRow, quickSearchSlot, applyFilterTriggerDock]);
+  useEffect(() => {
+    filterSheetOpenRef.current = filterSheetOpen;
+    if (!filterSheetOpen) applyFilterTriggerDock();
+  }, [filterSheetOpen, applyFilterTriggerDock]);
   /** Scout Board / Living Compass / livability rails stay collapsed until asked for. */
   const [scoutToolsOpen, setScoutToolsOpen] = useState(false);
   /**
@@ -1921,9 +1955,10 @@ export default function App() {
                 />
                 {!explorerDockLg ? (
                   <label
+                    ref={setQuickSearchRow}
                     htmlFor={QUICK_SEARCH_INPUT_ID}
                     data-quick-search
-                    className="panel-thin flex min-h-[46px] items-center gap-2.5 px-3 focus-within:ring-2 focus-within:ring-[rgba(94,196,220,0.35)]"
+                    className="panel-thin flex min-h-[46px] items-center gap-2.5 px-3 has-[input:focus]:ring-2 has-[input:focus]:ring-[rgba(94,196,220,0.35)]"
                   >
                     <Search className="h-4 w-4 shrink-0 text-stone" aria-hidden />
                     <input
@@ -1957,6 +1992,7 @@ export default function App() {
                         <X className="h-4 w-4" aria-hidden />
                       </button>
                     ) : null}
+                    <span data-filter-trigger-dock className="contents" />
                   </label>
                 ) : null}
                 {explorerDockLg ? null : searchSuggestions}
@@ -2310,6 +2346,7 @@ export default function App() {
             footer={<FootprintPanel />}
             detailOpen={Boolean(selectedId)}
             onOpenChange={setFilterSheetOpen}
+            triggerDock={filterTriggerDock}
           />
         ) : null}
       </div>
@@ -3781,7 +3818,7 @@ const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
             {rankingLabel} re-ranked on projected 2041–2060 climate ({meta.short}).
           </p>
           <p className="scenario-remap__copy">
-            {leaderLine} {churnLine} The score chip compares each place's ranking score under the projection with today's. The summer, winter and precipitation chips show the projected change from 1991–2020 normals. Projections are illustrative, not forecasts.
+            {leaderLine} {churnLine} The score chip compares each place's ranking score under the projection with today's. The summer, winter and precipitation chips show the projected change from the 1996–2025 averages. Projections are illustrative, not forecasts.
           </p>
         </div>
         <div className="scenario-remap__facts" aria-label={`${meta.short} ranking summary`}>

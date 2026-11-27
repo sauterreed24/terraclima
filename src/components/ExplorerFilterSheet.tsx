@@ -11,6 +11,7 @@ import {
   type ReactNode,
   type SetStateAction,
 } from "react";
+import { createPortal } from "react-dom";
 import { SlidersHorizontal, X } from "lucide-react";
 import { FilterBar, type LensScope } from "./FilterBar";
 import { ClimateScenarioControl } from "./chrome/ClimateScenarioControl";
@@ -53,6 +54,11 @@ type Props = {
   /** Live count of places matching the current filters, for the "Show n places" button. */
   resultCount?: number;
   resultsPending?: boolean;
+  /**
+   * When set, the Filters button renders here (the phone search row) instead of
+   * floating at the bottom of the screen, where it covered the search field.
+   */
+  triggerDock?: HTMLElement | null;
   /** Enter in the sheet's search box: open the first ranked result. */
   onSearchSubmit?: (input: HTMLInputElement) => void;
 };
@@ -98,7 +104,7 @@ function summarizeActiveExplorerLens(
 
 export const ExplorerFilterSheet = memo(
   forwardRef<ExplorerFilterSheetHandle, Props>(function ExplorerFilterSheet(
-    { searchInputId, filters, setFilters, ranking, setRanking, onClearAll, footer, detailOpen, scenario, onScenarioChange, lensScope, onOpenChange, projecting, rankingMonth, onRankingMonthChange, onSearchSubmit, rankingNotice, searchPrompt, onDismissSearchPrompt, resultCount, resultsPending },
+    { searchInputId, filters, setFilters, ranking, setRanking, onClearAll, footer, detailOpen, scenario, onScenarioChange, lensScope, onOpenChange, projecting, rankingMonth, onRankingMonthChange, onSearchSubmit, rankingNotice, searchPrompt, onDismissSearchPrompt, resultCount, resultsPending, triggerDock },
     ref,
   ) {
     const dialogRef = useRef<HTMLDialogElement>(null);
@@ -236,9 +242,8 @@ export const ExplorerFilterSheet = memo(
         ? `Open filters and ranking (${signalCount} active ${signalCount === 1 ? "filter" : "filters"})`
         : "Open filters and ranking";
 
-    return (
-      <>
-        <span ref={triggerShellRef} data-filter-sheet-trigger-shell>
+    const trigger = (
+        <span ref={triggerShellRef} data-filter-sheet-trigger-shell data-docked={triggerDock ? "" : undefined}>
           <button
             ref={triggerButtonRef}
             type="button"
@@ -265,6 +270,11 @@ export const ExplorerFilterSheet = memo(
             ) : null}
           </button>
         </span>
+    );
+
+    return (
+      <>
+        {triggerDock ? createPortal(trigger, triggerDock) : trigger}
 
         <dialog
           ref={dialogRef}

@@ -608,15 +608,18 @@ function roundTwoSignificant(v: number): number {
 /** Convert a metric figure for prose; small results keep one decimal unless `wholeOnly`. */
 function convertFigure(n: string, factor: number, wholeOnly = false): string {
   const v = parseLooseNum(n) * factor;
-  if (isRoundMetric(n)) return formatUSNumber(roundTwoSignificant(v));
+  // Below 2 the whole-number approximation is too coarse: "10 mm" read as
+  // "0 in" and "less than 30 mm" as "less than 1 in" (1.2 in).
+  if (isRoundMetric(n) && (wholeOnly || v >= 2)) return formatUSNumber(roundTwoSignificant(v));
   return formatUSNumber(v, !wholeOnly && v < 10 ? 1 : 0);
 }
 
 /** Both ends of a range share one treatment: round only when both are round. */
 function convertPair(n1: string, n2: string, factor: number, wholeOnly = false): [string, string] {
-  if (isRoundMetric(n1) && isRoundMetric(n2)) return [convertFigure(n1, factor, wholeOnly), convertFigure(n2, factor, wholeOnly)];
   const v1 = parseLooseNum(n1) * factor;
   const v2 = parseLooseNum(n2) * factor;
+  // Both ends round, and neither small enough to keep a decimal (see convertFigure).
+  if (isRoundMetric(n1) && isRoundMetric(n2) && (wholeOnly || Math.min(v1, v2) >= 2)) return [convertFigure(n1, factor, wholeOnly), convertFigure(n2, factor, wholeOnly)];
   const digits = !wholeOnly && Math.max(v1, v2) < 10 ? 1 : 0;
   return [formatUSNumber(v1, digits), formatUSNumber(v2, digits)];
 }

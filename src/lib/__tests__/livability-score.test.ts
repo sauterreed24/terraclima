@@ -466,3 +466,21 @@ describe("livabilityPercentiles", () => {
     expect(q.p75).toBeLessThanOrEqual(q.p90);
   });
 });
+
+describe("comfort narrative: the day-to-night swing reads right in °F", () => {
+  it("every place that mentions the swing quotes it within half a degree", async () => {
+    const { PLACES } = await import("../../data/places");
+    const { describeHumanComfort } = await import("../livability-score");
+    const { localizeProse } = await import("../units");
+    let checked = 0;
+    for (const p of PLACES) {
+      const line = describeHumanComfort(p).strengths.find(s => s.includes("day-to-night swing"));
+      if (!line) continue;
+      const shown = Number(/swing of (\d+)°F/.exec(localizeProse(line, "F", "imperial"))?.[1]);
+      const d = p.climate.diurnalSummerC ?? (p.climate.tempHighC[6]! - p.climate.tempLowC[6]!);
+      expect(Math.abs(shown - d * 1.8), `${p.id}: ${line}`).toBeLessThanOrEqual(0.5 + 1e-9);
+      checked++;
+    }
+    expect(checked).toBeGreaterThan(0);
+  });
+});

@@ -4,6 +4,31 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Ranking notes that match the records (continued)
+
+- **Day-to-night swing in the comfort notes:** the "Nights cool off well" line rounded the swing to whole °C before converting, so 103 of 226 places showed it a degree or more off in °F. It now converts the unrounded figure (same for the thermal span in the geospatial notes).
+
+### 2050 layer says what it is
+
+- **2050 figures checked:** every place's projected summer high, winter low and rainfall, and the changes shown in the 2050 summary, now match the published rules applied to the records (1,452 figures, both scenarios). No figures changed.
+- **Honest labels:** the 2050 summary said its changes were measured from the 1991–2020 normals; they are applied to the 1996–2025 averages the rest of the app uses. The climate-layer buttons described an "ensemble median", but no model ensemble is loaded yet: they now say it is a broad regional estimate (IPCC AR6). The Learn page and the Evidence panel said the outlooks came from NASA model projections; they now say the same.
+
+### Phone search no longer covered
+
+- **Compare on phones:** the Summary / Sources / Differences / Add places buttons were see-through, so the page behind the comparison showed through their labels. They are now solid, in both themes.
+
+- **Filters button on phones:** on the first screen of an iPhone-sized phone the floating Filters button sat on top of the search box, so a tap meant for search opened Filters and long searches ran under it. While the search box is on screen, Filters now sits at the end of it; once you scroll past, it floats at the bottom again as before.
+
+### Search finds named landscapes
+
+- **Words typed together count as a phrase:** "smoky mountains" now finds Gatlinburg (it found nothing, because "mountains" alone appears in too many places to count), "big sur" finds Monterey and "big bend" finds Fort Davis. A name plus a state still comes first ("flagstaff az" → Flagstaff).
+- **"Big Island"** finds Hilo.
+
+### Ranking notes that match the records
+
+- **"Why this rank" figures:** the line under each ranked card (Best this month, Coolest summers, Best sleep, Wettest forests and seven other rankings) was built from figures rounded to whole °C and millimetres, then converted again, so about one figure in three was a degree or more off, and some rain totals were nonsense: Hermosillo's November showed "0 in" (10 mm, 0.4 in), Honolulu's February "81°F" (the records give 79.7°F). The notes now convert the unrounded figures once, so they agree with the card's own numbers and with Compare.
+- **Small rain figures in profile text:** a round figure under 2 inches keeps one decimal ("less than 30 mm" reads "less than 1.2 in", not "less than 1 in").
+
 ### A faster first screen
 
 - **First load is 14% smaller:** each place's sources, confidence notes, climate outlook and In depth chapters (about 105 KB compressed for all 226 places) now load with its profile, in small files of about 23 places, and in the background once the atlas is up. On a slow phone connection the first ranked card appears in about 5.5 seconds instead of 6.1, and the first profile opens slightly faster than before (1.7 s, was 1.85 s). Rankings, scores, exports and Compare are unchanged; a search for a word that appears only in an In depth chapter (such as "orographic") finds those places once the background download finishes, a few seconds after the page loads.

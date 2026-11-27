@@ -5,7 +5,7 @@
  *   npm run eval -- --no-build   # reuse dist/
  *   npm run eval -- --full       # also run the Vitest suite (≈2.5 min)
  *   npm run eval -- --runs=7     # load-time samples (default 5)
- *   npm run eval -- --only=search,speed   # sections: search jobs data recover speed accuracy
+ *   npm run eval -- --only=search,speed   # sections: search notes jobs data recover speed accuracy
  *
  * Sections (scorecard rows in IMPROVE.md):
  *   S1 search    realistic queries → intended place on top (tuning + held-out sets)
@@ -13,6 +13,7 @@
  *   S3 data      saved places, home base and compare survive reloads, many saves, bad storage, two tabs
  *   S4 recover   bad links, offline reload, failed code chunk, storage blocked: app stays usable
  *   S5 speed     time to first ranked card (fast + throttled phone), first-load JS gzip
+ *   S7c notes    figures in the line under each ranked card (all rankings that quote climate) = records (Node, fast)
  *   S7 accuracy  figures on cards, profiles, "vs home" chips and exports = the climate records,
  *                converted here independently (seeded profile sample + a held-out seed set)
  *
@@ -28,6 +29,8 @@ import { PLACES } from "../src/data/places";
 import { runScenarioRanking } from "../src/lib/climate-processor";
 import RECORDS from "../src/data/generated/climate-v2/records.json" with { type: "json" };
 import { assessLiveFit } from "../src/lib/live-fit";
+import { localizeProse } from "../src/lib/units";
+import { projectPlace } from "../src/lib/climate-projection";
 import { SITE_HISTORY } from "../src/data/places.site-history";
 import { PLACES_FULL_BY_ID } from "../src/data/places.full";
 import { SITE_HISTORY_GROUP_BY_ID } from "../src/data/site-history/group-index";
@@ -183,8 +186,11 @@ async function sectionJobs(browser: Browser) {
     await page.locator("summary", { hasText: /^Must-haves$/ }).first().click(); steps++;
     await page.getByLabel("Max summer high").first().selectOption({ index: 2 }); steps++; // <= 79°F (26°C)
     await page.waitForURL(/sh=26/, { timeout: 5000 }).catch(() => {});
-    await page.waitForTimeout(400);
-    const shown = await inListCount(page);
+    // Wait for the list to settle (a fixed 400 ms wait failed once under load: 226 shown).
+    let shown = await inListCount(page);
+    for (let i = 0, prev = -1; i < 40 && (shown === PLACES.length || shown !== prev); i++) {
+      prev = shown; await page.waitForTimeout(200); shown = await inListCount(page);
+    }
     const reference = PLACES.filter(p => {
       const h = p.climate.tempHighC; return (h[5] + h[6] + h[7]) / 3 <= 26;
     }).length;
@@ -227,6 +233,77 @@ async function sectionJobs(browser: Browser) {
     const ok = !!stored && stored.includes("flagstaff-az") && deltas;
     record("S2d", "set home base from a profile; cards show differences after reload", ok ? `${steps} steps` : `failed (stored=${stored}, deltas=${deltas})`, "done in <= 2", ok && steps <= 2);
     await ctx.close();
+  }
+  // J4b phone first screen: the search box must not sit under another control (the
+  //     floating Filters button covered it on an iPhone-sized screen), and Filters must
+  //     still be one tap away. Five phone browser viewports (Safari / Chrome with their toolbars); points across the field's width.
+  {
+    const covered: string[] = []; const noFilters: string[] = [];
+    for (const [w, h] of [[375, 548], [375, 667], [390, 664], [412, 839], [360, 640]] as const) {
+      const ctx = await newCtx(browser, { viewport: { width: w, height: h }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
+      const page = await open(ctx); await firstCard(page); await page.waitForTimeout(600);
+      for (const typed of ["", "big island lodge"]) {
+        if (typed) { await page.locator("#tc-atlas-quick-search").fill(typed); await page.waitForTimeout(400); await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(300); }
+        const hits = await page.evaluate(() => {
+          const label = document.querySelector("[data-quick-search]") as HTMLElement | null;
+          if (!label) return ["(no search field)"];
+          const r = label.getBoundingClientRect(); const out: string[] = [];
+          if (r.bottom <= 0 || r.top >= innerHeight) return out;
+          const y = Math.min(r.top + r.height / 2, innerHeight - 2);
+          for (let f = 0.08; f < 0.95; f += 0.12) {
+            const el = document.elementFromPoint(r.left + r.width * f, y);
+            if (el && !label.contains(el)) out.push(`${Math.round(f * 100)}%: ${(el.closest("button") as HTMLElement | null)?.getAttribute("aria-label") ?? el.className.toString().slice(0, 40)}`);
+          }
+          return out;
+        });
+        if (hits.length) covered.push(`${w}x${h}${typed ? " typed" : ""}: ${hits[0]} (+${hits.length - 1})`);
+      }
+      const filtersVisible = await page.getByRole("button", { name: /^Open filters and ranking/ }).evaluateAll(els => els.some(e => { const r = e.getBoundingClientRect(); return getComputedStyle(e).visibility !== "hidden" && r.width > 0 && r.top < innerHeight && r.bottom > 0; }));
+      if (!filtersVisible) noFilters.push(`${w}x${h}`);
+      await ctx.close();
+    }
+    // From review: after the sheet closes, focus sits on the button, and the button must
+    // still follow the row (it stayed docked off screen, or floated over the field).
+    {
+      const ctx = await newCtx(browser, { viewport: { width: 390, height: 664 }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
+      const page = await open(ctx); await firstCard(page); await page.waitForTimeout(600);
+      const btn = page.getByRole("button", { name: /^Open filters and ranking/ }).first();
+      const where = () => page.evaluate(() => {
+        const b = document.querySelector(".tc-filter-sheet-trigger") as HTMLElement | null;
+        const r = b?.getBoundingClientRect();
+        return { docked: !!b?.closest("[data-quick-search]"), onScreen: !!r && r.width > 0 && r.top < innerHeight && r.bottom > 0, focused: document.activeElement === b };
+      });
+      for (const scrollTo of [1600, 0]) {
+        await btn.click(); await page.waitForTimeout(400);
+        await page.locator("#tc-explorer-filter-sheet").evaluate(d => (d as HTMLDialogElement).close()); await page.waitForTimeout(300);
+        await page.evaluate(y => window.scrollTo(0, y), scrollTo); await page.waitForTimeout(700);
+        const w = await where();
+        const want = scrollTo === 0;
+        if (w.docked !== want || !w.onScreen) covered.push(`after closing Filters, scrolled to ${scrollTo}: docked=${w.docked} onScreen=${w.onScreen}`);
+      }
+      await ctx.close();
+    }
+    record("S2l", "phone first screen: search field covered by another control / Filters not on screen (5 phone browser sizes, empty + typed; scroll after closing Filters)", `${covered.length} / ${noFilters.length}`, "0 / 0", covered.length === 0 && noFilters.length === 0, { covered, noFilters });
+    for (const c of covered.slice(0, 4)) console.log(`        ${c}`);
+  }
+  // J4c Compare on a phone: how far down the summary and the first figure sit (px from
+  //     the top of the screen), as it is and with the compare-figures-first trial.
+  {
+    const out: Record<string, { summary: number | null; firstFigure: number | null }> = {};
+    for (const [tag, q] of [["off", ""], ["trial", "try=compare-figures-first&"]] as const) {
+      const ctx = await newCtx(browser, { viewport: { width: 390, height: 664 }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
+      const page = await open(ctx, `/?${q}cmp=sequim-wa,bishop-ca`);
+      await page.locator("#compare-diff-board").waitFor({ timeout: 15000 }).catch(() => {}); await page.waitForTimeout(800);
+      out[tag] = await page.evaluate(() => {
+        // No named helper here: the runner wraps named functions in a helper the page lacks.
+        const s = document.getElementById("compare-decision-read");
+        const f = [...document.querySelectorAll("td, th")].find(e => /Summer high/i.test(e.textContent ?? ""));
+        return { summary: s ? Math.round(s.getBoundingClientRect().top) : null, firstFigure: f ? Math.round(f.getBoundingClientRect().top) : null };
+      });
+      await ctx.close();
+    }
+    const v = `summary ${out.off!.summary} px, first figure ${out.off!.firstFigure} px (trial: ${out.trial!.summary} / ${out.trial!.firstFigure})`;
+    record("S2m", "Compare on a phone (390×664): distance to the summary / first figure", v, "summary on first screen (< 664)", (out.off!.summary ?? 1e9) < 664, out);
   }
   // J5 export saved places; figures match the atlas
   {
@@ -865,6 +942,32 @@ async function sectionAccuracy(browser: Browser) {
     await c4.close();
     return { out, n };
   };
+  // (e) Ranking notes as the card shows them ("Why this rank"), for two rankings: the
+  //     S7c reference formulas, read from the page instead of Node.
+  {
+    const c6 = await newCtx(browser);
+    for (const [ranking, m] of [["best-this-month", 1], ["best-diurnal-sleep", 5]] as const) {
+      const pg = await open(c6, `/?r=${ranking}${ranking === "best-this-month" ? `&m=${m + 1}` : ""}`);
+      await firstCard(pg);
+      const cards = await pg.locator(".place-card").evaluateAll(els => els.slice(0, 4).map(e => (e as HTMLElement).innerText));
+      for (const text of cards) {
+        // Name and region together: two places are called "Durango".
+        const lower = text.toLowerCase();
+        const id = PLACES.find(p => lower.includes(p.name.toLowerCase()) && lower.includes(p.region.toLowerCase()))?.id;
+        const note = /why this rank\s*(.+)/i.exec(text)?.[1]?.replace(/[\u2212\u2013](?=\d)/g, "-");
+        if (!id || !note) { errs.push(`card note ${ranking}: card or note not found`); continue; }
+        for (const ref of NOTE_REFS[ranking]!) {
+          const want = ref.want(id, m); if (want == null) continue;
+          checked++; kinds[`card note ${ranking}`] = (kinds[`card note ${ranking}`] ?? 0) + 1;
+          const hit = ref.re.exec(note.trim());
+          const v = hit ? noteFigureOk(hit[1]!, ref.kind, want) : null;
+          if (!v?.ok) errs.push(`${id} card note ${ranking}: "${note}" vs records ${v?.want.toFixed(2) ?? "(figure not found)"}`);
+        }
+      }
+      await pg.close();
+    }
+    await c6.close();
+  }
   const cmpTune = await compareErrs(11);
   const cmpHeld = await compareErrs(9001);
   checked += cmpTune.n; errs.push(...cmpTune.out);
@@ -903,12 +1006,193 @@ async function sectionAccuracy(browser: Browser) {
   for (const e of [...errs.slice(0, 12), ...held.out.slice(0, 5)]) console.log(`        ${e}`);
 }
 
+// ---------------------------------------------------------------- S7c ranking notes
+// The line under each ranked card ("Jun: 81°F day · 60°F night · 0.5 in") as the reader
+// sees it (the app's own prose localizer), checked against the records with formulas
+// written here. Every place, every month for Best this month. Places split by a fixed
+// seed: tuning half (errors printed) and HELD-OUT half (count only).
+const recFull = new Map<string, { tempHighC: number[]; tempLowC: number[]; precipMm: number[]; humidity: number[] | null; diurnalSummerC?: number | null }>(
+  (RECORDS as Array<{ placeId: string; periods: Record<string, never> }>).map(r => [r.placeId, r.periods["rolling-1996-2025"]!]));
+const mean = (xs: number[], idx: number[]) => idx.reduce((s, i) => s + xs[i]!, 0) / idx.length;
+type NoteRef = Array<{ re: RegExp; want: (id: string, month: number) => number | null; kind: "F" | "dF" | "in" | "pct" }>;
+const NOTE_REFS: Record<string, NoteRef> = {
+  "coolest-summers": [{ re: /Mean summer high (-?[\d.]+)°F/, kind: "F", want: id => mean(recFull.get(id)!.tempHighC, [5, 6, 7]) }],
+  "mildest-winters": [{ re: /Mean winter low (-?[\d.]+)°F/, kind: "F", want: id => mean(recFull.get(id)!.tempLowC, [11, 0, 1]) }],
+  "best-shoulder-seasons": [
+    { re: /highs near (-?[\d.]+)°F/, kind: "F", want: id => mean(recFull.get(id)!.tempHighC, [3, 4, 8, 9]) },
+    { re: /· ([\d.,]+) in of rain a month/, kind: "in", want: id => mean(recFull.get(id)!.precipMm, [3, 4, 8, 9]) },
+  ],
+  "driest-air": [{ re: /Mean humidity ~(\d+)%(?! \(atlas)/, kind: "pct", want: id => { const h = recFull.get(id)!.humidity; return h ? mean(h, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) : null; } }],
+  "best-four-season": [
+    { re: /Winter days average (-?[\d.]+)°F/, kind: "F", want: id => { const r = recFull.get(id)!; return (mean(r.tempHighC, [11, 0, 1]) + mean(r.tempLowC, [11, 0, 1])) / 2; } },
+    { re: /summer highs (-?[\d.]+)°F/, kind: "F", want: id => mean(recFull.get(id)!.tempHighC, [5, 6, 7]) },
+  ],
+  "best-diurnal-sleep": [
+    { re: /Summer nights near (-?[\d.]+)°F/, kind: "F", want: id => mean(recFull.get(id)!.tempLowC, [5, 6, 7]) },
+    { re: /swing (-?[\d.]+)°F/, kind: "dF", want: id => { const r = recFull.get(id)!; return r.diurnalSummerC ?? r.tempHighC[6]! - r.tempLowC[6]!; } },
+  ],
+  "mediterranean-like": [{ re: /· ([\d.,]+) in(?:ches)? in Jul–Aug/, kind: "in", want: id => mean(recFull.get(id)!.precipMm, [6, 7]) * 2 }],
+  "wet-forest-refuges": [
+    { re: /^([\d.,]+) in of rain a year/, kind: "in", want: id => recFull.get(id)!.precipMm.reduce((a, b) => a + b, 0) },
+    { re: /driest month ([\d.,]+) in/, kind: "in", want: id => Math.min(...recFull.get(id)!.precipMm) },
+  ],
+  "monsoon-drama": [
+    { re: /^([\d.,]+) in(?:ches)? in Jul–Sep/, kind: "in", want: id => mean(recFull.get(id)!.precipMm, [6, 7, 8]) * 3 },
+    { re: /vs ([\d.,]+) in(?:ches)? in Dec–Feb/, kind: "in", want: id => mean(recFull.get(id)!.precipMm, [11, 0, 1]) * 3 },
+  ],
+  "best-this-month": [
+    { re: /: (-?[\d.]+)°F day/, kind: "F", want: (id, m) => recFull.get(id)!.tempHighC[m]! },
+    { re: /day · (-?[\d.]+)°F night/, kind: "F", want: (id, m) => recFull.get(id)!.tempLowC[m]! },
+    { re: /night · ([\d.,]+) in$/, kind: "in", want: (id, m) => recFull.get(id)!.precipMm[m]! },
+  ],
+  "best-for-remote-work": [{ re: /^(-?[\d.]+)°F summers/, kind: "F", want: id => mean(recFull.get(id)!.tempHighC, [5, 6, 7]) }],
+};
+/** Shown figure vs reference: whole °F within 0.5; inches within half the last shown digit. */
+function noteFigureOk(shownRaw: string, kind: NoteRef[number]["kind"], refMetric: number): { ok: boolean; want: number } {
+  const shown = Number(shownRaw.replace(/,/g, ""));
+  const want = kind === "F" ? refMetric * 9 / 5 + 32 : kind === "dF" ? refMetric * 9 / 5 : kind === "in" ? refMetric / 25.4 : refMetric;
+  const decimals = (shownRaw.split(".")[1] ?? "").length;
+  const tol = 0.5 * 10 ** -decimals + 1e-9;
+  return { ok: Math.abs(shown - want) <= tol, want };
+}
+const countBy = (xs: string[]) => xs.reduce<Record<string, number>>((o, x) => { const k = x.split(" ")[0]!; o[k] = (o[k] ?? 0) + 1; return o; }, {});
+function sectionNotes() {
+  console.log("\nS7c ranking notes (figures under ranked cards = the records)");
+  const held = new Set(sample(PLACES.map(p => p.id), Math.floor(PLACES.length / 2), 4242));
+  const res = { tune: { bad: [] as string[], n: 0 }, held: { bad: [] as string[], n: 0 } };
+  const missing: string[] = [];
+  for (const [ranking, refs] of Object.entries(NOTE_REFS)) {
+    const months = ranking === "best-this-month" ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] : [5];
+    for (const m of months) {
+      const out = runScenarioRanking({
+        type: "scenario-rank", requestId: 0, scenario: "now", ranking,
+        filters: { countries: [], archetypes: [], fitPresets: [], search: "" },
+        nowEpochMs: new Date(2026, m, 1, 12).getTime(),
+      } as never);
+      for (const row of out.rows as Array<{ id: string; note?: string }>) {
+        const shownNote = localizeProse(row.note ?? "", "F", "imperial").replace(/[−–](?=\d)/g, "-");
+        const bucket = held.has(row.id) ? res.held : res.tune;
+        for (const ref of refs) {
+          const want = ref.want(row.id, m);
+          if (want == null) continue;
+          bucket.n++;
+          const hit = ref.re.exec(shownNote);
+          if (!hit) { if (missing.length < 5) missing.push(`${ranking} ${row.id}: "${shownNote}"`); bucket.bad.push(`${ranking} ${row.id}: figure not found in "${shownNote}"`); continue; }
+          const v = noteFigureOk(hit[1]!, ref.kind, want);
+          if (!v.ok) bucket.bad.push(`${ranking} m${m + 1} ${row.id}: "${shownNote}" — records give ${v.want.toFixed(2)} for ${ref.re.source.slice(0, 24)}`);
+        }
+      }
+    }
+  }
+  record("S7c", "figures in ranking notes that differ from the records (11 rankings, 12 months; tuning half of places)", `${res.tune.bad.length} of ${res.tune.n}`, "0", res.tune.bad.length === 0, { byRanking: countBy(res.tune.bad), errors: res.tune.bad.slice(0, 40) });
+  record("S7d", "same, HELD-OUT half of places", `${res.held.bad.length} of ${res.held.n}`, "0", res.held.bad.length === 0, countBy(res.held.bad));
+  for (const e of res.tune.bad.slice(0, 8)) console.log(`        ${e}`);
+}
+
+// ---------------------------------------------------------------- S7e 2050 figures
+// The 2050 layers (scn=ssp245 / ssp585): every place's projected summer high, winter low
+// and yearly precipitation, as the cards and the 2050 summary show them, against the
+// documented rules applied here to the records: one anomaly per latitude band (IPCC AR6
+// screening table, copied from the spec in climate-projection.ts), Mexico's precipitation
+// nudged 4 points drier, warming eased from the January delta to the July delta along a
+// cosine, monthly values rounded to 0.1 °C / 1 mm.
+const BAND_DELTAS: Record<"ssp245" | "ssp585", Array<[number, number, number, number]>> = {
+  // [max |lat|, ΔJJA high °C, ΔJan low °C, Δprecip %]
+  ssp245: [[25, 1.6, 1.4, -5], [35, 1.9, 1.6, -6], [45, 2.0, 1.9, 2], [55, 2.1, 2.4, 5], [65, 2.3, 3.2, 8], [91, 2.6, 4.5, 12]],
+  ssp585: [[25, 2.2, 2.0, -8], [35, 2.7, 2.3, -9], [45, 2.9, 2.8, 3], [55, 3.1, 3.6, 7], [65, 3.4, 4.8, 11], [91, 3.9, 6.5, 16]],
+};
+function ref2050(id: string, scn: "ssp245" | "ssp585") {
+  const p = PLACES.find(x => x.id === id)!; const r = recFull.get(id)!;
+  const [, dJJA, dJan, dP0] = BAND_DELTAS[scn].find(b => Math.abs(p.lat) < b[0])!;
+  const dP = dP0 + (p.country === "Mexico" ? -4 : 0);
+  const w = (i: number) => dJan + (dJJA - dJan) * (1 - Math.cos(2 * Math.PI * i / 12)) / 2;
+  const r1 = (x: number) => Math.round(x * 10) / 10;
+  const hi = r.tempHighC.map((v, i) => r1(v + w(i))), lo = r.tempLowC.map((v, i) => r1(v + w(i)));
+  const pr = r.precipMm.map(v => Math.max(0, Math.round(v * (1 + dP / 100))));
+  const now = { sh: mean(r.tempHighC, [5, 6, 7]), wl: mean(r.tempLowC, [11, 0, 1]), ap: r.precipMm.reduce((a, b) => a + b, 0) };
+  const fut = { sh: mean(hi, [5, 6, 7]), wl: mean(lo, [11, 0, 1]), ap: pr.reduce((a, b) => a + b, 0) };
+  return { now, fut, dSh: fut.sh - now.sh, dWl: fut.wl - now.wl, dPpct: (fut.ap - now.ap) / now.ap * 100 };
+}
+async function section2050(browser: Browser) {
+  console.log("\nS7e 2050 figures (cards and the 2050 summary = records + documented projection)");
+  const errs: string[] = []; let n = 0;
+  const num = (x: string | undefined) => (x == null ? null : Number(x.replace(/[−–]/, "-").replace("+", "")));
+  const ctx = await newCtx(browser);
+  for (const scn of ["ssp245", "ssp585"] as const) {
+    for (const ranking of ["coolest-summers", "mildest-winters"]) {
+      const pg = await open(ctx, `/?scn=${scn}&r=${ranking}`);
+      await firstCard(pg);
+      await pg.locator(".scenario-remap__row").first().waitFor({ timeout: 15000 }).catch(() => {});
+      await pg.waitForTimeout(500);
+      // Summary chips: change from today, per row.
+      for (const row of await pg.locator(".scenario-remap__row").evaluateAll(els => els.map(e => (e as HTMLElement).innerText.replace(/\s+/g, " ")))) {
+        const matches = PLACES.filter(p => row.toLowerCase().includes(p.name.toLowerCase()));
+        if (matches.length !== 1) { if (!matches.length) errs.push(`${scn} summary row: place not found in "${row.slice(0, 60)}"`); continue; }
+        const id = matches[0]!.id; const ref = ref2050(id, scn);
+        const sh = num(/Summer ([+\-−]?[\d.]+)°F/.exec(row)?.[1]); const wl = num(/Winter ([+\-−]?[\d.]+)°F/.exec(row)?.[1]); const pp = num(/Precip ([+\-−]?[\d.]+)%/.exec(row)?.[1]);
+        for (const [label, shown, want, tol] of [["summer change °F", sh, ref.dSh * 1.8, 0.051], ["winter change °F", wl, ref.dWl * 1.8, 0.051], ["precip change %", pp, ref.dPpct, 0.51]] as const) {
+          n++;
+          if (shown == null || Math.abs(shown - want) > tol) errs.push(`${scn} ${id} summary ${label}: shown ${shown}, rules give ${want.toFixed(2)}`);
+        }
+      }
+      // First six cards: their projected summer high / winter low.
+      for (const text of await pg.locator(".place-card").evaluateAll(els => els.slice(0, 6).map(e => (e as HTMLElement).innerText))) {
+        const lower = text.toLowerCase();
+        const p = PLACES.find(x => lower.includes(x.name.toLowerCase()) && lower.includes(x.region.toLowerCase()));
+        if (!p) { errs.push(`${scn} card: place not found`); continue; }
+        const ref = ref2050(p.id, scn);
+        const sh = num(/SUMMER HIGH\s*(-?[\d]+)°F/i.exec(text)?.[1]); const wl = num(/WINTER LOW\s*([\-−]?[\d]+)°F/i.exec(text)?.[1]);
+        for (const [label, shown, want] of [["summer high", sh, ref.fut.sh * 1.8 + 32], ["winter low", wl, ref.fut.wl * 1.8 + 32]] as const) {
+          n++;
+          if (shown == null || Math.abs(shown - want) > 0.51) errs.push(`${scn} ${p.id} card ${label}: shown ${shown}, rules give ${want.toFixed(2)}`);
+        }
+      }
+      await pg.close();
+    }
+  }
+  await ctx.close();
+  // Every place, both scenarios, unrounded: the projected climate the whole app reads.
+  for (const scn of ["ssp245", "ssp585"] as const) for (const p of PLACES) {
+    const ref = ref2050(p.id, scn); const c = projectPlace(p, scn).climate;
+    const got = { sh: mean(c.tempHighC, [5, 6, 7]), wl: mean(c.tempLowC, [11, 0, 1]), ap: c.precipMm.reduce((a, b) => a + b, 0) };
+    for (const k of ["sh", "wl", "ap"] as const) {
+      n++;
+      if (Math.abs(got[k] - ref.fut[k]) > 1e-6) errs.push(`${scn} ${p.id} projected ${k}: app ${got[k].toFixed(2)}, rules give ${ref.fut[k].toFixed(2)}`);
+    }
+  }
+  // S8c: what the 2050 layer says about itself must match what it does: changes are
+  // applied to the 1996–2025 averages, and no place has ensemble (NEX) data loaded.
+  {
+    const said: string[] = [];
+    const pg = await open(await newCtx(browser), "/?scn=ssp245");
+    await firstCard(pg); await pg.locator(".scenario-remap").first().waitFor({ timeout: 15000 }).catch(() => {});
+    const text = await pg.evaluate(() => {
+      const titles = [...document.querySelectorAll("[title]")].map(e => e.getAttribute("title") ?? "");
+      return `${document.body.innerText}\n${titles.join("\n")}`;
+    });
+    if (/change from 1991.2020/i.test(text)) said.push("2050 summary: changes 'from 1991–2020 normals' (they are applied to 1996–2025)");
+    const nex = (RECORDS as Array<{ projection?: { modelCount?: number } }>).filter(r => (r.projection?.modelCount ?? 0) > 0).length;
+    if (nex === 0 && /ensemble median/i.test(text)) said.push("climate layer: claims an 'ensemble median' but no place has ensemble data");
+    // From review: the Learn page said the outlooks "come from" the NASA model set.
+    await pg.goto(`${BASE}/?v=learn`); await pg.waitForTimeout(1500);
+    const learn = await pg.evaluate(() => document.body.innerText);
+    if (nex === 0 && /(come from|use)[^.]{0,20}NEX-GDDP/i.test(learn)) said.push("Learn: says the 2050 outlooks come from NASA NEX-GDDP-CMIP6, but no place has that data");
+    await pg.close();
+    record("S8c", "2050 layer misdescribes its baseline or source", said.length, "0", said.length === 0, said);
+    for (const x of said) console.log(`        ${x}`);
+  }
+  record("S7e", "2050 figures that differ from records + documented projection (all places' projected climate; cards and 2050 summary chips; both scenarios)", `${errs.length} of ${n}`, "0", errs.length === 0 && n > 0, errs.slice(0, 30));
+  for (const e of errs.slice(0, 8)) console.log(`        ${e}`);
+}
+
 // ---------------------------------------------------------------- main
 async function main() {
   const started = Date.now();
   if (want("search")) sectionSearch();
+  if (want("notes") || want("accuracy")) sectionNotes();
   let browser: Browser | null = null;
-  try {
+  const nodeOnly = ONLY != null && ONLY.every(x => x === "search" || x === "notes");
+  if (!nodeOnly) try {
     await startServer();
     browser = await chromium.launch({ executablePath: chromePath() });
     if (want("jobs")) await sectionJobs(browser);
@@ -917,6 +1201,7 @@ async function main() {
     if (want("recover")) await sectionRecover(browser);
     if (want("speed")) await sectionSpeed(browser);
     if (want("accuracy")) await sectionAccuracy(browser);
+    if (want("accuracy") || want("2050")) await section2050(browser);
   } finally {
     await browser?.close();
     stopServer();

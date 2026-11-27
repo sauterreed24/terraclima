@@ -323,6 +323,302 @@ export function CompareView({
     return () => window.clearTimeout(focusTimer);
   }, [occluded, shareFallbackUrl, shareStatus]);
 
+  // Trial compare-figures-first (index.html ?try=): Summary and the figures before the
+  // lens picker, add places and sources. Moved as JSX so reading and focus order follow.
+  // With one place the workbench is how to add a second, so it stays first.
+  const figuresFirst = places.length > 1 && typeof document !== "undefined" && (document.documentElement.dataset.trials ?? "").split(",").includes("compare-figures-first");
+  const workbenchSections = (
+    <>
+      <section id="compare-candidates" className="compare-workbench" aria-label="Add or swap places">
+        <div className="compare-workbench__lens">
+          <div className="compare-workbench__lens-copy">
+            <span className="compare-workbench__eyebrow">Compare for</span>
+            <strong>{comparisonLensLabel(activeComparisonLens)}</strong>
+            <span>{COMPARISON_LENS_OPTIONS.find(option => option.id === activeComparisonLens)?.detail}</span>
+          </div>
+          <div className="compare-workbench__lens-options" role="group" aria-label="What to compare for">
+            {COMPARISON_LENS_OPTIONS.map(option => (
+              <button
+                key={option.id}
+                type="button"
+                className="compare-workbench__lens-option"
+                aria-pressed={option.id === activeComparisonLens}
+                title={option.detail}
+                onClick={() => onComparisonLensChange?.(option.id)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="compare-workbench__tray" aria-label="Candidate tray">
+          <div className="compare-workbench__tray-head">
+            <div>
+              <span className="compare-workbench__eyebrow">Add or swap places</span>
+              <strong>{places.length}/{COMPARE_LIMIT} compared / {candidateCountRead}</strong>
+            </div>
+            <span>{candidateTrayHelper}</span>
+            {candidateFinderActive ? (
+              <button
+                type="button"
+                className="btn-ghost compare-workbench__candidate-reset"
+                onClick={resetCandidateFinder}
+                aria-label="Clear the search and show all places you can add"
+                title="Clear the search and show all places you can add"
+              >
+                Reset search
+              </button>
+            ) : null}
+          </div>
+          <div className="compare-workbench__candidate-tools" aria-label="Find a place to add">
+            <label className="compare-workbench__candidate-search" htmlFor={candidateSearchId}>
+              <span className="sr-only">{candidateSearchLabel}</span>
+              <input
+                ref={candidateSearchRef}
+                id={candidateSearchId}
+                type="search"
+                value={candidateQuery}
+                onChange={event => setCandidateQuery(event.currentTarget.value)}
+                onKeyDown={event => {
+                  if (event.key !== "Escape" || candidateQuery.length === 0) return;
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setCandidateQuery("");
+                }}
+                aria-label={candidateSearchLabel}
+                title={candidateSearchLabel}
+                placeholder="Find a place to add"
+              />
+            </label>
+            <div className="compare-workbench__source-filter" role="group" aria-label="Candidate source filter">
+              {CANDIDATE_SOURCE_FILTERS.map(filter => (
+                <button
+                  key={filter.id}
+                  type="button"
+                  className="compare-workbench__source-filter-btn"
+                  aria-pressed={filter.id === candidateSourceFilter}
+                  title={`Show places from: ${filter.label.toLowerCase()}`}
+                  onClick={() => setCandidateSourceFilter(filter.id)}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+            <label className="compare-workbench__candidate-sort" htmlFor={candidateSortId}>
+              <span aria-hidden="true">Sort</span>
+              <span className="sr-only">Sort places you can add</span>
+              <select
+                id={candidateSortId}
+                value={candidateSort}
+                onChange={event => setCandidateSort(event.currentTarget.value as CandidateSortId)}
+              >
+                {CANDIDATE_SORT_OPTIONS.map(option => (
+                  <option key={option.id} value={option.id}>{option.label}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+          {noInactiveCandidateMatches ? (
+            <div className="compare-workbench__candidate-empty compare-workbench__candidate-empty--filtered" role="status">
+              Nothing else matches. Reset the search or try a broader place or region.
+            </div>
+          ) : null}
+          <div className="compare-workbench__candidate-scroll">
+            {filteredCandidateTray.length > 0 ? filteredCandidateTray.map(candidate => {
+              const swapOut = compareSwapOut;
+              const active = activeCandidateIds.has(candidate.place.id);
+              const candidateProfile = candidateDecisionById.get(candidate.place.id);
+              const candidateInsight = !active && candidateProfile
+                ? buildCompareCandidateSwapInsight({
+                  activeProfiles: decisionProfiles,
+                  candidateProfile,
+                  lens: activeComparisonLens,
+                })
+                : null;
+              const replacementPlace = !active ? swapOut : null;
+              const action = active
+                ? `Remove ${candidate.place.name} from the comparison`
+                : places.length >= COMPARE_LIMIT
+                  ? `Swap ${candidate.place.name} into the comparison`
+                  : `Add ${candidate.place.name} to the comparison`;
+              const actionCue = active
+                ? { label: "Remove", tone: "remove", Icon: X }
+                : places.length >= COMPARE_LIMIT
+                  ? { label: "Swap", tone: "swap", Icon: RefreshCcw }
+                  : { label: "Add", tone: "add", Icon: Plus };
+              const CandidateActionIcon = actionCue.Icon;
+              const title = [
+                candidate.note ?? `${candidate.place.region}, ${candidate.place.country}`,
+                candidateInsight ? `${candidateInsight.label}: ${prose(candidateInsight.detail)}` : null,
+                replacementPlace ? `Replaces ${replacementPlace.name}, which scores lowest for ${activeComparisonLensLabel.toLowerCase()}.` : null,
+              ].filter(Boolean).join(" ");
+              return (
+                <button
+                  key={`${candidate.source}-${candidate.place.id}`}
+                  type="button"
+                  className="compare-workbench__candidate"
+                  data-active={active ? "true" : undefined}
+                  data-source={candidate.source.toLowerCase()}
+                  aria-pressed={active}
+                  aria-label={action}
+                  title={title}
+                  onClick={() => {
+                    if (active) return onRemove(candidate.place.id);
+                    if (replacementPlace) onAddPlace?.(candidate.place.id, replacementPlace.id);
+                    else onAddPlace?.(candidate.place.id);
+                  }}
+                >
+                  <span className="compare-workbench__candidate-topline">
+                    <span className="compare-workbench__candidate-name">{candidate.place.name}</span>
+                    <span className="compare-workbench__candidate-action" data-action={actionCue.tone}>
+                      <CandidateActionIcon aria-hidden="true" />
+                      <span>{actionCue.label}</span>
+                    </span>
+                  </span>
+                  <span className="compare-workbench__candidate-meta">
+                    <span>{candidate.source === "Shortlist" ? "Saved" : candidate.source}</span>
+                    <strong>{candidate.place.region}</strong>
+                  </span>
+                  {candidateProfile ? (
+                    <span className="compare-workbench__candidate-read" aria-label={`${candidate.place.name} candidate read`}>
+                      <span>
+                        <strong>{compareLensScore(candidateProfile, activeComparisonLens)}/100</strong>
+                        <em title={SCORE_DEFINITIONS.priority.definition}>{activeComparisonLensLabel} priority score</em>
+                      </span>
+                      <span>{candidateProfile.easyMonths}/12 easy months</span>
+                      <span title={SCORE_DEFINITIONS.overallRisk.definition}>{candidateProfile.riskLoad}/100 overall risk</span>
+                    </span>
+                  ) : null}
+                  {candidateInsight ? (
+                    <span
+                      className="compare-workbench__candidate-insight"
+                      data-tone={candidateInsight.tone}
+                      aria-label={`What adding ${candidate.place.name} would change`}
+                    >
+                      <strong>{candidateInsight.label}</strong>
+                      <span>{prose(candidateInsight.detail)}</span>
+                    </span>
+                  ) : null}
+                  {replacementPlace ? (
+                    <span className="compare-workbench__candidate-swap">
+                      Replaces {replacementPlace.name}
+                    </span>
+                  ) : null}
+                </button>
+              );
+            }) : (
+              <div className="compare-workbench__candidate-empty" role="status">
+                No places match this search.
+              </div>
+            )}
+          </div>
+        </div>
+
+        {coachRecommendations.length > 0 ? (
+          <div className="compare-workbench__coach" aria-label="Suggested swaps">
+            <div className="compare-workbench__coach-head">
+              <div>
+                <span className="compare-workbench__eyebrow">Suggested swaps</span>
+                <strong>Places that would sharpen the comparison</strong>
+              </div>
+              <span>Each one adds a contrast the current set lacks.</span>
+            </div>
+            <div className="compare-workbench__coach-grid">
+              {coachRecommendations.map(recommendation => {
+                const action = places.length >= COMPARE_LIMIT
+                  ? `Swap ${recommendation.place.name} into the comparison. Suggested because: ${recommendation.label}`
+                  : `Add ${recommendation.place.name} to the comparison. Suggested because: ${recommendation.label}`;
+                return (
+                  <button
+                    key={`${recommendation.lane}-${recommendation.place.id}`}
+                    type="button"
+                    className="compare-workbench__coach-card"
+                    aria-label={action}
+                    title={action}
+                    onClick={() => {
+                      if (compareSwapOut) onAddPlace?.(recommendation.place.id, compareSwapOut.id);
+                      else onAddPlace?.(recommendation.place.id);
+                    }}
+                  >
+                    <span className="compare-workbench__coach-label">{recommendation.label}</span>
+                    <strong>{recommendation.place.name}</strong>
+                    <span className="compare-workbench__coach-metric">{recommendation.metric}</span>
+                    <span className="compare-workbench__coach-detail">{prose(recommendation.detail)}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
+      </section>
+
+      {compareLensReceipt ? (
+        <section className="compare-lens-receipt" aria-label="What the scores are based on">
+          <div className="compare-lens-receipt__copy">
+            <span className="compare-lens-receipt__eyebrow">What the scores use</span>
+            <p>{compareLensReceipt.summary}</p>
+            <span>{compareLensReceipt.honesty}</span>
+          </div>
+          <div className="compare-lens-receipt__chips" aria-label="Must-haves and climate layer in use">
+            {compareLensReceipt.chips.map(chip => (
+              <span key={`${chip.label}-${chip.value}`} className="compare-lens-receipt__chip">
+                <span>{chip.label}</span>
+                <strong>{chip.value}</strong>
+              </span>
+            ))}
+          </div>
+        </section>
+      ) : null}
+    </>
+  );
+  const evidenceSection = evidenceReadiness.length > 0 ? (
+      <section id="compare-evidence-readiness" className="compare-evidence-readiness" aria-label="How well sourced">
+        <div className="compare-evidence-readiness__head">
+          <div>
+            <span className="compare-evidence-readiness__eyebrow">How well sourced</span>
+            <strong>{evidenceReadiness[0].place.name}: {evidenceReadiness[0].label}</strong>
+          </div>
+          <span>How many sources back each entry and what data is missing. Check the gaps before booking a visit or looking at housing.</span>
+        </div>
+        <div className="compare-evidence-readiness__grid">
+          {evidenceReadiness.map(row => (
+            <article
+              key={row.place.id}
+              className="compare-evidence-readiness__card"
+              data-tone={row.tone}
+              aria-label={`How well sourced ${row.place.name} is`}
+            >
+              <div className="compare-evidence-readiness__card-head">
+                <span>{row.label}</span>
+                <strong title={SCORE_DEFINITIONS.sourcing.definition}>{SCORE_DEFINITIONS.sourcing.label} {row.score}/100</strong>
+              </div>
+              {onOpenPlace ? (
+                <button
+                  type="button"
+                  className="compare-evidence-readiness__place"
+                  aria-label={`Open the ${row.place.name} profile`}
+                  title={`Open the ${row.place.name} profile`}
+                  onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
+                >
+                  {row.place.name}
+                </button>
+              ) : (
+                <strong className="compare-evidence-readiness__place-text">{row.place.name}</strong>
+              )}
+              <div className="compare-evidence-readiness__facts" aria-label={`${row.place.name} evidence facts`}>
+                {row.facts.map(fact => <span key={fact}>{fact}</span>)}
+              </div>
+              <p>{row.action}</p>
+              <ul>
+                {row.gaps.map(gap => <li key={gap}>{gap}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+  ) : null;
+
   return (
     <AnimatePresence>
       {open && places.length > 0 && (
@@ -446,7 +742,7 @@ export function CompareView({
                   Get started
                 </a>
               ) : null}
-              {evidenceReadiness.length > 0 ? (
+              {!figuresFirst && evidenceReadiness.length > 0 ? (
                 <a className="compare-dialog__shortcut" href="#compare-evidence-readiness" aria-label="Jump to how well each place is sourced">
                   Sources
                 </a>
@@ -457,249 +753,14 @@ export function CompareView({
               <a className="compare-dialog__shortcut" href="#compare-candidates" aria-label="Jump to add or swap places">
                 Add places
               </a>
+              {figuresFirst && evidenceReadiness.length > 0 ? (
+                <a className="compare-dialog__shortcut" href="#compare-evidence-readiness" aria-label="Jump to how well each place is sourced">
+                  Sources
+                </a>
+              ) : null}
             </nav>
 
-            <section id="compare-candidates" className="compare-workbench" aria-label="Add or swap places">
-              <div className="compare-workbench__lens">
-                <div className="compare-workbench__lens-copy">
-                  <span className="compare-workbench__eyebrow">Compare for</span>
-                  <strong>{comparisonLensLabel(activeComparisonLens)}</strong>
-                  <span>{COMPARISON_LENS_OPTIONS.find(option => option.id === activeComparisonLens)?.detail}</span>
-                </div>
-                <div className="compare-workbench__lens-options" role="group" aria-label="What to compare for">
-                  {COMPARISON_LENS_OPTIONS.map(option => (
-                    <button
-                      key={option.id}
-                      type="button"
-                      className="compare-workbench__lens-option"
-                      aria-pressed={option.id === activeComparisonLens}
-                      title={option.detail}
-                      onClick={() => onComparisonLensChange?.(option.id)}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="compare-workbench__tray" aria-label="Candidate tray">
-                <div className="compare-workbench__tray-head">
-                  <div>
-                    <span className="compare-workbench__eyebrow">Add or swap places</span>
-                    <strong>{places.length}/{COMPARE_LIMIT} compared / {candidateCountRead}</strong>
-                  </div>
-                  <span>{candidateTrayHelper}</span>
-                  {candidateFinderActive ? (
-                    <button
-                      type="button"
-                      className="btn-ghost compare-workbench__candidate-reset"
-                      onClick={resetCandidateFinder}
-                      aria-label="Clear the search and show all places you can add"
-                      title="Clear the search and show all places you can add"
-                    >
-                      Reset search
-                    </button>
-                  ) : null}
-                </div>
-                <div className="compare-workbench__candidate-tools" aria-label="Find a place to add">
-                  <label className="compare-workbench__candidate-search" htmlFor={candidateSearchId}>
-                    <span className="sr-only">{candidateSearchLabel}</span>
-                    <input
-                      ref={candidateSearchRef}
-                      id={candidateSearchId}
-                      type="search"
-                      value={candidateQuery}
-                      onChange={event => setCandidateQuery(event.currentTarget.value)}
-                      onKeyDown={event => {
-                        if (event.key !== "Escape" || candidateQuery.length === 0) return;
-                        event.preventDefault();
-                        event.stopPropagation();
-                        setCandidateQuery("");
-                      }}
-                      aria-label={candidateSearchLabel}
-                      title={candidateSearchLabel}
-                      placeholder="Find a place to add"
-                    />
-                  </label>
-                  <div className="compare-workbench__source-filter" role="group" aria-label="Candidate source filter">
-                    {CANDIDATE_SOURCE_FILTERS.map(filter => (
-                      <button
-                        key={filter.id}
-                        type="button"
-                        className="compare-workbench__source-filter-btn"
-                        aria-pressed={filter.id === candidateSourceFilter}
-                        title={`Show places from: ${filter.label.toLowerCase()}`}
-                        onClick={() => setCandidateSourceFilter(filter.id)}
-                      >
-                        {filter.label}
-                      </button>
-                    ))}
-                  </div>
-                  <label className="compare-workbench__candidate-sort" htmlFor={candidateSortId}>
-                    <span aria-hidden="true">Sort</span>
-                    <span className="sr-only">Sort places you can add</span>
-                    <select
-                      id={candidateSortId}
-                      value={candidateSort}
-                      onChange={event => setCandidateSort(event.currentTarget.value as CandidateSortId)}
-                    >
-                      {CANDIDATE_SORT_OPTIONS.map(option => (
-                        <option key={option.id} value={option.id}>{option.label}</option>
-                      ))}
-                    </select>
-                  </label>
-                </div>
-                {noInactiveCandidateMatches ? (
-                  <div className="compare-workbench__candidate-empty compare-workbench__candidate-empty--filtered" role="status">
-                    Nothing else matches. Reset the search or try a broader place or region.
-                  </div>
-                ) : null}
-                <div className="compare-workbench__candidate-scroll">
-                  {filteredCandidateTray.length > 0 ? filteredCandidateTray.map(candidate => {
-                    const swapOut = compareSwapOut;
-                    const active = activeCandidateIds.has(candidate.place.id);
-                    const candidateProfile = candidateDecisionById.get(candidate.place.id);
-                    const candidateInsight = !active && candidateProfile
-                      ? buildCompareCandidateSwapInsight({
-                        activeProfiles: decisionProfiles,
-                        candidateProfile,
-                        lens: activeComparisonLens,
-                      })
-                      : null;
-                    const replacementPlace = !active ? swapOut : null;
-                    const action = active
-                      ? `Remove ${candidate.place.name} from the comparison`
-                      : places.length >= COMPARE_LIMIT
-                        ? `Swap ${candidate.place.name} into the comparison`
-                        : `Add ${candidate.place.name} to the comparison`;
-                    const actionCue = active
-                      ? { label: "Remove", tone: "remove", Icon: X }
-                      : places.length >= COMPARE_LIMIT
-                        ? { label: "Swap", tone: "swap", Icon: RefreshCcw }
-                        : { label: "Add", tone: "add", Icon: Plus };
-                    const CandidateActionIcon = actionCue.Icon;
-                    const title = [
-                      candidate.note ?? `${candidate.place.region}, ${candidate.place.country}`,
-                      candidateInsight ? `${candidateInsight.label}: ${prose(candidateInsight.detail)}` : null,
-                      replacementPlace ? `Replaces ${replacementPlace.name}, which scores lowest for ${activeComparisonLensLabel.toLowerCase()}.` : null,
-                    ].filter(Boolean).join(" ");
-                    return (
-                      <button
-                        key={`${candidate.source}-${candidate.place.id}`}
-                        type="button"
-                        className="compare-workbench__candidate"
-                        data-active={active ? "true" : undefined}
-                        data-source={candidate.source.toLowerCase()}
-                        aria-pressed={active}
-                        aria-label={action}
-                        title={title}
-                        onClick={() => {
-                          if (active) return onRemove(candidate.place.id);
-                          if (replacementPlace) onAddPlace?.(candidate.place.id, replacementPlace.id);
-                          else onAddPlace?.(candidate.place.id);
-                        }}
-                      >
-                        <span className="compare-workbench__candidate-topline">
-                          <span className="compare-workbench__candidate-name">{candidate.place.name}</span>
-                          <span className="compare-workbench__candidate-action" data-action={actionCue.tone}>
-                            <CandidateActionIcon aria-hidden="true" />
-                            <span>{actionCue.label}</span>
-                          </span>
-                        </span>
-                        <span className="compare-workbench__candidate-meta">
-                          <span>{candidate.source === "Shortlist" ? "Saved" : candidate.source}</span>
-                          <strong>{candidate.place.region}</strong>
-                        </span>
-                        {candidateProfile ? (
-                          <span className="compare-workbench__candidate-read" aria-label={`${candidate.place.name} candidate read`}>
-                            <span>
-                              <strong>{compareLensScore(candidateProfile, activeComparisonLens)}/100</strong>
-                              <em title={SCORE_DEFINITIONS.priority.definition}>{activeComparisonLensLabel} priority score</em>
-                            </span>
-                            <span>{candidateProfile.easyMonths}/12 easy months</span>
-                            <span title={SCORE_DEFINITIONS.overallRisk.definition}>{candidateProfile.riskLoad}/100 overall risk</span>
-                          </span>
-                        ) : null}
-                        {candidateInsight ? (
-                          <span
-                            className="compare-workbench__candidate-insight"
-                            data-tone={candidateInsight.tone}
-                            aria-label={`What adding ${candidate.place.name} would change`}
-                          >
-                            <strong>{candidateInsight.label}</strong>
-                            <span>{prose(candidateInsight.detail)}</span>
-                          </span>
-                        ) : null}
-                        {replacementPlace ? (
-                          <span className="compare-workbench__candidate-swap">
-                            Replaces {replacementPlace.name}
-                          </span>
-                        ) : null}
-                      </button>
-                    );
-                  }) : (
-                    <div className="compare-workbench__candidate-empty" role="status">
-                      No places match this search.
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {coachRecommendations.length > 0 ? (
-                <div className="compare-workbench__coach" aria-label="Suggested swaps">
-                  <div className="compare-workbench__coach-head">
-                    <div>
-                      <span className="compare-workbench__eyebrow">Suggested swaps</span>
-                      <strong>Places that would sharpen the comparison</strong>
-                    </div>
-                    <span>Each one adds a contrast the current set lacks.</span>
-                  </div>
-                  <div className="compare-workbench__coach-grid">
-                    {coachRecommendations.map(recommendation => {
-                      const action = places.length >= COMPARE_LIMIT
-                        ? `Swap ${recommendation.place.name} into the comparison. Suggested because: ${recommendation.label}`
-                        : `Add ${recommendation.place.name} to the comparison. Suggested because: ${recommendation.label}`;
-                      return (
-                        <button
-                          key={`${recommendation.lane}-${recommendation.place.id}`}
-                          type="button"
-                          className="compare-workbench__coach-card"
-                          aria-label={action}
-                          title={action}
-                          onClick={() => {
-                            if (compareSwapOut) onAddPlace?.(recommendation.place.id, compareSwapOut.id);
-                            else onAddPlace?.(recommendation.place.id);
-                          }}
-                        >
-                          <span className="compare-workbench__coach-label">{recommendation.label}</span>
-                          <strong>{recommendation.place.name}</strong>
-                          <span className="compare-workbench__coach-metric">{recommendation.metric}</span>
-                          <span className="compare-workbench__coach-detail">{prose(recommendation.detail)}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : null}
-            </section>
-
-            {compareLensReceipt ? (
-              <section className="compare-lens-receipt" aria-label="What the scores are based on">
-                <div className="compare-lens-receipt__copy">
-                  <span className="compare-lens-receipt__eyebrow">What the scores use</span>
-                  <p>{compareLensReceipt.summary}</p>
-                  <span>{compareLensReceipt.honesty}</span>
-                </div>
-                <div className="compare-lens-receipt__chips" aria-label="Must-haves and climate layer in use">
-                  {compareLensReceipt.chips.map(chip => (
-                    <span key={`${chip.label}-${chip.value}`} className="compare-lens-receipt__chip">
-                      <span>{chip.label}</span>
-                      <strong>{chip.value}</strong>
-                    </span>
-                  ))}
-                </div>
-              </section>
-            ) : null}
+            {figuresFirst ? null : workbenchSections}
 
             {decisionRead ? (
               <section id="compare-decision-read" className="compare-decision-read" aria-label="Comparison summary">
@@ -873,52 +934,7 @@ export function CompareView({
               </section>
             ) : null}
 
-            {evidenceReadiness.length > 0 ? (
-              <section id="compare-evidence-readiness" className="compare-evidence-readiness" aria-label="How well sourced">
-                <div className="compare-evidence-readiness__head">
-                  <div>
-                    <span className="compare-evidence-readiness__eyebrow">How well sourced</span>
-                    <strong>{evidenceReadiness[0].place.name}: {evidenceReadiness[0].label}</strong>
-                  </div>
-                  <span>How many sources back each entry and what data is missing. Check the gaps before booking a visit or looking at housing.</span>
-                </div>
-                <div className="compare-evidence-readiness__grid">
-                  {evidenceReadiness.map(row => (
-                    <article
-                      key={row.place.id}
-                      className="compare-evidence-readiness__card"
-                      data-tone={row.tone}
-                      aria-label={`How well sourced ${row.place.name} is`}
-                    >
-                      <div className="compare-evidence-readiness__card-head">
-                        <span>{row.label}</span>
-                        <strong title={SCORE_DEFINITIONS.sourcing.definition}>{SCORE_DEFINITIONS.sourcing.label} {row.score}/100</strong>
-                      </div>
-                      {onOpenPlace ? (
-                        <button
-                          type="button"
-                          className="compare-evidence-readiness__place"
-                          aria-label={`Open the ${row.place.name} profile`}
-                          title={`Open the ${row.place.name} profile`}
-                          onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
-                        >
-                          {row.place.name}
-                        </button>
-                      ) : (
-                        <strong className="compare-evidence-readiness__place-text">{row.place.name}</strong>
-                      )}
-                      <div className="compare-evidence-readiness__facts" aria-label={`${row.place.name} evidence facts`}>
-                        {row.facts.map(fact => <span key={fact}>{fact}</span>)}
-                      </div>
-                      <p>{row.action}</p>
-                      <ul>
-                        {row.gaps.map(gap => <li key={gap}>{gap}</li>)}
-                      </ul>
-                    </article>
-                  ))}
-                </div>
-              </section>
-            ) : null}
+            {figuresFirst ? null : evidenceSection}
 
             {singlePlaceGuide ? (
               <section id="compare-setup-guide" className="compare-single-guide" aria-label="Getting started with one place">
@@ -1140,6 +1156,12 @@ export function CompareView({
             <p className="text-caption text-stone-readable mt-2 px-1 leading-snug">
               * Feels-like is estimated for the warmest months from air temperature and humidity only, with no wind or sun. It follows the idea of the Universal Thermal Climate Index (UTCI) but is not a true UTCI value. Every score here runs 0–100 and higher is better, except overall risk, where lower is better.
             </p>
+            {figuresFirst ? (
+              <>
+                {workbenchSections}
+                {evidenceSection}
+              </>
+            ) : null}
             </div>
             </div>
           </motion.div>

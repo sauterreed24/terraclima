@@ -307,7 +307,7 @@ export function buildPlaceEvidenceSummary(place: Place): PlaceEvidenceSummary {
     "deterministic-derived": "Bioclimatic indices, climate twins and differences from home are calculated from the climate data.",
     "regional-projection": place.projection
       ? "This place has its own cited projection. The 2050 layers are still illustrations, not forecasts."
-      : "The 2050 layers use NEX-GDDP-CMIP6 model averages where available. They are illustrations, not a forecast for a specific site.",
+      : "The 2050 layers use a broad regional estimate (IPCC AR6, by latitude band). They are illustrations, not a forecast for a specific site.",
     "screening-score": "Livability, live-here fit, terrain and tourism scores are editorial ratings for comparing places.",
   };
   if (classesPresent.has("field-observation")) {

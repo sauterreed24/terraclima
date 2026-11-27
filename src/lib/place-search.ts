@@ -279,7 +279,7 @@ export function searchPlaces(places: readonly Place[], query: string | null | un
   const tiers = parsed.tokens.map(token => fields.map(f => tokenTier(f, token)));
   // Distinctive-term gate, per token (see header): the worst tier admitted.
   const limit = distinctiveLimit(places.length);
-  const maxTier = tiers.map(row => {
+  const gate = (row: readonly number[]): number => {
     const count = new Array<number>(SEARCH_TIER.fuzzy).fill(0);
     for (const t of row) if (t !== NO_MATCH) count[t]! += 1;
     let admitted: number = SEARCH_TIER.headline;
@@ -295,7 +295,19 @@ export function searchPlaces(places: readonly Place[], query: string | null | un
       admitted = tier;
     }
     return admitted;
-  });
+  };
+  const maxTier = tiers.map(gate);
+  // Unquoted words that appear together, in this order, are also tried as a
+  // phrase (same distinctive-term gate), ranked as if every word matched at the
+  // phrase's tier: "smoky mountains" → Gatlinburg, which the AND rule dropped
+  // because "mountains" alone is too common to pass the gate.
+  let phraseTiers: number[] | null = null;
+  if (parsed.tokens.length >= 2 && parsed.tokens.every(t => !t.phrase)) {
+    const phrase: SearchToken = { text: parsed.tokens.map(t => t.text).join(" "), phrase: true };
+    const row = fields.map(f => literalTokenTier(f, phrase));
+    const admitted = gate(row);
+    phraseTiers = row.map(t => (t <= admitted ? t : NO_MATCH));
+  }
 
   for (let i = 0; i < places.length; i++) {
     let worst = 0;
@@ -307,10 +319,14 @@ export function searchPlaces(places: readonly Place[], query: string | null | un
       sum += tier;
       if (worst === NO_MATCH) break;
     }
-    if (worst === NO_MATCH) continue;
+    const phraseTier = phraseTiers?.[i] ?? NO_MATCH;
+    if (worst === NO_MATCH && phraseTier === NO_MATCH) continue;
     const whole = wholeNameTier(fields[i]!, parsed.normalized);
     // Whole-name hits sort ahead of everything; otherwise worst token tier, then the tier total.
-    rankByPlace.set(places[i]!, whole !== NO_MATCH ? whole * 100 : worst * 100 + Math.min(sum, 99));
+    const tokenRank = worst === NO_MATCH ? Infinity : whole !== NO_MATCH ? whole * 100 : worst * 100 + Math.min(sum, 99);
+    // A phrase hit counts as every word matching at the phrase's tier.
+    const phraseRank = phraseTier === NO_MATCH ? Infinity : phraseTier * 100;
+    rankByPlace.set(places[i]!, Math.min(tokenRank, phraseRank));
   }
   if (rankByPlace.size > 0) return { mode: "exact", rankByPlace };
 

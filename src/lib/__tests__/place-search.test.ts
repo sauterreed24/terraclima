@@ -396,3 +396,17 @@ describe("search performance", () => {
     expect((performance.now() - start) / 100).toBeLessThan(10);
   });
 });
+
+describe("words typed together also match as a phrase", () => {
+  const top = (q: string) => [...searchPlaces(PLACES, q).rankByPlace].sort((a, b) => a[1] - b[1]).map(([p]) => p.id);
+  it("finds a place whose text has the phrase even when one word is too common alone", () => {
+    expect(top("smoky mountains")[0]).toBe("gatlinburg-tn");
+    expect(top("big sur")).toContain("monterey-ca");
+  });
+  it("does not let a phrase in another place's prose beat a name + state match", () => {
+    expect(top("flagstaff az")[0]).toBe("flagstaff-az");
+  });
+  it("knows Hilo is on the Big Island", () => {
+    expect(top("big island")[0]).toBe("hilo-hi");
+  });
+});
