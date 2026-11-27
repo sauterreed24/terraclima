@@ -185,8 +185,11 @@ async function sectionJobs(browser: Browser) {
     await page.locator("summary", { hasText: /^Must-haves$/ }).first().click(); steps++;
     await page.getByLabel("Max summer high").first().selectOption({ index: 2 }); steps++; // <= 79°F (26°C)
     await page.waitForURL(/sh=26/, { timeout: 5000 }).catch(() => {});
-    await page.waitForTimeout(400);
-    const shown = await inListCount(page);
+    // Wait for the list to settle (a fixed 400 ms wait failed once under load: 226 shown).
+    let shown = await inListCount(page);
+    for (let i = 0, prev = -1; i < 40 && (shown === PLACES.length || shown !== prev); i++) {
+      prev = shown; await page.waitForTimeout(200); shown = await inListCount(page);
+    }
     const reference = PLACES.filter(p => {
       const h = p.climate.tempHighC; return (h[5] + h[6] + h[7]) / 3 <= 26;
     }).length;
