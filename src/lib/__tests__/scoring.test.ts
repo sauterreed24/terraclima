@@ -380,7 +380,8 @@ describe("ranking notes quote the unrounded figures in the reader's units", () =
     let checked = 0;
     for (let m = 0; m < 12; m++) {
       for (const r of rankPlaces("best-this-month", PLACES, new Date(2026, m, 1, 12))) {
-        const hit = /: (-?\d+)°F day · (-?\d+)°F night · (\d+(?:\.\d)?) in$/.exec(r.note ?? "");
+        expect(r.note ?? "", "minus sign, not a hyphen").not.toMatch(/-\d/);
+        const hit = /: (-?\d+)°F day · (-?\d+)°F night · (\d+(?:\.\d)?) in$/.exec((r.note ?? "").replace(/\u2212/g, "-"));
         expect(hit, `${r.place.id} ${r.note}`).not.toBeNull();
         const c = r.place.climate;
         expect(Math.abs(Number(hit![1]) - toF(c.tempHighC[m]!))).toBeLessThanOrEqual(0.5 + 1e-9);

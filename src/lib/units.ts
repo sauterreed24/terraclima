@@ -616,9 +616,10 @@ function convertFigure(n: string, factor: number, wholeOnly = false): string {
 
 /** Both ends of a range share one treatment: round only when both are round. */
 function convertPair(n1: string, n2: string, factor: number, wholeOnly = false): [string, string] {
-  if (isRoundMetric(n1) && isRoundMetric(n2)) return [convertFigure(n1, factor, wholeOnly), convertFigure(n2, factor, wholeOnly)];
   const v1 = parseLooseNum(n1) * factor;
   const v2 = parseLooseNum(n2) * factor;
+  // Both ends round, and neither small enough to keep a decimal (see convertFigure).
+  if (isRoundMetric(n1) && isRoundMetric(n2) && (wholeOnly || Math.min(v1, v2) >= 2)) return [convertFigure(n1, factor, wholeOnly), convertFigure(n2, factor, wholeOnly)];
   const digits = !wholeOnly && Math.max(v1, v2) < 10 ? 1 : 0;
   return [formatUSNumber(v1, digits), formatUSNumber(v2, digits)];
 }

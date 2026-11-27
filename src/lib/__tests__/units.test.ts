@@ -454,6 +454,8 @@ describe("localizeProse — small round rain figures keep a decimal", () => {
     ["less than 30 mm", "less than 1.2 in"],
     ["averages 50 mm", "averages 2 in"],
     ["about 200 mm", "about 8 in"],
+    ["30–60 mm a month", "1.2–2.4 in a month"],
+    ["300–700 mm", "12–28 in"],
   ])("%j", (text, expected) => {
     expect(localizeProse(text, "F", "imperial")).toBe(expected);
   });

@@ -12025,6 +12025,9 @@ html[data-theme="dark"] .tc-filter-sheet-trigger {
     0 14px 38px -18px rgba(0, 0, 0, 0.74),
     0 0 0 1px rgba(94, 196, 220, 0.12) inset;
 }
+html[data-theme="dark"] [data-docked] > .tc-filter-sheet-trigger {
+  box-shadow: 0 0 0 1px rgba(94, 196, 220, 0.12) inset;
+}
 html[data-theme="dark"] .tc-filter-sheet-trigger:hover,
 html[data-theme="dark"] .tc-filter-sheet-trigger:focus-visible {
   border-color: rgba(94, 196, 220, 0.5);

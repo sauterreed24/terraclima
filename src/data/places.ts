@@ -220,17 +220,17 @@ const COUNTRY_SEARCH_ALIASES: Record<Place["country"], string> = {
   Mexico: "Mexico",
 };
 
-/**
- * Postal and common abbreviations for states, provinces and territories, so
- * "kelowna bc", "la paz bcs" or "yellowknife nwt" find their place whatever
- * the place id happens to end with. Keyed by `Place.region`.
- */
 /** Common names a place's own fields never use (searched as locality). */
 const PLACE_SEARCH_ALIASES: Readonly<Record<string, string>> = {
   // Hilo is the main town of Hawaiʻi Island, widely called the Big Island.
   "hilo-hi": "Big Island, Hawaii Island",
 };
 
+/**
+ * Postal and common abbreviations for states, provinces and territories, so
+ * "kelowna bc", "la paz bcs" or "yellowknife nwt" find their place whatever
+ * the place id happens to end with. Keyed by `Place.region`.
+ */
 export const REGION_SEARCH_ALIASES: Readonly<Record<string, string>> = {
   Alabama: "AL", Alaska: "AK", Arizona: "AZ", Arkansas: "AR", California: "CA", Colorado: "CO",
   Connecticut: "CT", Delaware: "DE", "District of Columbia": "DC", Florida: "FL", Georgia: "GA",

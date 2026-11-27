@@ -38,7 +38,7 @@ import { fmtDelta, fmtPrecip, fmtTemp } from "./units";
 // the unrounded figures. Rounding to whole °C / mm first and letting the prose
 // localizer convert the rounded text put ~1 in 3 figures off by a degree or
 // more, and read a round "10 mm" as "0 in".
-const noteF = (c: number) => fmtTemp(c, "F");
+const noteF = (c: number) => fmtTemp(c, "F").replace(/^-/, "\u2212");
 const noteDeltaF = (c: number) => fmtDelta(c, "F", { digits: 0, signed: false });
 const noteIn = (mm: number) => fmtPrecip(mm, "imperial");
 

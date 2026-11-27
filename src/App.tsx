@@ -755,19 +755,32 @@ export default function App() {
   // Filters. While the search row is on screen the button moves into it; once
   // the row scrolls away it floats again.
   // A callback ref holds the row, so a remounted row never leaves the button
-  // in a detached slot.
+  // in a detached slot. The button does not move while the sheet is open (its
+  // isolation is tied to the mounted button); the latest position applies on close.
+  const quickSearchInViewRef = useRef(false);
+  const filterSheetOpenRef = useRef(false);
+  const quickSearchSlot = quickSearchRow?.querySelector<HTMLElement>("[data-filter-trigger-dock]") ?? null;
+  const applyFilterTriggerDock = useCallback(() => {
+    if (filterSheetOpenRef.current) return;
+    // Moving remounts the button: keep keyboard / returned focus on it.
+    const sel = ".tc-filter-sheet-trigger";
+    const focused = document.activeElement?.matches(sel);
+    setFilterTriggerDock(quickSearchInViewRef.current ? quickSearchSlot : null);
+    if (focused) requestAnimationFrame(() => document.querySelector<HTMLElement>(sel)?.focus({ preventScroll: true }));
+  }, [quickSearchSlot]);
   useEffect(() => {
-    const row = quickSearchRow;
-    const slot = row?.querySelector<HTMLElement>("[data-filter-trigger-dock]") ?? null;
-    if (!row || !slot || typeof IntersectionObserver === "undefined") return;
+    if (!quickSearchRow || !quickSearchSlot || typeof IntersectionObserver === "undefined") return;
     const io = new IntersectionObserver(([entry]) => {
-      // Moving the button remounts it; do not pull it out from under keyboard focus.
-      if (document.activeElement?.classList.contains("tc-filter-sheet-trigger")) return;
-      setFilterTriggerDock(entry?.isIntersecting ? slot : null);
+      quickSearchInViewRef.current = Boolean(entry?.isIntersecting);
+      applyFilterTriggerDock();
     });
-    io.observe(row);
-    return () => { io.disconnect(); setFilterTriggerDock(null); };
-  }, [quickSearchRow]);
+    io.observe(quickSearchRow);
+    return () => { io.disconnect(); quickSearchInViewRef.current = false; setFilterTriggerDock(null); };
+  }, [quickSearchRow, quickSearchSlot, applyFilterTriggerDock]);
+  useEffect(() => {
+    filterSheetOpenRef.current = filterSheetOpen;
+    if (!filterSheetOpen) applyFilterTriggerDock();
+  }, [filterSheetOpen, applyFilterTriggerDock]);
   /** Scout Board / Living Compass / livability rails stay collapsed until asked for. */
   const [scoutToolsOpen, setScoutToolsOpen] = useState(false);
   /**
@@ -1945,7 +1958,7 @@ export default function App() {
                     ref={setQuickSearchRow}
                     htmlFor={QUICK_SEARCH_INPUT_ID}
                     data-quick-search
-                    className="panel-thin flex min-h-[46px] items-center gap-2.5 px-3 focus-within:ring-2 focus-within:ring-[rgba(94,196,220,0.35)]"
+                    className="panel-thin flex min-h-[46px] items-center gap-2.5 px-3 has-[input:focus]:ring-2 has-[input:focus]:ring-[rgba(94,196,220,0.35)]"
                   >
                     <Search className="h-4 w-4 shrink-0 text-stone" aria-hidden />
                     <input
