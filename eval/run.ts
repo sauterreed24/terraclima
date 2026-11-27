@@ -286,6 +286,25 @@ async function sectionJobs(browser: Browser) {
     record("S2l", "phone first screen: search field covered by another control / Filters not on screen (5 phone browser sizes, empty + typed; scroll after closing Filters)", `${covered.length} / ${noFilters.length}`, "0 / 0", covered.length === 0 && noFilters.length === 0, { covered, noFilters });
     for (const c of covered.slice(0, 4)) console.log(`        ${c}`);
   }
+  // J4c Compare on a phone: how far down the summary and the first figure sit (px from
+  //     the top of the screen), as it is and with the compare-figures-first trial.
+  {
+    const out: Record<string, { summary: number | null; firstFigure: number | null }> = {};
+    for (const [tag, q] of [["off", ""], ["trial", "try=compare-figures-first&"]] as const) {
+      const ctx = await newCtx(browser, { viewport: { width: 390, height: 664 }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
+      const page = await open(ctx, `/?${q}cmp=sequim-wa,bishop-ca`);
+      await page.locator("#compare-diff-board").waitFor({ timeout: 15000 }).catch(() => {}); await page.waitForTimeout(800);
+      out[tag] = await page.evaluate(() => {
+        // No named helper here: the runner wraps named functions in a helper the page lacks.
+        const s = document.getElementById("compare-decision-read");
+        const f = [...document.querySelectorAll("td, th")].find(e => /Summer high/i.test(e.textContent ?? ""));
+        return { summary: s ? Math.round(s.getBoundingClientRect().top) : null, firstFigure: f ? Math.round(f.getBoundingClientRect().top) : null };
+      });
+      await ctx.close();
+    }
+    const v = `summary ${out.off!.summary} px, first figure ${out.off!.firstFigure} px (trial: ${out.trial!.summary} / ${out.trial!.firstFigure})`;
+    record("S2m", "Compare on a phone (390×664): distance to the summary / first figure", v, "summary on first screen (< 664)", (out.off!.summary ?? 1e9) < 664, out);
+  }
   // J5 export saved places; figures match the atlas
   {
     const ctx = await newCtx(browser);
