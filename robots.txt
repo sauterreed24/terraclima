@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sauterreed24.github.io/terraclima/sitemap.xml
